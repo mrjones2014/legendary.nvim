@@ -22,6 +22,10 @@ local keymaps = {
   { '<leader>m', ':messages<CR>' },
   -- you can also map lua functions directly as a binding
   { '<C-p>', require('legendary').find, description = 'Search key bindings' }
+  -- You can also have items that aren't bound to any key, but are executable
+  -- through the finder by omitting a keycode and adding `nobind = true`
+  -- this way you can use legendary.nvim like VS Code's Command Palette
+  { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true }
 }
 
 -- Then install the plugin (using packer.nvim in this example)

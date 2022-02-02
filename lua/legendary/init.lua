@@ -21,7 +21,10 @@ function M.bind_single(keymap)
   if keymap.description and #keymap.description > 0 then
     table.insert(M.keymaps, Formatter:new(keymap))
   end
-  vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
+
+  if not keymap.nobind then
+    vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
+  end
 end
 
 function M.bind(keymaps)

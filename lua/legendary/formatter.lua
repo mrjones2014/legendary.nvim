@@ -17,7 +17,7 @@ local function mode_str(keymap)
 end
 
 function M.update_padding(keymap)
-  if not keymap or type(keymap) ~= 'table' or not keymap[1] then
+  if not keymap or type(keymap) ~= 'table' or not keymap[1] or keymap.nobind then
     return
   end
 
@@ -45,13 +45,12 @@ function M.Formatter:new(keymap)
       end
 
       local modes = mode_str(keymap)
+      local key = ''
+      if not self_item.nobind then
+        key = self_item[1]
+      end
 
-      return string.format(
-        'modes: %s | %s | %s',
-        rpad(modes, padding_mode),
-        rpad(self_item[1], padding_keymap),
-        description
-      )
+      return string.format('modes: %s | %s | %s', rpad(modes, padding_mode), rpad(key, padding_keymap), description)
     end,
   })
 
