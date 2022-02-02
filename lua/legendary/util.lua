@@ -1,8 +1,8 @@
 local M = {}
 
 function M.opts_are_equal(keymap, new_keymap)
-  for key, _ in pairs(keymap) do
-    if keymap[key] ~= new_keymap[key] then
+  for key, _ in pairs(keymap or {}) do
+    if keymap[key] ~= (new_keymap or {})[key] then
       return false
     end
   end

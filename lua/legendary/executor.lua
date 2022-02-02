@@ -14,7 +14,14 @@ local function mode_from_table(modes)
   return nil
 end
 
-local function exec(cmd)
+local function exec(keybind)
+  local cmd = ''
+  if keybind.nobind then
+    cmd = keybind[1]
+  else
+    cmd = keybind[2]
+  end
+
   if type(cmd) == 'function' then
     cmd()
   else
@@ -45,12 +52,12 @@ function M.try_execute(keymap)
 
   if mode == 'n' then
     vim.cmd('stopinsert')
-    exec(keymap[2])
+    exec(keymap)
     return
   end
 
   vim.cmd('startinsert')
-  exec(keymap[2])
+  exec(keymap)
 end
 
 return M
