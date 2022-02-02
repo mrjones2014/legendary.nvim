@@ -26,6 +26,8 @@ require('packer').startup(function(use)
     config = function()
       -- Then bind your keymaps and register them in the finder
       require('bindr').bind(keymaps)
+      -- Or, you can dynamically bind a single keybind
+      require('bindr').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
     end
   }),
 end)
