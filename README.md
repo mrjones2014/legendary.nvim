@@ -3,6 +3,8 @@
 
 A map legend for your keymaps.
 
+![demo](./demo.gif)
+
 Define your keymaps as Lua tables, add descriptions, and find them with `vim.ui.select()` when you forget.
 
 For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
