@@ -5,6 +5,7 @@ local M = {
 local Formatter = require('legendary.formatter').Formatter
 
 function M.bind_single(keymap)
+  require('legendary.formatter').update_padding(keymap)
   if not keymap or type(keymap) ~= 'table' then
     return
   end
@@ -35,8 +36,6 @@ function M.bind(keymaps)
       M.bind_single(keymap)
     end
   end
-
-  require('legendary.formatter').init_padding(keymaps)
 end
 
 function M.find()
