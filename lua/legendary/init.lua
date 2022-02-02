@@ -9,6 +9,10 @@ function M.bind_single(keymap)
     return
   end
 
+  if require('legendary.util').contains_duplicates(M.keymaps, keymap) then
+    return
+  end
+
   keymap.opts = keymap.opts or {}
   if keymap.opts.silent == nil then
     keymap.opts.silent = true
