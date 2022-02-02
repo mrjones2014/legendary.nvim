@@ -3,7 +3,9 @@
 
 Define your keymaps as Lua tables, add descriptions, and find them with `vim.ui.select()` when you forget.
 
-For normal and insert mode mappings, you can execute the mapping by selecting it.
+For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
+like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
+`vim.ui.*` handler.
 
 ```lua
 -- Define your keymaps as a list of tables like so

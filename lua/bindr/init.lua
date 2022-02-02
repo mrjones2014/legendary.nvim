@@ -24,14 +24,15 @@ function M.bind(keymaps)
     return
   end
 
-  if keymaps[1] == nil or type(keymaps[1]) ~= 'table' then
+  if not keymaps[1] or type(keymaps[1]) ~= 'table' then
     M.bind_single(keymaps)
-    return
+  else
+    for _, keymap in pairs(keymaps) do
+      M.bind_single(keymap)
+    end
   end
 
-  for _, keymap in pairs(keymaps) do
-    M.bind_single(keymap)
-  end
+  require('bindr.formatter').init_padding(keymaps)
 end
 
 function M.find()

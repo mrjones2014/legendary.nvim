@@ -7,6 +7,25 @@ local function rpad(str, len)
   return string.format('%s%s', string.rep(' ', len - #str), str)
 end
 
+function M.init_padding(items)
+  if not items or type(items) ~= 'table' then
+    return
+  end
+
+  if not items[1] or type(items[1]) ~= 'table' then
+    if #items[1] > padding_keymap then
+      padding_keymap = #items[1]
+    end
+    return
+  end
+
+  for _, item in pairs(items) do
+    if #item[1] > padding_keymap then
+      padding_keymap = #item[1]
+    end
+  end
+end
+
 M.Formatter = {}
 function M.Formatter:new(keymap)
   local item = vim.deepcopy(keymap)
