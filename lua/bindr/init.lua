@@ -36,11 +36,9 @@ function M.bind(keymaps)
 end
 
 function M.find()
-  local win_id = vim.api.nvim_get_current_win()
   vim.ui.select(M.keymaps, {
     prompt = 'Find Key Binding',
   }, function(selected)
-    vim.api.nvim_set_current_win(win_id)
     require('bindr.executor').try_execute(selected)
   end)
 end
