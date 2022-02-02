@@ -1,5 +1,7 @@
-# bindr.nvim
+# legendary.nvim
 <sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
+
+A map legend for your keymaps.
 
 Define your keymaps as Lua tables, add descriptions, and find them with `vim.ui.select()` when you forget.
 
@@ -17,24 +19,24 @@ local keymaps = {
   { '<leader>c', ":'<,'>CommentToggle<CR>", mode = 'v', description = 'Toggle comment' },
   { '<leader>m', ':messages<CR>' },
   -- you can also map lua functions directly as a binding
-  { '<C-p>', require('bindr').find, description = 'Search key bindings' }
+  { '<C-p>', require('legendary').find, description = 'Search key bindings' }
 }
 
 -- Then install the plugin (using packer.nvim in this example)
 require('packer').startup(function(use)
   -- your other plugins here
   use({
-    'mrjones2014/bindr.nvim',
+    'mrjones2014/legendary.nvim',
     config = function()
       -- Then bind your keymaps and register them in the finder
-      require('bindr').bind(keymaps)
+      require('legendary').bind(keymaps)
       -- Or, you can dynamically bind a single keybind
-      require('bindr').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
+      require('legendary').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
     end
   }),
 end)
 
 
 -- Then find them with `vim.ui.select()` via
-require('bindr').find()
+require('legendary').find()
 ```

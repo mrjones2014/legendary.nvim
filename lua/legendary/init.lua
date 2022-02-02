@@ -2,7 +2,7 @@ local M = {
   keymaps = {},
 }
 
-local Formatter = require('bindr.formatter').Formatter
+local Formatter = require('legendary.formatter').Formatter
 
 function M.bind_single(keymap)
   if not keymap or type(keymap) ~= 'table' then
@@ -32,14 +32,14 @@ function M.bind(keymaps)
     end
   end
 
-  require('bindr.formatter').init_padding(keymaps)
+  require('legendary.formatter').init_padding(keymaps)
 end
 
 function M.find()
   vim.ui.select(M.keymaps, {
     prompt = 'Find Key Binding',
   }, function(selected)
-    require('bindr.executor').try_execute(selected)
+    require('legendary.executor').try_execute(selected)
   end)
 end
 
