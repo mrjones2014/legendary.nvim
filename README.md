@@ -1,4 +1,5 @@
-# legendary.nvim
+# legendary.nvim 🗺️
+
 <sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
 
 A map legend for your keymaps.
