@@ -42,10 +42,20 @@ function M.bind(keymaps)
 end
 
 function M.find()
+  local current_mode = vim.fn.mode()
   vim.ui.select(M.keymaps, {
     prompt = 'Find Key Binding',
   }, function(selected)
     require('legendary.executor').try_execute(selected)
+    if current_mode == 'n' then
+      vim.schedule(function()
+        vim.cmd('stopinsert')
+      end)
+    elseif current_mode == 'i' then
+      vim.schedule(function()
+        vim.cmd('startinsert')
+      end)
+    end
   end)
 end
 
