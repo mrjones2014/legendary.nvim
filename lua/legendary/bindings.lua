@@ -58,14 +58,17 @@ function M.find()
         return
       end
 
-      vim.api.nvim_win_set_cursor(0, cursor_position)
-
-      -- if we were in normal or insert mode, go back to it
-      if current_mode == 'n' then
-        vim.cmd('stopinsert')
-      elseif current_mode == 'i' then
-        vim.cmd('startinsert')
-      end
+      -- some commands close the buffer, in those cases this will fail
+      -- so wrap it in pcall
+      pcall(function()
+        vim.api.nvim_win_set_cursor(0, cursor_position)
+        -- if we were in normal or insert mode, go back to it
+        if current_mode == 'n' then
+          vim.cmd('stopinsert')
+        elseif current_mode == 'i' then
+          vim.cmd('startinsert')
+        end
+      end)
     end)
   end)
 end
