@@ -34,7 +34,7 @@ Plug 'mrjones2014/legendary.nvim'
 -- description is required for them to appear when you search
 local keymaps = {
   { '<F3>', ':NvimTreeToggle<CR>', description = 'Toggle file tree' },
-  -- 'mode' defaults to 'n', but you can specify a differet mode
+  -- 'mode' defaults to 'n', but you can specify a different mode
   -- either as a string or a list of multiple modes like `mode = { 'n', 'v' }`
   { '<leader>c', ":'<,'>CommentToggle<CR>", mode = 'v', description = 'Toggle comment' },
   { '<leader>m', ':messages<CR>' },
