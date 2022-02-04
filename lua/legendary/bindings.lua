@@ -48,30 +48,25 @@ function M.find()
   vim.ui.select(M.keymaps, {
     prompt = require('legendary.config').select_prompt,
   }, function(selected)
-    require('legendary.executor').try_execute(selected)
+    -- vim.schedule so that the select UI closes before we do anything
+    vim.schedule(function()
+      require('legendary.executor').try_execute(selected)
 
-    -- only restore cursor position if we're going back
-    -- to the same window
-    if vim.api.nvim_win_get_number(0) ~= current_window_num then
-      return
-    end
+      -- only restore cursor position if we're going back
+      -- to the same window
+      if vim.api.nvim_win_get_number(0) ~= current_window_num then
+        return
+      end
 
-    if selected then
-      vim.api.nvim_win_set_cursor(0, { cursor_position[1], cursor_position[2] + 1 })
-    else
       vim.api.nvim_win_set_cursor(0, cursor_position)
-    end
 
-    -- if we were in normal or insert mode, go back to it
-    if current_mode == 'n' then
-      vim.schedule(function()
+      -- if we were in normal or insert mode, go back to it
+      if current_mode == 'n' then
         vim.cmd('stopinsert')
-      end)
-    elseif current_mode == 'i' then
-      vim.schedule(function()
+      elseif current_mode == 'i' then
         vim.cmd('startinsert')
-      end)
-    end
+      end
+    end)
   end)
 end
 

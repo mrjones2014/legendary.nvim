@@ -33,8 +33,14 @@ local function exec(keybind)
 
     cmd = vim.api.nvim_replace_termcodes(cmd, true, true, true)
 
-    if cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':' then
-      vim.api.nvim_feedkeys(cmd, '', true)
+    if keybind.unfinished then
+      -- % is escape character in gsub patterns
+      cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
+      print(cmd)
+    end
+
+    if keybind.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
+      vim.api.nvim_feedkeys(cmd, 't', true)
     else
       vim.cmd(string.format("execute '%s'", cmd))
     end
