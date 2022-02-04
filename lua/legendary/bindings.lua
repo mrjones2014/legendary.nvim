@@ -43,14 +43,22 @@ end
 
 function M.find()
   local current_mode = vim.fn.mode()
-  local curpos = vim.api.nvim_win_get_cursor(0)
+  local cursor_position = vim.api.nvim_win_get_cursor(0)
+  local current_window_num = vim.api.nvim_win_get_number(0)
   vim.ui.select(M.keymaps, {
     prompt = 'Find Key Binding',
   }, function(selected)
     require('legendary.executor').try_execute(selected)
+
+    -- only restore cursor position if we're going back
+    -- to the same window
+    if vim.api.nvim_win_get_number(0) ~= current_window_num then
+      return
+    end
+
     -- restore cursor position, adding 1 to avoid
     -- putting the cursor 1 col to the left of where it was
-    vim.api.nvim_win_set_cursor(0, { curpos[1], curpos[2] + 1 })
+    vim.api.nvim_win_set_cursor(0, { cursor_position[1], cursor_position[2] + 1 })
     -- if we were in normal or insert mode, go back to it
     if current_mode == 'n' then
       vim.schedule(function()
