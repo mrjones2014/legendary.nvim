@@ -46,7 +46,7 @@ function M.find()
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
   vim.ui.select(M.keymaps, {
-    prompt = 'Find Key Binding',
+    prompt = require('legendary.config').select_prompt,
   }, function(selected)
     require('legendary.executor').try_execute(selected)
 
