@@ -50,7 +50,7 @@ function M.Formatter:new(keymap)
         key = '[Lua function]'
       end
 
-      return string.format('modes: %s | %s | %s', rpad(modes, padding_mode), rpad(key, padding_keymap), description)
+      return string.format('modes: %s │ %s │ %s', rpad(modes, padding_mode), rpad(key, padding_keymap), description)
     end,
   })
 
