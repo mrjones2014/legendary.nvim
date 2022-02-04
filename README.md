@@ -47,6 +47,13 @@ local keymaps = {
   -- through the finder by omitting a keycode and adding `nobind = true`
   -- this way you can use legendary.nvim like VS Code's Command Palette
   { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true }
+  -- You can also have "unfinished" command (commands which need an argument)
+  -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
+  -- at the end of the string as a hint, this will get removed when inserted
+  -- to the command line
+  { ':MyCommand {some_argument}<CR>', description = 'Command with argument', nobind = true, unfinished = true },
+  -- or
+  { ':MyCommand [some_argument]<CR>', description = 'Command with argument', nobind = true, unfinished = true },
 }
 
 -- Then set up legendary.nvim
