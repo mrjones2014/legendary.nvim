@@ -6,7 +6,8 @@ A legend for your keymaps and commands 🗺️
 
 ![demo](./demo.gif)
 
-Define your keymaps as Lua tables, add descriptions, and find them with `vim.ui.select()` when you forget.
+Define your keymaps as simple Lua tables and let `legendary.nvim` handle the rest.
+Find them (and commands) with `vim.ui.select()` when you forget.
 
 For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
 like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
