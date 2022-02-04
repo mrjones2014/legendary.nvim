@@ -1,10 +1,12 @@
 local M = {
   include_builtin = true,
+  select_prompt = 'Legendary',
   keymaps = {},
 }
 
 function M.setup(new_config)
   new_config = new_config or {}
+  M.select_prompt = new_config.select_prompt or M.select_prompt
   if type(new_config) ~= 'table' then
     vim.api.nvim_err_write(string.format("require('legendary').setup() expects a table, got: %s", type(new_config)))
     return
