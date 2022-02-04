@@ -9,6 +9,9 @@ A legend for your keymaps and commands 🗺️
 Define your keymaps as simple Lua tables and let `legendary.nvim` handle the rest.
 Find them (and commands) with `vim.ui.select()` when you forget.
 
+It also includes built-in keymaps and commands (these can be removed via config). Please help
+me add missing ones with a Pull Request!
+
 For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
 like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
 `vim.ui.*` handler.
