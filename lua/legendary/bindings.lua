@@ -56,9 +56,12 @@ function M.find()
       return
     end
 
-    -- restore cursor position, adding 1 to avoid
-    -- putting the cursor 1 col to the left of where it was
-    vim.api.nvim_win_set_cursor(0, { cursor_position[1], cursor_position[2] + 1 })
+    if selected then
+      vim.api.nvim_win_set_cursor(0, { cursor_position[1], cursor_position[2] + 1 })
+    else
+      vim.api.nvim_win_set_cursor(0, cursor_position)
+    end
+
     -- if we were in normal or insert mode, go back to it
     if current_mode == 'n' then
       vim.schedule(function()
