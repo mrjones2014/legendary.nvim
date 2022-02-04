@@ -46,7 +46,7 @@ function M.Formatter:new(keymap)
 
       local modes = mode_str(keymap)
       local key = ''
-      if not self_item.nobind then
+      if not self_item.nobind or self_item.builtin then
         key = self_item[1]
       end
 

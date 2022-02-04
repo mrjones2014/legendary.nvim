@@ -16,7 +16,7 @@ end
 
 local function exec(keybind)
   local cmd = ''
-  if keybind.nobind then
+  if keybind.nobind or keybind.builtin then
     cmd = keybind[1]
   else
     cmd = keybind[2]
@@ -31,7 +31,13 @@ local function exec(keybind)
       cmd = cmd:sub(1, #cmd - 2)
     end
 
-    vim.cmd(string.format("execute '%s'", vim.api.nvim_replace_termcodes(cmd, true, true, true)))
+    cmd = vim.api.nvim_replace_termcodes(cmd, true, true, true)
+
+    if cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':' then
+      vim.api.nvim_feedkeys(cmd, '', true)
+    else
+      vim.cmd(string.format("execute '%s'", cmd))
+    end
   end
 end
 
