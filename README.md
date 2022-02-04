@@ -2,7 +2,7 @@
 
 <sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
 
-A map legend for your keymaps.
+A legend for your keymaps and commands 🗺️
 
 ![demo](./demo.gif)
 
@@ -11,6 +11,22 @@ Define your keymaps as Lua tables, add descriptions, and find them with `vim.ui.
 For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
 like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
 `vim.ui.*` handler.
+
+## Installation
+
+With `packer.nvim`:
+
+```lua
+use('mrjones2014/legendary.nvim')
+```
+
+With `vim-plug`:
+
+```VimL
+Plug 'mrjones2014/legendary.nvim'
+```
+
+## Configuration
 
 ```lua
 -- Define your keymaps as a list of tables like so
@@ -29,21 +45,25 @@ local keymaps = {
   { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true }
 }
 
--- Then install the plugin (using packer.nvim in this example)
-require('packer').startup(function(use)
-  -- your other plugins here
-  use({
-    'mrjones2014/legendary.nvim',
-    config = function()
-      -- Then bind your keymaps and register them in the finder
-      require('legendary').bind(keymaps)
-      -- Or, you can dynamically bind a single keybind
-      require('legendary').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
-    end
-  }),
-end)
+-- Then set up legendary.nvim
+require('legendary').setup({
+  -- Include builtins by default, set to false to disable
+  include_builtin = true,
+  keymaps = {}
+})
 
+-- Add an additional set of keybinds
+-- (useful for binding LSP keybinds in the `on_attach` function, for example)
+require('legendary').bind({
+  { 'gd', vim.lsp.buf.definition, description = 'Go to definition' },
+  { 'gh', vim.lsp.buf.hover, description = 'Show hover information' },
+  { 'gi', vim.lsp.buf.implementation, description = 'Go to implementation' },
+})
 
--- Then find them with `vim.ui.select()` via
-require('legendary').find()
+-- Or, you can dynamically bind a single keybind
+require('legendary').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
 ```
+
+## Usage
+
+Trigger the legend with `require('legendary').find()`, `:Legend`, or `:Legendary`.
