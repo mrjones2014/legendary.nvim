@@ -41,12 +41,16 @@ local keymaps = {
   -- either as a string or a list of multiple modes like `mode = { 'n', 'v' }`
   { '<leader>c', ":'<,'>CommentToggle<CR>", mode = 'v', description = 'Toggle comment' },
   { '<leader>m', ':messages<CR>' },
+  -- you can also pass keymap options via the `opts` table, see `:h vim.keymap.set`
+  -- and `:h nvim_set_keymap` for all available options
+  -- default opts are `opts = { silent = true }`
+  { '<leader>f', ':SomeMappingCommand', opts = { noremap = true, silent = false } },
   -- you can also map lua functions directly as a binding
-  { '<C-p>', require('legendary').find, description = 'Search key bindings' }
+  { '<C-p>', require('legendary').find, description = 'Search key bindings' },
   -- You can also have items that aren't bound to any key, but are executable
   -- through the finder by omitting a keycode and adding `nobind = true`
   -- this way you can use legendary.nvim like VS Code's Command Palette
-  { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true }
+  { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true },
   -- You can also have "unfinished" command (commands which need an argument)
   -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
   -- at the end of the string as a hint, this will get removed when inserted
