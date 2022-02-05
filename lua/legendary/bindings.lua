@@ -5,19 +5,19 @@ local M = {
 local Formatter = require('legendary.formatter').Formatter
 
 function M.bind_single(keymap)
-  require('legendary.formatter').update_padding(keymap)
-  if not keymap or type(keymap) ~= 'table' then
+  if not keymap or type(keymap) ~= 'table' or require('legendary.util').contains_duplicates(M.keymaps, keymap) then
     return
   end
 
-  if require('legendary.util').contains_duplicates(M.keymaps, keymap) then
-    return
-  end
+  require('legendary.formatter').update_padding(keymap)
 
   keymap.opts = keymap.opts or {}
+
+  -- set default options
   if keymap.opts.silent == nil then
     keymap.opts.silent = true
   end
+
   if keymap.description and #keymap.description > 0 then
     table.insert(M.keymaps, Formatter:new(keymap))
   end
