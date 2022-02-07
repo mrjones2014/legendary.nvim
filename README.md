@@ -51,6 +51,10 @@ local keymaps = {
   -- through the finder by omitting a keycode, this way you can use
   -- legendary.nvim like VS Code's Command Palette
   { ':CommentToggle<CR>', description = 'Toggle comment' },
+  -- Or add a keybind without a definition (useful for reminding yourself of
+  -- keybinds which are set up by plugins, for example, these nvim-cmp mappings)
+  { '<C-d>', description = 'Scroll docs up' },
+  { '<C-f>', description = 'Scroll docs down' },
   -- You can also have "unfinished" command (commands which need an argument)
   -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
   -- at the end of the string as a hint, this will get removed when inserted
