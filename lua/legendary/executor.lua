@@ -15,12 +15,7 @@ local function mode_from_table(modes)
 end
 
 local function exec(keybind)
-  local cmd = ''
-  if keybind.nobind or keybind.builtin then
-    cmd = keybind[1]
-  else
-    cmd = keybind[2]
-  end
+  local cmd = require('legendary.util').get_definition(keybind)
 
   if type(cmd) == 'function' then
     cmd()
@@ -36,7 +31,6 @@ local function exec(keybind)
     if keybind.unfinished then
       -- % is escape character in gsub patterns
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
-      print(cmd)
     end
 
     if keybind.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then

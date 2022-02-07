@@ -17,17 +17,13 @@ local function mode_str(keymap)
 end
 
 function M.update_padding(keymap)
-  if not keymap or type(keymap) ~= 'table' or not keymap[1] or keymap.nobind then
-    return
+  local modes = mode_str(keymap)
+  if #modes > padding_mode then
+    padding_mode = #modes
   end
 
   if #keymap[1] > padding_keymap then
     padding_keymap = #keymap[1]
-  end
-
-  local modes = mode_str(keymap)
-  if #modes > padding_mode then
-    padding_mode = #modes
   end
 end
 
