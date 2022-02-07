@@ -11,20 +11,11 @@ function M.bind_single(keymap)
 
   require('legendary.formatter').update_padding(keymap)
 
-  keymap.opts = keymap.opts or {}
-
-  -- set default options
-  if keymap.opts.silent == nil then
-    keymap.opts.silent = true
-  end
-
   if keymap.description and #keymap.description > 0 then
     table.insert(M.keymaps, Formatter:new(keymap))
   end
 
-  if not keymap.nobind and not keymap.builtin then
-    vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
-  end
+  require('legendary.util').set_keymap(keymap)
 end
 
 function M.bind(keymaps)

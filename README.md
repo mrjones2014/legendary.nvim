@@ -48,16 +48,16 @@ local keymaps = {
   -- you can also map lua functions directly as a binding
   { '<C-p>', require('legendary').find, description = 'Search key bindings' },
   -- You can also have items that aren't bound to any key, but are executable
-  -- through the finder by omitting a keycode and adding `nobind = true`
-  -- this way you can use legendary.nvim like VS Code's Command Palette
-  { ':CommentToggle<CR>', description = 'Toggle comment', nobind = true },
+  -- through the finder by omitting a keycode, this way you can use
+  -- legendary.nvim like VS Code's Command Palette
+  { ':CommentToggle<CR>', description = 'Toggle comment' },
   -- You can also have "unfinished" command (commands which need an argument)
   -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
   -- at the end of the string as a hint, this will get removed when inserted
   -- to the command line
-  { ':MyCommand {some_argument}<CR>', description = 'Command with argument', nobind = true, unfinished = true },
+  { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
   -- or
-  { ':MyCommand [some_argument]<CR>', description = 'Command with argument', nobind = true, unfinished = true },
+  { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
 }
 
 -- Then set up legendary.nvim
