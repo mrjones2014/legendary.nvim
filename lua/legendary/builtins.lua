@@ -374,6 +374,7 @@ local M = {
     { ':echo {Var}', description = 'Show value of {Var}', unfinished = true },
     -- for this one we'd need to somehow put the cursor before the ? in the cmdline
     -- { ':set {Opt}?', description = 'Show value of option' },
+    { ':noh', description = "Clear 'hlsearch' highlights" },
   },
 }
 

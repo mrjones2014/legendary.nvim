@@ -14,7 +14,7 @@ me add missing ones with a Pull Request!
 
 For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
 like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
-`vim.ui.*` handler.
+`vim.ui.*` handler. Since it uses `vim.ui.select()`, it can pretty much support any fuzzy finder.
 
 ## Installation
 
