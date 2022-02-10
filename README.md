@@ -6,8 +6,8 @@ A legend for your keymaps and commands 🗺️
 
 ![demo](./demo.gif)
 
-Define your keymaps as simple Lua tables and let `legendary.nvim` handle the rest.
-Find them (and commands) with `vim.ui.select()` when you forget.
+Define your keymaps and commands as simple Lua tables and let `legendary.nvim` handle the rest.
+Find them with `vim.ui.select()` when you forget.
 
 It also includes built-in keymaps and commands (these can be removed via config). Please help
 me add missing ones with a Pull Request!
@@ -47,14 +47,21 @@ local keymaps = {
   { '<leader>f', ':SomeMappingCommand', opts = { noremap = true, silent = false } },
   -- you can also map lua functions directly as a binding
   { '<C-p>', require('legendary').find, description = 'Search key bindings' },
-  -- You can also have items that aren't bound to any key, but are executable
-  -- through the finder by omitting a keycode, this way you can use
-  -- legendary.nvim like VS Code's Command Palette
-  { ':CommentToggle<CR>', description = 'Toggle comment' },
   -- Or add a keybind without a definition (useful for reminding yourself of
   -- keybinds which are set up by plugins, for example, these nvim-cmp mappings)
   { '<C-d>', description = 'Scroll docs up' },
   { '<C-f>', description = 'Scroll docs down' },
+}
+
+local commands = {
+  -- You can also use legendar.nvim to create commands!
+  { ':CopyFileName', ':!echo % | pbcopy', description = "Copy current buffer's file name" },
+  -- You can also set commands to run a lua function
+  { ':DoSomethingWithLua', require('my_module').some_method, description = 'Do something with Lua!' },
+  -- You can also define commands without an implementation
+  -- this will simply make it appear in vim.ui.select() UI
+  -- but will not create the command
+  { ':CommentToggle', description = 'Toggle comment' },
   -- You can also have "unfinished" command (commands which need an argument)
   -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
   -- at the end of the string as a hint, this will get removed when inserted
@@ -70,19 +77,25 @@ require('legendary').setup({
   include_builtin = true,
   -- Customize the prompt that appears on your vim.ui.select() handler
   select_prompt = 'Legendary',
-  keymaps = {}
+  keymaps = keymaps,
+  commands = commands,
 })
 
 -- Add an additional set of keybinds
 -- (useful for binding LSP keybinds in the `on_attach` function, for example)
-require('legendary').bind({
+require('legendary').bind_keymaps({
   { 'gd', vim.lsp.buf.definition, description = 'Go to definition' },
   { 'gh', vim.lsp.buf.hover, description = 'Show hover information' },
   { 'gi', vim.lsp.buf.implementation, description = 'Go to implementation' },
 })
 
--- Or, you can dynamically bind a single keybind
-require('legendary').bind({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
+require('legendary').bind_commands({
+  { ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' },
+})
+
+-- Or, you can dynamically bind a single keybind or command
+require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
+require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
 ```
 
 ## Usage
