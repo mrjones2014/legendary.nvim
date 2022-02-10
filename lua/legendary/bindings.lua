@@ -1,34 +1,77 @@
-local M = {
-  keymaps = {},
-}
+local M = {}
+
+local keymaps = require('legendary.config').keymaps
+local commands = require('legendary.config').commands
 
 local Formatter = require('legendary.formatter').Formatter
 
-function M.bind_single(keymap)
-  if not keymap or type(keymap) ~= 'table' or require('legendary.util').contains_duplicates(M.keymaps, keymap) then
+function M.bind_keymap(keymap)
+  if not keymap or type(keymap) ~= 'table' then
+    vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(keymap)))
+    return
+  end
+
+  if require('legendary.util').contains_duplicates(keymaps, keymap) then
     return
   end
 
   require('legendary.formatter').update_padding(keymap)
 
   if keymap.description and #keymap.description > 0 then
-    table.insert(M.keymaps, Formatter:new(keymap))
+    table.insert(keymaps, Formatter:new(keymap))
   end
 
   require('legendary.util').set_keymap(keymap)
 end
 
-function M.bind(keymaps)
-  if not keymaps or type(keymaps) ~= 'table' then
+function M.bind_keymaps(new_keymaps)
+  if not new_keymaps or type(new_keymaps) ~= 'table' then
     return
   end
 
-  if not keymaps[1] or type(keymaps[1]) ~= 'table' then
-    M.bind_single(keymaps)
-  else
-    for _, keymap in pairs(keymaps) do
-      M.bind_single(keymap)
-    end
+  if not new_keymaps or not new_keymaps[1] or type(new_keymaps[1]) ~= 'table' then
+    vim.api.nvim_err_writeln(
+      string.format('Expected list-like table, got %s', type(new_keymaps and new_keymaps[1] or nil))
+    )
+    return
+  end
+
+  for _, keymap in pairs(new_keymaps) do
+    M.bind_keymap(keymap)
+  end
+end
+
+function M.bind_command(cmd)
+  if not cmd or type(cmd) ~= 'table' then
+    vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(cmd)))
+    return
+  end
+
+  if require('legendary.util').contains_duplicates(commands, cmd) then
+    return
+  end
+
+  require('legendary.formatter').update_padding(cmd)
+
+  if cmd.description and #cmd.description > 0 then
+    table.insert(commands, Formatter:new(cmd))
+  end
+
+  require('legendary.util').set_command(cmd)
+end
+
+function M.bind_commands(cmds)
+  if not cmds or type(cmds) ~= 'table' then
+    return
+  end
+
+  if not cmds or not cmds[1] or type(cmds[1]) ~= 'table' then
+    vim.api.nvim_err_writeln(string.format('Expected list-like table, got %s', type(cmds and cmds[1] or nil)))
+    return
+  end
+
+  for _, cmd in pairs(cmds) do
+    M.bind_command(cmd)
   end
 end
 
@@ -36,7 +79,7 @@ function M.find()
   local current_mode = vim.fn.mode()
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
-  vim.ui.select(M.keymaps, {
+  vim.ui.select(require('legendary.util').concat_lists(keymaps, commands), {
     prompt = require('legendary.config').select_prompt,
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything

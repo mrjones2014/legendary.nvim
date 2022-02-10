@@ -2,6 +2,7 @@ local M = {
   include_builtin = true,
   select_prompt = 'Legendary',
   keymaps = {},
+  commands = {},
 }
 
 function M.setup(new_config)
@@ -14,13 +15,7 @@ function M.setup(new_config)
 
   M.include_builtin = new_config.include_builtin or M.include_builtin
   M.keymaps = new_config.keymaps or M.keymaps
-  if type(M.keymaps) ~= 'table' then
-    vim.api.nvim_err_write(string.format('keymaps must be a table, got: %s', type(M.keymaps)))
-    return
-  end
-  if M.keymaps and #M.keymaps > 0 then
-    require('legendary').bind(M.keymaps)
-  end
+  M.commands = new_config.commands or M.commands
 end
 
 return M
