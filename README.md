@@ -53,6 +53,8 @@ local keymaps = {
   { '<C-f>', description = 'Scroll docs down' },
 }
 
+-- Define your commands with the same table structure
+-- Again, description is required for them to appear when you search
 local commands = {
   -- You can also use legendar.nvim to create commands!
   { ':CopyFileName', ':!echo % | pbcopy', description = "Copy current buffer's file name" },
