@@ -57,7 +57,7 @@ local keymaps = {
 -- Again, description is required for them to appear when you search
 local commands = {
   -- You can also use legendar.nvim to create commands!
-  { ':CopyFileName', ':!echo % | pbcopy', description = "Copy current buffer's file name" },
+  { ':DoSomething', ':echo "something"', description = 'Do something!' },
   -- You can also set commands to run a lua function
   { ':DoSomethingWithLua', require('my_module').some_method, description = 'Do something with Lua!' },
   -- You can also define commands without an implementation
