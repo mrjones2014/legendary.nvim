@@ -42,9 +42,6 @@ function M.Formatter:new(keymap)
 
       local modes = mode_str(keymap)
       local key = self_item[1]
-      if type(self_item[2]) == 'function' then
-        key = '[Lua function]'
-      end
 
       return string.format('modes: %s │ %s │ %s', rpad(modes, padding_mode), rpad(key, padding_keymap), description)
     end,
