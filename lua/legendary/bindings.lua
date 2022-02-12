@@ -11,6 +11,9 @@ function M.bind_keymap(keymap)
     return
   end
 
+  -- always bind the keymaps in case they are buffer-specific
+  require('legendary.util').set_keymap(keymap)
+
   if require('legendary.util').contains_duplicates(keymaps, keymap) then
     return
   end
@@ -20,8 +23,6 @@ function M.bind_keymap(keymap)
   if keymap.description and #keymap.description > 0 then
     table.insert(keymaps, Formatter:new(keymap))
   end
-
-  require('legendary.util').set_keymap(keymap)
 end
 
 function M.bind_keymaps(new_keymaps)
