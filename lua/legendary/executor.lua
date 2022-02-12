@@ -41,7 +41,7 @@ local function exec(keymap)
     if keymap.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
       vim.api.nvim_feedkeys(cmd, 't', true)
     else
-      vim.cmd(string.format("execute '%s'", cmd))
+      vim.cmd(string.format('execute %q', cmd))
     end
   end
 end
