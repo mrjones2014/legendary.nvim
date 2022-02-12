@@ -14,8 +14,8 @@ local function mode_from_table(modes)
   return nil
 end
 
-local function exec(keybind)
-  local cmd = require('legendary.util').get_definition(keybind)
+local function exec(keymap)
+  local cmd = require('legendary.util').get_definition(keymap)
 
   if type(cmd) == 'function' then
     cmd()
@@ -26,14 +26,19 @@ local function exec(keybind)
       cmd = cmd:sub(1, #cmd - 2)
     end
 
-    cmd = vim.api.nvim_replace_termcodes(cmd, true, true, true)
+    local cmd_stripped = require('legendary.util').strip_leading_cmd_char(cmd)
+    if #cmd ~= #cmd_stripped then
+      cmd = cmd_stripped
+      cmd = string.format(':%s', cmd)
+    end
+    cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
 
-    if keybind.unfinished then
+    if keymap.unfinished then
       -- % is escape character in gsub patterns
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
     end
 
-    if keybind.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
+    if keymap.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
       vim.api.nvim_feedkeys(cmd, 't', true)
     else
       vim.cmd(string.format("execute '%s'", cmd))
