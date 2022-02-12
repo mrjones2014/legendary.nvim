@@ -63,7 +63,7 @@ end
 
 function M.strip_leading_cmd_char(cmd_str)
   if type(cmd_str) ~= 'string' then
-    return
+    return cmd_str
   end
 
   if cmd_str:sub(1, 5):lower() == '<cmd>' then
@@ -71,6 +71,8 @@ function M.strip_leading_cmd_char(cmd_str)
   elseif cmd_str:sub(1, 1) == ':' then
     return cmd_str:sub(2)
   end
+
+  return cmd_str
 end
 
 function M.is_user_command(cmd)

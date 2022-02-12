@@ -1,20 +1,20 @@
-# legendary.nvim 🗺️
+# 🗺️ legendary.nvim
 
 <sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
 
-A legend for your keymaps and commands 🗺️
+🗺️ A legend for your keymaps and commands! Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
+Think VS Code's Command Palette, but cooler!
 
 ![demo](./demo.gif)
 
-Define your keymaps and commands as simple Lua tables and let `legendary.nvim` handle the rest.
-Find them with `vim.ui.select()` when you forget.
+## Features
 
-It also includes built-in keymaps and commands (these can be removed via config). Please help
-me add missing ones with a Pull Request!
-
-For normal and insert mode mappings, you can execute the mapping by selecting it. You can use something
-like [dressing.nvim](https://github.com/stevearc/dressing.nvim) to use a fuzzy finder as your default
-`vim.ui.*` handler. Since it uses `vim.ui.select()`, it can pretty much support any fuzzy finder.
+- Define your keymaps and commands as simple Lua tables, then bind/create them with `legendary.nvim`
+- Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim)
+- Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Submit an issue or PR!
+- Execute normal and insert mode keymaps, and commands, when you select them
+- Help execute commands that take arguments by prefilling the command line instead of executing immediately
+- Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
 
 ## Installation
 
@@ -30,7 +30,7 @@ With `vim-plug`:
 Plug 'mrjones2014/legendary.nvim'
 ```
 
-## Configuration
+## Configuration and Setup
 
 ```lua
 -- Define your keymaps as a list of tables like so
@@ -79,8 +79,16 @@ require('legendary').setup({
   include_builtin = true,
   -- Customize the prompt that appears on your vim.ui.select() handler
   select_prompt = 'Legendary',
+  -- Initial keymaps to bind
   keymaps = keymaps,
+  -- Initial commands to create
   commands = commands,
+  -- Automatically add which-key tables to legendary
+  -- when you call `require('which-key').register()`
+  -- for this to work, you must call `require('legendary').setup()`
+  -- before any calls to `require('which-key').register()`, and
+  -- which-key.nvim must be loaded when you call `require('legendary').setup()`
+  auto_register_which_key = true,
 })
 
 -- Add an additional set of keybinds
@@ -98,6 +106,22 @@ require('legendary').bind_commands({
 -- Or, you can dynamically bind a single keybind or command
 require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
 require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
+
+-- Already using which-key.nvim?
+-- Use your existing which-key.nvim tables with legendary.nvim!
+-- Either automatically (see notes on setup function above)
+-- or manually, shown below
+local whichkey_mappings = {
+  f = {
+    name = 'file', -- optional group name
+    f = { '<cmd>Telescope find_files<cr>', 'Find File' }, -- create a binding with label,
+  },
+}
+local whichkey_opts = {
+  prefix = '<leader>',
+}
+require('which-key').register(whichkey_mappings, whichkey_opts)
+require('legendary').bind_whichkey(whichkey_mappings, whichkey_opts)
 ```
 
 ## Usage
