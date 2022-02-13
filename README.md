@@ -11,7 +11,7 @@ Think VS Code's Command Palette, but cooler!
 
 - Define your keymaps and commands as simple Lua tables, then bind/create them with `legendary.nvim`
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim)
-- Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Submit an issue or PR!
+- Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this issue](https://github.com/mrjones2014/legendary.nvim/issues/1) or submit a PR!
 - Execute normal and insert mode keymaps, and commands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
@@ -106,11 +106,22 @@ require('legendary').bind_commands({
 -- Or, you can dynamically bind a single keybind or command
 require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
 require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
+```
 
--- Already using which-key.nvim?
--- Use your existing which-key.nvim tables with legendary.nvim!
--- Either automatically (see notes on setup function above)
--- or manually, shown below
+### [which-key.nvim](https://github.com/folke/which-key.nvim) Integration
+
+Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables with `legendary.nvim`!
+
+```lua
+-- automatically register which-key.nvim tables with legendary.nvim
+-- when you register them with which-key.nvim.
+-- `setup()` must be called before `require('which-key).register()`
+require('legendary').setup()
+-- now this will register them with both which-key.nvim and legendary.nvim
+require('which-key').register(your_which_key_tables, your_which_key_opts)
+
+-- alternatively, if you'd prefer to manually register with legendary.nvim
+require('legendary').setup({ auto_register_which_key = false })
 local whichkey_mappings = {
   f = {
     name = 'file', -- optional group name
@@ -126,4 +137,25 @@ require('legendary').bind_whichkey(whichkey_mappings, whichkey_opts)
 
 ## Usage
 
-Trigger the legend with `require('legendary').find()`, `:Legend`, or `:Legendary`.
+By default, keymaps and commands will be searched together, but you can also search one or the other.
+
+With Lua:
+
+```lua
+require('legendary').find() -- search both keymaps and commands
+require('legendary').find('keymaps') -- search keymaps
+require('legendary').find('commands') -- search commands
+```
+
+With commands:
+
+```VimL
+" search both keymaps and commands
+:Legendary
+
+" search keymaps
+:Legendary keymaps
+
+" search commands
+:Legendary commands
+```

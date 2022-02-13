@@ -76,11 +76,19 @@ function M.bind_commands(cmds)
   end
 end
 
-function M.find()
+function M.find(type)
   local current_mode = vim.fn.mode()
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
-  vim.ui.select(require('legendary.util').concat_lists(keymaps, commands), {
+  local items
+  if type == 'keymaps' then
+    items = keymaps
+  elseif type == 'commands' then
+    items = commands
+  else
+    items = require('legendary.util').concat_lists(keymaps, commands)
+  end
+  vim.ui.select(items, {
     prompt = require('legendary.config').select_prompt,
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
