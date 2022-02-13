@@ -122,17 +122,8 @@ require('which-key').register(your_which_key_tables, your_which_key_opts)
 
 -- alternatively, if you'd prefer to manually register with legendary.nvim
 require('legendary').setup({ auto_register_which_key = false })
-local whichkey_mappings = {
-  f = {
-    name = 'file', -- optional group name
-    f = { '<cmd>Telescope find_files<cr>', 'Find File' }, -- create a binding with label,
-  },
-}
-local whichkey_opts = {
-  prefix = '<leader>',
-}
-require('which-key').register(whichkey_mappings, whichkey_opts)
-require('legendary').bind_whichkey(whichkey_mappings, whichkey_opts)
+require('which-key').register(your_which_key_tables, your_which_key_opts)
+require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
 ```
 
 ## Usage
