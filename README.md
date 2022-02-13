@@ -27,7 +27,7 @@ use({'mrjones2014/legendary.nvim'})
 With `vim-plug`:
 
 ```VimL
-Plug 'mrjones2014/legendary.nvim'
+Plug "mrjones2014/legendary.nvim"
 ```
 
 ## Configuration and Setup
