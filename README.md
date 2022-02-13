@@ -21,7 +21,7 @@ Think VS Code's Command Palette, but cooler!
 With `packer.nvim`:
 
 ```lua
-use('mrjones2014/legendary.nvim')
+use({'mrjones2014/legendary.nvim'})
 ```
 
 With `vim-plug`:
