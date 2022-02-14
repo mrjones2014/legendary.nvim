@@ -1,5 +1,8 @@
 local M = {}
 
+--- Set configuration. If config.auto_register_which_key == true
+--- and which-key.nvim is loaded to the runtimepath, legendary.nvim
+--- will start listening and auto-adding keymaps when added to which-key.nvim
 function M.setup(new_config)
   local config = require('legendary.config')
   config.setup(new_config)
@@ -33,7 +36,7 @@ function M.setup(new_config)
   end
 end
 
-M.bind_whichkey = require('legendary.compat.which-key').bind_whichkey
+M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
 M = vim.tbl_extend('error', M, require('legendary.bindings'))
 
 if not vim.keymap or not vim.keymap.set then

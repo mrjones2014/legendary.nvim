@@ -5,6 +5,7 @@ local commands = require('legendary.config').commands
 
 local Formatter = require('legendary.formatter').Formatter
 
+--- Bind a single keymap with legendary.nvim
 function M.bind_keymap(keymap)
   if not keymap or type(keymap) ~= 'table' then
     vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(keymap)))
@@ -25,6 +26,7 @@ function M.bind_keymap(keymap)
   end
 end
 
+--- Bind a list of keymaps with legendary.nvim
 function M.bind_keymaps(new_keymaps)
   if not new_keymaps or type(new_keymaps) ~= 'table' then
     return
@@ -42,6 +44,7 @@ function M.bind_keymaps(new_keymaps)
   end
 end
 
+--- Bind a single command with legendary.nvim
 function M.bind_command(cmd)
   if not cmd or type(cmd) ~= 'table' then
     vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(cmd)))
@@ -61,6 +64,7 @@ function M.bind_command(cmd)
   require('legendary.util').set_command(cmd)
 end
 
+--- Bind a list of commands with legendary.nvim
 function M.bind_commands(cmds)
   if not cmds or type(cmds) ~= 'table' then
     return
@@ -76,6 +80,10 @@ function M.bind_commands(cmds)
   end
 end
 
+--- Find keymaps, commands, or both (both by default)
+--- with legendary.nvim. To find only keymaps, pass
+--- "keymaps" as a parameter, pass "commands" to find
+--- only commands.
 function M.find(type)
   local current_mode = vim.fn.mode()
   local cursor_position = vim.api.nvim_win_get_cursor(0)

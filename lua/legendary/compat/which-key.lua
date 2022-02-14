@@ -11,6 +11,8 @@ local function wk_to_legendary(wk)
   return legendary
 end
 
+--- Take which-key.nvim tables
+--- and parse them into legendary.nvim tables
 function M.parse_whichkey(which_key_tbls, which_key_opts)
   local wk_parsed = require('which-key.keys').parse_mappings({}, which_key_tbls, which_key_opts.prefix or '')
   local legendary_tbls = {}
@@ -29,6 +31,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
   return legendary_tbls
 end
 
+--- Bind a which-key.nvim table with legendary.nvim
 function M.bind_whichkey(wk_tbls, wk_opts)
   local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts)
   require('legendary').bind_keymaps(legendary_tbls)
