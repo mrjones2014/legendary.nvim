@@ -36,6 +36,13 @@ function M.setup(new_config)
   end
 end
 
+function M.lazy(fn, ...)
+  local args = { ... }
+  return function()
+    fn(table.unpack(args))
+  end
+end
+
 M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
 M = vim.tbl_extend('error', M, require('legendary.bindings'))
 

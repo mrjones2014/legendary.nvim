@@ -50,7 +50,12 @@ local keymaps = {
   -- default opts are `opts = { silent = true }`
   { '<leader>f', ':SomeMappingCommand', opts = { noremap = true, silent = false } },
   -- you can also map lua functions directly as a binding
+  -- note that implementations are evaluated immediately
   { '<C-p>', require('legendary').find, description = 'Search key bindings' },
+  -- if you need to bind a key to call a function with specific arguments
+  -- you can use the `require('legendary').lazy()` helper function
+  -- `nil` and `1500` will be passed as the arguments to `formatting_sync` when called
+  { '<leader>f', require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
   -- Or add a keybind without a definition (useful for reminding yourself of
   -- keybinds which are set up by plugins, for example, these nvim-cmp mappings)
   { '<C-d>', description = 'Scroll docs up' },
