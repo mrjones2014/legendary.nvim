@@ -1,10 +1,10 @@
-name: Autogenerate docs/legendary.txt
+name: Autogenerate doc/legendary.txt
 on:
   push:
     branches: [ master ]
 jobs:
   gen-docs:
-    name: Autogenerate docs/legendary.txt
+    name: Autogenerate doc/legendary.txt
     runs-on: ubuntu-latest
     permissions:
       contents: write
