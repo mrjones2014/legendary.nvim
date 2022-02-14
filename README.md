@@ -40,7 +40,6 @@ local keymaps = {
   -- 'mode' defaults to 'n', but you can specify a different mode
   -- either as a string or a list of multiple modes like `mode = { 'n', 'v' }`
   { '<leader>c', ":'<,'>CommentToggle<CR>", mode = 'v', description = 'Toggle comment' },
-  { '<leader>m', ':messages<CR>' },
   -- you can also pass keymap options via the `opts` table, see `:h vim.keymap.set`
   -- and `:h nvim_set_keymap` for all available options
   -- default opts are `opts = { silent = true }`
