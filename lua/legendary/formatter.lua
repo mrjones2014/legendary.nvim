@@ -27,13 +27,12 @@ function M.update_padding(keymap)
   end
 end
 
-M.Formatter = {}
-function M.Formatter:new(keymap)
+function M.Formatter(keymap)
   local item = vim.deepcopy(keymap)
 
   setmetatable(item, {
     __tostring = function(self_item)
-      local description = ''
+      local description
       if self_item.description ~= nil and type(self_item.description) == 'string' and #self_item.description > 0 then
         description = self_item.description
       else

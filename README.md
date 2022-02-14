@@ -5,8 +5,12 @@
 🗺️ A legend for your keymaps and commands! Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
 Think VS Code's Command Palette, but cooler!
 
+<!-- panvimdoc-ignore-start -->
+
 ![demo](./demo.gif)
 <sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim)</sup>
+
+<!-- panvimdoc-ignore-end -->
 
 ## Features
 
@@ -130,7 +134,7 @@ require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
 
 By default, keymaps and commands will be searched together, but you can also search one or the other.
 
-With Lua:
+### With Lua:
 
 ```lua
 require('legendary').find() -- search both keymaps and commands
@@ -138,7 +142,7 @@ require('legendary').find('keymaps') -- search keymaps
 require('legendary').find('commands') -- search commands
 ```
 
-With commands:
+### With Commands:
 
 ```VimL
 " search both keymaps and commands
