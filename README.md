@@ -6,6 +6,7 @@
 Think VS Code's Command Palette, but cooler!
 
 ![demo](./demo.gif)
+<sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim)</sup>
 
 ## Features
 
