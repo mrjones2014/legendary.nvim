@@ -22,7 +22,7 @@ function M.bind_keymap(keymap)
   require('legendary.formatter').update_padding(keymap)
 
   if keymap.description and #keymap.description > 0 then
-    table.insert(keymaps, Formatter:new(keymap))
+    table.insert(keymaps, Formatter(keymap))
   end
 end
 
@@ -58,7 +58,7 @@ function M.bind_command(cmd)
   require('legendary.formatter').update_padding(cmd)
 
   if cmd.description and #cmd.description > 0 then
-    table.insert(commands, Formatter:new(cmd))
+    table.insert(commands, Formatter(cmd))
   end
 
   require('legendary.util').set_command(cmd)
