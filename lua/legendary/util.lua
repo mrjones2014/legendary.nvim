@@ -1,8 +1,12 @@
 local M = {}
 
-function M.opts_are_equal(keymap, new_keymap)
-  for key, _ in pairs(keymap or {}) do
-    if key ~= 'buffer' and keymap[key] ~= (new_keymap or {})[key] then
+--- Check if opts lists contain the same opts
+---@param item1 LegendaryItem
+---@param item2 LegendaryItem
+---@return boolean
+function M.opts_are_equal(item1, item2)
+  for key, _ in pairs(item1 or {}) do
+    if key ~= 'buffer' and item1[key] ~= (item2 or {})[key] then
       return false
     end
   end
@@ -10,6 +14,10 @@ function M.opts_are_equal(keymap, new_keymap)
   return true
 end
 
+--- Join two list-like tables together
+---@param tbl1 any[]
+---@param tbl2 any[]
+---@return any[]
 function M.concat_lists(tbl1, tbl2)
   local result = vim.deepcopy(tbl1)
   for _, item in pairs(tbl2) do
@@ -19,14 +27,18 @@ function M.concat_lists(tbl1, tbl2)
   return result
 end
 
-function M.contains_duplicates(keymaps, new_keymap)
-  for _, keymap in pairs(keymaps) do
+--- Check for duplicates in a list-like table of items
+---@param items LegendaryItem[]
+---@param new_item LegendaryItem
+---@return boolean
+function M.contains_duplicates(items, new_item)
+  for _, keymap in pairs(items) do
     if
-      keymap[1] == new_keymap[1]
+      keymap[1] == new_item[1]
       and keymap[2] == keymap[2]
-      and (keymap.mode or 'n') == (new_keymap.mode or 'n')
-      and keymap.description == new_keymap.description
-      and M.opts_are_equal(keymap.opts, new_keymap.opts)
+      and (keymap.mode or 'n') == (new_item.mode or 'n')
+      and keymap.description == new_item.description
+      and M.opts_are_equal(keymap.opts, new_item.opts)
     then
       return true
     end
@@ -35,6 +47,9 @@ function M.contains_duplicates(keymaps, new_keymap)
   return false
 end
 
+--- Check if given item is a user-defined keymap
+---@param keymap any
+---@return boolean
 function M.is_user_keymap(keymap)
   return keymap ~= nil
     and type(keymap) == 'table'
@@ -42,6 +57,8 @@ function M.is_user_keymap(keymap)
     and (type(keymap[2]) == 'string' or type(keymap[2]) == 'function')
 end
 
+--- Set the given keymap
+---@param keymap LegendaryItem
 function M.set_keymap(keymap)
   if not M.is_user_keymap(keymap) then
     return
@@ -61,6 +78,9 @@ function M.set_keymap(keymap)
   vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
 end
 
+--- Strip a leading `:` or `<cmd>` if there is one
+---@param cmd_str string
+---@return string
 function M.strip_leading_cmd_char(cmd_str)
   if type(cmd_str) ~= 'string' then
     return cmd_str
@@ -75,6 +95,9 @@ function M.strip_leading_cmd_char(cmd_str)
   return cmd_str
 end
 
+--- Check if given item is a user-defined command
+---@param cmd any
+---@return boolean
 function M.is_user_command(cmd)
   return cmd ~= nil
     and type(cmd) == 'table'
@@ -82,6 +105,8 @@ function M.is_user_command(cmd)
     and (type(cmd[2]) == 'string' or type(cmd[2]) == 'function')
 end
 
+--- Set up the given command
+---@param cmd LegendaryItem
 function M.set_command(cmd)
   if not M.is_user_command(cmd) then
     return
@@ -92,12 +117,15 @@ function M.set_command(cmd)
   })
 end
 
-function M.get_definition(keymap)
-  if M.is_user_keymap(keymap) then
-    return keymap[2]
+--- Get the implementation of an item
+---@param item LegendaryItem
+---@return string | function
+function M.get_definition(item)
+  if M.is_user_keymap(item) then
+    return item[2]
   end
 
-  return keymap[1]
+  return item[1]
 end
 
 return M

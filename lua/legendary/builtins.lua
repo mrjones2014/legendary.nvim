@@ -388,6 +388,7 @@ local M = {
   },
 }
 
+--- Register builtin keymaps and commands
 function M.register_builtins()
   require('legendary.bindings').bind_keymaps(M.builtin_keymaps)
   require('legendary.bindings').bind_commands(M.builtin_commands)

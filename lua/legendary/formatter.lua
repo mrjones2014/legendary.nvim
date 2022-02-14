@@ -27,8 +27,11 @@ function M.update_padding(keymap)
   end
 end
 
-function M.Formatter(keymap)
-  local item = vim.deepcopy(keymap)
+--- Create a formatter for a given item
+---@param selected_item LegendaryItem
+---@return LegendaryItem
+function M.Formatter(selected_item)
+  local item = vim.deepcopy(selected_item)
 
   setmetatable(item, {
     __tostring = function(self_item)
@@ -39,7 +42,7 @@ function M.Formatter(keymap)
         description = 'No description provided'
       end
 
-      local modes = mode_str(keymap)
+      local modes = mode_str(item)
       local key = self_item[1]
 
       return string.format('modes: %s │ %s │ %s', rpad(modes, padding_mode), rpad(key, padding_keymap), description)
