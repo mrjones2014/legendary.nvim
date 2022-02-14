@@ -58,7 +58,7 @@ local keymaps = {
   { '<leader>p', require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
   -- or, if you need to bind a key to a function from a plugin,
   -- this will call `require('telescope.builtin').oldfiles({ only_cwd = true })` when triggered
-  { '<leader>f', require('legendary'.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true })) }
+  { '<leader>f', require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
   -- Or add a keybind without a definition (useful for reminding yourself of
   -- keybinds which are set up by plugins, for example, these nvim-cmp mappings)
   { '<C-d>', description = 'Scroll docs up' },
