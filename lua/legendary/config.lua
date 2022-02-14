@@ -1,3 +1,4 @@
+---@type LegendaryConfig
 local M = {
   include_builtin = true,
   select_prompt = 'Legendary',
@@ -13,6 +14,8 @@ local function default_bool(value, default)
   return value
 end
 
+---Set user configuration
+---@param new_config LegendaryConfig
 function M.setup(new_config)
   new_config = new_config or {}
   if type(new_config) ~= 'table' then

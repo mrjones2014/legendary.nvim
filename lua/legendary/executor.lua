@@ -46,12 +46,14 @@ local function exec(keymap)
   end
 end
 
-function M.try_execute(keymap)
-  if not keymap then
+--- Attmept to execute the selected item
+---@param item LegendaryItem
+function M.try_execute(item)
+  if not item then
     return
   end
 
-  local mode = keymap.mode or 'n'
+  local mode = item.mode or 'n'
   if type(mode) == 'table' then
     mode = mode_from_table(mode)
   end
@@ -63,12 +65,12 @@ function M.try_execute(keymap)
 
   if mode == 'n' then
     vim.cmd('stopinsert')
-    exec(keymap)
+    exec(item)
     return
   end
 
   vim.cmd('startinsert')
-  exec(keymap)
+  exec(item)
 end
 
 return M
