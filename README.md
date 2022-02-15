@@ -162,3 +162,11 @@ require('legendary').find('commands') -- search commands
 " search commands
 :Legendary commands
 ```
+
+### Sorting
+
+`legendary.nvim` will set `kind` to `LegendaryItem` which you can use to override
+the sorter used for `legendary.nvim` in your `vim.ui.select()` handler (for example,
+[dressing.nvim](https://github.com/stevearc/dressing.nvim) has a `get_config` option
+to do this). The individual items will have `kind = 'legendary-keymap'` or
+`kind = 'legendary-command`, depending on whether it is a keymap or command.
