@@ -8,8 +8,9 @@ local Formatter = require('legendary.formatter').Formatter
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
 function M.bind_keymap(keymap)
+  keymap.kind = 'legendary-keymap'
   if not keymap or type(keymap) ~= 'table' then
-    vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(keymap)))
+    require('legendary.util').notify(string.format('Expected table, got %s', type(keymap)))
     return
   end
 
@@ -35,7 +36,7 @@ function M.bind_keymaps(new_keymaps)
   end
 
   if not new_keymaps or not new_keymaps[1] or type(new_keymaps[1]) ~= 'table' then
-    vim.api.nvim_err_writeln(
+    require('legendary.util').notify(
       string.format('Expected list-like table, got %s', type(new_keymaps and new_keymaps[1] or nil))
     )
     return
@@ -49,10 +50,14 @@ end
 --- Bind a single command with legendary.nvim
 ---@param cmd LegendaryItem
 function M.bind_command(cmd)
+  cmd.kind = 'legendary-command'
   if not cmd or type(cmd) ~= 'table' then
-    vim.api.nvim_err_writeln(string.format('Expected table, got %s', type(cmd)))
+    require('legendary.util').notify(string.format('Expected table, got %s', type(cmd)))
     return
   end
+
+  -- always set the command in case it's buffer-specific
+  require('legendary.util').set_command(cmd)
 
   if require('legendary.util').contains_duplicates(commands, cmd) then
     return
@@ -63,8 +68,6 @@ function M.bind_command(cmd)
   if cmd.description and #cmd.description > 0 then
     table.insert(commands, Formatter(cmd))
   end
-
-  require('legendary.util').set_command(cmd)
 end
 
 --- Bind a list of commands with legendary.nvim
@@ -75,7 +78,7 @@ function M.bind_commands(cmds)
   end
 
   if not cmds or not cmds[1] or type(cmds[1]) ~= 'table' then
-    vim.api.nvim_err_writeln(string.format('Expected list-like table, got %s', type(cmds and cmds[1] or nil)))
+    require('legendary.util').notify(string.format('Expected list-like table, got %s', type(cmds and cmds[1] or nil)))
     return
   end
 
@@ -103,6 +106,7 @@ function M.find(type)
   end
   vim.ui.select(items, {
     prompt = require('legendary.config').select_prompt,
+    kind = string.format('legendary-%', type or 'items'),
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()

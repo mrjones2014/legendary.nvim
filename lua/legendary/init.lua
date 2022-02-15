@@ -12,7 +12,7 @@ function M.setup(new_config)
   end
 
   if config.keymaps and type(config.keymaps) ~= 'table' then
-    vim.api.nvim_err_write(string.format('keymaps must be a list-like table, got: %s', type(config.keymaps)))
+    require('legendary.util').notify(string.format('keymaps must be a list-like table, got: %s', type(config.keymaps)))
     return
   end
 
@@ -21,7 +21,9 @@ function M.setup(new_config)
   end
 
   if config.commands and type(config.commands) ~= 'table' then
-    vim.api.nvim_err_write(string.format('commands must be a list-like table, got: %s', type(config.commands)))
+    require('legendary.util').notify(
+      string.format('commands must be a list-like table, got: %s', type(config.commands))
+    )
     return
   end
 
@@ -65,7 +67,7 @@ M = vim.tbl_extend('error', M, require('legendary.bindings'))
 
 if not vim.keymap or not vim.keymap.set then
   local function print_err()
-    vim.api.nvim_err_write('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
+    require('legendary.util').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
   end
 
   print_err()
