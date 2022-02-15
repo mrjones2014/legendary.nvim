@@ -59,7 +59,10 @@ function M.try_execute(item)
   end
 
   if mode == nil or (mode ~= 'n' and mode ~= 'i') then
-    vim.notify('Executing keybinds is only supported for insert and normal mode bindings.', vim.log.levels.INFO)
+    require('legendary.util').notify(
+      'Executing keybinds is only supported for insert and normal mode bindings.',
+      vim.log.levels.INFO
+    )
     return
   end
 
