@@ -32,13 +32,13 @@ end
 ---@param new_item LegendaryItem
 ---@return boolean
 function M.contains_duplicates(items, new_item)
-  for _, keymap in pairs(items) do
+  for _, item in pairs(items) do
     if
-      keymap[1] == new_item[1]
-      and keymap[2] == keymap[2]
-      and (keymap.mode or 'n') == (new_item.mode or 'n')
-      and keymap.description == new_item.description
-      and M.opts_are_equal(keymap.opts, new_item.opts)
+      item[1] == new_item[1]
+      and item[2] == item[2]
+      and (item.mode or 'n') == (new_item.mode or 'n')
+      and item.description == new_item.description
+      and M.opts_are_equal(item.opts, new_item.opts)
     then
       return true
     end
@@ -126,6 +126,12 @@ function M.get_definition(item)
   end
 
   return item[1]
+end
+
+function M.notify(msg, level, title)
+  level = level or vim.log.levels.ERROR
+  title = title or 'legendary.nvim'
+  vim.notify(msg, level, { title = title })
 end
 
 return M

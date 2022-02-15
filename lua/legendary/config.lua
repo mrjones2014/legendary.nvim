@@ -19,7 +19,9 @@ end
 function M.setup(new_config)
   new_config = new_config or {}
   if type(new_config) ~= 'table' then
-    vim.api.nvim_err_write(string.format("require('legendary').setup() expects a table, got: %s", type(new_config)))
+    require('legendary.util').notify(
+      string.format("require('legendary').setup() expects a table, got: %s", type(new_config))
+    )
     return
   end
 
