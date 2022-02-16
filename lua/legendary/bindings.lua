@@ -106,7 +106,7 @@ function M.find(type)
   end
   vim.ui.select(items, {
     prompt = require('legendary.config').select_prompt,
-    kind = string.format('legendary-%', type or 'items'),
+    kind = string.format('legendary-%s', type or 'items'),
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
