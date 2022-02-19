@@ -41,7 +41,7 @@ vim.api.nvim_add_user_command('Legendary', find, {
   complete = command_completion,
 })
 
-vim.api.nvim_add_user_command('LegendaryEditor', function()
+vim.api.nvim_add_user_command('LegendaryScratch', function()
   require('legendary.editor').create_editor_buffer()
 end, {
   desc = 'Create a Lua scratchpad buffer to help develop commands and keymaps',

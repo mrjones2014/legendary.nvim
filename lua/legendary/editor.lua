@@ -4,7 +4,7 @@ function M.create_editor_buffer()
   local buf_id = vim.api.nvim_create_buf(true, true)
   vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
   vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_name(buf_id, 'Legendary Editor')
+  vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad')
   vim.api.nvim_win_set_buf(0, buf_id)
 end
 
@@ -69,9 +69,7 @@ function M.lua_eval_line_range(line1, line2)
     line1 = 1
   end
   local selected_text = vim.api.nvim_buf_get_lines(0, line1 - 1, line2, false)
-  -- join list of lines to string
-  selected_text = table.concat(selected_text, '\n')
-  M.exec_lua(selected_text)
+  M.exec_lua(table.concat(selected_text, '\n'))
 end
 
 function M.lua_eval_buf()
