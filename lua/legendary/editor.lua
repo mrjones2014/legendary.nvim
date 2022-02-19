@@ -1,6 +1,6 @@
 local M = {}
 
-function M.create_editor_buffer()
+function M.create_scratchpad_buffer()
   local buf_id = vim.api.nvim_create_buf(true, true)
   vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
   vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
