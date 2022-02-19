@@ -42,7 +42,7 @@ vim.api.nvim_add_user_command('Legendary', find, {
 })
 
 vim.api.nvim_add_user_command('LegendaryScratch', function()
-  require('legendary.editor').create_scratchpad_buffer()
+  require('legendary.scratchpad').create_scratchpad_buffer()
 end, {
   desc = 'Create a Lua scratchpad buffer to help develop commands and keymaps',
 })
@@ -52,7 +52,7 @@ vim.api.nvim_add_user_command('LegendaryEvalLine', function()
     vim.api.nvim_err_write("Filetype must be 'lua' or 'LegendaryEditor' to eval lua code")
     return
   end
-  require('legendary.editor').lua_eval_current_line()
+  require('legendary.scratchpad').lua_eval_current_line()
 end, {
   desc = 'Eval the current line as Lua',
 })
@@ -62,14 +62,14 @@ vim.api.nvim_add_user_command('LegendaryEvalLines', function(range)
     vim.api.nvim_err_write("Filetype must be 'lua' or 'LegendaryEditor' to eval lua code")
     return
   end
-  require('legendary.editor').lua_eval_line_range(range.line1, range.line2)
+  require('legendary.scratchpad').lua_eval_line_range(range.line1, range.line2)
 end, {
   desc = 'Eval lines selected in visual mode as Lua',
   range = true,
 })
 
 vim.api.nvim_add_user_command('LegendaryEvalBuf', function()
-  require('legendary.editor').lua_eval_buf()
+  require('legendary.scratchpad').lua_eval_buf()
 end, {
   desc = 'Eval the whole buffer as Lua',
 })
