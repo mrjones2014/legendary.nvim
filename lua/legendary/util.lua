@@ -112,9 +112,10 @@ function M.set_command(cmd)
     return
   end
 
-  vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], {
-    desc = cmd.description,
-  })
+  local opts = cmd.opts or {}
+  opts.desc = opts.desc or cmd.description
+
+  vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
 end
 
 --- Get the implementation of an item
