@@ -99,7 +99,9 @@ local autocommands = {
       'BufWritePre',
       -- definition can be a string or a lua function
       require('my-lsp-utils').format,
-      -- description is required for them to appear in finder
+      -- description is required for them to appear in finder,
+      -- but you can omit if if you don't need it to appear
+      -- in the finder
       description = 'Format with LSP on save',
       opts = {
         -- autocommand pattern to match, can be a string or table of strings
