@@ -91,6 +91,14 @@ end
 --- Bind a single autocmd with legendary.nvim
 ---@param autocmd LegendaryItem
 function M.bind_autocmd(autocmd, group)
+  if not vim.api.nvim_create_augroup then
+    require('legendary.util').notify(
+      --luacheck: ignore
+      'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
+    )
+    return
+  end
+
   if not autocmd or type(autocmd) ~= 'table' then
     require('legendary.util').notify(string.format('Expected table, got %s', type(autocmd)))
     return
@@ -114,6 +122,14 @@ end
 --- Bind an augroup of autocmds
 ---@param augroup LegendaryAugroup
 function M.bind_augroup(augroup)
+  if not vim.api.nvim_create_augroup then
+    require('legendary.util').notify(
+      --luacheck: ignore
+      'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
+    )
+    return
+  end
+
   local group_name = augroup and augroup.name or ''
   if #group_name == 0 then
     require('legendary.util').notify('augroup must have a name')
@@ -150,6 +166,8 @@ function M.find(type)
     items = keymaps
   elseif type == 'commands' then
     items = commands
+  elseif type == 'autocmds' then
+    items = autocmds
   else
     local concat = require('legendary.util').concat_lists
     items = concat(concat(keymaps, commands), autocmds)
