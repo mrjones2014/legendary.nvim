@@ -134,32 +134,30 @@ function M.is_user_autocmd(autocmd)
     )
 end
 
+--- Set an autocmd
+---@param autocmd LegendaryItem the autocmd definition to set
+---@param group string override autocmd.opts.group with this value
+function M.set_autocmd(autocmd, group)
+  if not M.is_user_autocmd(autocmd) then
+    return
+  end
+
+  local opts = vim.deepcopy(autocmd.opts or {})
+  if type(autocmd[2]) == 'function' then
+    opts.callback = autocmd[2]
+  else
+    opts.command = autocmd[2]
+  end
+
+  opts.group = group or opts.group
+  vim.api.nvim_create_autocmd(autocmd[1], opts)
+end
+
 --- Check if the given item is an augroup
 ---@param augroup any
 ---@return boolean
 function M.is_user_augroup(augroup)
   return not not (augroup and augroup.name and #augroup > 0 and M.is_user_autocmd(augroup[1]))
-end
-
---- Take a LegendaryItem and convert it to a table
---- expected by vim.api.nvim_create_autocmd
----@param item LegendaryItem
----@return table
-function M.legendary_item_to_autocmd(item, group)
-  local autocmd = {
-    event = item[1],
-    pattern = item.opts and item.opts.pattern or '*',
-    once = item.opts and item.opts.once,
-    group = group or (item.opts and item.opts.group),
-  }
-
-  if type(item[2]) == 'function' then
-    autocmd.callback = item[2]
-  else
-    autocmd.command = item[2]
-  end
-
-  return autocmd
 end
 
 --- Get the implementation of an item
