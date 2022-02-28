@@ -199,15 +199,16 @@ By default, keymaps and commands will be searched together, but you can also sea
 ### With Lua:
 
 ```lua
-require('legendary').find() -- search both keymaps and commands
+require('legendary').find() -- search keymaps, commands, and autocmds
 require('legendary').find('keymaps') -- search keymaps
 require('legendary').find('commands') -- search commands
+require('legendary').find('autocmds') -- search autocmds
 ```
 
 ### With Commands:
 
 ```VimL
-" search both keymaps and commands
+" search keymaps, commands, and autocmds
 :Legendary
 
 " search keymaps
@@ -215,19 +216,22 @@ require('legendary').find('commands') -- search commands
 
 " search commands
 :Legendary commands
+
+" search autocmds
+:Legendary autocmds
 ```
 
 ### Sorting
 
-`legendary.nvim` will set `kind` to `legendary-keymaps`, `legendary-commands`,
-or `legendary-items`, depending on whether you are searching keymaps, commands, or both.
+`legendary.nvim` will set `kind` to `legendary-keymaps`, `legendary-commands`, `legendary-autocmds`,
+or `legendary-items`, depending on whether you are searching keymaps, commands, autocmds, or all.
 
 You can use to override the sorter used for `legendary.nvim` in your `vim.ui.select()`
 handler (for example, [dressing.nvim](https://github.com/stevearc/dressing.nvim) has a
 `get_config` option to do this).
 
-The individual items will have `kind = 'legendary-keymap'`
-or `kind = 'legendary-command`, depending on whether it is a keymap or command.
+The individual items will have `kind = 'legendary-keymap'`, `kind = 'legendary-command`,
+or `kind = 'legendary-autocmd`, depending on whether it is a keymap, command, or autocmd.
 
 ## Developing Keymaps, Commands, etc.
 

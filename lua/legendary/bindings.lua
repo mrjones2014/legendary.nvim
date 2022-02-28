@@ -155,7 +155,7 @@ end
 --- Find keymaps, commands, or both (both by default)
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
---- only commands.
+--- only commands, pass "autocmds" to find only autocmds.
 ---@param type string
 function M.find(type)
   local current_mode = vim.fn.mode()
