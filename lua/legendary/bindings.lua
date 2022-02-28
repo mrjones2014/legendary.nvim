@@ -90,7 +90,7 @@ end
 
 --- Bind a single autocmd with legendary.nvim
 ---@param autocmd LegendaryItem
-function M.bind_autocmd(autocmd, group)
+local function bind_autocmd(autocmd, group)
   if not vim.api.nvim_create_augroup then
     require('legendary.util').notify(
       --luacheck: ignore
@@ -119,24 +119,9 @@ function M.bind_autocmd(autocmd, group)
   end
 end
 
---- Bind a list of autocmds
----@param autocmds_to_bind LegendaryItem[]
----@param group_name string
-function M.bind_autocmds(autocmds_to_bind, group_name)
-  if not autocmds_to_bind or type(autocmds_to_bind) ~= 'table' then
-    require('legendary.util').notify(string.format('Expected table, got %s', type(autocmds_to_bind)))
-    return
-  end
-  for _, autocmd in pairs(autocmds_to_bind) do
-    autocmd.opts = autocmd.opts or {}
-    autocmd.opts.group = group_name
-    M.bind_autocmd(autocmd, group_name)
-  end
-end
-
 --- Bind an augroup of autocmds
 ---@param augroup LegendaryAugroup
-function M.bind_augroup(augroup)
+local function bind_augroup(augroup)
   if not vim.api.nvim_create_augroup then
     require('legendary.util').notify(
       --luacheck: ignore
@@ -162,37 +147,24 @@ function M.bind_augroup(augroup)
     if type(key) == 'number' then
       autocmd.opts = autocmd.opts or {}
       autocmd.opts.group = group_name
-      M.bind_autocmd(autocmd, group_name)
+      bind_autocmd(autocmd, group_name)
     end
-  end
-end
-
---- Bind a list of augroups
----@param augroups LegendaryAugroup[]
-function M.bind_augroups(augroups)
-  if not augroups or type(augroups) ~= 'table' then
-    require('legendary.util').notify(string.format('Expected table, got %s', type(augroups)))
-    return
-  end
-
-  for _, augroup in pairs(augroups) do
-    M.bind_augroup(augroup)
   end
 end
 
 --- Bind a list of mixed augroups and autocmds
 ---@param au LegendaryAugroup[] | LegendaryItem[]
-function M.bind_au(au)
+function M.bind_autocmds(au)
   if require('legendary.util').is_user_augroup(au) then
-    M.bind_augroup(au)
+    bind_augroup(au)
   elseif require('legendary.util').is_user_autocmd(au) then
-    M.bind_autocmd(au)
+    bind_autocmd(au)
   else
     for _, augroup_or_autocmd in pairs(au) do
       if require('legendary.util').is_user_augroup(augroup_or_autocmd) then
-        require('legendary').bind_augroup(augroup_or_autocmd)
+        bind_augroup(augroup_or_autocmd)
       elseif require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
-        require('legendary').bind_autocmd(augroup_or_autocmd)
+        bind_autocmd(augroup_or_autocmd)
       end
     end
   end

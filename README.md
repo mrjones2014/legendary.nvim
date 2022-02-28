@@ -161,8 +161,8 @@ require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, desc
 
 -- Dynamically bind a single augroup, a list of augroups,
 -- a single autocmd, or a list of autocmds
-require('legendary').bind_au(autocommands)
-require('legendary').bind_au({
+require('legendary').bind_autocmds(autocommands)
+require('legendary').bind_autocmds({
   'BufWritePre',
   ':Format',
   description = 'Format with LSP on save',
@@ -172,7 +172,7 @@ require('legendary').bind_au({
     once = false,
   }
 })
-require('legendary').bind_au({
+require('legendary').bind_autocmd({
   { 'VimEnter', ':SomeCommand' },
   {
     'BufEnter',
