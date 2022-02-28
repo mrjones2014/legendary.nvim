@@ -107,7 +107,7 @@ local function bind_autocmd(autocmd, group)
   autocmd.kind = 'legendary-autocmd'
 
   -- always set autocmd in case it is buffer-specific
-  vim.api.nvim_create_autocmd(require('legendary.util').legendary_item_to_autocmd(autocmd, group))
+  require('legendary.util').set_autocmd(autocmd, group)
 
   if require('legendary.util').contains_duplicates(autocmds, autocmd) then
     return
@@ -141,7 +141,7 @@ local function bind_augroup(augroup)
     clear = true
   end
 
-  vim.api.nvim_create_augroup({ name = group_name, clear = clear })
+  vim.api.nvim_create_augroup(group_name, { clear = clear })
 
   for key, autocmd in pairs(augroup) do
     if type(key) == 'number' then
