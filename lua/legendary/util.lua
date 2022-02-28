@@ -126,10 +126,13 @@ end
 ---@param autocmd any
 ---@return boolean
 function M.is_user_autocmd(autocmd)
+  local first_el_is_autocmd_event = type(autocmd[1]) == 'string'
+    and #autocmd[1] == #M.strip_leading_cmd_char(autocmd[1])
+
   return not not (
       autocmd ~= nil
       and type(autocmd) == 'table'
-      and ((type(autocmd[1]) == 'string' and #autocmd[1] == #M.strip_leading_cmd_char(autocmd[1])) or type(autocmd[1]) == 'table')
+      and (first_el_is_autocmd_event or type(autocmd[1]) == 'table')
       and (type(autocmd[2]) == 'string' or type(autocmd[2]) == 'function')
     )
 end
