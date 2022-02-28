@@ -1,6 +1,6 @@
 # 🗺️ legendary.nvim
 
-<sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
+<sup>Currently requires Neovim nightly for `vim.keymap.set`, `vim.api.nvim_create_augroup`, and `vim.api.nvim_create_autocmd` APIs</sup>
 
 🗺️ A legend for your keymaps, commands, and autocommands!
 Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
