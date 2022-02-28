@@ -31,6 +31,10 @@ function M.setup(new_config)
     require('legendary').bind_commands(config.commands)
   end
 
+  if config.autocmds and #config.autocmds > 0 then
+    require('legendary').bind_autocmds(config.autocmds)
+  end
+
   if config.auto_register_which_key then
     local whichkey_is_loaded, _ = pcall(require, 'which-key')
     if whichkey_is_loaded then

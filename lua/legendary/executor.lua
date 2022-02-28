@@ -14,8 +14,8 @@ local function mode_from_table(modes)
   return nil
 end
 
-local function exec(keymap)
-  local cmd = require('legendary.util').get_definition(keymap)
+local function exec(item)
+  local cmd = require('legendary.util').get_definition(item)
 
   if type(cmd) == 'function' then
     cmd()
@@ -33,12 +33,12 @@ local function exec(keymap)
     end
     cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
 
-    if keymap.unfinished then
+    if item.unfinished then
       -- % is escape character in gsub patterns
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
     end
 
-    if keymap.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
+    if item.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
       vim.api.nvim_feedkeys(cmd, 't', true)
     else
       vim.cmd(string.format('execute %q', cmd))

@@ -13,3 +13,9 @@ local LegendaryConfig --luacheck: ignore
 ---@field description string
 ---@field opts table
 local LegendaryItem --luacheck: ignore
+
+---@class LegendaryAugroup
+---@field name string
+---@field clear boolean
+---@field [1] LegendaryItem[]
+local LegendaryAugroup --luacheck: ignore
