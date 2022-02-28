@@ -51,10 +51,12 @@ end
 ---@param keymap any
 ---@return boolean
 function M.is_user_keymap(keymap)
-  return keymap ~= nil
-    and type(keymap) == 'table'
-    and type(keymap[1]) == 'string'
-    and (type(keymap[2]) == 'string' or type(keymap[2]) == 'function')
+  return not not (
+      keymap ~= nil
+      and type(keymap) == 'table'
+      and type(keymap[1]) == 'string'
+      and (type(keymap[2]) == 'string' or type(keymap[2]) == 'function')
+    )
 end
 
 --- Set the given keymap
@@ -99,10 +101,12 @@ end
 ---@param cmd any
 ---@return boolean
 function M.is_user_command(cmd)
-  return cmd ~= nil
-    and type(cmd) == 'table'
-    and type(cmd[1]) == 'string'
-    and (type(cmd[2]) == 'string' or type(cmd[2]) == 'function')
+  return not not (
+      cmd ~= nil
+      and type(cmd) == 'table'
+      and type(cmd[1]) == 'string'
+      and (type(cmd[2]) == 'string' or type(cmd[2]) == 'function')
+    )
 end
 
 --- Set up the given command
@@ -116,6 +120,34 @@ function M.set_command(cmd)
   opts.desc = opts.desc or cmd.description
 
   vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
+end
+
+function M.is_autocmd(autocmd)
+  return not not (
+      autocmd
+      and (type(autocmd[1]) == 'string' or type(autocmd[1]) == 'table')
+      and (type(autocmd[2]) == 'string' or type(autocmd[2]) == 'function')
+      and autocmd.opts
+      and autocmd.opts.pattern
+    )
+end
+
+function M.is_user_autocmd(autocmd)
+  return not not (M.is_user_command(autocmd) and autocmd.opts and autocmd.opts.pattern)
+end
+
+--- Take a LegendaryItem and convert it to a table
+--- expected by vim.api.nvim_create_autocmd
+---@param item LegendaryItem
+---@return table
+function M.legendary_item_to_autocmd(item, group)
+  return {
+    event = item[1],
+    callback = item[2],
+    pattern = item.opts.pattern,
+    once = item.opts.once,
+    group = group or item.opts.group,
+  }
 end
 
 --- Get the implementation of an item

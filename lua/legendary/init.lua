@@ -31,6 +31,16 @@ function M.setup(new_config)
     require('legendary').bind_commands(config.commands)
   end
 
+  if config.autocmds and #config.autocmds > 0 then
+    for _, augroup_or_autocmd in pairs(config.autocmds) do
+      if require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
+        require('legendary').bind_autocmd(augroup_or_autocmd)
+      elseif augroup_or_autocmd.name and #augroup_or_autocmd.name > 1 then
+        require('legendary').bind_augroup(augroup_or_autocmd)
+      end
+    end
+  end
+
   if config.auto_register_which_key then
     local whichkey_is_loaded, _ = pcall(require, 'which-key')
     if whichkey_is_loaded then
@@ -64,6 +74,28 @@ end
 
 M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
 M = vim.tbl_extend('error', M, require('legendary.bindings'))
+
+-- require('legendary').bind_autocmd({
+--   'BufWritePre',
+--   function()
+--     vim.notify('BufWritePre')
+--   end,
+--   description = 'test autocmd impl',
+--   opts = {
+--     pattern = '*',
+--   },
+-- })
+
+M.test_autocmd = {
+  'BufWritePre',
+  function()
+    vim.notify('BufWritePre')
+  end,
+  description = 'test autocmd impl',
+  opts = {
+    pattern = '*',
+  },
+}
 
 if not vim.keymap or not vim.keymap.set then
   local function print_err()

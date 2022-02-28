@@ -4,6 +4,7 @@ local M = {
   select_prompt = 'Legendary',
   keymaps = {},
   commands = {},
+  autocmds = {},
   auto_register_which_key = true,
 }
 
@@ -29,6 +30,7 @@ function M.setup(new_config)
   M.select_prompt = new_config.select_prompt or M.select_prompt
   M.keymaps = new_config.keymaps or M.keymaps
   M.commands = new_config.commands or M.commands
+  M.autocmds = new_config.autocmds or M.autocmds
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key, M.auto_register_which_key)
 end
 
