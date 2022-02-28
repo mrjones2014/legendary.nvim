@@ -32,7 +32,7 @@ function M.setup(new_config)
   end
 
   if config.autocmds and #config.autocmds > 0 then
-    require('legendary').bind_au(config.autocmds)
+    require('legendary').bind_autocmds(config.autocmds)
   end
 
   if config.auto_register_which_key then
