@@ -166,7 +166,7 @@ end
 ---@param item LegendaryItem
 ---@return string | function
 function M.get_definition(item)
-  if M.is_user_keymap(item) then
+  if M.is_user_keymap(item) or M.is_user_autocmd(item) then
     return item[2]
   end
 
