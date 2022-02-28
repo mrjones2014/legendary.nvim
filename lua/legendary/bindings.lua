@@ -127,9 +127,12 @@ function M.bind_augroup(augroup)
 
   vim.api.nvim_create_augroup({ name = group_name, clear = clear })
 
-  for _, autocmd in pairs(augroup[1]) do
-    autocmd.opts.group = group_name
-    M.bind_autocmd(autocmd, group_name)
+  for key, autocmd in pairs(augroup) do
+    if type(key) == 'number' then
+      autocmd.opts = autocmd.opts or {}
+      autocmd.opts.group = group_name
+      M.bind_autocmd(autocmd, group_name)
+    end
   end
 end
 

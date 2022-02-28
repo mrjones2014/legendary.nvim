@@ -123,17 +123,11 @@ function M.set_command(cmd)
 end
 
 function M.is_autocmd(autocmd)
-  return not not (
-      autocmd
-      and (type(autocmd[1]) == 'string' or type(autocmd[1]) == 'table')
-      and (type(autocmd[2]) == 'string' or type(autocmd[2]) == 'function')
-      and autocmd.opts
-      and autocmd.opts.pattern
-    )
+  return autocmd.kind == 'legendary-autocmd'
 end
 
 function M.is_user_autocmd(autocmd)
-  return not not (M.is_user_command(autocmd) and autocmd.opts and autocmd.opts.pattern)
+  return not not (M.is_user_command(autocmd) and autocmd.kind == 'legendary-autocmd')
 end
 
 --- Take a LegendaryItem and convert it to a table
@@ -141,14 +135,20 @@ end
 ---@param item LegendaryItem
 ---@return table
 function M.legendary_item_to_autocmd(item, group)
-  return {
+  local autocmd = {
     event = item[1],
-    callback = item[2],
-    pattern = item.opts.pattern,
+    pattern = item.opts and item.opts.pattern or '*',
     once = item.opts.once,
-    group = group or item.opts.group,
+    group = group or (item.opts and item.opts.group),
   }
-end
+
+  if type(item[2]) == 'function' then
+    autocmd.callback = item[2]
+  else
+    autocmd.command = item[2]
+  end
+  return autocmd
+ end
 
 --- Get the implementation of an item
 ---@param item LegendaryItem
