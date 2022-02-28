@@ -174,3 +174,15 @@ handler (for example, [dressing.nvim](https://github.com/stevearc/dressing.nvim)
 
 The individual items will have `kind = 'legendary-keymap'`
 or `kind = 'legendary-command`, depending on whether it is a keymap or command.
+
+## Developing Keymaps, Commands, etc.
+
+`legendary.nvim` also provides some utilities for developing Lua keymaps, commands, etc.
+The following commands are available once `legendary.nvim` is loaded:
+
+- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
+- `:LegendaryEvalLine` - evaluate the current line as a Lua expression
+- `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
+- `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
+
+Any `return` value from evaluated Lua is printed to the command area.
