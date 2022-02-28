@@ -15,13 +15,12 @@ Think VS Code's Command Palette, but cooler!
 
 ## Features
 
-- Define your keymaps and commands as simple Lua tables, then bind/create them with `legendary.nvim`
+- Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind/create them with `legendary.nvim`
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim)
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this issue](https://github.com/mrjones2014/legendary.nvim/issues/1) or submit a PR!
 - Execute normal and insert mode keymaps, commands, and autocommands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
-- Define autocommands and augroups in pure Lua, and execute autocommand's definition on-demand
 
 ## Installation
 
@@ -104,6 +103,7 @@ local autocommands = {
       description = 'Format with LSP on save',
       opts = {
         -- autocommand pattern to match, can be a string or table of strings
+        -- defaults to '*'
         pattern = '<buffer>',
         once = false,
       }
@@ -116,7 +116,7 @@ local autocommands = {
     -- definition can be a string or a lua function
     ':setlocal conceallevel=0',
     opts = {
-      -- autocommand pattern to match
+      -- autocommand pattern to match, defaults to '*'
       pattern = { 'json', 'jsonc' },
       once = false,
     }
@@ -159,17 +159,30 @@ require('legendary').bind_commands({
 require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
 require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
 
--- Dynamically bind a single augroup
-require('legendary').bind_augroup(autocommands)
--- Dynamically bind a single autocommand
-require('legendary').bind_autocommand({
+-- Dynamically bind a single augroup, a list of augroups,
+-- a single autocmd, or a list of autocmds
+require('legendary').bind_au(autocommands)
+require('legendary').bind_au({
   'BufWritePre',
   ':Format',
   description = 'Format with LSP on save',
   opts = {
-    -- autocommand pattern to match
+    -- autocommand pattern to match, defaults to '*'
     pattern = '<buffer>',
     once = false,
+  }
+})
+require('legendary').bind_au({
+  { 'VimEnter', ':SomeCommand' },
+  {
+    'BufEnter',
+    ':set conceallevel=0',
+    opts = {
+      pattern = {
+      '*.json',
+      '*.jsonc'
+      }
+    }
   }
 })
 ```

@@ -32,13 +32,7 @@ function M.setup(new_config)
   end
 
   if config.autocmds and #config.autocmds > 0 then
-    for _, augroup_or_autocmd in pairs(config.autocmds) do
-      if require('legendary.util').is_user_augroup(augroup_or_autocmd) then
-        require('legendary').bind_augroup(augroup_or_autocmd)
-      elseif require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
-        require('legendary').bind_autocmd(augroup_or_autocmd)
-      end
-    end
+    require('legendary').bind_au(config.autocmds)
   end
 
   if config.auto_register_which_key then
