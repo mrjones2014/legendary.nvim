@@ -2,7 +2,8 @@
 
 <sup>Currently requires Neovim nightly for `vim.keymap.set` API</sup>
 
-🗺️ A legend for your keymaps and commands! Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
+🗺️ A legend for your keymaps, commands, and autocommands!
+Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
 Think VS Code's Command Palette, but cooler!
 
 <!-- panvimdoc-ignore-start -->
@@ -17,9 +18,10 @@ Think VS Code's Command Palette, but cooler!
 - Define your keymaps and commands as simple Lua tables, then bind/create them with `legendary.nvim`
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim)
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this issue](https://github.com/mrjones2014/legendary.nvim/issues/1) or submit a PR!
-- Execute normal and insert mode keymaps, and commands, when you select them
+- Execute normal and insert mode keymaps, commands, and autocommands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
+- Define autocommands and augroups in pure Lua, and execute autocommand's definition on-demand
 
 ## Installation
 
@@ -85,6 +87,42 @@ local commands = {
   { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
 }
 
+-- Define autocommands with a slightly different table structure
+-- the elemensts of the table can be augroups or autocommands,
+-- augroups will contain autocommands inside them
+local autocommands = {
+  -- augroup example
+  {
+    name = 'LspFormat',
+    clear = false, -- default true
+    {
+      -- event can be a string or table of strings like { 'BufWritePre', 'BufWritePost' }
+      'BufWritePre',
+      -- definition can be a string or a lua function
+      require('my-lsp-utils').format,
+      -- description is required for them to appear in finder
+      description = 'Format with LSP on save',
+      opts = {
+        -- autocommand pattern to match, can be a string or table of strings
+        pattern = '<buffer>',
+        once = false,
+      }
+    }
+  },
+  -- autocmd example
+  {
+    -- event can be a string or table of strings like { 'BufWritePre', 'BufWritePost' }
+    { 'FileType' },
+    -- definition can be a string or a lua function
+    ':setlocal conceallevel=0',
+    opts = {
+      -- autocommand pattern to match
+      pattern = { 'json', 'jsonc' },
+      once = false,
+    }
+  },
+}
+
 -- Then set up legendary.nvim
 require('legendary').setup({
   -- Include builtins by default, set to false to disable
@@ -93,8 +131,10 @@ require('legendary').setup({
   select_prompt = 'Legendary',
   -- Initial keymaps to bind
   keymaps = keymaps,
-  -- Initial commands to create
+  -- Initial commands to bind
   commands = commands,
+  -- Initial augroups and autocmds to bind
+  autocmds = autocommands,
   -- Automatically add which-key tables to legendary
   -- when you call `require('which-key').register()`
   -- for this to work, you must call `require('legendary').setup()`
@@ -118,6 +158,20 @@ require('legendary').bind_commands({
 -- Or, you can dynamically bind a single keybind or command
 require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
 require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
+
+-- Dynamically bind a single augroup
+require('legendary').bind_augroup(autocommands)
+-- Dynamically bind a single autocommand
+require('legendary').bind_autocommand({
+  'BufWritePre',
+  ':Format',
+  description = 'Format with LSP on save',
+  opts = {
+    -- autocommand pattern to match
+    pattern = '<buffer>',
+    once = false,
+  }
+})
 ```
 
 ### [which-key.nvim](https://github.com/folke/which-key.nvim) Integration
