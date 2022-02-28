@@ -26,7 +26,7 @@ local function events_str(autocmd)
 end
 
 local function pattern_str(autocmd)
-  local patterns = autocmd.opts.pattern
+  local patterns = autocmd.opts and autocmd.opts.pattern or '*'
   if type(patterns) == 'table' then
     patterns = table.concat(patterns, ', ')
   end
@@ -74,19 +74,16 @@ function M.Formatter(selected_item)
         description = 'No description provided'
       end
 
-      if self_item.opts and self_item.opts.pattern then
+      if require('legendary.util').is_autocmd(self_item) then
         local events = events_str(self_item)
         local patterns = pattern_str(self_item)
         return string.format('%s │ %s │ %s', rpad(events, padding_col1), rpad(patterns, padding_col2), description)
-      end
-      if require('legendary.util').is_autocmd(self_item) then
-        return 'autocmd formatter search for me'
       end
 
       local modes = mode_str(item)
       local key = self_item[1]
 
-      return string.format('modes: %s │ %s │ %s', rpad(modes, padding_col1), rpad(key, padding_col2), description)
+      return string.format('%s │ %s │ %s', rpad(modes, padding_col1), rpad(key, padding_col2), description)
     end,
   })
 

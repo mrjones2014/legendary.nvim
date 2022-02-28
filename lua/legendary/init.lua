@@ -75,28 +75,6 @@ end
 M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
 M = vim.tbl_extend('error', M, require('legendary.bindings'))
 
--- require('legendary').bind_autocmd({
---   'BufWritePre',
---   function()
---     vim.notify('BufWritePre')
---   end,
---   description = 'test autocmd impl',
---   opts = {
---     pattern = '*',
---   },
--- })
-
-M.test_autocmd = {
-  'BufWritePre',
-  function()
-    vim.notify('BufWritePre')
-  end,
-  description = 'test autocmd impl',
-  opts = {
-    pattern = '*',
-  },
-}
-
 if not vim.keymap or not vim.keymap.set then
   local function print_err()
     require('legendary.util').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
