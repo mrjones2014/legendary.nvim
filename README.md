@@ -1,7 +1,5 @@
 # 🗺️ legendary.nvim
 
-<sup>Currently requires Neovim nightly for `vim.keymap.set`, `vim.api.nvim_create_augroup`, and `vim.api.nvim_create_autocmd` APIs</sup>
-
 🗺️ A legend for your keymaps, commands, and autocommands!
 Automatically load keymaps from [which-key.nvim](https://github.com/folke/which-key.nvim)!
 Think VS Code's Command Palette, but cooler!
@@ -21,6 +19,14 @@ Think VS Code's Command Palette, but cooler!
 - Execute normal and insert mode keymaps, commands, and autocommands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
+
+## Prerequisites
+
+Neovim nightly (0.7+), specifically, this plugin depends on the following APIs:
+
+- `vim.keymap.set`
+- `vim.api.nvim_create_augroup`
+- `vim.api.nvim_create_autocmd`
 
 ## Installation
 
