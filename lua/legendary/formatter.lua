@@ -35,7 +35,7 @@ local function pattern_str(autocmd)
 end
 
 function M.update_padding(legendary_item)
-  if require('legendary.util').is_autocmd(legendary_item) then
+  if require('legendary.util').is_user_autocmd(legendary_item) then
     local events = events_str(legendary_item)
     if #events > padding_col1 then
       padding_col1 = #events
@@ -74,7 +74,7 @@ function M.Formatter(selected_item)
         description = 'No description provided'
       end
 
-      if require('legendary.util').is_autocmd(self_item) then
+      if require('legendary.util').is_user_autocmd(self_item) then
         local events = events_str(self_item)
         local patterns = pattern_str(self_item)
         return string.format('%s │ %s │ %s', rpad(events, padding_col1), rpad(patterns, padding_col2), description)

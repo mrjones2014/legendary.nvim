@@ -33,10 +33,10 @@ function M.setup(new_config)
 
   if config.autocmds and #config.autocmds > 0 then
     for _, augroup_or_autocmd in pairs(config.autocmds) do
-      if require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
-        require('legendary').bind_autocmd(augroup_or_autocmd)
-      elseif augroup_or_autocmd.name and #augroup_or_autocmd.name > 1 then
+      if require('legendary.util').is_user_augroup(augroup_or_autocmd) then
         require('legendary').bind_augroup(augroup_or_autocmd)
+      elseif require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
+        require('legendary').bind_autocmd(augroup_or_autocmd)
       end
     end
   end

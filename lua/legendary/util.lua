@@ -122,12 +122,23 @@ function M.set_command(cmd)
   vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
 end
 
-function M.is_autocmd(autocmd)
-  return autocmd.kind == 'legendary-autocmd'
+--- Check if the given item is a user autocmd
+---@param autocmd any
+---@return boolean
+function M.is_user_autocmd(autocmd)
+  return not not (
+      autocmd ~= nil
+      and type(autocmd) == 'table'
+      and (type(autocmd[1]) == 'string' or type(autocmd[1]) == 'table')
+      and (type(autocmd[2]) == 'string' or type(autocmd[2]) == 'function')
+    )
 end
 
-function M.is_user_autocmd(autocmd)
-  return not not (M.is_user_command(autocmd) and autocmd.kind == 'legendary-autocmd')
+--- Check if the given item is an augroup
+---@param augroup any
+---@return boolean
+function M.is_user_augroup(augroup)
+  return not not (augroup and augroup.name and #augroup > 0 and M.is_user_autocmd(augroup[1]))
 end
 
 --- Take a LegendaryItem and convert it to a table
@@ -138,7 +149,7 @@ function M.legendary_item_to_autocmd(item, group)
   local autocmd = {
     event = item[1],
     pattern = item.opts and item.opts.pattern or '*',
-    once = item.opts.once,
+    once = item.opts and item.opts.once,
     group = group or (item.opts and item.opts.group),
   }
 
@@ -147,8 +158,9 @@ function M.legendary_item_to_autocmd(item, group)
   else
     autocmd.command = item[2]
   end
+
   return autocmd
- end
+end
 
 --- Get the implementation of an item
 ---@param item LegendaryItem
