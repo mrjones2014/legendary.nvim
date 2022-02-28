@@ -62,7 +62,7 @@ end
 --- Create a formatter for a given item
 ---@param selected_item LegendaryItem
 ---@return LegendaryItem
-function M.Formatter(selected_item)
+function M.Formatter(selected_item, is_autocmd)
   local item = vim.deepcopy(selected_item)
 
   setmetatable(item, {
@@ -74,7 +74,7 @@ function M.Formatter(selected_item)
         description = 'No description provided'
       end
 
-      if require('legendary.util').is_user_autocmd(self_item) then
+      if is_autocmd then
         local events = events_str(self_item)
         local patterns = pattern_str(self_item)
         return string.format('%s │ %s │ %s', rpad(events, padding_col1), rpad(patterns, padding_col2), description)
