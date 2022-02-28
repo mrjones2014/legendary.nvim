@@ -105,7 +105,8 @@ local autocommands = {
         -- autocommand pattern to match, can be a string or table of strings
         -- defaults to '*'
         pattern = '<buffer>',
-        once = false,
+        -- you can also set `once = true` to have it only run once
+        -- once = true,
       }
     }
   },
@@ -118,7 +119,9 @@ local autocommands = {
     opts = {
       -- autocommand pattern to match, defaults to '*'
       pattern = { 'json', 'jsonc' },
-      once = false,
+      -- you can also specify group, it must be an *already existing*
+      -- augroup name, unless nested inside an augroup table as above
+      group = 'LspFormat'
     }
   },
 }
