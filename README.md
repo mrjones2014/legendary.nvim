@@ -106,7 +106,7 @@ local autocommands = {
       opts = {
         -- autocommand pattern to match, can be a string or table of strings
         -- defaults to '*'
-        pattern = '<buffer>',
+        pattern = '*.lua',
         -- you can also set `once = true` to have it only run once
         -- once = true,
       }
@@ -173,7 +173,7 @@ require('legendary').bind_autocmds({
   description = 'Format with LSP on save',
   opts = {
     -- autocommand pattern to match, defaults to '*'
-    pattern = '<buffer>',
+    pattern = '*.lua',
     once = false,
   }
 })
