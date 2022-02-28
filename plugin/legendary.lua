@@ -32,7 +32,11 @@ local function command_completion(arg_lead)
     return { 'commands' }
   end
 
-  return { 'keymaps', 'commands' }
+  if arg_lead and trim(arg_lead):sub(1, 1):lower() == 'a' then
+    return { 'autocmds' }
+  end
+
+  return { 'keymaps', 'commands', 'autocmds' }
 end
 
 vim.api.nvim_add_user_command('Legendary', find, {

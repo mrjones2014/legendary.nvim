@@ -2,17 +2,19 @@ local M = {}
 
 local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
+local autocmds = require('legendary.config').autocmds
 
 local Formatter = require('legendary.formatter').Formatter
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
 function M.bind_keymap(keymap)
-  keymap.kind = 'legendary-keymap'
   if not keymap or type(keymap) ~= 'table' then
     require('legendary.util').notify(string.format('Expected table, got %s', type(keymap)))
     return
   end
+
+  keymap.kind = 'legendary-keymap'
 
   -- always bind the keymaps in case they are buffer-specific
   require('legendary.util').set_keymap(keymap)
@@ -21,9 +23,8 @@ function M.bind_keymap(keymap)
     return
   end
 
-  require('legendary.formatter').update_padding(keymap)
-
   if keymap.description and #keymap.description > 0 then
+    require('legendary.formatter').update_padding(keymap)
     table.insert(keymaps, Formatter(keymap))
   end
 end
@@ -50,11 +51,12 @@ end
 --- Bind a single command with legendary.nvim
 ---@param cmd LegendaryItem
 function M.bind_command(cmd)
-  cmd.kind = 'legendary-command'
   if not cmd or type(cmd) ~= 'table' then
     require('legendary.util').notify(string.format('Expected table, got %s', type(cmd)))
     return
   end
+
+  cmd.kind = 'legendary-command'
 
   -- always set the command in case it's buffer-specific
   require('legendary.util').set_command(cmd)
@@ -63,9 +65,8 @@ function M.bind_command(cmd)
     return
   end
 
-  require('legendary.formatter').update_padding(cmd)
-
   if cmd.description and #cmd.description > 0 then
+    require('legendary.formatter').update_padding(cmd)
     table.insert(commands, Formatter(cmd))
   end
 end
@@ -87,10 +88,92 @@ function M.bind_commands(cmds)
   end
 end
 
+--- Bind a single autocmd with legendary.nvim
+---@param autocmd LegendaryItem
+local function bind_autocmd(autocmd, group)
+  if not vim.api.nvim_create_augroup then
+    require('legendary.util').notify(
+      --luacheck: ignore
+      'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
+    )
+    return
+  end
+
+  if not autocmd or type(autocmd) ~= 'table' then
+    require('legendary.util').notify(string.format('Expected table, got %s', type(autocmd)))
+    return
+  end
+
+  autocmd.kind = 'legendary-autocmd'
+
+  -- always set autocmd in case it is buffer-specific
+  vim.api.nvim_create_autocmd(require('legendary.util').legendary_item_to_autocmd(autocmd, group))
+
+  if require('legendary.util').contains_duplicates(autocmds, autocmd) then
+    return
+  end
+
+  if autocmd.description and #autocmd.description > 0 then
+    require('legendary.formatter').update_padding(autocmd)
+    table.insert(autocmds, Formatter(autocmd))
+  end
+end
+
+--- Bind an augroup of autocmds
+---@param augroup LegendaryAugroup
+local function bind_augroup(augroup)
+  if not vim.api.nvim_create_augroup then
+    require('legendary.util').notify(
+      --luacheck: ignore
+      'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
+    )
+    return
+  end
+
+  local group_name = augroup and augroup.name or ''
+  if #group_name == 0 then
+    require('legendary.util').notify('augroup must have a name')
+    return
+  end
+
+  local clear = augroup and augroup.clear
+  if clear == nil then
+    clear = true
+  end
+
+  vim.api.nvim_create_augroup({ name = group_name, clear = clear })
+
+  for key, autocmd in pairs(augroup) do
+    if type(key) == 'number' then
+      autocmd.opts = autocmd.opts or {}
+      autocmd.opts.group = group_name
+      bind_autocmd(autocmd, group_name)
+    end
+  end
+end
+
+--- Bind a list of mixed augroups and autocmds
+---@param au LegendaryAugroup[] | LegendaryItem[]
+function M.bind_autocmds(au)
+  if require('legendary.util').is_user_augroup(au) then
+    bind_augroup(au)
+  elseif require('legendary.util').is_user_autocmd(au) then
+    bind_autocmd(au)
+  else
+    for _, augroup_or_autocmd in pairs(au) do
+      if require('legendary.util').is_user_augroup(augroup_or_autocmd) then
+        bind_augroup(augroup_or_autocmd)
+      elseif require('legendary.util').is_user_autocmd(augroup_or_autocmd) then
+        bind_autocmd(augroup_or_autocmd)
+      end
+    end
+  end
+end
+
 --- Find keymaps, commands, or both (both by default)
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
---- only commands.
+--- only commands, pass "autocmds" to find only autocmds.
 ---@param type string
 function M.find(type)
   local current_mode = vim.fn.mode()
@@ -101,8 +184,11 @@ function M.find(type)
     items = keymaps
   elseif type == 'commands' then
     items = commands
+  elseif type == 'autocmds' then
+    items = autocmds
   else
-    items = require('legendary.util').concat_lists(keymaps, commands)
+    local concat = require('legendary.util').concat_lists
+    items = concat(concat(keymaps, commands), autocmds)
   end
   vim.ui.select(items, {
     prompt = require('legendary.config').select_prompt,
