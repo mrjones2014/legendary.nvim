@@ -114,7 +114,7 @@ local function bind_autocmd(autocmd, group)
   end
 
   if autocmd.description and #autocmd.description > 0 then
-    require('legendary.formatter').update_padding(autocmd)
+    require('legendary.formatter').update_padding(autocmd, true)
     table.insert(autocmds, Formatter(autocmd, true))
   end
 end

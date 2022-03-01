@@ -34,8 +34,8 @@ local function pattern_str(autocmd)
   return patterns
 end
 
-function M.update_padding(legendary_item)
-  if require('legendary.util').is_user_autocmd(legendary_item) then
+function M.update_padding(legendary_item, is_autocmd)
+  if is_autocmd then
     local events = events_str(legendary_item)
     if #events > padding_col1 then
       padding_col1 = #events
