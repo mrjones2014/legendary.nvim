@@ -45,7 +45,7 @@ end
 
 vim.api.nvim_add_user_command('Legendary', find, {
   desc = 'Find keymaps and commands with vim.ui.select()',
-  nargs = 1,
+  nargs = '*',
   complete = command_completion,
 })
 
