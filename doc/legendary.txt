@@ -1,37 +1,39 @@
-*legendary.txt*A legend for your keymaps and commands, with which-key.nvim integration
+*legendary.txt*                                  keymaps - commands - autocmds
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
 
-1. 🗺️ legendary.nvim                   |legendary-🗺️-legendary.nvim|
+1. Legendary                                             |legendary-legendary|
   - Features                                              |legendary-features|
   - Prerequisites                                    |legendary-prerequisites|
   - Installation                                      |legendary-installation|
-  - Configuration and Setup                |legendary-configuration-and-setup|
   - Usage                                                    |legendary-usage|
-  - Developing Keymaps, Commands, etc.|legendary-developing-keymaps,-commands,-etc.|
+  - Configuration                                    |legendary-configuration|
+  - Table Structures                              |legendary-table-structures|
+  - Lua API                                                |legendary-lua-api|
+  - Utilities                                            |legendary-utilities|
 
 ==============================================================================
-1. 🗺️ legendary.nvim                   *legendary-🗺️-legendary.nvim*
+1. Legendary                                             *legendary-legendary*
 
-🗺️ A legend for your keymaps, commands, and autocommands! Automatically
-load keymaps from which-key.nvim <https://github.com/folke/which-key.nvim>!
-Think VS Code’s Command Palette, but cooler!
+Define your keymaps, commands, and autocommands as simple Lua tables, building
+a legend at the same time.
 
 FEATURES                                                  *legendary-features*
 
 
-- Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind/create them with `legendary.nvim`
-- Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like dressing.nvim <https://github.com/stevearc/dressing.nvim>
-- Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on this issue <https://github.com/mrjones2014/legendary.nvim/issues/1> or submit a PR!
+- Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
+- Integration with which-key.nvim <https://github.com/folke/which-key.nvim>, use your existing `which-key.nvim` tables with `legendary.nvim`
+- Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like dressing.nvim <https://github.com/stevearc/dressing.nvim> for a VS Code command palette like interface
 - Execute normal and insert mode keymaps, commands, and autocommands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
-- Integration with which-key.nvim <https://github.com/folke/which-key.nvim>, use your existing `which-key.nvim` tables with `legendary.nvim`
+- Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on this issue <https://github.com/mrjones2014/legendary.nvim/issues/1> or submit a PR!
 
 
 PREREQUISITES                                        *legendary-prerequisites*
 
-Neovim nightly (0.7+), specifically, this plugin depends on the following APIs:
+`legendary.nvim` currently requires Neovim nightly (0.7+). Specifically, this
+plugin depends on the following APIs:
 
 
 - `vim.keymap.set`
@@ -55,164 +57,63 @@ With `vim-plug`:
 <
 
 
-CONFIGURATION AND SETUP                    *legendary-configuration-and-setup*
+USAGE                                                        *legendary-usage*
+
+To trigger the finder for your configured keymaps, commands, and
+`augroup`/`autocmd`s:
+
+Lua:
 
 >
-    -- Define your keymaps as a list of tables like so
-    -- description is required for them to appear when you search
-    local keymaps = {
-      { '<F3>', ':NvimTreeToggle<CR>', description = 'Toggle file tree' },
-      -- 'mode' defaults to 'n', but you can specify a different mode
-      -- either as a string or a list of multiple modes like `mode = { 'n', 'v' }`
-      { '<leader>c', ":'<,'>CommentToggle<CR>", mode = 'v', description = 'Toggle comment' },
-      -- you can also pass keymap options via the `opts` table, see `:h vim.keymap.set`
-      -- and `:h nvim_set_keymap` for all available options
-      -- default opts are `opts = { silent = true }`
-      { '<leader>y', ':SomeMappingCommand', opts = { noremap = true, silent = false } },
-      -- you can also map lua functions directly as a binding
-      -- note that implementations are evaluated immediately
-      { '<C-p>', require('legendary').find, description = 'Search key bindings' },
-      -- if you need to bind a key to call a function with specific arguments
-      -- you can use the `require('legendary').lazy()` helper function
-      -- `nil` and `1500` will be passed as the arguments to `formatting_sync` when called
-      { '<leader>p', require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
-      -- or, if you need to bind a key to a function from a plugin,
-      -- this will call `require('telescope.builtin').oldfiles({ only_cwd = true })` when triggered
-      { '<leader>f', require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
-      -- Or add a keybind without a definition (useful for reminding yourself of
-      -- keybinds which are set up by plugins, for example, these nvim-cmp mappings)
-      { '<C-d>', description = 'Scroll docs up' },
-      { '<C-f>', description = 'Scroll docs down' },
-    }
-    
-    -- Define your commands with the same table structure
-    -- Again, description is required for them to appear when you search
-    local commands = {
-      -- You can also use legendar.nvim to create commands!
-      { ':DoSomething', ':echo "something"', description = 'Do something!' },
-      -- You can also set commands to run a lua function
-      { ':DoSomethingWithLua', require('my_module').some_method, description = 'Do something with Lua!' },
-      -- You can also define commands without an implementation
-      -- this will simply make it appear in vim.ui.select() UI
-      -- but will not create the command
-      { ':CommentToggle', description = 'Toggle comment' },
-      -- You can also have "unfinished" command (commands which need an argument)
-      -- by setting `unfinished = true`. You can use `{arg_name}` or `[arg_name]`
-      -- at the end of the string as a hint, this will get removed when inserted
-      -- to the command line
-      { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
-      -- or
-      { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
-    }
-    
-    -- Define autocommands with a slightly different table structure
-    -- the elemensts of the table can be augroups or autocommands,
-    -- augroups will contain autocommands inside them
-    local autocommands = {
-      -- augroup example
-      {
-        name = 'LspFormat',
-        clear = false, -- default true
-        {
-          -- event can be a string or table of strings like { 'BufWritePre', 'BufWritePost' }
-          'BufWritePre',
-          -- definition can be a string or a lua function
-          require('my-lsp-utils').format,
-          -- description is required for them to appear in finder,
-          -- but you can omit if if you don't need it to appear
-          -- in the finder
-          description = 'Format with LSP on save',
-          opts = {
-            -- autocommand pattern to match, can be a string or table of strings
-            -- defaults to '*'
-            pattern = '*.lua',
-            -- you can also set `once = true` to have it only run once
-            -- once = true,
-          }
-        }
-      },
-      -- autocmd example
-      {
-        -- event can be a string or table of strings like { 'BufWritePre', 'BufWritePost' }
-        { 'FileType' },
-        -- definition can be a string or a lua function
-        ':setlocal conceallevel=0',
-        opts = {
-          -- autocommand pattern to match, defaults to '*'
-          pattern = { 'json', 'jsonc' },
-          -- you can also specify group, it must be an *already existing*
-          -- augroup name, unless nested inside an augroup table as above
-          group = 'LspFormat'
-        }
-      },
-    }
-    
-    -- Then set up legendary.nvim
+    require('legendary').find() -- search keymaps, commands, and autocmds
+    require('legendary').find('keymaps') -- search keymaps
+    require('legendary').find('commands') -- search commands
+    require('legendary').find('autocmds') -- search autocmds
+<
+
+
+Vim commands:
+
+>
+    :Legendary " search keymaps, commands, and autocmds
+    :Legendary keymaps " search keymaps
+    :Legendary commands " search commands
+    :Legendary autocmds " search autocmds
+<
+
+
+CONFIGURATION                                        *legendary-configuration*
+
+Default configuration is shown below. For detailed explanation of the structure
+for keymap, command, and `augroup`/`autocmd` tables, see
+|legendary-table-structures|.
+
+>
     require('legendary').setup({
       -- Include builtins by default, set to false to disable
       include_builtin = true,
       -- Customize the prompt that appears on your vim.ui.select() handler
       select_prompt = 'Legendary',
       -- Initial keymaps to bind
-      keymaps = keymaps,
+      keymaps = {
+        -- your keymap tables here
+      },
       -- Initial commands to bind
-      commands = commands,
+      commands = {
+        -- your command tables here
+      },
       -- Initial augroups and autocmds to bind
-      autocmds = autocommands,
+      autocmds = {
+        -- your autocmd tables here
+      },
       -- Automatically add which-key tables to legendary
-      -- when you call `require('which-key').register()`
-      -- for this to work, you must call `require('legendary').setup()`
-      -- before any calls to `require('which-key').register()`, and
-      -- which-key.nvim must be loaded when you call `require('legendary').setup()`
+      -- see "which-key.nvim Integration" below for more details
       auto_register_which_key = true,
-    })
-    
-    -- Add an additional set of keybinds
-    -- (useful for binding LSP keybinds in the `on_attach` function, for example)
-    require('legendary').bind_keymaps({
-      { 'gd', vim.lsp.buf.definition, description = 'Go to definition' },
-      { 'gh', vim.lsp.buf.hover, description = 'Show hover information' },
-      { 'gi', vim.lsp.buf.implementation, description = 'Go to implementation' },
-    })
-    
-    require('legendary').bind_commands({
-      { ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' },
-    })
-    
-    -- Or, you can dynamically bind a single keybind or command
-    require('legendary').bind_keymap({ '<leader>nh', ':noh<CR>', description = 'Remove hlsearch highlighting' })
-    require('legendary').bind_command({ ':Format', vim.lsp.buf.formatting_sync, description = 'Format the document with LSP' })
-    
-    -- Dynamically bind a single augroup, a list of augroups,
-    -- a single autocmd, or a list of autocmds
-    require('legendary').bind_autocmds(autocommands)
-    require('legendary').bind_autocmds({
-      'BufWritePre',
-      ':Format',
-      description = 'Format with LSP on save',
-      opts = {
-        -- autocommand pattern to match, defaults to '*'
-        pattern = '*.lua',
-        once = false,
-      }
-    })
-    require('legendary').bind_autocmd({
-      { 'VimEnter', ':SomeCommand' },
-      {
-        'BufEnter',
-        ':set conceallevel=0',
-        opts = {
-          pattern = {
-          '*.json',
-          '*.jsonc'
-          }
-        }
-      }
     })
 <
 
 
-WHICH-KEY.NVIM <HTTPS://GITHUB.COM/FOLKE/WHICH-KEY.NVIM> INTEGRATION ~
+`WHICH-KEY.NVIM` INTEGRATION ~
 
 Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables with
 `legendary.nvim`!
@@ -232,37 +133,266 @@ Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables with
 <
 
 
-USAGE                                                        *legendary-usage*
+TABLE STRUCTURES                                  *legendary-table-structures*
 
-By default, keymaps and commands will be searched together, but you can also
-search one or the other.
+The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar. To
+show up in the finder, you must include the `description` property.
 
-WITH LUA: ~
+Keymaps
+
+For keymaps you are mapping yourself (as opposed to mappings set by other
+plugins), the first two elements are the key and the handler, respectively. The
+handler can be a command string like `:wa<CR>` or a Lua function. Example:
 
 >
-    require('legendary').find() -- search keymaps, commands, and autocmds
-    require('legendary').find('keymaps') -- search keymaps
-    require('legendary').find('commands') -- search commands
-    require('legendary').find('autocmds') -- search autocmds
+    local keymaps = {
+      { '<leader>s', ':wa<CR>', description = 'Write all buffers', opts = {} },
+      { '<leader>fm', vim.lsp.buf.formatting_sync, description = 'Format buffer with LSP' },
+    }
 <
 
 
-WITH COMMANDS: ~
+If you need to pass parameters to the Lua function or call a function
+dynamically from a plugin, you can use the following helper functions:
 
 >
-    " search keymaps, commands, and autocmds
-    :Legendary
-    
-    " search keymaps
-    :Legendary keymaps
-    
-    " search commands
-    :Legendary commands
-    
-    " search autocmds
-    :Legendary autocmds
+    local keymaps = {
+      { '<leader>p', require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
+      { '<leader>f', require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
+    }
 <
 
+
+The keymap’s mode defaults to normal (`n`), but you can set a different mode,
+or list of modes, via the `mode` property:
+
+>
+    local keymaps = {
+      { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
+    }
+<
+
+
+You can also pass options to the keymap via the `opts` property, see `:h
+vim.keymap.set` to see available options.
+
+>
+    local keymaps = {
+      {
+        '<leader>fm',
+        vim.lsp.buf.formatting_sync,
+        description = 'Format buffer with LSP',
+        opts = { silent = true, noremap = true }
+      },
+    }
+<
+
+
+Finally, if you want to register keymaps with `legendary.nvim` in order to see
+them in the finder, but not bind them (like for keymaps set by other plugins),
+you can just omit the handler element:
+
+>
+    local keymaps = {
+      { '<C-d>', description = 'Scroll docs up' },
+      { '<C-f>', description = 'Scroll docs down' },
+    }
+<
+
+
+Commands
+
+Command tables follow the exact same structure as keymaps, but specify a
+command name instead of a key code.
+
+>
+    local commands = {
+      { ':DoSomething', ':echo "something"', description = 'Do something!' },
+      { ':DoSomethingWithLua', require('some-module').some_method, description = 'Do something with Lua!' },
+      -- a command from a plugin, don't specify a handler
+      { ':CommentToggle', description = 'Toggle comment' },
+    }
+<
+
+
+If you need a command to take an argument, specify `unfinished = true` to
+pre-fill the command line instead of executing the command on selected. You can
+put an argument name/hint in `[]` or `{}` that will be stripped when filling
+the command line.
+
+>
+    local commands = {
+      { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
+      -- or
+      { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
+    }
+<
+
+
+<code>augroup</code>s and <code>autocmd</code>s
+
+`augroup` tables are very simple. They have a `name` property, and a `clear`
+property which defaults to `true`. This will clear the `augroup` when creating
+it, equivalent to `au!`. `autocmd` tables nested within `augroup` tables will
+automatically be defined in the `augroup`.
+
+>
+    local augroups = {
+      {
+        name = 'MyAugroupName',
+        clear = true,
+        -- you autocmd tables here
+      }
+    }
+<
+
+
+`autocmd` tables have an event or list of events, and a handler as the first
+two elements, respectively. You can also specify options to be passed to the
+`autocmd` via the `opts` property. The `opts` property defaults to `{ pattern =
+'*', group = nil }`.
+
+>
+    local autocmds = {
+      {
+        'FileType',
+        ':setlocal conceallevel=0',
+        opts = {
+          pattern = { 'json', 'jsonc' },
+        },
+      },
+      {
+        { 'BufRead', 'BufNewFile' },
+        ':set filetype=jsonc',
+        opts = {
+          pattern = { '*.jsonc', 'tsconfig*.json' },
+        },
+      },
+      {
+        'BufWritePre',
+        vim.lsp.buf.formatting_sync,
+        -- include a description to execute it
+        -- like a command on-demand from the finder
+        description = 'Format on write with LSP',
+      },
+    }
+<
+
+
+An example putting both together:
+
+>
+    local augroups = {
+      {
+        name = 'LspOnAttachAutocmds',
+        clear = true,
+        {
+          'BufWritePre',
+          require('lsp.utils').format_document,
+        },
+        {
+          'CursorHold',
+          vim.diagnostic.open_float,
+        },
+      },
+      {
+        { 'BufRead', 'BufNewFile' },
+        ':set filetype=jsonc',
+        opts = {
+          -- you can also manually add an autocmd
+          -- to an existing augroup
+          group = 'filetypedetect',
+          pattern = { '*.jsonc', 'tsconfig*.json' },
+        },
+      }
+    }
+<
+
+
+LUA API                                                    *legendary-lua-api*
+
+You can also manually bind new items after you’ve already called
+`require('legendary').setup()`. This can be useful for things like binding
+language-specific keyaps in the LSP `on_attach` function.
+
+The following API functions are available:
+
+>
+    -- bind a single keymap
+    require('legendary').bind_keymap(keymap)
+    -- bind a list of keymaps
+    require('legendary').bind_keymaps({
+      -- your keymaps here
+    })
+    
+    -- bind a single command
+    require('legendary').bind_command(command)
+    -- bind a list of commands
+    require('legendary').bind_commands({
+      -- your commands here
+    })
+    
+    -- bind single or multiple augroups and/or autocmds
+    -- these all use the same function
+    require('legendary').bind_autocmds(augroup)
+    require('legendary').bind_autocmds(autocmd)
+    require('legendary').bind_autocmds({
+      -- your augroups and autocmds here
+    })
+<
+
+
+LUA HELPERS FOR CREATING MAPPINGS ~
+
+When creating keymaps to Lua functions, the Lua expressions are evaluated at
+the time they are bound. This means you typically need to pass a function
+_reference_ instead of calling the function. For example, you probably want to
+map `vim.lsp.buf.formatting_sync`, _not_ `vim.lsp.buf.formatting_sync()`.
+
+If you need to pass arguments to a function when it’s called, you can use the
+`lazy` helper:
+
+>
+    -- lazy() takes the first argument (a function)
+    -- and calls it with the rest of the arguments
+    require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500)
+    -- this will *return a new function* defined as:
+    function()
+      vim.lsp.buf.formatting_sync(nil, 1500)
+    end
+<
+
+
+If you need to call a function from a plugin, but do not want the require that
+the plugin be loaded at the time you define your keymaps (like if you’re
+using Packer to lazy-load plugins), you can use the `lazy_required_fn` helper:
+
+>
+    -- lazy_required_fn() takes a module path as the first argument,
+    -- a function name from that module as the second argument,
+    -- and calls the function by name with the rest of the arguments
+    require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true })
+    -- this will *return a new function* defined as:
+    function()
+      require('telescope.bulitin')['oldfiles']({ only_cwd = true })
+    end
+<
+
+
+UTILITIES                                                *legendary-utilities*
+
+`legendary.nvim` also provides some utilities for developing Lua keymaps,
+commands, etc. The following commands are available once `legendary.nvim` is
+loaded:
+
+
+- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
+- `:LegendaryEvalLine` - evaluate the current line as a Lua expression
+- `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
+- `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
+
+
+Any `return` value from evaluated Lua is printed to the command area.
 
 SORTING ~
 
@@ -278,21 +408,6 @@ this).
 The individual items will have `kind = 'legendary-keymap'`, `kind =
 'legendary-command`, or `kind = 'legendary-autocmd`, depending on whether it is
 a keymap, command, or autocmd.
-
-DEVELOPING KEYMAPS, COMMANDS, ETC.*legendary-developing-keymaps,-commands,-etc.*
-
-`legendary.nvim` also provides some utilities for developing Lua keymaps,
-commands, etc. The following commands are available once `legendary.nvim` is
-loaded:
-
-
-- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
-- `:LegendaryEvalLine` - evaluate the current line as a Lua expression
-- `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
-- `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
-
-
-Any `return` value from evaluated Lua is printed to the command area.
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
