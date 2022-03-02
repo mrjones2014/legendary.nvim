@@ -20,6 +20,10 @@ local function find(opts)
     return require('legendary').find('commands')
   end
 
+  if trim(opts.args:lower()) == 'autocmds' then
+    return require('legendary').find('autocmds')
+  end
+
   require('legendary').find()
 end
 
@@ -41,7 +45,7 @@ end
 
 vim.api.nvim_add_user_command('Legendary', find, {
   desc = 'Find keymaps and commands with vim.ui.select()',
-  nargs = 1,
+  nargs = '*',
   complete = command_completion,
 })
 
