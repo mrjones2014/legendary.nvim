@@ -8,7 +8,7 @@ local LegendaryConfig --luacheck: ignore
 
 ---@class LegendaryItem
 ---@field [1] string
----@field [2] string | function
+---@field [2] string | function | nil
 ---@field mode string | string[]
 ---@field description string
 ---@field opts table
