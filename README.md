@@ -1,19 +1,6 @@
-<h1>
-<pre align="center">
-╭───────────────────────────────────────╮
-│  █   █▀▀ █▀▀ █▀▀ █▀█ █▀▄ █▀█ █▀▄ █ █  │
-│  █   █▀▀ █ █ █▀▀ █ █ █ █ █▀█ █▀▄  █   │
-│  ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀ ▀ ▀▀  ▀ ▀ ▀ ▀  ▀   │
-│            █▀█ █ █ ▀█▀ █▄█            │
-│            █ █ █▄█  █  █ █            │
-│            ▀ ▀  ▀  ▀▀▀ ▀ ▀            │
-│     keymaps - commands - autocmds     │
-╰───────────────────────────────────────╯
-</pre>
-</h1>
+# Legendary
 
-🗺️ `legendary.nvim` lets you define your keymaps, commands, and autocommands as simple Lua tables,
-and provides a legend for them at the same time.
+Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
 
 <!-- panvimdoc-ignore-start -->
 
@@ -77,8 +64,8 @@ Vimscript:
 
 ## Configuration
 
-See [table structure](#table-structure) below for details on the structure of the `keymaps`, `commands`,
-and `autocmds` tables. Default configuration is shown below:
+Default configuration is shown below. For detailed explanation of the structure for
+keymap, command, and `augroup`/`autocmd` tables, see [Table Structures](#table-structures).
 
 ```lua
 require('legendary').setup({
@@ -122,7 +109,7 @@ require('which-key').register(your_which_key_tables, your_which_key_opts)
 require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
 ```
 
-### Table Structures
+## Table Structures
 
 The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar. To show up in the finder,
 you must include the `description` property.
@@ -292,7 +279,7 @@ local augroups = {
 
 </details>
 
-### Lua API
+## Lua API
 
 You can also manually bind new items after you've already called `require('legendary').setup()`.
 This can be useful for things like binding language-specific keyaps in the LSP `on_attach` function.
@@ -325,7 +312,7 @@ require('legendary').bind_autocmds({
 
 See also: [types.lua](./lua/legendary/types.lua).
 
-#### Lua Helpers for Creating Mappings
+### Lua Helpers for Creating Mappings
 
 When creating keymaps to Lua functions, the Lua expressions are evaluated at the time they are bound.
 This means you typically need to pass a function _reference_ instead of calling the function.
@@ -358,7 +345,7 @@ function()
 end
 ```
 
-### Utilities
+## Utilities
 
 `legendary.nvim` also provides some utilities for developing Lua keymaps, commands, etc.
 The following commands are available once `legendary.nvim` is loaded:
