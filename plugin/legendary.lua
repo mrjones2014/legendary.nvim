@@ -20,6 +20,10 @@ local function find(opts)
     return require('legendary').find('commands')
   end
 
+  if trim(opts.args:lower()) == 'autocmds' then
+    return require('legendary').find('autocmds')
+  end
+
   require('legendary').find()
 end
 

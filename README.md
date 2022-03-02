@@ -53,7 +53,7 @@ require('legendary').find('commands') -- search commands
 require('legendary').find('autocmds') -- search autocmds
 ```
 
-Vimscript:
+Vim commands:
 
 ```VimL
 :Legendary " search keymaps, commands, and autocmds
@@ -309,8 +309,6 @@ require('legendary').bind_autocmds({
   -- your augroups and autocmds here
 })
 ```
-
-See also: [types.lua](./lua/legendary/types.lua).
 
 ### Lua Helpers for Creating Mappings
 
