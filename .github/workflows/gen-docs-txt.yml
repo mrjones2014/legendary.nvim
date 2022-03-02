@@ -24,7 +24,7 @@ jobs:
         uses: kdheepak/panvimdoc@v2.7.1
         with:
           vimdoc: legendary
-          description: A legend for your keymaps and commands, with which-key.nvim integration
+          description: keymaps - commands - autocmds
       - name: Create PR
         run: |
           if ! [[ -z $(git status -s) ]]; then
