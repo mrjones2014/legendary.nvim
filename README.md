@@ -5,7 +5,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 <!-- panvimdoc-ignore-start -->
 
 ![demo](./demo.gif)
-<sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim)</sup>
+<sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
 <!-- panvimdoc-ignore-end -->
 
@@ -20,11 +20,11 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Prerequisites
 
-`legendary.nvim` currently requires Neovim nightly (0.7+). Specifically, this plugin depends on the following APIs:
-
-- `vim.keymap.set`
-- `vim.api.nvim_create_augroup`
-- `vim.api.nvim_create_autocmd`
+- Neovim nightly (0.7+), specifically, this plugin depends on the following APIs:
+  - `vim.keymap.set`
+  - `vim.api.nvim_create_augroup`
+  - `vim.api.nvim_create_autocmd`
+- (Optional) A good `vim.ui.select()` handler. I recommend [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) paired with [dressing.nvim](https://github.com/stevearc/dressing.nvim).
 
 ## Installation
 
