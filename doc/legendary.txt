@@ -32,13 +32,12 @@ FEATURES                                                  *legendary-features*
 
 PREREQUISITES                                        *legendary-prerequisites*
 
-`legendary.nvim` currently requires Neovim nightly (0.7+). Specifically, this
-plugin depends on the following APIs:
 
-
-- `vim.keymap.set`
-- `vim.api.nvim_create_augroup`
-- `vim.api.nvim_create_autocmd`
+- Neovim nightly (0.7+), specifically, this plugin depends on the following APIs:
+    - `vim.keymap.set`
+    - `vim.api.nvim_create_augroup`
+    - `vim.api.nvim_create_autocmd`
+- (Optional) A good `vim.ui.select()` handler. I recommend telescope.nvim <https://github.com/nvim-telescope/telescope.nvim> paired with dressing.nvim <https://github.com/stevearc/dressing.nvim>.
 
 
 INSTALLATION                                          *legendary-installation*
