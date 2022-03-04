@@ -37,7 +37,8 @@ PREREQUISITES                                        *legendary-prerequisites*
     - `vim.keymap.set`
     - `vim.api.nvim_create_augroup`
     - `vim.api.nvim_create_autocmd`
-- (Optional) A good `vim.ui.select()` handler. I recommend telescope.nvim <https://github.com/nvim-telescope/telescope.nvim> paired with dressing.nvim <https://github.com/stevearc/dressing.nvim>.
+- (Optional) A good `vim.ui.select()` handler, this is what provides the UI for the finder.
+    - I recommend telescope.nvim <https://github.com/nvim-telescope/telescope.nvim> paired with dressing.nvim <https://github.com/stevearc/dressing.nvim>.
 
 
 INSTALLATION                                          *legendary-installation*
