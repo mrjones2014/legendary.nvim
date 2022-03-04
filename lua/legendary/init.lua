@@ -43,29 +43,6 @@ function M.setup(new_config)
   end
 end
 
---- Given a function reference and some arguments
---- return a new function that will call the original
---- function with the given arguments
----@param fn function
-function M.lazy(fn, ...)
-  local args = { ... }
-  return function()
-    fn(table.unpack(args))
-  end
-end
-
---- Given a Lua path to require, the name of a function in the `require`d module,
---- and some arguments, return a new function that will call
---- the function `fn_name` in module `module_name` with the specified args
----@param module_name string
----@param fn_name string
-function M.lazy_required_fn(module_name, fn_name, ...)
-  local args = { ... }
-  return function()
-    require(module_name)[fn_name](table.unpack(args))
-  end
-end
-
 M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
 M = vim.tbl_extend('error', M, require('legendary.bindings'))
 

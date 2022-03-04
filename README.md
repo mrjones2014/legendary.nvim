@@ -133,9 +133,10 @@ If you need to pass parameters to the Lua function or call a function dynamicall
 you can use the following helper functions:
 
 ```lua
+local helpers = require('legendary.helpers')
 local keymaps = {
-  { '<leader>p', require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
-  { '<leader>f', require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
+  { '<leader>p', helpers.lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
+  { '<leader>f', helpers.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
 }
 ```
 
@@ -322,7 +323,7 @@ If you need to pass arguments to a function when it's called, you can use the `l
 ```lua
 -- lazy() takes the first argument (a function)
 -- and calls it with the rest of the arguments
-require('legendary').lazy(vim.lsp.buf.formatting_sync, nil, 1500)
+require('legendary.helpers').lazy(vim.lsp.buf.formatting_sync, nil, 1500)
 -- this will *return a new function* defined as:
 function()
   vim.lsp.buf.formatting_sync(nil, 1500)
@@ -336,11 +337,35 @@ you can use the `lazy_required_fn` helper:
 ```lua
 -- lazy_required_fn() takes a module path as the first argument,
 -- a function name from that module as the second argument,
--- and calls the function by name with the rest of the arguments
-require('legendary').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true })
+-- and returns a new function that calls the function by name
+-- with the rest of the arguments
+require('legendary.helpers').lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true })
 -- this will *return a new function* defined as:
 function()
   require('telescope.bulitin')['oldfiles']({ only_cwd = true })
+end
+```
+
+If you want to create a keymap that creates a split pane, then does something in the new pane,
+there are helpers for that too:
+
+```lua
+-- split_then() and vsplit_then() both take a Lua function as the
+-- only parameter, and return a new function that creates a
+-- horizontal or vertical split, then calls the specified Lua function
+require('legendary.helpers').split_then(vim.lsp.buf.definition)
+-- this will *return a new function* defined as:
+function()
+  vim.cmd('sp')
+  vim.lsp.buf.definition()
+end
+
+-- and likewise, this:
+require('legendary.helpers').vsplit_then(vim.lsp.buf.definition)
+-- will *return a new function* defined as:
+function()
+  vim.cmd('vsp')
+  vim.lsp.buf.definition()
 end
 ```
 
