@@ -369,6 +369,14 @@ function()
 end
 ```
 
+These helpers can also be composed together. For example, to create a function that creates a vertical
+split, then uses Telescope to find and open a file in the new split, you could write:
+
+```lua
+local helpers = require('legendary.helpers')
+helpers.vsplit_then(helpers.lazy_required_fn('telescope', 'find_file', { only_cwd = true }))
+```
+
 ## Utilities
 
 `legendary.nvim` also provides some utilities for developing Lua keymaps, commands, etc.
