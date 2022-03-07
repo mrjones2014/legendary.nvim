@@ -77,6 +77,9 @@ function M.set_keymap(keymap)
     keymap.opts.silent = true
   end
 
+  -- map description to neovim's internal `desc` field
+  keymap.opts.desc = keymap.opts.desc or keymap.description
+
   vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
 end
 
