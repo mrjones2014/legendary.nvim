@@ -71,16 +71,16 @@ function M.set_keymap(keymap)
     return
   end
 
-  keymap.opts = keymap.opts or {}
+  local opts = vim.deepcopy(keymap.opts or {})
   -- set default options
-  if keymap.opts.silent == nil then
-    keymap.opts.silent = true
+  if opts.silent == nil then
+    opts.silent = true
   end
 
   -- map description to neovim's internal `desc` field
-  keymap.opts.desc = keymap.opts.desc or keymap.description
+  opts.desc = opts.desc or keymap.description
 
-  vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], keymap.opts)
+  vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
 end
 
 --- Strip a leading `:` or `<cmd>` if there is one
@@ -119,7 +119,7 @@ function M.set_command(cmd)
     return
   end
 
-  local opts = cmd.opts or {}
+  local opts = vim.deepcopy(cmd.opts or {})
   opts.desc = opts.desc or cmd.description
 
   vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
