@@ -4,7 +4,7 @@ local M = {}
 ---@param item1 LegendaryItem
 ---@param item2 LegendaryItem
 ---@return boolean
-function M.tbl_shallow_eq(item1, item2)
+function M.opts_tbl_eq(item1, item2)
   local tbl1 = vim.deepcopy(item1) or {}
   local tbl2 = vim.deepcopy(item2) or {}
   tbl1.buffer = nil
@@ -36,7 +36,7 @@ function M.list_contains(items, new_item)
       and item[2] == new_item[2]
       and (item.mode or 'n') == (new_item.mode or 'n')
       and item.description == new_item.description
-      and M.tbl_shallow_eq(item.opts, new_item.opts)
+      and M.opts_tbl_eq(item.opts, new_item.opts)
     then
       return true
     end
