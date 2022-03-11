@@ -179,10 +179,7 @@ function M.find(type)
   local current_mode = vim.fn.mode()
   local visual_selection = nil
   if current_mode and current_mode:sub(1, 1):lower() == 'v' then
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local cline, ccol = cursor[1], cursor[2]
-    local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
-    visual_selection = { cline, ccol, vline, vcol }
+    visual_selection = require('legendary.utils').get_marks()
     require('legendary.utils').send_escape_key()
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)

@@ -78,7 +78,32 @@ function M.set_keymap(keymap)
   -- map description to neovim's internal `desc` field
   opts.desc = opts.desc or keymap.description
 
+  if
+    type(keymap[2]) == 'function' and keymap.mode == 'v'
+    or (type(keymap.mode) == 'table' and vim.tbl_contains(keymap.mode, 'v'))
+  then
+    local orig = keymap[2]
+    keymap[2] = function()
+      -- ensure marks are set
+      local marks = M.get_marks()
+      M.set_marks(marks)
+      orig(marks)
+    end
+  end
+
   vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
+end
+
+function M.get_marks()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local cline, ccol = cursor[1], cursor[2]
+  local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
+  return { cline, ccol, vline, vcol }
+end
+
+function M.set_marks(visual_selection)
+  vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2] })
+  vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4] })
 end
 
 --- Strip a leading `:` or `<cmd>` if there is one
