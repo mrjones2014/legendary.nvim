@@ -20,7 +20,7 @@ end
 function M.setup(new_config)
   new_config = new_config or {}
   if type(new_config) ~= 'table' then
-    require('legendary.util').notify(
+    require('legendary.utils').notify(
       string.format("require('legendary').setup() expects a table, got: %s", type(new_config))
     )
     return
