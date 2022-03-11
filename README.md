@@ -20,11 +20,11 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Prerequisites
 
-- Neovim nightly (0.7+), specifically, this plugin depends on the following APIs:
+- Neovim nightly (0.7+); specifically, this plugin depends on the following APIs:
   - `vim.keymap.set`
   - `vim.api.nvim_create_augroup`
   - `vim.api.nvim_create_autocmd`
-- (Optional) A good `vim.ui.select()` handler, this is what provides the UI for the finder.
+- (Optional) A ~~good~~ `vim.ui.select()` handler; this ~~is what~~ provides the UI for the finder.
   - I recommend [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) paired with [dressing.nvim](https://github.com/stevearc/dressing.nvim).
 
 ## Installation
@@ -65,7 +65,7 @@ Vim commands:
 
 ## Configuration
 
-Default configuration is shown below. For detailed explanation of the structure for
+Default configuration is shown below. For a detailed explanation of the structure for
 keymap, command, and `augroup`/`autocmd` tables, see [Table Structures](#table-structures).
 
 ```lua
@@ -112,8 +112,8 @@ require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
 
 ## Table Structures
 
-The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar. To show up in the finder,
-you must include the `description` property.
+The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar. You must include a
+`description` property before the entry will display in the finder.
 
 <details>
 <summary>Keymaps</summary>
@@ -314,9 +314,10 @@ require('legendary').bind_autocmds({
 
 ### Lua Helpers for Creating Mappings
 
-When creating keymaps to Lua functions, the Lua expressions are evaluated at the time they are bound.
-This means you typically need to pass a function _reference_ instead of calling the function.
-For example, you probably want to map `vim.lsp.buf.formatting_sync`, _not_ `vim.lsp.buf.formatting_sync()`.
+When creating keymaps to Lua functions, the Lua expressions are evaluated at the time the mappings
+table is first read by nvim.  This means you typically need to pass a function _reference_ instead
+of calling the function.  For example, you probably want to map `vim.lsp.buf.formatting_sync`, _not_
+`vim.lsp.buf.formatting_sync()`.
 
 If you need to pass arguments to a function when it's called, you can use the `lazy` helper:
 
@@ -329,10 +330,12 @@ function()
   vim.lsp.buf.formatting_sync(nil, 1500)
 end
 ```
-
-If you need to call a function from a plugin, but do not want the require that the plugin be
-loaded at the time you define your keymaps (like if you're using Packer to lazy-load plugins),
-you can use the `lazy_required_fn` helper:
+<!-- don't like the wording 'don't require the plugin _be_ loaded
+  'be loaded' feels awkward
+  but I can't think of a good replacemet ATM -->
+If you need to call a function from Legendary, but don't require the plugin be loaded at the time
+you define your keymaps (for example, if you're using Packer to lazy-load plugins), you can use the
+`lazy_required_fn` helper:
 
 ```lua
 -- lazy_required_fn() takes a module path as the first argument,
