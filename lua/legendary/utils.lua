@@ -79,8 +79,8 @@ function M.set_keymap(keymap)
   opts.desc = opts.desc or keymap.description
 
   if
-    type(keymap[2]) == 'function' and keymap.mode == 'v'
-    or (type(keymap.mode) == 'table' and vim.tbl_contains(keymap.mode, 'v'))
+    type(keymap[2]) == 'function'
+    and (keymap.mode == 'v' or (type(keymap.mode) == 'table' and vim.tbl_contains(keymap.mode, 'v')))
   then
     local orig = keymap[2]
     keymap[2] = function()
