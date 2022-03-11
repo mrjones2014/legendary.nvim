@@ -175,6 +175,11 @@ function M.get_definition(item)
   return item[1]
 end
 
+--- Helper function to send <ESC> properly
+function M.send_escape_key()
+  vim.api.nvim_feedkeys(vim.api.nvim_eval('"\\<esc>"'), 'n', true)
+end
+
 function M.notify(msg, level, title)
   level = level or vim.log.levels.ERROR
   title = title or 'legendary.nvim'
