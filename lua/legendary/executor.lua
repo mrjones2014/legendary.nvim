@@ -15,7 +15,7 @@ local function mode_from_table(modes)
 end
 
 local function exec(item)
-  local cmd = require('legendary.util').get_definition(item)
+  local cmd = require('legendary.utils').get_definition(item)
 
   if type(cmd) == 'function' then
     cmd()
@@ -26,7 +26,7 @@ local function exec(item)
       cmd = cmd:sub(1, #cmd - 2)
     end
 
-    local cmd_stripped = require('legendary.util').strip_leading_cmd_char(cmd)
+    local cmd_stripped = require('legendary.utils').strip_leading_cmd_char(cmd)
     if #cmd ~= #cmd_stripped then
       cmd = cmd_stripped
       cmd = string.format(':%s', cmd)
@@ -59,7 +59,7 @@ function M.try_execute(item)
   end
 
   if mode == nil or (mode ~= 'n' and mode ~= 'i') then
-    require('legendary.util').notify(
+    require('legendary.utils').notify(
       'Executing keybinds is only supported for insert and normal mode bindings.',
       vim.log.levels.INFO
     )
