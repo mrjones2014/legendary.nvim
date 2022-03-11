@@ -177,6 +177,11 @@ end
 ---@param type string
 function M.find(type)
   local current_mode = vim.fn.mode()
+  local visual_selection = nil
+  if current_mode and current_mode:sub(1, 1):lower() == 'v' then
+    visual_selection = require('legendary.utils').get_marks()
+    require('legendary.utils').send_escape_key()
+  end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
   local items
@@ -190,13 +195,14 @@ function M.find(type)
     local concat = require('legendary.utils').concat_lists
     items = concat(concat(keymaps, commands), autocmds)
   end
+
   vim.ui.select(items, {
     prompt = require('legendary.config').select_prompt,
     kind = string.format('legendary-%s', type or 'items'),
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
-      require('legendary.executor').try_execute(selected)
+      require('legendary.executor').try_execute(selected, visual_selection)
 
       -- only restore cursor position if we're going back
       -- to the same window

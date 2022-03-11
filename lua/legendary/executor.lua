@@ -14,11 +14,11 @@ local function mode_from_table(modes)
   return nil
 end
 
-local function exec(item)
+local function exec(item, visual_selection)
   local cmd = require('legendary.utils').get_definition(item)
 
   if type(cmd) == 'function' then
-    cmd()
+    cmd(visual_selection)
   else
     if cmd:sub(#cmd - 3):lower() == '<cr>' then
       cmd = cmd:sub(1, #cmd - 4)
@@ -48,32 +48,42 @@ end
 
 --- Attmept to execute the selected item
 ---@param item LegendaryItem
-function M.try_execute(item)
+function M.try_execute(item, visual_selection)
   if not item then
     return
   end
 
   local mode = item.mode or 'n'
-  if type(mode) == 'table' then
+  -- if there's a visual selection, execute in visual mode
+  if visual_selection then
+    mode = 'v'
+  elseif type(mode) == 'table' then
     mode = mode_from_table(mode)
   end
 
-  if mode == nil or (mode ~= 'n' and mode ~= 'i') then
+  if mode == nil or (mode ~= 'n' and mode ~= 'i' and mode ~= 'v') then
     require('legendary.utils').notify(
-      'Executing keybinds is only supported for insert and normal mode bindings.',
+      'Executing keybinds is only supported for insert, normal, and visual mode bindings.',
       vim.log.levels.INFO
     )
     return
   end
 
-  if mode == 'n' then
+  if mode == 'n' then -- normal mode
     vim.cmd('stopinsert')
     exec(item)
-    return
+  elseif mode == 'i' then -- insert mode
+    vim.cmd('startinsert')
+    exec(item)
+  elseif mode == 'v' then -- visual mode
+    vim.cmd('normal v')
+    if visual_selection then
+      require('legendary.utils').set_marks(visual_selection)
+    end
+    exec(item, visual_selection)
+    -- back to normal mode
+    require('legendary.utils').send_escape_key()
   end
-
-  vim.cmd('startinsert')
-  exec(item)
 end
 
 return M
