@@ -29,6 +29,11 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --check .
         version: 0.10.1
+    - name: Install Neovim
+      uses: rhysd/action-setup-vim@v1
+      with:
+        neovim: true
+        version: nightly
     - name: Checkout Plenary
       uses: actions/checkout@v2
       with:

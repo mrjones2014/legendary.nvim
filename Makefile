@@ -1,8 +1,11 @@
-.PHONY:
+.PHONY: ensure-test-deps
 ensure-test-deps:
 	mkdir -p vendor
 	if test ! -d ./vendor/plenary.nvim; then git clone git@github.com:nvim-lua/plenary.nvim.git ./vendor/plenary.nvim/; fi
-	pushd ./vendor/plenary.nvim/ && git pull && popd
+
+.PHONY: update-test-deps
+update-test-deps: ensure-test-deps
+	cd ./vendor/plenary.nvim/ && git pull && cd ..
 
 .PHONY: test
 test: ensure-test-deps
