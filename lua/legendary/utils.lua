@@ -84,15 +84,10 @@ function M.set_keymap(keymap)
   then
     local orig = keymap[2]
     keymap[2] = function()
-      local current_mode = vim.fn.mode()
-      if current_mode and current_mode:sub(1, 1):lower() == 'v' then
-        -- ensure marks are set
-        local marks = M.get_marks()
-        M.set_marks(marks)
-        orig(marks)
-      else
-        orig()
-      end
+      -- ensure marks are set
+      local marks = M.get_marks()
+      M.set_marks(marks)
+      orig(marks)
     end
   end
 

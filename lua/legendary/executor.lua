@@ -78,8 +78,7 @@ function M.try_execute(item, visual_selection)
   elseif mode == 'v' then -- visual mode
     vim.cmd('normal v')
     if visual_selection then
-      vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2] })
-      vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4] })
+      require('legendary.utils').set_marks(visual_selection)
     end
     exec(item, visual_selection)
     -- back to normal mode
