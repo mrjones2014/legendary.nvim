@@ -1,17 +1,15 @@
 local M = {}
 
---- Check if opts lists contain the same opts
+--- Check if opts lists contain the same opts. Ignores the 'buffer' key.
 ---@param item1 LegendaryItem
 ---@param item2 LegendaryItem
 ---@return boolean
-function M.opts_are_equal(item1, item2)
-  for key, _ in pairs(item1 or {}) do
-    if key ~= 'buffer' and item1[key] ~= (item2 or {})[key] then
-      return false
-    end
-  end
-
-  return true
+function M.tbl_shallow_eq(item1, item2)
+  local tbl1 = vim.deepcopy(item1) or {}
+  local tbl2 = vim.deepcopy(item2) or {}
+  tbl1.buffer = nil
+  tbl2.buffer = nil
+  return vim.inspect(tbl1) == vim.inspect(tbl2)
 end
 
 --- Join two list-like tables together
@@ -27,18 +25,18 @@ function M.concat_lists(tbl1, tbl2)
   return result
 end
 
---- Check for duplicates in a list-like table of items
+--- Check if a list-like table of items already contains an item
 ---@param items LegendaryItem[]
 ---@param new_item LegendaryItem
 ---@return boolean
-function M.contains_duplicates(items, new_item)
+function M.list_contains(items, new_item)
   for _, item in pairs(items) do
     if
       item[1] == new_item[1]
-      and item[2] == item[2]
+      and item[2] == new_item[2]
       and (item.mode or 'n') == (new_item.mode or 'n')
       and item.description == new_item.description
-      and M.opts_are_equal(item.opts, new_item.opts)
+      and M.tbl_shallow_eq(item.opts, new_item.opts)
     then
       return true
     end
