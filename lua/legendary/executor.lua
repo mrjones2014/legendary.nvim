@@ -77,9 +77,6 @@ function M.try_execute(item, visual_selection)
     exec(item)
   elseif mode == 'v' then -- visual mode
     vim.cmd('normal v')
-    if visual_selection then
-      require('legendary.utils').set_marks(visual_selection)
-    end
     exec(item, visual_selection)
     -- back to normal mode
     require('legendary.utils').send_escape_key()

@@ -83,11 +83,16 @@ function M.set_keymap(keymap)
     and (keymap.mode == 'v' or (type(keymap.mode) == 'table' and vim.tbl_contains(keymap.mode, 'v')))
   then
     local orig = keymap[2]
-    keymap[2] = function()
-      -- ensure marks are set
-      local marks = M.get_marks()
-      M.set_marks(marks)
-      orig(marks)
+    keymap[2] = function(visual_selection)
+      local current_mode = vim.fn.mode()
+      if current_mode and current_mode:sub(1, 1):lower() == 'v' then
+        -- ensure marks are set
+        local marks = visual_selection or M.get_marks()
+        M.set_marks(marks)
+        orig(marks)
+      else
+        orig()
+      end
     end
   end
 
@@ -102,8 +107,9 @@ function M.get_marks()
 end
 
 function M.set_marks(visual_selection)
-  vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2] })
-  vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4] })
+  print(vim.inspect(visual_selection))
+  vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2], 0 })
+  vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4], 0 })
 end
 
 --- Strip a leading `:` or `<cmd>` if there is one
