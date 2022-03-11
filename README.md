@@ -24,7 +24,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
   - `vim.keymap.set`
   - `vim.api.nvim_create_augroup`
   - `vim.api.nvim_create_autocmd`
-- (Optional) A ~~good~~ `vim.ui.select()` handler; this ~~is what~~ provides the UI for the finder.
+- (Optional) A `vim.ui.select()` handler; this provides the UI for the finder.
   - I recommend [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) paired with [dressing.nvim](https://github.com/stevearc/dressing.nvim).
 
 ## Installation
@@ -330,10 +330,7 @@ function()
   vim.lsp.buf.formatting_sync(nil, 1500)
 end
 ```
-<!-- don't like the wording 'don't require the plugin _be_ loaded
-  'be loaded' feels awkward
-  but I can't think of a good replacemet ATM -->
-If you need to call a function from Legendary, but don't require the plugin be loaded at the time
+If you need to call a function from Legendary, but the plugin won't be loaded at the time
 you define your keymaps (for example, if you're using Packer to lazy-load plugins), you can use the
 `lazy_required_fn` helper:
 
