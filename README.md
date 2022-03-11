@@ -14,7 +14,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
-- Execute normal and insert mode keymaps, commands, and autocommands, when you select them
+- Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this issue](https://github.com/mrjones2014/legendary.nvim/issues/1) or submit a PR!
 
@@ -160,6 +160,29 @@ local keymaps = {
     description = 'Format buffer with LSP',
     opts = { silent = true, noremap = true }
   },
+}
+```
+
+If you want a keymap to apply to both normal and insert mode, use a Lua function.
+The function will be given a table containing the visual selection range (the marks
+will also be set). This allows you to create mappings like:
+
+```lua
+local keymaps = {
+  {
+    '<leader>c',
+    function(visual_selection)
+      if visual_selection then
+        -- comment a visual block
+        vim.cmd(":'<,'>CommentToggle")
+      else
+        -- comment a single line from normal mode
+        vim.cmd(':CommentToggle')
+      end
+    end,
+    description = 'Toggle comment',
+    mode = { 'n', 'v' },
+  }
 }
 ```
 
