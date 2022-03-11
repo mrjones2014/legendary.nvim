@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-lua:
-    name: Run Luacheck and Stylua
+    name: Run Luacheck, Stylua, and Unit Tests
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -29,3 +29,10 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --check .
         version: 0.10.1
+    - name: Checkout Plenary
+      uses: actions/checkout@v2
+      with:
+        repository: nvim-lua/plenary.nvim
+        path: vendor/plenary.nvim
+    - name: Run Unit Tests
+      run: make test
