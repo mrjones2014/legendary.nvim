@@ -10,11 +10,11 @@ describe('legendary.utils', function()
         buffer = 2,
         once = true,
       }
-      assert(utils.tbl_shallow_eq(opts1, opts2))
+      assert(utils.opts_tbl_eq(opts1, opts2))
     end)
 
     it('considers empty opts equal', function()
-      assert(utils.tbl_shallow_eq({}, {}))
+      assert(utils.opts_tbl_eq({}, {}))
     end)
 
     it('considers indexed items', function()
@@ -26,7 +26,7 @@ describe('legendary.utils', function()
         once = true,
         'test an indexed item',
       }
-      assert(utils.tbl_shallow_eq(opts1, opts2))
+      assert(utils.opts_tbl_eq(opts1, opts2))
     end)
   end)
 
@@ -42,7 +42,7 @@ describe('legendary.utils', function()
         'item 5',
         'item 6',
       }
-      assert(utils.tbl_shallow_eq(utils.concat_lists(list1, list2), {
+      assert(utils.opts_tbl_eq(utils.concat_lists(list1, list2), {
         'item 1',
         'item 2',
         'item 3',
