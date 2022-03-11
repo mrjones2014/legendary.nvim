@@ -338,8 +338,8 @@ require('legendary').bind_autocmds({
 ### Lua Helpers for Creating Mappings
 
 When creating keymaps to Lua functions, the Lua expressions are evaluated at the time the mappings
-table is first read by nvim.  This means you typically need to pass a function _reference_ instead
-of calling the function.  For example, you probably want to map `vim.lsp.buf.formatting_sync`, _not_
+table is first read by nvim. This means you typically need to pass a function _reference_ instead
+of calling the function. For example, you probably want to map `vim.lsp.buf.formatting_sync`, _not_
 `vim.lsp.buf.formatting_sync()`.
 
 If you need to pass arguments to a function when it's called, you can use the `lazy` helper:
@@ -353,6 +353,7 @@ function()
   vim.lsp.buf.formatting_sync(nil, 1500)
 end
 ```
+
 If you need to call a function from Legendary, but the plugin won't be loaded at the time
 you define your keymaps (for example, if you're using Packer to lazy-load plugins), you can use the
 `lazy_required_fn` helper:
