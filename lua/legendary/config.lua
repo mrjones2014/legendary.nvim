@@ -1,7 +1,14 @@
 ---@type LegendaryConfig
 local M = {
   include_builtin = true,
-  select_prompt = 'Legendary',
+  select_prompt = function(kind)
+    if kind == 'legendary.items' then
+      return 'Legendary'
+    end
+
+    -- Convert kind to Title Case (e.g. legendary.keymaps => Legendary Keymaps)
+    return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
+  end,
   keymaps = {},
   commands = {},
   autocmds = {},
