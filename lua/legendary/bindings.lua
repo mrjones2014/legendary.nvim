@@ -21,11 +21,9 @@ function M.bind_keymap(keymap, kind)
     return
   end
 
-  if keymap.description and #keymap.description > 0 then
-    keymap.kind = kind or 'legendary.keymap'
-    require('legendary.formatter').update_padding(keymap)
-    table.insert(keymaps, Formatter(keymap))
-  end
+  keymap.kind = kind or 'legendary.keymap'
+  require('legendary.formatter').update_padding(keymap)
+  table.insert(keymaps, Formatter(keymap))
 end
 
 --- Bind a list of keymaps with legendary.nvim
@@ -62,11 +60,9 @@ function M.bind_command(cmd, kind)
     return
   end
 
-  if cmd.description and #cmd.description > 0 then
-    cmd.kind = kind or 'legendary.command'
-    require('legendary.formatter').update_padding(cmd)
-    table.insert(commands, Formatter(cmd))
-  end
+  cmd.kind = kind or 'legendary.command'
+  require('legendary.formatter').update_padding(cmd)
+  table.insert(commands, Formatter(cmd))
 end
 
 --- Bind a list of commands with legendary.nvim
