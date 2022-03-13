@@ -167,8 +167,8 @@ end
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
 --- only commands, pass "autocmds" to find only autocmds.
----@param type string
-function M.find(type)
+---@param item_type string
+function M.find(item_type)
   local current_mode = vim.fn.mode()
   local visual_selection = nil
   if current_mode and current_mode:sub(1, 1):lower() == 'v' then
@@ -178,20 +178,26 @@ function M.find(type)
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
   local items
-  if type == 'keymaps' then
+  if item_type == 'keymaps' then
     items = keymaps
-  elseif type == 'commands' then
+  elseif item_type == 'commands' then
     items = commands
-  elseif type == 'autocmds' then
+  elseif item_type == 'autocmds' then
     items = autocmds
   else
     local concat = require('legendary.utils').concat_lists
     items = concat(concat(keymaps, commands), autocmds)
   end
 
+  local select_kind = string.format('legendary.%s', item_type or 'items')
+  local prompt = require('legendary.config').select_prompt
+  if type(prompt) == 'function' then
+    prompt = prompt(select_kind)
+  end
+
   vim.ui.select(items, {
-    prompt = require('legendary.config').select_prompt,
-    kind = string.format('legendary.%s', type or 'items'),
+    prompt = prompt,
+    kind = select_kind,
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
