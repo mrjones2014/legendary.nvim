@@ -415,12 +415,15 @@ Any `return` value from evaluated Lua is printed to the command area.
 
 ### Sorting
 
-`legendary.nvim` will set `kind` to `legendary-keymaps`, `legendary-commands`, `legendary-autocmds`,
+`legendary.nvim` will set `kind` to `legendary.keymaps`, `legendary.commands`, `legendary.autocmds`,
 or `legendary-items`, depending on whether you are searching keymaps, commands, autocmds, or all.
 
 You can use to override the sorter used for `legendary.nvim` in your `vim.ui.select()`
 handler (for example, [dressing.nvim](https://github.com/stevearc/dressing.nvim) has a
 `get_config` option to do this).
 
-The individual items will have `kind = 'legendary-keymap'`, `kind = 'legendary-command`,
-or `kind = 'legendary-autocmd`, depending on whether it is a keymap, command, or autocmd.
+The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
+or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
+
+Builtins will have `kind = 'legendary.keymap.bulitin'`, `kind = 'legendary.command.builtin'`,
+or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, or autocmd.
