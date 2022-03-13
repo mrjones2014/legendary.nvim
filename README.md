@@ -73,7 +73,16 @@ require('legendary').setup({
   -- Include builtins by default, set to false to disable
   include_builtin = true,
   -- Customize the prompt that appears on your vim.ui.select() handler
-  select_prompt = 'Legendary',
+  -- Can be a string or a function that takes the `kind` and returns
+  -- a string. See "Item Kinds" below for details.
+  select_prompt = function(kind)
+    if kind == 'legendary.items' then
+      return 'Legendary'
+    end
+
+    -- Convert kind to Title Case (e.g. legendary.keymaps => Legendary Keymaps)
+    return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
+  end,
   -- Initial keymaps to bind
   keymaps = {
     -- your keymap tables here
@@ -418,14 +427,11 @@ The following commands are available once `legendary.nvim` is loaded:
 
 Any `return` value from evaluated Lua is printed to the command area.
 
-### Sorting
+### Item Kinds
 
-`legendary.nvim` will set `kind` to `legendary.keymaps`, `legendary.commands`, `legendary.autocmds`,
-or `legendary-items`, depending on whether you are searching keymaps, commands, autocmds, or all.
-
-You can use to override the sorter used for `legendary.nvim` in your `vim.ui.select()`
-handler (for example, [dressing.nvim](https://github.com/stevearc/dressing.nvim) has a
-`get_config` option to do this).
+`legendary.nvim` will set the `kind` option on `vim.ui.select()` to `legendary.keymaps`,
+`legendary.commands`, `legendary.autocmds`, or `legendary-items`, depending on whether you
+are searching keymaps, commands, autocmds, or all.
 
 The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
 or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
