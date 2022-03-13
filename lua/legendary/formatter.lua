@@ -62,17 +62,15 @@ function M.Formatter(selected_item)
 
   setmetatable(item, {
     __tostring = function(self_item)
-      local description
-      if self_item.description ~= nil and type(self_item.description) == 'string' and #self_item.description > 0 then
-        description = self_item.description
-      else
-        description = 'No description provided'
-      end
-
       local col1 = col1_str(self_item)
       local col2 = col2_str(self_item)
 
-      return string.format('%s │ %s │ %s', lpad(col1, padding_col1), lpad(col2, padding_col2), description)
+      return string.format(
+        '%s │ %s │ %s',
+        lpad(col1, padding_col1),
+        lpad(col2, padding_col2),
+        self_item.description or ''
+      )
     end,
   })
 
