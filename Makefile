@@ -10,3 +10,12 @@ update-test-deps: ensure-test-deps
 .PHONY: test
 test: ensure-test-deps
 	nvim --headless --noplugin -u tests/testrc.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/testrc.lua' }"
+
+.PHONY: lint
+lint:
+	luacheck lua/ tests/
+	stylua --check lua/ tests/
+
+.PHONY: check
+check: test
+check: lint

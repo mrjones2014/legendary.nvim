@@ -1,10 +1,28 @@
+local M = {}
+
 ---@class LegendaryConfig
 ---@field include_builtin boolean
----@field select_prompt string
+---@field select_prompt string | function
+---@field formatter function
 ---@field keymaps LegendaryItem[]
 ---@field commands LegendaryItem[]
+---@field autocmds LegendaryAugroup[] | LegendaryItem[]
 ---@field auto_register_which_key boolean
-local LegendaryConfig --luacheck: ignore
+M.LegendaryConfig = {
+  validate = function(config)
+    -- diagnostics see vim.validate() as not accepting any parameters for some reason
+    ---@diagnostic disable-next-line: redundant-parameter
+    vim.validate({
+      include_builtin = { config.include_builtin, 'boolean', true },
+      select_prompt = { config.select_prompt, { 'string', 'function' }, true },
+      formatter = { config.formatter, 'function', true },
+      keymaps = { config.keymaps, 'table', true },
+      commands = { config.keymaps, 'table', true },
+      autocmds = { config.keymaps, 'table', true },
+      auto_register_which_key = { config.auto_register_which_key, 'boolean', true },
+    })
+  end,
+}
 
 ---@class LegendaryItem
 ---@field [1] string
@@ -12,10 +30,40 @@ local LegendaryConfig --luacheck: ignore
 ---@field mode string | string[]
 ---@field description string
 ---@field opts table
-local LegendaryItem --luacheck: ignore
+M.LegendaryItem = {
+  validate = function(item)
+    -- diagnostics see vim.validate() as not accepting any parameters for some reason
+    ---@diagnostic disable-next-line: redundant-parameter
+    vim.validate({
+      [1] = { item[1], { 'string', 'table' } }, -- [1] can be a table for autocmds
+      [2] = { item[2], { 'string', 'function' }, true },
+      mode = { item.mode, { 'string', 'table' }, true },
+      description = { item.description, { 'string' }, true },
+      opts = { item.opts, 'table', true },
+    })
+  end,
+}
 
 ---@class LegendaryAugroup
 ---@field name string
 ---@field clear boolean
 ---@field [1] LegendaryItem[]
-local LegendaryAugroup --luacheck: ignore
+M.LegendaryAugroup = {
+  validate = function(au)
+    -- diagnostics see vim.validate() as not accepting any parameters for some reason
+    ---@diagnostic disable-next-line: redundant-parameter
+    vim.validate({
+      name = { au.name, 'string' },
+      clear = { au.clear, 'boolean', true },
+    })
+
+    for i, autocmd in pairs(au) do
+      -- list items
+      if type(i) == 'number' then
+        M.LegendaryItem.validate(autocmd)
+      end
+    end
+  end,
+}
+
+return M
