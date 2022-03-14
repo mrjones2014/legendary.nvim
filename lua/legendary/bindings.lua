@@ -9,6 +9,8 @@ local formatter = require('legendary.formatter')
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
 function M.bind_keymap(keymap, kind)
+  require('legendary.types').LegendaryItem.validate(keymap)
+
   if not keymap or type(keymap) ~= 'table' then
     require('legendary.utils').notify(string.format('Expected table, got %s', type(keymap)))
     return
@@ -48,6 +50,7 @@ end
 --- Bind a single command with legendary.nvim
 ---@param cmd LegendaryItem
 function M.bind_command(cmd, kind)
+  require('legendary.types').LegendaryItem.validate(cmd)
   if not cmd or type(cmd) ~= 'table' then
     require('legendary.utils').notify(string.format('Expected table, got %s', type(cmd)))
     return
@@ -85,6 +88,8 @@ end
 --- Bind a single autocmd with legendary.nvim
 ---@param autocmd LegendaryItem
 local function bind_autocmd(autocmd, group, kind)
+  require('legendary.types').LegendaryItem.validate(autocmd)
+
   if not vim.api.nvim_create_augroup then
     require('legendary.utils').notify(
       --luacheck: ignore
@@ -115,6 +120,7 @@ end
 --- Bind an augroup of autocmds
 ---@param augroup LegendaryAugroup
 local function bind_augroup(augroup, kind)
+  require('legendary.types').LegendaryAugroup.validate(augroup)
   if not vim.api.nvim_create_augroup then
     require('legendary.utils').notify(
       --luacheck: ignore
