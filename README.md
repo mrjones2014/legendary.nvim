@@ -74,15 +74,18 @@ require('legendary').setup({
   include_builtin = true,
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that takes the `kind` and returns
-  -- a string. See "Item Kinds" below for details.
-  select_prompt = function(kind)
-    if kind == 'legendary.items' then
-      return 'Legendary'
-    end
-
-    -- Convert kind to Title Case (e.g. legendary.keymaps => Legendary Keymaps)
-    return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
-  end,
+  -- a string. See "Item Kinds" below for details. By default,
+  -- prompt is 'Legendary' when searching all items,
+  -- 'Legendary Keymaps' when searching keymaps,
+  -- 'Legendary Commands' when searching commands,
+  -- and 'Legendary Autocmds' when searching autocmds.
+  select_prompt = nil,
+  -- Optionally pass a custom formatter function. This function
+  -- must return a table of non-nil string values for display.
+  -- The values will be used as column values when formatted.
+  -- See function `get_default_format_values(item)` in
+  -- `lua/legendary/formatter.lua` to see default implementation.
+  formatter = nil,
   -- Initial keymaps to bind
   keymaps = {
     -- your keymap tables here

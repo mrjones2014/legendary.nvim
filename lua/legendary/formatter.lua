@@ -1,7 +1,6 @@
 local M = {}
 
-local padding_col1 = 0
-local padding_col2 = 0
+local padding = {}
 
 local function lpad(str, len)
   return string.format('%s%s', str, string.rep(' ', len - #str))
@@ -42,25 +41,60 @@ local function col2_str(item)
   return item[1]
 end
 
-function M.update_padding(legendary_item)
-  local col1 = col1_str(legendary_item)
-  if #col1 > padding_col1 then
-    padding_col1 = #col1
+local function col3_str(item)
+  return item.description or ''
+end
+
+function M.get_default_format_values(item)
+  return {
+    col1_str(item),
+    col2_str(item),
+    col3_str(item),
+  }
+end
+
+function M.get_format_values(item)
+  local formatter = require('legendary.config').formatter
+  if formatter and type(formatter) == 'function' then
+    local values = formatter(item)
+    -- normalize values
+    for i, value in pairs(values) do
+      if value == nil then
+        values[i] = ''
+      end
+
+      if type(value) ~= 'string' then
+        values[i] = tostring(value)
+      end
+    end
+
+    return values
   end
 
-  local col2 = col2_str(legendary_item)
-  if #col2 > padding_col2 then
-    padding_col2 = #legendary_item[1]
+  return M.get_default_format_values(item)
+end
+
+function M.update_padding(item)
+  local values = M.get_format_values(item)
+  for i, value in pairs(values) do
+    if #value > (padding[i] or 0) then
+      padding[i] = #value
+    end
   end
 end
 
 --- Format a LegendaryItem to a string
 ---@param item LegendaryItem
-function M.tostring(item)
-  local col1 = col1_str(item)
-  local col2 = col2_str(item)
+function M.format(item)
+  local values = M.get_format_values(item)
 
-  return string.format('%s │ %s │ %s', lpad(col1, padding_col1), lpad(col2, padding_col2), item.description or '')
+  local format_str = string.format('%%s%s', string.rep(' │ %s', #values - 1))
+  local strs = {}
+  for i, value in pairs(values) do
+    table.insert(strs, lpad(value, padding[i] or 0))
+  end
+
+  return string.format(format_str, require('legendary.helpers').unpack(strs))
 end
 
 return M

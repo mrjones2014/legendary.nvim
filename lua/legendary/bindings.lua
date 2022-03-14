@@ -198,7 +198,7 @@ function M.find(item_type)
   vim.ui.select(items, {
     prompt = prompt,
     kind = select_kind,
-    format_item = formatter.tostring,
+    format_item = formatter.format,
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
