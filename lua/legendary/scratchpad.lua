@@ -40,7 +40,7 @@ local function lua_pcall(chunk, ...)
       result[2] = debug.traceback(routine, result[2], 0)
     end
   end
-  return unpack(result)
+  return require('legendary.helpers').unpack(result)
 end
 
 function M.exec_lua(lua_str)

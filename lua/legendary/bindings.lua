@@ -4,7 +4,7 @@ local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
 local autocmds = require('legendary.config').autocmds
 
-local Formatter = require('legendary.formatter').Formatter
+local formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
@@ -23,7 +23,7 @@ function M.bind_keymap(keymap, kind)
 
   keymap.kind = kind or 'legendary.keymap'
   require('legendary.formatter').update_padding(keymap)
-  table.insert(keymaps, Formatter(keymap))
+  table.insert(keymaps, keymap)
 end
 
 --- Bind a list of keymaps with legendary.nvim
@@ -62,7 +62,7 @@ function M.bind_command(cmd, kind)
 
   cmd.kind = kind or 'legendary.command'
   require('legendary.formatter').update_padding(cmd)
-  table.insert(commands, Formatter(cmd))
+  table.insert(commands, cmd)
 end
 
 --- Bind a list of commands with legendary.nvim
@@ -108,7 +108,7 @@ local function bind_autocmd(autocmd, group, kind)
   if autocmd.description and #autocmd.description > 0 then
     autocmd.kind = kind or 'legendary.autocmd'
     require('legendary.formatter').update_padding(autocmd)
-    table.insert(autocmds, Formatter(autocmd))
+    table.insert(autocmds, autocmd)
   end
 end
 
@@ -198,6 +198,7 @@ function M.find(item_type)
   vim.ui.select(items, {
     prompt = prompt,
     kind = select_kind,
+    format_item = formatter.format,
   }, function(selected)
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
