@@ -19,7 +19,7 @@ end
 function M.parse_whichkey(which_key_tbls, which_key_opts)
   local wk_parsed = require('which-key.keys').parse_mappings({}, which_key_tbls, which_key_opts.prefix or '')
   local legendary_tbls = {}
-  for _, wk in pairs(wk_parsed) do
+  vim.tbl_map(function(wk)
     -- check wk.group because these don't represent standalone keymaps
     -- they basically represent a "folder" of other keymaps
     -- TODO support which-key mappings with buf values
@@ -30,7 +30,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
     table.insert(legendary_tbls, wk_to_legendary(wk))
 
     ::continue::
-  end
+  end, wk_parsed)
   return legendary_tbls
 end
 

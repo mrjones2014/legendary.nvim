@@ -7,11 +7,11 @@ local function lpad(str, len)
 end
 
 local function col1_str(item)
-  if vim.startswith(item.kind, 'legendary.command') then
+  if vim.startswith(item.kind or '', 'legendary.command') then
     return '<cmd>'
   end
 
-  if vim.startswith(item.kind, 'legendary.autocmd') then
+  if vim.startswith(item.kind or '', 'legendary.autocmd') then
     local events = item[1]
     if type(events) == 'table' then
       events = table.concat(events, ', ')
@@ -29,7 +29,7 @@ local function col1_str(item)
 end
 
 local function col2_str(item)
-  if vim.startswith(item.kind, 'legendary.autocmd') then
+  if vim.startswith(item.kind or '', 'legendary.autocmd') then
     local patterns = item.opts and item.opts.pattern or '*'
     if type(patterns) == 'table' then
       patterns = table.concat(patterns, ', ')
