@@ -9,6 +9,7 @@ local M = {
     -- Convert kind to Title Case (e.g. legendary.keymaps => Legendary Keymaps)
     return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
   end,
+  formatter = nil,
   keymaps = {},
   commands = {},
   autocmds = {},
@@ -35,6 +36,7 @@ function M.setup(new_config)
 
   M.include_builtin = default_bool(new_config.include_builtin, M.include_builtin)
   M.select_prompt = new_config.select_prompt or M.select_prompt
+  M.formatter = new_config.formatter or M.formatter
   M.keymaps = new_config.keymaps or M.keymaps
   M.commands = new_config.commands or M.commands
   M.autocmds = new_config.autocmds or M.autocmds
