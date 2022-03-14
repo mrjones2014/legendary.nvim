@@ -13,13 +13,13 @@ local function print_multiline(str, out_type)
     str = vim.inspect(str)
   end
   local lines = vim.split(str, '\n', true)
-  for _, line in pairs(lines) do
+  vim.tbl_map(function(line)
     if out_type == 'error' or out_type == 'err' then
       vim.api.nvim_err_writeln(line)
     else
       vim.api.nvim_out_write(string.format('%s\n', line))
     end
-  end
+  end, lines)
 end
 
 local function lua_reader(code_str)

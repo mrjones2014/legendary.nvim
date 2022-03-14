@@ -18,10 +18,9 @@ end
 ---@return any[]
 function M.concat_lists(tbl1, tbl2)
   local result = vim.deepcopy(tbl1)
-  for _, item in pairs(tbl2) do
+  vim.tbl_map(function(item)
     result[#result + 1] = item
-  end
-
+  end, tbl2)
   return result
 end
 

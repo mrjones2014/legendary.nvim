@@ -40,9 +40,9 @@ function M.bind_keymaps(new_keymaps, kind)
     return
   end
 
-  for _, keymap in pairs(new_keymaps) do
+  vim.tbl_map(function(keymap)
     M.bind_keymap(keymap, kind)
-  end
+  end, new_keymaps)
 end
 
 --- Bind a single command with legendary.nvim
@@ -77,9 +77,9 @@ function M.bind_commands(cmds, kind)
     return
   end
 
-  for _, cmd in pairs(cmds) do
+  vim.tbl_map(function(cmd)
     M.bind_command(cmd, kind)
-  end
+  end, cmds)
 end
 
 --- Bind a single autocmd with legendary.nvim
@@ -153,13 +153,13 @@ function M.bind_autocmds(au, kind)
   elseif require('legendary.utils').is_user_autocmd(au) then
     bind_autocmd(au)
   else
-    for _, augroup_or_autocmd in pairs(au) do
+    vim.tbl_map(function(augroup_or_autocmd)
       if require('legendary.utils').is_user_augroup(augroup_or_autocmd) then
         bind_augroup(augroup_or_autocmd, kind)
       elseif require('legendary.utils').is_user_autocmd(augroup_or_autocmd) then
         bind_autocmd(augroup_or_autocmd, kind)
       end
-    end
+    end, au)
   end
 end
 

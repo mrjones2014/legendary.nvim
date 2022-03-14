@@ -54,9 +54,9 @@ describe('formatter', function()
         { 'gd', 'lua vim.lsp.buf.definition', description = 'Go to definition with LSP' },
       }
 
-      for _, item in pairs(items) do
+      vim.tbl_map(function(item)
         formatter.update_padding(item)
-      end
+      end, items)
 
       local padding = formatter.get_padding()
       assert(#padding == 3)
