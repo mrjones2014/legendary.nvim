@@ -82,9 +82,10 @@ require('legendary').setup({
   select_prompt = nil,
   -- Optionally pass a custom formatter function. This function
   -- receives the item as a parameter and must return a table of
-  -- non-nil string values for display. The values will be used
-  -- as column values when formatted. See function
-  -- `get_default_format_values(item)` in
+  -- non-nil string values for display. It must return the same
+  -- number of values for each item to work correctly.
+  -- The values will be used as column values when formatted.
+  -- See function `get_default_format_values(item)` in
   -- `lua/legendary/formatter.lua` to see default implementation.
   formatter = nil,
   -- Initial keymaps to bind
