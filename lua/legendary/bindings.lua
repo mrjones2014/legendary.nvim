@@ -105,7 +105,7 @@ local function bind_autocmd(autocmd, group, kind)
     return
   end
 
-  if autocmd.description and #autocmd.description > 0 then
+  if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
     autocmd.kind = kind or 'legendary.autocmd'
     require('legendary.formatter').update_padding(autocmd)
     table.insert(autocmds, autocmd)
