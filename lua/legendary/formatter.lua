@@ -7,11 +7,11 @@ local function lpad(str, len)
 end
 
 local function col1_str(item)
-  if item.kind == 'legendary.command' then
+  if vim.startswith(item.kind, 'legendary.command') then
     return '<cmd>'
   end
 
-  if item.kind == 'legendary.autocmd' then
+  if vim.startswith(item.kind, 'legendary.autocmd') then
     local events = item[1]
     if type(events) == 'table' then
       events = table.concat(events, ', ')
@@ -29,7 +29,7 @@ local function col1_str(item)
 end
 
 local function col2_str(item)
-  if item.kind == 'legendary.autocmd' then
+  if vim.startswith(item.kind, 'legendary.autocmd') then
     local patterns = item.opts and item.opts.pattern or '*'
     if type(patterns) == 'table' then
       patterns = table.concat(patterns, ', ')
@@ -118,12 +118,12 @@ end
 function M.format(item)
   local values = M.get_format_values(item)
 
-  local format_str = string.format('%%s%s', string.rep(' │ %s', #values - 1))
   local strs = {}
   for i, value in pairs(values) do
     table.insert(strs, lpad(value, padding[i] or 0))
   end
 
+  local format_str = string.format('%%s%s', string.rep(' │ %s', #values - 1))
   return string.format(format_str, require('legendary.helpers').unpack(strs))
 end
 
