@@ -54,27 +54,13 @@ function M.update_padding(legendary_item)
   end
 end
 
---- Create a formatter for a given item
----@param selected_item LegendaryItem
----@return LegendaryItem
-function M.Formatter(selected_item)
-  local item = vim.deepcopy(selected_item)
+--- Format a LegendaryItem to a string
+---@param item LegendaryItem
+function M.tostring(item)
+  local col1 = col1_str(item)
+  local col2 = col2_str(item)
 
-  setmetatable(item, {
-    __tostring = function(self_item)
-      local col1 = col1_str(self_item)
-      local col2 = col2_str(self_item)
-
-      return string.format(
-        '%s │ %s │ %s',
-        lpad(col1, padding_col1),
-        lpad(col2, padding_col2),
-        self_item.description or ''
-      )
-    end,
-  })
-
-  return item
+  return string.format('%s │ %s │ %s', lpad(col1, padding_col1), lpad(col2, padding_col2), item.description or '')
 end
 
 return M
