@@ -41,6 +41,7 @@ function M.setup(new_config)
   M.commands = new_config.commands or M.commands
   M.autocmds = new_config.autocmds or M.autocmds
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key, M.auto_register_which_key)
+  require('legendary.types').LegendaryConfig.validate(M)
 end
 
 return M
