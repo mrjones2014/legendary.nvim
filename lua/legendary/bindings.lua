@@ -46,9 +46,9 @@ function M.bind_keymaps(new_keymaps, kind)
     return
   end
 
-  if not new_keymaps or not new_keymaps[1] or type(new_keymaps[1]) ~= 'table' then
+  if not vim.tbl_islist(new_keymaps) then
     require('legendary.utils').notify(
-      string.format('Expected list-like table, got %s', type(new_keymaps and new_keymaps[1] or nil))
+      string.format('Expected list-like table, got %s, at require("legendary").bind_keymaps', type(new_keymaps))
     )
     return
   end
@@ -89,8 +89,10 @@ function M.bind_commands(cmds, kind)
     return
   end
 
-  if not cmds or not cmds[1] or type(cmds[1]) ~= 'table' then
-    require('legendary.utils').notify(string.format('Expected list-like table, got %s', type(cmds and cmds[1] or nil)))
+  if vim.tbl_islist(cmds) then
+    require('legendary.utils').notify(
+      string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(cmds))
+    )
     return
   end
 
