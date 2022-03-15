@@ -30,6 +30,8 @@ M.LegendaryConfig = {
 ---@field mode string | string[]
 ---@field description string
 ---@field opts table
+---@field kind string
+---@field id number
 M.LegendaryItem = {
   validate = function(item)
     -- diagnostics see vim.validate() as not accepting any parameters for some reason
@@ -40,6 +42,8 @@ M.LegendaryItem = {
       mode = { item.mode, { 'string', 'table' }, true },
       description = { item.description, { 'string' }, true },
       opts = { item.opts, 'table', true },
+      kind = { item.kind, 'string' },
+      id = { item.id, 'number' },
     })
   end,
 }
@@ -50,19 +54,13 @@ M.LegendaryItem = {
 ---@field [1] LegendaryItem[]
 M.LegendaryAugroup = {
   validate = function(au)
+    -- the autocmds inside get validated by LegendaryItem.validate at bind time
     -- diagnostics see vim.validate() as not accepting any parameters for some reason
     ---@diagnostic disable-next-line: redundant-parameter
     vim.validate({
       name = { au.name, 'string' },
       clear = { au.clear, 'boolean', true },
     })
-
-    for i, autocmd in pairs(au) do
-      -- list items
-      if type(i) == 'number' then
-        M.LegendaryItem.validate(autocmd)
-      end
-    end
   end,
 }
 
