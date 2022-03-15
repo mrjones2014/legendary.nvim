@@ -15,6 +15,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
 - Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
+- Show your most recently executed keymap, command, or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this issue](https://github.com/mrjones2014/legendary.nvim/issues/1) or submit a PR!
 
@@ -88,6 +89,9 @@ require('legendary').setup({
   -- See function `get_default_format_values(item)` in
   -- `lua/legendary/formatter.lua` to see default implementation.
   formatter = nil,
+  -- When you trigger an item via legendary.nvim,
+  -- show it at the top next time you use legendary.nvim
+  most_recent_item_at_top = true,
   -- Initial keymaps to bind
   keymaps = {
     -- your keymap tables here
