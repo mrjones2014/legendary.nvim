@@ -6,7 +6,7 @@ local function next_id()
   return _current_id
 end
 
-local last_used_item_id
+local last_used_item
 
 local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
@@ -184,8 +184,9 @@ end
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
 --- only commands, pass "autocmds" to find only autocmds.
----@param item_type string
-function M.find(item_type)
+---@param item_kind string
+function M.find(item_kind)
+  item_kind = item_kind or ''
   local current_mode = vim.fn.mode()
   local visual_selection = nil
   if current_mode and current_mode:sub(1, 1):lower() == 'v' then
@@ -195,20 +196,21 @@ function M.find(item_type)
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local current_window_num = vim.api.nvim_win_get_number(0)
   local items
-  if item_type == 'keymaps' then
+  if item_kind == 'legendary.keymap' then
     items = keymaps
-  elseif item_type == 'commands' then
+  elseif item_kind == 'legendary.command' then
     items = commands
-  elseif item_type == 'autocmds' then
+  elseif item_kind == 'legendary.autocmd' then
     items = autocmds
   else
     local concat = require('legendary.utils').concat_lists
     items = concat(concat(keymaps, commands), autocmds)
   end
 
-  if last_used_item_id then
+  -- only search for last used item if kind matches
+  if last_used_item and vim.startswith(last_used_item.kind, item_kind) then
     for i, item in pairs(items) do
-      if item.id == last_used_item_id then
+      if item.id == last_used_item.id then
         -- move to top of list
         table.remove(items, i)
         table.insert(items, 1, item)
@@ -219,7 +221,7 @@ function M.find(item_type)
     ::last_used_item_found::
   end
 
-  local select_kind = string.format('legendary.%s', item_type or 'items')
+  local select_kind = string.format('legendary.%s', item_kind or 'items')
   local prompt = require('legendary.config').select_prompt
   if type(prompt) == 'function' then
     prompt = prompt(select_kind)
@@ -234,7 +236,8 @@ function M.find(item_type)
       return
     end
 
-    last_used_item_id = selected.id
+    -- we only need a shallow copy, we only need kind and id
+    last_used_item = vim.tbl_extend('force', {}, selected)
 
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
