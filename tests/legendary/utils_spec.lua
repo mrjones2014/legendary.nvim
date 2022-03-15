@@ -1,32 +1,46 @@
 local utils = require('legendary.utils')
 describe('legendary.utils', function()
-  describe('tbl_shallow_eq(item1, item2)', function()
-    it("ignored the 'buffer' opt for equality check", function()
-      local opts1 = {
-        buffer = 1,
-        once = true,
-      }
-      local opts2 = {
-        buffer = 2,
-        once = true,
-      }
-      assert(utils.opts_tbl_eq(opts1, opts2))
-    end)
-
+  describe('tbl_deep_eq(item1, item2)', function()
     it('considers empty opts equal', function()
-      assert(utils.opts_tbl_eq({}, {}))
+      assert(utils.tbl_deep_eq({}, {}))
     end)
 
     it('considers indexed items', function()
       local opts1 = {
-        once = true,
+        'some item',
+        some_prop = true,
         'test an indexed item',
+        'test another indexed item',
       }
       local opts2 = {
-        once = true,
+        'some item',
+        some_prop = true,
         'test an indexed item',
+        'test another indexed item',
       }
-      assert(utils.opts_tbl_eq(opts1, opts2))
+      assert(utils.tbl_deep_eq(opts1, opts2))
+    end)
+
+    it("considers nested tables and when keys aren't in the same order", function()
+      local opts1 = {
+        'some item',
+        'test an indexed item',
+        'test another indexed item',
+        opts = {
+          buffer = 1,
+          silent = true,
+        },
+      }
+      local opts2 = {
+        'some item',
+        'test an indexed item',
+        'test another indexed item',
+        opts = {
+          silent = true,
+          buffer = 1,
+        },
+      }
+      assert(utils.tbl_deep_eq(opts1, opts2))
     end)
   end)
 
@@ -42,7 +56,7 @@ describe('legendary.utils', function()
         'item 5',
         'item 6',
       }
-      assert(utils.opts_tbl_eq(utils.concat_lists(list1, list2), {
+      assert(utils.tbl_deep_eq(utils.concat_lists(list1, list2), {
         'item 1',
         'item 2',
         'item 3',
@@ -64,7 +78,7 @@ describe('legendary.utils', function()
       assert(utils.list_contains(items, new_item))
     end)
 
-    it('returns true when items contains a table that is identical except for "buffer" opt', function()
+    it('returns false when items contains a table that is identical except for "buffer" opt', function()
       local item = {
         'FileType',
         ':setlocal conceallevel=0',
@@ -76,7 +90,17 @@ describe('legendary.utils', function()
       local new_item = vim.deepcopy(item)
       new_item.opts.buffer = 1
       local items = { item }
-      assert(utils.list_contains(items, new_item))
+      assert(not utils.list_contains(items, new_item))
+    end)
+
+    it('returns false when items are completely different', function()
+      local item = {
+        'SomeItem',
+        some_property = 7,
+      }
+      local new_item = { name = 'a different item' }
+      local items = { item }
+      assert(not utils.list_contains(items, new_item))
     end)
   end)
 
