@@ -21,7 +21,7 @@ describe('legendary.utils', function()
       assert(utils.tbl_deep_eq(opts1, opts2))
     end)
 
-    it('considers nested tables and when keys aren\'t in the same order', function()
+    it("considers nested tables and when keys aren't in the same order", function()
       local opts1 = {
         'some item',
         'test an indexed item',
@@ -29,7 +29,7 @@ describe('legendary.utils', function()
         opts = {
           buffer = 1,
           silent = true,
-        }
+        },
       }
       local opts2 = {
         'some item',
@@ -38,7 +38,7 @@ describe('legendary.utils', function()
         opts = {
           silent = true,
           buffer = 1,
-        }
+        },
       }
       assert(utils.tbl_deep_eq(opts1, opts2))
     end)
