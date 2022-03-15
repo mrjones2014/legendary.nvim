@@ -4,7 +4,7 @@ local M = {}
 ---@param item1 LegendaryItem
 ---@param item2 LegendaryItem
 ---@return boolean
-function M.opts_tbl_eq(item1, item2)
+function M.tbl_deep_eq(item1, item2)
   local tbl1 = item1 or {}
   local tbl2 = item2 or {}
   return vim.inspect(tbl1) == vim.inspect(tbl2)
@@ -33,7 +33,7 @@ function M.list_contains(items, new_item)
       and item[2] == new_item[2]
       and (item.mode or 'n') == (new_item.mode or 'n')
       and item.description == new_item.description
-      and M.opts_tbl_eq(item.opts, new_item.opts)
+      and M.tbl_deep_eq(item.opts, new_item.opts)
     then
       return true
     end
