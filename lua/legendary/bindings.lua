@@ -26,13 +26,15 @@ function M.bind_keymap(keymap, kind)
     return
   end
 
-  -- always bind the keymaps in case they are buffer-specific
-  require('legendary.utils').set_keymap(keymap)
-
   if require('legendary.utils').list_contains(keymaps, keymap) then
     return
   end
 
+  if keymap.opts and keymap.opts.buffer == 0 then
+    keymap.opts.buffer = vim.api.nvim_get_current_buf()
+  end
+
+  require('legendary.utils').set_keymap(keymap)
   require('legendary.formatter').update_padding(keymap)
   table.insert(keymaps, keymap)
 end
@@ -67,13 +69,15 @@ function M.bind_command(cmd, kind)
     return
   end
 
-  -- always set the command in case it's buffer-specific
-  require('legendary.utils').set_command(cmd)
+  if cmd.opts and cmd.opts.buffer == 0 then
+    cmd.opts.buffer = vim.api.nvim_get_current_buf()
+  end
 
   if require('legendary.utils').list_contains(commands, cmd) then
     return
   end
 
+  require('legendary.utils').set_command(cmd)
   require('legendary.formatter').update_padding(cmd)
   table.insert(commands, cmd)
 end
@@ -115,13 +119,15 @@ local function bind_autocmd(autocmd, group, kind)
     return
   end
 
-  -- always set autocmd in case it is buffer-specific
-  require('legendary.utils').set_autocmd(autocmd, group)
-
   if require('legendary.utils').list_contains(autocmds, autocmd) then
     return
   end
 
+  if autocmd.opts and autocmd.opts.buffer == 0 then
+    autocmd.opts.buffer = vim.api.nvim_get_current_buf()
+  end
+
+  require('legendary.utils').set_autocmd(autocmd, group)
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
     require('legendary.formatter').update_padding(autocmd)
     table.insert(autocmds, autocmd)
@@ -224,6 +230,11 @@ function M.find(item_kind)
 
     ::last_used_item_found::
   end
+
+  -- buffer-specific items should only appear for the current buffer
+  items = vim.tbl_filter(function(item)
+    return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
+  end, items)
 
   local select_kind = string.format('legendary.%s', item_kind or 'items')
   local prompt = require('legendary.config').select_prompt
