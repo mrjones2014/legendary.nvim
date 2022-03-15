@@ -89,7 +89,7 @@ function M.bind_commands(cmds, kind)
     return
   end
 
-  if vim.tbl_islist(cmds) then
+  if not vim.tbl_islist(cmds) then
     require('legendary.utils').notify(
       string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(cmds))
     )
