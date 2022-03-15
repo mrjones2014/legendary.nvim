@@ -1,14 +1,12 @@
 local M = {}
 
---- Check if opts lists contain the same opts. Ignores the 'buffer' key.
+--- Check if opts lists contain the same opts.
 ---@param item1 LegendaryItem
 ---@param item2 LegendaryItem
 ---@return boolean
-function M.opts_tbl_eq(item1, item2)
-  local tbl1 = vim.deepcopy(item1) or {}
-  local tbl2 = vim.deepcopy(item2) or {}
-  tbl1.buffer = nil
-  tbl2.buffer = nil
+function M.tbl_deep_eq(item1, item2)
+  local tbl1 = item1 or {}
+  local tbl2 = item2 or {}
   return vim.inspect(tbl1) == vim.inspect(tbl2)
 end
 
@@ -35,7 +33,7 @@ function M.list_contains(items, new_item)
       and item[2] == new_item[2]
       and (item.mode or 'n') == (new_item.mode or 'n')
       and item.description == new_item.description
-      and M.opts_tbl_eq(item.opts, new_item.opts)
+      and M.tbl_deep_eq(item.opts, new_item.opts)
     then
       return true
     end
@@ -150,7 +148,13 @@ function M.set_command(cmd)
   local opts = vim.deepcopy(cmd.opts or {})
   opts.desc = opts.desc or cmd.description
 
-  vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
+  if opts.buffer ~= nil then
+    local buffer = opts.buffer
+    opts.buffer = nil
+    vim.api.nvim_buf_add_user_command(buffer, M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
+  else
+    vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
+  end
 end
 
 --- Check if the given item is a user autocmd
