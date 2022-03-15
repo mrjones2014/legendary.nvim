@@ -20,7 +20,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
   local wk_parsed = require('which-key.keys').parse_mappings(
   {},
   which_key_tbls,
-  which_key_opts and which_key_opts.prefix or '',
+  which_key_opts and which_key_opts.prefix or ''
 )
   local legendary_tbls = {}
   vim.tbl_map(function(wk)
