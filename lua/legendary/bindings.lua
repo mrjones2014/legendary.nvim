@@ -208,7 +208,11 @@ function M.find(item_kind)
   end
 
   -- only search for last used item if kind matches
-  if last_used_item and vim.startswith(last_used_item.kind, item_kind) then
+  if
+    require('legendary.config').most_recent_item_at_top
+    and last_used_item
+    and vim.startswith(last_used_item.kind, item_kind)
+  then
     for i, item in pairs(items) do
       if item.id == last_used_item.id then
         -- move to top of list
@@ -237,7 +241,10 @@ function M.find(item_kind)
     end
 
     -- we only need a shallow copy, we only need kind and id
-    last_used_item = vim.tbl_extend('force', {}, selected)
+    -- only bother making the copy if feature is enabled
+    if require('legendary.config').most_recent_item_at_top then
+      last_used_item = vim.tbl_extend('force', {}, selected)
+    end
 
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
