@@ -9,15 +9,15 @@ local function find(opts)
   end
 
   if vim.trim(opts.args:lower()) == 'keymaps' then
-    return require('legendary').find('keymaps')
+    return require('legendary').find('legendary.keymap')
   end
 
   if vim.trim(opts.args:lower()) == 'commands' then
-    return require('legendary').find('commands')
+    return require('legendary').find('legendary.command')
   end
 
   if vim.trim(opts.args:lower()) == 'autocmds' then
-    return require('legendary').find('autocmds')
+    return require('legendary').find('legendary.autocmd')
   end
 
   require('legendary').find()

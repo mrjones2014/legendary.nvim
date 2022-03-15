@@ -10,6 +10,7 @@ local M = {
     return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
   end,
   formatter = nil,
+  most_recent_item_at_top = true,
   keymaps = {},
   commands = {},
   autocmds = {},
@@ -37,6 +38,7 @@ function M.setup(new_config)
   M.include_builtin = default_bool(new_config.include_builtin, M.include_builtin)
   M.select_prompt = new_config.select_prompt or M.select_prompt
   M.formatter = new_config.formatter or M.formatter
+  M.most_recent_item_at_top = default_bool(new_config.most_recent_item_at_top, M.most_recent_item_at_top)
   M.keymaps = new_config.keymaps or M.keymaps
   M.commands = new_config.commands or M.commands
   M.autocmds = new_config.autocmds or M.autocmds
