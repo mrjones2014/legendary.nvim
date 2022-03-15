@@ -1,5 +1,13 @@
 local M = {}
 
+local _current_id = 0
+local function next_id()
+  _current_id = _current_id + 1
+  return _current_id
+end
+
+local last_used_item_id
+
 local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
 local autocmds = require('legendary.config').autocmds
@@ -9,6 +17,8 @@ local formatter = require('legendary.formatter')
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
 function M.bind_keymap(keymap, kind)
+  keymap.kind = kind or 'legendary.keymap'
+  keymap.id = next_id()
   require('legendary.types').LegendaryItem.validate(keymap)
 
   if not keymap or type(keymap) ~= 'table' then
@@ -23,7 +33,6 @@ function M.bind_keymap(keymap, kind)
     return
   end
 
-  keymap.kind = kind or 'legendary.keymap'
   require('legendary.formatter').update_padding(keymap)
   table.insert(keymaps, keymap)
 end
@@ -50,6 +59,8 @@ end
 --- Bind a single command with legendary.nvim
 ---@param cmd LegendaryItem
 function M.bind_command(cmd, kind)
+  cmd.kind = kind or 'legendary.command'
+  cmd.id = next_id()
   require('legendary.types').LegendaryItem.validate(cmd)
   if not cmd or type(cmd) ~= 'table' then
     require('legendary.utils').notify(string.format('Expected table, got %s', type(cmd)))
@@ -63,7 +74,6 @@ function M.bind_command(cmd, kind)
     return
   end
 
-  cmd.kind = kind or 'legendary.command'
   require('legendary.formatter').update_padding(cmd)
   table.insert(commands, cmd)
 end
@@ -88,6 +98,8 @@ end
 --- Bind a single autocmd with legendary.nvim
 ---@param autocmd LegendaryItem
 local function bind_autocmd(autocmd, group, kind)
+  autocmd.kind = kind or 'legendary.autocmd'
+  autocmd.id = next_id()
   require('legendary.types').LegendaryItem.validate(autocmd)
 
   if not vim.api.nvim_create_augroup then
@@ -111,7 +123,6 @@ local function bind_autocmd(autocmd, group, kind)
   end
 
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-    autocmd.kind = kind or 'legendary.autocmd'
     require('legendary.formatter').update_padding(autocmd)
     table.insert(autocmds, autocmd)
   end
@@ -195,6 +206,19 @@ function M.find(item_type)
     items = concat(concat(keymaps, commands), autocmds)
   end
 
+  if last_used_item_id then
+    for i, item in pairs(items) do
+      if item.id == last_used_item_id then
+        -- move to top of list
+        table.remove(items, i)
+        table.insert(items, 1, item)
+        goto last_used_item_found
+      end
+    end
+
+    ::last_used_item_found::
+  end
+
   local select_kind = string.format('legendary.%s', item_type or 'items')
   local prompt = require('legendary.config').select_prompt
   if type(prompt) == 'function' then
@@ -206,6 +230,12 @@ function M.find(item_type)
     kind = select_kind,
     format_item = formatter.format,
   }, function(selected)
+    if not selected then
+      return
+    end
+
+    last_used_item_id = selected.id
+
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
       require('legendary.executor').try_execute(selected, visual_selection)
