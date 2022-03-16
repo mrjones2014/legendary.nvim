@@ -261,25 +261,16 @@ function M.find(item_kind)
 
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
-      require('legendary.executor').try_execute(selected, visual_selection)
-
-      -- only restore cursor position if we're going back
-      -- to the same window
-      if vim.api.nvim_win_get_number(0) ~= current_window_num then
-        return
+      -- restore cursor position
+      vim.api.nvim_win_set_cursor(0, cursor_position)
+      -- if we were in normal or insert mode, go back to it
+      if current_mode == 'n' then
+        vim.cmd('stopinsert')
+      elseif current_mode == 'i' then
+        vim.cmd('startinsert')
       end
 
-      -- some commands close the buffer, in those cases this will fail
-      -- so wrap it in pcall
-      pcall(function()
-        vim.api.nvim_win_set_cursor(0, cursor_position)
-        -- if we were in normal or insert mode, go back to it
-        if current_mode == 'n' then
-          vim.cmd('stopinsert')
-        elseif current_mode == 'i' then
-          vim.cmd('startinsert')
-        end
-      end)
+      require('legendary.executor').try_execute(selected, visual_selection)
     end)
   end)
 end
