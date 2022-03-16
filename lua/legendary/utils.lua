@@ -104,7 +104,6 @@ function M.get_marks()
 end
 
 function M.set_marks(visual_selection)
-  print(vim.inspect(visual_selection))
   vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2], 0 })
   vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4], 0 })
 end
