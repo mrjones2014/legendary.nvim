@@ -202,7 +202,6 @@ function M.find(item_kind)
     require('legendary.utils').send_escape_key()
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
-  local current_window_num = vim.api.nvim_win_get_number(0)
   local items
   if item_kind == 'legendary.keymap' then
     items = keymaps
