@@ -20,29 +20,20 @@ local function exec(item, visual_selection)
   if type(cmd) == 'function' then
     cmd(visual_selection)
   else
-    if cmd:sub(#cmd - 3):lower() == '<cr>' then
-      cmd = cmd:sub(1, #cmd - 4)
-    elseif cmd:sub(#cmd - 1):lower() == '\r' then
-      cmd = cmd:sub(1, #cmd - 2)
-    end
-
-    local cmd_stripped = require('legendary.utils').strip_leading_cmd_char(cmd)
-    if #cmd ~= #cmd_stripped then
-      cmd = cmd_stripped
-      cmd = string.format(':%s', cmd)
-    end
-    cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
-
     if item.unfinished then
       -- % is escape character in gsub patterns
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
+
+      -- if unfinished command, remove trailing <CR>
+      if cmd:sub(#cmd - 3):lower() == '<cr>' then
+        cmd = cmd:sub(1, #cmd - 4)
+      elseif cmd:sub(#cmd - 1):lower() == '\r' then
+        cmd = cmd:sub(1, #cmd - 2)
+      end
     end
 
-    if item.unfinished or (cmd:sub(1, 5):lower() ~= '<cmd>' and cmd:sub(1, 1) ~= ':') then
-      vim.api.nvim_feedkeys(cmd, 't', true)
-    else
-      vim.cmd(string.format('execute %q', cmd))
-    end
+    cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
+    vim.api.nvim_feedkeys(cmd, 't', true)
   end
 end
 
