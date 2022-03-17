@@ -125,6 +125,24 @@ function M.strip_leading_cmd_char(cmd_str)
   return cmd_str
 end
 
+function M.strip_trailing_cr(cmd_str)
+  local cmd = vim.deepcopy(cmd_str)
+  if cmd:sub(#cmd - 3):lower() == '<cr>' then
+    cmd = cmd:sub(1, #cmd - 4)
+  elseif cmd:sub(#cmd - 1):lower() == '\r' then
+    cmd = cmd:sub(1, #cmd - 2)
+  end
+  return cmd
+end
+
+function M.append_trailing_cr(cmd_str)
+  local cmd = vim.deepcopy(cmd_str)
+  if #cmd == #(M.strip_trailing_cr(cmd)) then
+    cmd = string.format('%s<CR>', cmd)
+  end
+  return cmd
+end
+
 --- Check if given item is a user-defined command
 ---@param cmd any
 ---@return boolean

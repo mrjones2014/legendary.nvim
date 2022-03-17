@@ -22,14 +22,13 @@ local function exec(item, visual_selection)
   else
     if item.unfinished then
       -- % is escape character in gsub patterns
+      -- strip param names between [] or {}
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
-
       -- if unfinished command, remove trailing <CR>
-      if cmd:sub(#cmd - 3):lower() == '<cr>' then
-        cmd = cmd:sub(1, #cmd - 4)
-      elseif cmd:sub(#cmd - 1):lower() == '\r' then
-        cmd = cmd:sub(1, #cmd - 2)
-      end
+      cmd = require('legendary.utils').strip_trailing_cr(cmd)
+    elseif vim.startswith(item.kind, 'legendary.command') then
+      -- if it's a command, ensure it ends in <CR>
+      cmd = require('legendary.utils').append_trailing_cr(cmd)
     end
 
     cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
