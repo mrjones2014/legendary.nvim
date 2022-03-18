@@ -11,6 +11,10 @@ function M.setup(new_config)
     require('legendary.builtins').register_builtins()
   end
 
+  if config.include_legendary_cmds then
+    require('legendary.cmds').register()
+  end
+
   if config.keymaps and type(config.keymaps) ~= 'table' then
     require('legendary.utils').notify(string.format('keymaps must be a list-like table, got: %s', type(config.keymaps)))
     return

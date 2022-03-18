@@ -1,6 +1,7 @@
 ---@type LegendaryConfig
 local M = {
   include_builtin = true,
+  include_legendary_cmds = true,
   select_prompt = function(kind)
     if kind == 'legendary.items' then
       return 'Legendary'
