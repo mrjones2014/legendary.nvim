@@ -74,6 +74,9 @@ keymap, command, and `augroup`/`autocmd` tables, see [Table Structures](#table-s
 require('legendary').setup({
   -- Include builtins by default, set to false to disable
   include_builtin = true,
+  -- Include the commands that legendary.nvim creates itself
+  -- in the legend by default, set to false to disable
+  include_legendary_cmds = true,
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that takes the `kind` and returns
   -- a string. See "Item Kinds" below for details. By default,
