@@ -1,25 +1,83 @@
 local M = {}
 
+local last_scratchpad_buf_id = nil
+local last_results_buf_id = nil
+
+local display_strategies = {
+  'float',
+  'print',
+}
+
 function M.create_scratchpad_buffer()
+  if last_scratchpad_buf_id ~= nil then
+    pcall(vim.api.nvim_buf_delete, last_scratchpad_buf_id, { force = true })
+  end
+
   local buf_id = vim.api.nvim_create_buf(true, true)
   vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
   vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
   vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad')
   vim.api.nvim_win_set_buf(0, buf_id)
+  last_scratchpad_buf_id = buf_id
+end
+
+local function create_results_floating_win(lines)
+  if last_results_buf_id ~= nil then
+    pcall(vim.api.nvim_buf_delete, last_results_buf_id, { force = true })
+  end
+
+  local buf_id = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
+  vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
+  vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad Results')
+  local width = math.floor((vim.o.columns * (2 / 3)) + 0.5)
+  local height = math.floor((vim.o.lines * (2 / 3)) + 0.5)
+  vim.api.nvim_open_win(buf_id, true, {
+    relative = 'editor',
+    width = width,
+    height = height,
+    row = math.floor(((vim.o.lines / 2) - (height / 2)) + 0.5),
+    col = math.floor(((vim.o.columns / 2) - (width / 2)) + 0.5),
+    anchor = 'NW',
+    style = 'minimal',
+    border = 'rounded',
+  })
+  -- prevent going to insert mode in the results buffer
+  vim.keymap.set('n', 'i', '<NOP>', { buffer = buf_id })
+  -- map q and esc to :q in the results buffer
+  vim.keymap.set('n', 'q', ':q<CR>', { buffer = buf_id })
+  vim.keymap.set('n', '<ESC>', ':q<CR>', { buffer = buf_id })
+  --set the text
+  vim.api.nvim_buf_set_lines(buf_id, 0, #lines, false, lines)
+  -- make buffer readonly
+  vim.api.nvim_buf_set_option(buf_id, 'readonly', true)
+  vim.api.nvim_buf_set_option(buf_id, 'modifiable', false)
+  last_results_buf_id = buf_id
 end
 
 local function print_multiline(str, out_type)
+  local config = require('legendary.config').scratchpad
+  local display_strategy = config and config.display_results or 'float'
+  if not vim.tbl_contains(display_strategies, display_strategy) then
+    display_strategy = 'float'
+  end
+
   if type(str) ~= 'string' then
     str = vim.inspect(str)
   end
   local lines = vim.split(str, '\n', true)
-  vim.tbl_map(function(line)
-    if out_type == 'error' or out_type == 'err' then
-      vim.api.nvim_err_writeln(line)
-    else
-      vim.api.nvim_out_write(string.format('%s\n', line))
-    end
-  end, lines)
+
+  if display_strategy == 'float' then
+    create_results_floating_win(lines)
+  else -- print
+    vim.tbl_map(function(line)
+      if out_type == 'error' or out_type == 'err' then
+        vim.api.nvim_err_writeln(line)
+      else
+        vim.api.nvim_out_write(string.format('%s\n', line))
+      end
+    end, lines)
+  end
 end
 
 local function lua_reader(code_str)
