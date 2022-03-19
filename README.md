@@ -122,6 +122,7 @@ require('legendary').setup({
   scratchpad = {
     -- configure how to show results of evaluated Lua code,
     -- either 'print' or 'float'
+    -- Pressing q or <ESC> will close the float
     display_results = 'float',
   },
 })
