@@ -20,6 +20,9 @@ local M = {
     opts = {},
   },
   auto_register_which_key = true,
+  scratchpad = {
+    display_results = 'float',
+  },
 }
 
 local function default_bool(value, default)
@@ -49,6 +52,7 @@ function M.setup(new_config)
   M.autocmds = new_config.autocmds or M.autocmds
   M.which_key = new_config.which_key and new_config.which_key.mappings and new_config.which_key or M.which_key
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key, M.auto_register_which_key)
+  M.scratchpad = new_config.scratchpad or M.scratchpad
   require('legendary.types').LegendaryConfig.validate(M)
 end
 
