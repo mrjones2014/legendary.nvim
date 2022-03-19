@@ -118,6 +118,12 @@ require('legendary').setup({
   -- Automatically add which-key tables to legendary
   -- see "which-key.nvim Integration" below for more details
   auto_register_which_key = true,
+  -- settings for the :LegendaryScratch command
+  scratchpad = {
+    -- configure how to show results of evaluated Lua code,
+    -- either 'print' or 'float'
+    display_results = 'float',
+  },
 })
 ```
 
@@ -472,7 +478,8 @@ The following commands are available once `legendary.nvim` is loaded:
 - `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
 - `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
 
-Any `return` value from evaluated Lua is printed to the command area.
+Any `return` value from evaluated Lua is displayed by your configured method (either `print`ed
+to the command area, or displayed in a float, see [configuration](#configuration)).
 
 ## Sponsors
 
