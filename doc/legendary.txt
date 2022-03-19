@@ -431,7 +431,7 @@ ITEM KINDS ~
 
 `legendary.nvim` will set the `kind` option on `vim.ui.select()` to
 `legendary.keymaps`, `legendary.commands`, `legendary.autocmds`, or
-`legendary-items`, depending on whether you are searching keymaps, commands,
+`legendary.items`, depending on whether you are searching keymaps, commands,
 autocmds, or all.
 
 The individual items will have `kind = 'legendary.keymap'`, `kind =
