@@ -218,6 +218,7 @@ function M.find(item_kind)
   if
     require('legendary.config').most_recent_item_at_top
     and last_used_item
+    and type(item_kind) == 'string'
     and vim.startswith(last_used_item.kind, item_kind)
   then
     for i, item in pairs(items) do
@@ -237,14 +238,14 @@ function M.find(item_kind)
     return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
   end, items)
 
-  local select_kind = string.format('legendary.%s', item_kind or 'items')
+  local select_kind = string.format('legendary.%s', type(item_kind) == 'string' and item_kind or 'items')
   local prompt = require('legendary.config').select_prompt
   if type(prompt) == 'function' then
     prompt = prompt(select_kind)
   end
 
   vim.ui.select(items, {
-    prompt = prompt,
+    prompt = vim.trim(prompt or ''),
     kind = select_kind,
     format_item = formatter.format,
   }, function(selected)
