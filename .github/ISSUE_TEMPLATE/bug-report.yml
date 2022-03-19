@@ -17,7 +17,8 @@ body:
   - type: textarea
     id: nvim-version
     attributes:
-      label: Neovim Version (`nvim --version` output, please use a code block)
+      label: Neovim Version
+      description: "`nvim --version` output, please use a code block"
     validations:
       required: true
   - type: textarea
