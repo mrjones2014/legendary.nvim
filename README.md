@@ -395,7 +395,7 @@ require('legendary').bind_autocmds({
 ### Item Kinds
 
 `legendary.nvim` will set the `kind` option on `vim.ui.select()` to `legendary.keymaps`,
-`legendary.commands`, `legendary.autocmds`, or `legendary-items`, depending on whether you
+`legendary.commands`, `legendary.autocmds`, or `legendary.items`, depending on whether you
 are searching keymaps, commands, autocmds, or all.
 
 The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
