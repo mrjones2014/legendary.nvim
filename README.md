@@ -108,6 +108,13 @@ require('legendary').setup({
   autocmds = {
     -- your autocmd tables here
   },
+  which_key = {
+    -- you can put which-key.nvim tables here,
+    -- or alternatively have them auto-register,
+    -- see section on which-key integration
+    mappings = {},
+    opts = {}
+  },
   -- Automatically add which-key tables to legendary
   -- see "which-key.nvim Integration" below for more details
   auto_register_which_key = true,
@@ -118,6 +125,8 @@ require('legendary').setup({
 
 Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables with `legendary.nvim`!
 
+There's a couple ways you can choose to do it:
+
 ```lua
 -- automatically register which-key.nvim tables with legendary.nvim
 -- when you register them with which-key.nvim.
@@ -126,7 +135,15 @@ require('legendary').setup()
 -- now this will register them with both which-key.nvim and legendary.nvim
 require('which-key').register(your_which_key_tables, your_which_key_opts)
 
--- alternatively, if you'd prefer to manually register with legendary.nvim
+-- or, pass them through setup() directly
+require('legendary').setup({
+  which_key = {
+    maapings = your_which_key_tables,
+    opts = your_which_key_opts,
+  },
+})
+
+-- or, if you'd prefer to manually register with legendary.nvim
 require('legendary').setup({ auto_register_which_key = false })
 require('which-key').register(your_which_key_tables, your_which_key_opts)
 require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
