@@ -4,7 +4,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 <!-- panvimdoc-ignore-start -->
 
-![demo](https://user.fm/files/v2-076f25de98ac622aaa39c093aa22a11b/legendary-demo.gif)
+![demo](https://user-images.githubusercontent.com/8648891/159130975-db0201a9-60bd-4b9e-adb4-2e781c1d985c.gif)
 <sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
 <!-- panvimdoc-ignore-end -->
