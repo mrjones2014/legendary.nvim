@@ -2,8 +2,30 @@ local M = {}
 
 local padding = {}
 
-local function lpad(str, len)
-  return string.format('%s%s', str, string.rep(' ', len - #str))
+--- for unit tests only, should not be called from plugin code!
+function M.__clear_padding()
+  padding = {}
+end
+
+--- Compute the length of the given string rendered as UTF-8
+---@param str string
+---@return number
+function M.utf8_len(str)
+  str = str or ''
+  local count = 0
+  for _ in string.gmatch(str, '([%z\1-\127\194-\244][\128-\191]*)') do
+    count = count + 1
+  end
+
+  return count
+end
+
+---Right-pad strings to specified length
+---@param str string the string to pad
+---@param len number the padding value to use
+---@return string the padded string
+function M.rpad(str, len)
+  return string.format('%s%s', str, string.rep(' ', len - M.utf8_len(str)))
 end
 
 local function col1_str(item)
@@ -97,8 +119,9 @@ end
 function M.update_padding(item)
   local values = M.get_format_values(item)
   for i, value in pairs(values) do
-    if #value > (padding[i] or 0) then
-      padding[i] = #value
+    local len = M.utf8_len(value)
+    if len > (padding[i] or 0) then
+      padding[i] = len
     end
   end
 end
@@ -120,7 +143,7 @@ function M.format(item)
 
   local strs = {}
   for i, value in pairs(values) do
-    table.insert(strs, lpad(value, padding[i] or 0))
+    table.insert(strs, M.rpad(value, padding[i] or 0))
   end
 
   local format_str = string.format('%%s%s', string.rep(' │ %s', #values - 1))
