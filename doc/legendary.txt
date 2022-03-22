@@ -169,7 +169,7 @@ There’s a couple ways you can choose to do it:
     -- or, pass them through setup() directly
     require('legendary').setup({
       which_key = {
-        maapings = your_which_key_tables,
+        mappings = your_which_key_tables,
         opts = your_which_key_opts,
       },
     })
