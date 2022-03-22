@@ -146,7 +146,7 @@ require('which-key').register(your_which_key_tables, your_which_key_opts)
 -- or, pass them through setup() directly
 require('legendary').setup({
   which_key = {
-    maapings = your_which_key_tables,
+    mapings = your_which_key_tables,
     opts = your_which_key_opts,
   },
 })
