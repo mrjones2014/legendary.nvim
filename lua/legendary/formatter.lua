@@ -7,25 +7,12 @@ function M.__clear_padding()
   padding = {}
 end
 
---- Compute the length of the given string rendered as UTF-8
----@param str string
----@return number
-function M.utf8_len(str)
-  str = str or ''
-  local count = 0
-  for _ in string.gmatch(str, '([%z\1-\127\194-\244][\128-\191]*)') do
-    count = count + 1
-  end
-
-  return count
-end
-
 ---Right-pad strings to specified length
 ---@param str string the string to pad
 ---@param len number the padding value to use
 ---@return string the padded string
 function M.rpad(str, len)
-  return string.format('%s%s', str, string.rep(' ', len - M.utf8_len(str)))
+  return string.format('%s%s', str, string.rep(' ', len - vim.fn.strdisplaywidth(str)))
 end
 
 local function col1_str(item)
@@ -119,7 +106,7 @@ end
 function M.update_padding(item)
   local values = M.get_format_values(item)
   for i, value in pairs(values) do
-    local len = M.utf8_len(value)
+    local len = vim.fn.strdisplaywidth(value)
     if len > (padding[i] or 0) then
       padding[i] = len
     end
