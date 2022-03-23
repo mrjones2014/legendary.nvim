@@ -131,9 +131,9 @@ describe('formatter', function()
 
         for i, _ in pairs(padded) do
           if i < #padded then
-            assert(formatter.utf8_len(padded[i][1]) == formatter.utf8_len(padded[i + 1][1]))
-            assert(formatter.utf8_len(padded[i][2]) == formatter.utf8_len(padded[i + 1][2]))
-            assert(formatter.utf8_len(padded[i][3]) == formatter.utf8_len(padded[i + 1][3]))
+            assert(vim.fn.strdisplaywidth(padded[i][1]) == vim.fn.strdisplaywidth(padded[i + 1][1]))
+            assert(vim.fn.strdisplaywidth(padded[i][2]) == vim.fn.strdisplaywidth(padded[i + 1][2]))
+            assert(vim.fn.strdisplaywidth(padded[i][3]) == vim.fn.strdisplaywidth(padded[i + 1][3]))
           end
         end
       end
