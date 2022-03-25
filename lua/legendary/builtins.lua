@@ -369,7 +369,7 @@ local M = {
     { ':tabdo {Cmd}', description = 'Execute {Cmd} in all tabs', unfinished = true },
 
     { ':h [helptag]', description = 'Help', unfinished = true },
-    { ':helpgrep {searchterm}', description = 'Help search' },
+    { ':helpg {search}', description = 'Help search' },
     { ':h hitest.vim', description = 'Help on highlight test' },
     { ':map [mapping]', description = 'View mappings', unfinished = true },
     { ':imap [mapping]', description = 'View Insert mode mappings', unfinished = true },
@@ -385,6 +385,7 @@ local M = {
     -- for this one we'd need to somehow put the cursor before the ? in the cmdline
     -- { ':set {Opt}?', description = 'Show value of option' },
     { ':noh', description = "Clear 'hlsearch' highlights" },
+    { ':only', description = 'Make the current window the only one on the screen' },
   },
 }
 
