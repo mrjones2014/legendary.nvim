@@ -15,8 +15,9 @@ local autocmds = require('legendary.config').autocmds
 local formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
----@param keymap LegendaryItem
-function M.bind_keymap(keymap, kind)
+---@param keymap_input LegendaryItem
+function M.bind_keymap(keymap_input, kind)
+  local keymap = vim.deepcopy(keymap_input)
   keymap.kind = kind or 'legendary.keymap'
   keymap.id = next_id()
   require('legendary.types').LegendaryItem.validate(keymap)
@@ -26,12 +27,12 @@ function M.bind_keymap(keymap, kind)
     return
   end
 
-  if require('legendary.utils').list_contains(keymaps, keymap) then
-    return
-  end
-
   if keymap.opts and keymap.opts.buffer == 0 then
     keymap.opts.buffer = vim.api.nvim_get_current_buf()
+  end
+
+  if require('legendary.utils').list_contains(keymaps, keymap) then
+    return
   end
 
   if keymap.lazy then
@@ -63,8 +64,9 @@ function M.bind_keymaps(new_keymaps, kind)
 end
 
 --- Bind a single command with legendary.nvim
----@param cmd LegendaryItem
-function M.bind_command(cmd, kind)
+---@param cmd_input LegendaryItem
+function M.bind_command(cmd_input, kind)
+  local cmd = vim.deepcopy(cmd_input)
   cmd.kind = kind or 'legendary.command'
   cmd.id = next_id()
   require('legendary.types').LegendaryItem.validate(cmd)
@@ -110,8 +112,9 @@ function M.bind_commands(cmds, kind)
 end
 
 --- Bind a single autocmd with legendary.nvim
----@param autocmd LegendaryItem
-local function bind_autocmd(autocmd, group, kind)
+---@param autocmd_input LegendaryItem
+local function bind_autocmd(autocmd_input, group, kind)
+  local autocmd = vim.deepcopy(autocmd_input)
   autocmd.kind = kind or 'legendary.autocmd'
   autocmd.id = next_id()
   require('legendary.types').LegendaryItem.validate(autocmd)
@@ -129,12 +132,12 @@ local function bind_autocmd(autocmd, group, kind)
     return
   end
 
-  if require('legendary.utils').list_contains(autocmds, autocmd) then
-    return
-  end
-
   if autocmd.opts and autocmd.opts.buffer == 0 then
     autocmd.opts.buffer = vim.api.nvim_get_current_buf()
+  end
+
+  if require('legendary.utils').list_contains(autocmds, autocmd) then
+    return
   end
 
   if autocmd.lazy then
