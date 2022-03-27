@@ -161,7 +161,7 @@ require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
 ## Lazy Loading
 
 You can lazy-load keymaps, commands, and `autocmd`s by including the `lazy` option
-in the `opts` table. The `lazy` option is a table with the following keys, describing
+on the table. The `lazy` option is a table with the following keys, describing
 the `autocmd` on which to bind the item:
 
 | key       | type                             | required            | example values                            |
@@ -176,15 +176,13 @@ require('legendary').bind_keymap({
   '<leader>oi',
   require('ls-utils').organize_imports,
   description = 'Organize imports',
-  opts = {
-    lazy = {
-      event = 'FileType',
-      pattern = {
-        'javascript',
-        'typescript',
-        'javascriptreact',
-        'typescriptreact',
-      }
+  lazy = {
+    event = 'FileType',
+    pattern = {
+      'javascript',
+      'typescript',
+      'javascriptreact',
+      'typescriptreact',
     }
   }
 })
