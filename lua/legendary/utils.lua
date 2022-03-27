@@ -47,25 +47,20 @@ function M.setup_lazy_load(item, group)
   types.LegendaryItem.validate(item)
   types.LegendaryLazy.validate(item.lazy)
   require('legendary').bind_autocmds({
-    name = 'LegendaryItemLazyLoad',
-    clear = false,
-    {
-      item.lazy.event,
-      function()
-        item.lazy = nil
-        if vim.startswith(item.kind, 'legendary.keymap') then
-          require('legendary').bind_keymap(item)
-        elseif vim.startswith(item.kind, 'legendary.command') then
-          require('legendary').bind_command(item)
-        elseif vim.startswith(item.kind, 'legendary.autocmd') then
-          require('legendary').bind_autocmd(item, group)
-        end
-      end,
-      opts = {
-        pattern = item.lazy.pattern,
-        once = true,
-        description = 'find me',
-      },
+    item.lazy.event,
+    function()
+      item.lazy = nil
+      if vim.startswith(item.kind, 'legendary.keymap') then
+        require('legendary').bind_keymap(item)
+      elseif vim.startswith(item.kind, 'legendary.command') then
+        require('legendary').bind_command(item)
+      elseif vim.startswith(item.kind, 'legendary.autocmd') then
+        require('legendary').bind_autocmd(item, group)
+      end
+    end,
+    opts = {
+      pattern = item.lazy.pattern,
+      once = true,
     },
   })
 end
