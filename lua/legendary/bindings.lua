@@ -34,9 +34,13 @@ function M.bind_keymap(keymap, kind)
     keymap.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  require('legendary.utils').set_keymap(keymap)
-  require('legendary.formatter').update_padding(keymap)
-  table.insert(keymaps, keymap)
+  if keymap.lazy then
+    require('legendary.utils').setup_lazy_load(keymap)
+  else
+    require('legendary.utils').set_keymap(keymap)
+    require('legendary.formatter').update_padding(keymap)
+    table.insert(keymaps, keymap)
+  end
 end
 
 --- Bind a list of keymaps with legendary.nvim
@@ -77,9 +81,13 @@ function M.bind_command(cmd, kind)
     return
   end
 
-  require('legendary.utils').set_command(cmd)
-  require('legendary.formatter').update_padding(cmd)
-  table.insert(commands, cmd)
+  if cmd.lazy then
+    require('legendary.utils').setup_lazy_load(cmd)
+  else
+    require('legendary.utils').set_command(cmd)
+    require('legendary.formatter').update_padding(cmd)
+    table.insert(commands, cmd)
+  end
 end
 
 --- Bind a list of commands with legendary.nvim
@@ -129,10 +137,14 @@ local function bind_autocmd(autocmd, group, kind)
     autocmd.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  require('legendary.utils').set_autocmd(autocmd, group)
-  if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-    require('legendary.formatter').update_padding(autocmd)
-    table.insert(autocmds, autocmd)
+  if autocmd.lazy then
+    require('legendary.utils').setup_lazy_load(autocmd, group)
+  else
+    require('legendary.utils').set_autocmd(autocmd, group)
+    if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
+      require('legendary.formatter').update_padding(autocmd)
+      table.insert(autocmds, autocmd)
+    end
   end
 end
 

@@ -16,6 +16,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
 - Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
 - Show your most recently executed keymap, command, or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
+- Lazy-load keymaps, commands, and `autocmd`s on `autocmd` events
 - Buffer-local keymaps, commands, and autocmds only appear in the finder for the current buffer
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
@@ -155,6 +156,38 @@ require('legendary').setup({
 require('legendary').setup({ auto_register_which_key = false })
 require('which-key').register(your_which_key_tables, your_which_key_opts)
 require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
+```
+
+## Lazy Loading
+
+You can lazy-load keymaps, commands, and `autocmd`s by including the `lazy` option
+in the `opts` table. The `lazy` option is a table with the following keys, describing
+the `autocmd` on which to bind the item:
+
+| key       | type                             | required            | example values                            |
+| --------- | -------------------------------- | ------------------- | ----------------------------------------- |
+| `event`   | `string` or `table` of `string`s | Yes                 | `BufEnter`, `{ 'BufRead', 'BufNewFile' }` |
+| `pattern` | `string` or `table` of `string`s | No, defaults to `*` | `json`, `{ 'json', 'jsonc' }`             |
+
+Example:
+
+```lua
+require('legendary').bind_keymap({
+  '<leader>oi',
+  require('ls-utils').organize_imports,
+  description = 'Organize imports',
+  opts = {
+    lazy = {
+      event = 'FileType',
+      pattern = {
+        'javascript',
+        'typescript',
+        'javascriptreact',
+        'typescriptreact',
+      }
+    }
+  }
+})
 ```
 
 ## Table Structures

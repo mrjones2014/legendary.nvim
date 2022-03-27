@@ -32,6 +32,7 @@ M.LegendaryConfig = {
 ---@field opts table
 ---@field kind string
 ---@field id number
+---@field lazy nil | LegendaryLazy
 M.LegendaryItem = {
   validate = function(item)
     -- diagnostics see vim.validate() as not accepting any parameters for some reason
@@ -44,6 +45,21 @@ M.LegendaryItem = {
       opts = { item.opts, 'table', true },
       kind = { item.kind, 'string' },
       id = { item.id, 'number' },
+    })
+  end,
+}
+
+---@class LegendaryLazy
+---@field event string | table
+---@field pattern string | table | nil
+M.LegendaryLazy = {
+  validate = function(lazy)
+    -- diagnostics see vim.validate() as not accepting any parameters for some reason
+    ---@diagnostic disable-next-line: redundant-parameter
+    vim.validate({
+      lazy = { lazy, 'table' },
+      lazy_event = { lazy.event, { 'string', 'table' } },
+      lazy_pattern = { lazy.pattern, { 'string', 'table' }, true },
     })
   end,
 }

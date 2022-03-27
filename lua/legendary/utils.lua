@@ -42,6 +42,34 @@ function M.list_contains(items, new_item)
   return false
 end
 
+function M.setup_lazy_load(item, group)
+  local types = require('legendary.types')
+  types.LegendaryItem.validate(item)
+  types.LegendaryLazy.validate(item.lazy)
+  require('legendary').bind_autocmds({
+    name = 'LegendaryItemLazyLoad',
+    clear = false,
+    {
+      item.lazy.event,
+      function()
+        item.lazy = nil
+        if vim.startswith(item.kind, 'legendary.keymap') then
+          require('legendary').bind_keymap(item)
+        elseif vim.startswith(item.kind, 'legendary.command') then
+          require('legendary').bind_command(item)
+        elseif vim.startswith(item.kind, 'legendary.autocmd') then
+          require('legendary').bind_autocmd(item, group)
+        end
+      end,
+      opts = {
+        pattern = item.lazy.pattern,
+        once = true,
+        description = 'find me',
+      },
+    },
+  })
+end
+
 --- Check if given item is a user-defined keymap
 ---@param keymap any
 ---@return boolean
@@ -178,7 +206,8 @@ end
 ---@param autocmd any
 ---@return boolean
 function M.is_user_autocmd(autocmd)
-  local first_el_is_autocmd_event = type(autocmd[1]) == 'string'
+  local first_el_is_autocmd_event = type(autocmd) == 'table'
+    and type(autocmd[1]) == 'string'
     and #autocmd[1] == #M.strip_leading_cmd_char(autocmd[1])
 
   return not not (
@@ -204,6 +233,11 @@ function M.set_autocmd(autocmd, group)
     opts.command = autocmd[2]
   end
 
+  if opts.description then
+    opts.desc = opts.description
+    opts.description = nil
+  end
+
   opts.group = group or opts.group
   vim.api.nvim_create_autocmd(autocmd[1], opts)
 end
@@ -212,7 +246,7 @@ end
 ---@param augroup any
 ---@return boolean
 function M.is_user_augroup(augroup)
-  return not not (augroup and augroup.name and #augroup > 0 and M.is_user_autocmd(augroup[1]))
+  return not not (type(augroup) == 'table' and augroup.name and #augroup > 0 and M.is_user_autocmd(augroup[1]))
 end
 
 --- Get the implementation of an item
