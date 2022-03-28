@@ -1,6 +1,10 @@
 local M = {}
 
-local function mode_from_table(modes)
+local function mode_from_table(modes, current_mode)
+  if vim.tbl_contains(modes, current_mode) then
+    return current_mode
+  end
+
   for _, mode in pairs(modes) do
     if mode == 'n' then
       return mode
@@ -38,7 +42,7 @@ end
 
 --- Attmept to execute the selected item
 ---@param item LegendaryItem
-function M.try_execute(item, visual_selection)
+function M.try_execute(item, visual_selection, current_mode, current_cursor_pos)
   if not item then
     return
   end
@@ -66,10 +70,24 @@ function M.try_execute(item, visual_selection)
     vim.cmd('startinsert')
     exec(item)
   elseif mode == 'v' then -- visual mode
-    vim.cmd('normal v')
+    vim.cmd('normal! v')
     exec(item, visual_selection)
-    -- back to normal mode
-    require('legendary.utils').send_escape_key()
+  end
+
+  pcall(vim.api.nvim_win_set_cursor, 0, current_cursor_pos)
+  if current_mode == 'n' then
+    vim.cmd('stopinsert')
+  elseif current_mode == 'i' then
+    vim.cmd('startinsert')
+  elseif current_mode == 'v' then
+    if require('legendary.config').restore_visual_after_exec then
+      -- restore visual selection
+      require('legendary.utils').set_marks(visual_selection)
+      vim.cmd('normal! gv')
+    else
+      -- back to normal mode
+      require('legendary.utils').send_escape_key()
+    end
   end
 end
 
