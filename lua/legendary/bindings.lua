@@ -238,7 +238,10 @@ function M.find(item_kind)
     return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
   end, items)
 
-  local select_kind = string.format('legendary.%s', type(item_kind) == 'string' and item_kind or 'items')
+  local select_kind = string.format(
+    'legendary.%s',
+    type(item_kind) == 'string' and #item_kind > 0 and item_kind or 'items'
+  )
   local prompt = require('legendary.config').select_prompt
   if type(prompt) == 'function' then
     prompt = prompt(select_kind)
