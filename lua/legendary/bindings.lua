@@ -261,7 +261,13 @@ function M.find(item_kind)
 
     -- vim.schedule so that the select UI closes before we do anything
     vim.schedule(function()
-      require('legendary.executor').try_execute(selected, visual_selection, current_mode, cursor_position)
+      require('legendary.executor').try_execute(
+        selected,
+        vim.api.nvim_get_current_buf(),
+        visual_selection,
+        current_mode,
+        cursor_position
+      )
     end)
   end)
 end
