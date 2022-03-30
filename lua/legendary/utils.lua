@@ -54,6 +54,31 @@ function M.is_user_keymap(keymap)
     )
 end
 
+--- Check if a string represents a visual mode
+---@param mode_str string
+---@return boolean
+function M.is_visual_mode(mode_str)
+  mode_str = mode_str or ''
+  return not not (string.find(mode_str:lower(), 'v') or string.find(mode_str:lower(), '') or mode_str == 'x')
+end
+
+--- Check if an item is mapped to a visual mode
+---@param item LegendaryItem
+---@return boolean
+function M.has_visual_mode(item)
+  if type(item.mode) == 'string' then
+    return M.is_visual_mode(item.mode)
+  end
+
+  for _, mode in ipairs(item.mode or {}) do
+    if M.is_visual_mode(mode) then
+      return true
+    end
+  end
+
+  return false
+end
+
 --- Set the given keymap
 ---@param keymap LegendaryItem
 function M.set_keymap(keymap)
@@ -75,10 +100,7 @@ function M.set_keymap(keymap)
   -- map description to neovim's internal `desc` field
   opts.desc = opts.desc or keymap.description
 
-  if
-    type(keymap[2]) == 'function'
-    and (keymap.mode == 'v' or (type(keymap.mode) == 'table' and vim.tbl_contains(keymap.mode, 'v')))
-  then
+  if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
     local orig = keymap[2]
     keymap[2] = function(visual_selection)
       local current_mode = vim.fn.mode()

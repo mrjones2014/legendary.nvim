@@ -55,6 +55,10 @@ function M.try_execute(item, current_buf, visual_selection, current_mode, curren
     mode = mode_from_table(mode)
   end
 
+  if mode == 'x' and visual_selection then
+    mode = 'v'
+  end
+
   if mode == nil or (mode ~= 'n' and mode ~= 'i' and mode ~= 'v') then
     require('legendary.utils').notify(
       'Executing keybinds is only supported for insert, normal, and visual mode bindings.',
