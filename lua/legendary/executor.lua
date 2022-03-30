@@ -25,14 +25,15 @@ local function exec(item, visual_selection)
     cmd(visual_selection)
   else
     if item.unfinished then
+      vim.cmd('stopinsert')
       -- % is escape character in gsub patterns
       -- strip param names between [] or {}
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
       -- if unfinished command, remove trailing <CR>
       cmd = require('legendary.utils').strip_trailing_cr(cmd)
     elseif vim.startswith(item.kind, 'legendary.command') then
-      -- if it's a command, ensure it ends in <CR>
-      cmd = require('legendary.utils').append_trailing_cr(cmd)
+      vim.cmd(require('legendary.utils').strip_leading_cmd_char(cmd))
+      return
     end
 
     cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
