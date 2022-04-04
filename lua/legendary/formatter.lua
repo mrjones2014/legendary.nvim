@@ -34,6 +34,10 @@ local function col1_str(item)
     modes = table.concat(modes, ', ')
   end
 
+  if type(item[2]) == 'table' then
+    modes = table.concat(vim.tbl_keys(item[2]), ', ')
+  end
+
   return modes
 end
 

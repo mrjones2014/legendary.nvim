@@ -50,7 +50,7 @@ function M.is_user_keymap(keymap)
       keymap ~= nil
       and type(keymap) == 'table'
       and type(keymap[1]) == 'string'
-      and (type(keymap[2]) == 'string' or type(keymap[2]) == 'function')
+      and (type(keymap[2]) == 'string' or type(keymap[2]) == 'function' or type(keymap[2]) == 'table')
     )
 end
 
@@ -87,7 +87,7 @@ function M.set_keymap(keymap)
   end
 
   -- if not a keymap the user wants us to bind, bail
-  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' then
+  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
     return
   end
 
@@ -113,6 +113,13 @@ function M.set_keymap(keymap)
         orig()
       end
     end
+  end
+
+  if type(keymap[2]) == 'table' then
+    for mode, impl in pairs(keymap[2]) do
+      M.set_keymap({ keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description })
+    end
+    return
   end
 
   vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
@@ -240,9 +247,18 @@ end
 --- Get the implementation of an item
 ---@param item LegendaryItem
 ---@return string | function
-function M.get_definition(item)
+function M.get_definition(item, mode)
+  mode = mode or vim.fn.mode()
   if M.is_user_keymap(item) or M.is_user_autocmd(item) then
-    return item[2]
+    local def = item[2]
+    if type(def) == 'table' then
+      def = item[2][mode]
+      if def == nil and M.is_visual_mode(mode) then
+        def = item[2]['x']
+      end
+
+      return def
+    end
   end
 
   return item[1]
