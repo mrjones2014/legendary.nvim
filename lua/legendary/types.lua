@@ -45,6 +45,14 @@ M.LegendaryItem = {
       kind = { item.kind, 'string' },
       id = { item.id, 'number' },
     })
+
+    if item and type(item[2]) == 'table' and item.mode ~= nil then
+      require('legendary.utils').notify(
+        'Second mapping table element is a table for per-mode mappings, mode property will be ignored. '
+          .. vim.inspect(item),
+        vim.log.levels.WARN
+      )
+    end
   end,
 }
 
