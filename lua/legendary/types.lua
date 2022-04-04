@@ -38,7 +38,7 @@ M.LegendaryItem = {
     ---@diagnostic disable-next-line: redundant-parameter
     vim.validate({
       [1] = { item[1], { 'string', 'table' } }, -- [1] can be a table for autocmds
-      [2] = { item[2], { 'string', 'function' }, true },
+      [2] = { item[2], { 'string', 'function', 'table' }, true },
       mode = { item.mode, { 'string', 'table' }, true },
       description = { item.description, { 'string' }, true },
       opts = { item.opts, 'table', true },

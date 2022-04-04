@@ -203,6 +203,15 @@ local keymaps = {
 }
 ```
 
+Alternatively, you can map separate implementations for each mode by passing the second
+element as a table, where the table keys are the modes:
+
+```lua
+local keymaps = {
+  { '<leader>c', { n = ':CommentToggle<CR>', v = ':SomethingElseInVisualMode<CR>' }, description = 'Toggle comment' }
+}
+```
+
 You can also pass options to the keymap via the `opts` property, see `:h vim.keymap.set` to
 see available options.
 
