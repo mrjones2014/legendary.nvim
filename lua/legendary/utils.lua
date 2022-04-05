@@ -79,18 +79,12 @@ function M.has_visual_mode(item)
   return false
 end
 
---- Set the given keymap
----@param keymap LegendaryItem
-function M.set_keymap(keymap)
-  if not M.is_user_keymap(keymap) then
-    return
-  end
-
-  -- if not a keymap the user wants us to bind, bail
-  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
-    return
-  end
-
+--- Take a `LegendaryItem` and return
+--- a list of tables, each table containing
+--- the arguments that are to be passed
+--- directly into vim.keymap.set
+function M.resolve_keymap(keymap)
+  local keymaps = {}
   if type(keymap[2]) == 'table' then
     for mode, impl in pairs(keymap[2]) do
       local inner_map = { keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description }
@@ -99,13 +93,13 @@ function M.set_keymap(keymap)
         local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
         inner_map[2] = impl[1]
         inner_map.description = keymap.description
-        inner_map.opts = inner_opts
+        inner_map.opts = inner_opts or {}
       end
-      M.set_keymap(inner_map)
+      table.insert(keymaps, { mode or 'n', inner_map[1], inner_map[2], inner_map.opts })
     end
 
     -- !! it's very important that we return here
-    return
+    return keymaps
   end
 
   if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
@@ -132,7 +126,25 @@ function M.set_keymap(keymap)
   -- map description to neovim's internal `desc` field
   opts.desc = opts.desc or keymap.description
 
-  vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
+  table.insert(keymaps, { keymap.mode or 'n', keymap[1], keymap[2], opts })
+  return keymaps
+end
+
+--- Set the given keymap
+---@param keymap LegendaryItem
+function M.set_keymap(keymap)
+  if not M.is_user_keymap(keymap) then
+    return
+  end
+
+  -- if not a keymap the user wants us to bind, bail
+  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
+    return
+  end
+
+  for _, args in pairs(M.resolve_keymap(keymap)) do
+    vim.keymap.set(unpack(args))
+  end
 end
 
 function M.get_marks()

@@ -1,3 +1,4 @@
+local assert = require('luassert')
 local formatter = require('legendary.formatter')
 
 describe('formatter', function()
@@ -7,7 +8,7 @@ describe('formatter', function()
       require('legendary.config').formatter = nil
       local item = { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
       local formatted = formatter.format(item)
-      assert(formatted == 'n, v │ <leader>c │ Toggle comment')
+      assert.are.same(formatted, 'n, v │ <leader>c │ Toggle comment')
     end)
 
     it('formats properly with custom formatter function', function()
@@ -20,7 +21,7 @@ describe('formatter', function()
       end
       local item = { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
       local formatted = formatter.format(item)
-      assert(formatted == '<leader>c │ :CommentToggle<CR> │ n│v')
+      assert.are.same(formatted, '<leader>c │ :CommentToggle<CR> │ n│v')
     end)
 
     it('formats properly with a different number of columns', function()
@@ -34,7 +35,7 @@ describe('formatter', function()
       end
       local item = { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
       local formatted = formatter.format(item)
-      assert(formatted == '<leader>c │ :CommentToggle<CR> │ n│v │ Toggle comment')
+      assert.are.same(formatted, '<leader>c │ :CommentToggle<CR> │ n│v │ Toggle comment')
     end)
   end)
 
@@ -63,10 +64,10 @@ describe('formatter', function()
       end, items)
 
       local padding = formatter.get_padding()
-      assert(#padding == 3)
-      assert(padding[1] == #'<leader>c')
-      assert(padding[2] == #'lua vim.lsp.buf.definition')
-      assert(padding[3] == #'Go to definition with LSP')
+      assert.are.same(#padding, 3)
+      assert.are.same(padding[1], #'<leader>c')
+      assert.are.same(padding[2], #'lua vim.lsp.buf.definition')
+      assert.are.same(padding[3], #'Go to definition with LSP')
     end)
 
     it('computes length correctly when string contains unicode characters', function()
@@ -89,8 +90,8 @@ describe('formatter', function()
       end, items)
 
       local padding = formatter.get_padding()
-      assert(#padding == 1)
-      assert(padding[1] == 1)
+      assert.are.same(#padding, 1)
+      assert.are.same(padding[1], 1)
     end)
   end)
 
@@ -131,9 +132,9 @@ describe('formatter', function()
 
         for i, _ in pairs(padded) do
           if i < #padded then
-            assert(vim.fn.strdisplaywidth(padded[i][1]) == vim.fn.strdisplaywidth(padded[i + 1][1]))
-            assert(vim.fn.strdisplaywidth(padded[i][2]) == vim.fn.strdisplaywidth(padded[i + 1][2]))
-            assert(vim.fn.strdisplaywidth(padded[i][3]) == vim.fn.strdisplaywidth(padded[i + 1][3]))
+            assert.are.same(vim.fn.strdisplaywidth(padded[i][1]), vim.fn.strdisplaywidth(padded[i + 1][1]))
+            assert.are.same(vim.fn.strdisplaywidth(padded[i][2]), vim.fn.strdisplaywidth(padded[i + 1][2]))
+            assert.are.same(vim.fn.strdisplaywidth(padded[i][3]), vim.fn.strdisplaywidth(padded[i + 1][3]))
           end
         end
       end

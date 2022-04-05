@@ -39,5 +39,10 @@ jobs:
       with:
         repository: nvim-lua/plenary.nvim
         path: vendor/plenary.nvim
+    - name: Checkout Luassert
+      uses: actions/checkout@v2
+      with:
+        repository: Olivine-Labs/luassert
+        path: vendor/luassert
     - name: Run Unit Tests
       run: make test
