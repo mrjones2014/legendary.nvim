@@ -91,14 +91,22 @@ function M.set_keymap(keymap)
     return
   end
 
-  local opts = vim.deepcopy(keymap.opts or {})
-  -- set default options
-  if opts.silent == nil then
-    opts.silent = true
-  end
+  if type(keymap[2]) == 'table' then
+    for mode, impl in pairs(keymap[2]) do
+      local inner_map = { keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description }
+      if type(impl) == 'table' then
+        -- if inner map has opts, merge with outer opts, inner opts take precedence
+        local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
+        inner_map[2] = impl[1]
+        inner_map.description = keymap.description
+        inner_map.opts = inner_opts
+      end
+      M.set_keymap(inner_map)
+    end
 
-  -- map description to neovim's internal `desc` field
-  opts.desc = opts.desc or keymap.description
+    -- !! it's very important that we return here
+    return
+  end
 
   if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
     local orig = keymap[2]
@@ -115,12 +123,14 @@ function M.set_keymap(keymap)
     end
   end
 
-  if type(keymap[2]) == 'table' then
-    for mode, impl in pairs(keymap[2]) do
-      M.set_keymap({ keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description })
-    end
-    return
+  local opts = vim.deepcopy(keymap.opts or {})
+  -- set default options
+  if opts.silent == nil then
+    opts.silent = true
   end
+
+  -- map description to neovim's internal `desc` field
+  opts.desc = opts.desc or keymap.description
 
   vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
 end
