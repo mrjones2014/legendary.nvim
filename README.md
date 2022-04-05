@@ -212,6 +212,24 @@ local keymaps = {
 }
 ```
 
+If you need to pass separate opts per-mode, you can do that too:
+
+```lua
+local keymaps = {
+  {
+    '<leader>c',
+    {
+      n = { ':CommentToggle<CR>' opts = { noremap = true } },
+      v = {':SomethingElseInVisualMode<CR>' opts = { silent = false } }
+    },
+    description = 'Toggle comment'
+    -- if outer opts exist, the inner opts tables will be merged,
+    -- with the inner opts taking precedence
+    opts = { expr = false }
+  }
+}
+```
+
 You can also pass options to the keymap via the `opts` property, see `:h vim.keymap.set` to
 see available options.
 
