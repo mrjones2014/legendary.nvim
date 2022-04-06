@@ -19,9 +19,17 @@ local function mode_from_table(modes, current_mode)
 end
 
 local function exec(item, mode, visual_selection)
-  local cmd = require('legendary.utils').get_definition(item, mode)
-  local opts = require('legendary.utils').resolve_opts(item, mode)
-  print(vim.inspect(opts))
+  local utils = require('legendary.utils')
+  local cmd = utils.get_definition(item, mode)
+  local opts = utils.resolve_opts(item, mode)
+
+  if mode == 'n' then -- normal mode
+    vim.cmd('stopinsert')
+  elseif mode == 'i' then -- insert mode
+    vim.cmd('startinsert')
+  elseif mode == 'v' then -- visual mode
+    vim.cmd('normal! gv')
+  end
 
   if type(cmd) == 'function' then
     cmd(visual_selection)
@@ -73,16 +81,7 @@ function M.try_execute(item, current_buf, visual_selection, current_mode, curren
     return
   end
 
-  if mode == 'n' then -- normal mode
-    vim.cmd('stopinsert')
-    exec(item, mode)
-  elseif mode == 'i' then -- insert mode
-    vim.cmd('startinsert')
-    exec(item, mode)
-  elseif mode == 'v' then -- visual mode
-    vim.cmd('normal! v')
-    exec(item, mode, visual_selection)
-  end
+  exec(item, mode, visual_selection)
 
   vim.schedule(function()
     if vim.api.nvim_get_current_buf() ~= current_buf then
