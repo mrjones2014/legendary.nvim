@@ -97,8 +97,6 @@ require('legendary').setup({
   -- When you trigger an item via legendary.nvim,
   -- show it at the top next time you use legendary.nvim
   most_recent_item_at_top = true,
-  -- restore visual selection after executing visual mode items
-  restore_visual_after_exec = true,
   -- Initial keymaps to bind
   keymaps = {
     -- your keymap tables here
