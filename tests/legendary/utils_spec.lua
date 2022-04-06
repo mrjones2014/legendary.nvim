@@ -178,5 +178,83 @@ describe('legendary.utils', function()
         },
       }, result)
     end)
+
+    it('when input has per-mode mappings with per-mode opts, returns one keymap per mode with opts merged', function()
+      local keymap = {
+        '<leader>c',
+        {
+          n = { ':CommentToggle<CR>', opts = { silent = true, expr = false } },
+          v = { ':VisualCommentToggle<CR>', opts = { noremap = false } },
+        },
+        description = 'Toggle comment',
+        opts = { silent = false, noremap = true },
+      }
+      local result = utils.resolve_keymap(keymap)
+
+      -- order is not guaranteed, so put the result
+      -- in a known order
+      result = {
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'n'
+        end, result)[1],
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'v'
+        end, result)[1],
+      }
+      local opts_with_desc = vim.tbl_deep_extend('keep', keymap.opts, { desc = keymap.description })
+      assert.are.same({
+        {
+          'n',
+          keymap[1],
+          keymap[2].n[1],
+          vim.tbl_deep_extend('keep', keymap[2].n.opts, opts_with_desc),
+        },
+        {
+          'v',
+          keymap[1],
+          keymap[2].v[1],
+          vim.tbl_deep_extend('keep', keymap[2].v.opts, opts_with_desc),
+        },
+      }, result)
+    end)
+
+    it('allows mixed per-mode mapping types (with and without per-mode opts)', function()
+      local keymap = {
+        '<leader>c',
+        {
+          n = ':CommentToggle<CR>',
+          v = { ':VisualCommentToggle<CR>', opts = { silent = true } },
+        },
+        description = 'Toggle comment',
+        opts = { silent = false },
+      }
+      local result = utils.resolve_keymap(keymap)
+
+      -- order is not guaranteed, so put the result
+      -- in a known order
+      result = {
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'n'
+        end, result)[1],
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'v'
+        end, result)[1],
+      }
+      local opts_with_desc = vim.tbl_deep_extend('keep', keymap.opts, { desc = keymap.description })
+      assert.are.same({
+        {
+          'n',
+          keymap[1],
+          keymap[2].n,
+          opts_with_desc,
+        },
+        {
+          'v',
+          keymap[1],
+          keymap[2].v[1],
+          vim.tbl_deep_extend('keep', keymap[2].v.opts, opts_with_desc),
+        },
+      }, result)
+    end)
   end)
 end)
