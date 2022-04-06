@@ -91,6 +91,15 @@ function M.resolve_keymap(keymap)
       if type(impl) == 'table' then
         -- if inner map has opts, merge with outer opts, inner opts take precedence
         local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
+
+        -- set defaults
+        if inner_opts.silent == nil then
+          inner_opts.silent = true
+        end
+
+        -- map description to neovim's internal `desc` field
+        inner_opts.desc = inner_map.description
+
         inner_map[2] = impl[1]
         inner_map.description = keymap.description
         inner_map.opts = inner_opts or {}

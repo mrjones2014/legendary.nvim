@@ -208,7 +208,7 @@ element as a table, where the table keys are the modes:
 
 ```lua
 local keymaps = {
-  { '<leader>c', { n = ':CommentToggle<CR>', v = ':SomethingElseInVisualMode<CR>' }, description = 'Toggle comment' }
+  { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' }
 }
 ```
 
@@ -220,7 +220,7 @@ local keymaps = {
     '<leader>c',
     {
       n = { ':CommentToggle<CR>' opts = { noremap = true } },
-      v = {':SomethingElseInVisualMode<CR>' opts = { silent = false } }
+      v = {':VisualCommentToggle<CR>' opts = { silent = false } }
     },
     description = 'Toggle comment'
     -- if outer opts exist, the inner opts tables will be merged,
