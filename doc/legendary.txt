@@ -118,8 +118,6 @@ structure for keymap, command, and `augroup`/`autocmd` tables, see
       -- When you trigger an item via legendary.nvim,
       -- show it at the top next time you use legendary.nvim
       most_recent_item_at_top = true,
-      -- restore visual selection after executing visual mode items
-      restore_visual_after_exec = true,
       -- Initial keymaps to bind
       keymaps = {
         -- your keymap tables here
@@ -235,7 +233,26 @@ the second element as a table, where the table keys are the modes:
 
 >
     local keymaps = {
-      { '<leader>c', { n = ':CommentToggle<CR>', v = ':SomethingElseInVisualMode<CR>' }, description = 'Toggle comment' }
+      { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' }
+    }
+<
+
+
+If you need to pass separate opts per-mode, you can do that too:
+
+>
+    local keymaps = {
+      {
+        '<leader>c',
+        {
+          n = { ':CommentToggle<CR>' opts = { noremap = true } },
+          v = {':VisualCommentToggle<CR>' opts = { silent = false } }
+        },
+        description = 'Toggle comment'
+        -- if outer opts exist, the inner opts tables will be merged,
+        -- with the inner opts taking precedence
+        opts = { expr = false }
+      }
     }
 <
 
