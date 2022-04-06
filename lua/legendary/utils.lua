@@ -84,7 +84,7 @@ end
 --- the arguments that are to be passed
 --- directly into vim.keymap.set
 function M.resolve_keymap(keymap)
-  local keymaps = {}
+  local resolved_keymaps = {}
   if type(keymap[2]) == 'table' then
     for mode, impl in pairs(keymap[2]) do
       local inner_map = { keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description }
@@ -98,17 +98,25 @@ function M.resolve_keymap(keymap)
         end
 
         -- map description to neovim's internal `desc` field
-        inner_opts.desc = inner_map.description
+        inner_opts.desc = keymap.description
 
         inner_map[2] = impl[1]
-        inner_map.description = keymap.description
-        inner_map.opts = inner_opts or {}
+        inner_map.opts = inner_opts
+      else
+        local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
+        -- set defaults
+        if inner_opts.silent == nil then
+          inner_opts.silent = true
+        end
+        -- map description to neovim's internal `desc` field
+        inner_opts.desc = keymap.description
+        inner_map.opts = inner_opts
       end
-      table.insert(keymaps, { mode or 'n', inner_map[1], inner_map[2], inner_map.opts })
+      table.insert(resolved_keymaps, { mode or 'n', inner_map[1], inner_map[2], inner_map.opts })
     end
 
     -- !! it's very important that we return here
-    return keymaps
+    return resolved_keymaps
   end
 
   if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
@@ -135,8 +143,8 @@ function M.resolve_keymap(keymap)
   -- map description to neovim's internal `desc` field
   opts.desc = opts.desc or keymap.description
 
-  table.insert(keymaps, { keymap.mode or 'n', keymap[1], keymap[2], opts })
-  return keymaps
+  table.insert(resolved_keymaps, { keymap.mode or 'n', keymap[1], keymap[2], opts })
+  return resolved_keymaps
 end
 
 --- Set the given keymap

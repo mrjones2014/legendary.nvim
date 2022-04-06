@@ -158,10 +158,10 @@ describe('legendary.utils', function()
       result = {
         vim.tbl_filter(function(tbl)
           return tbl[1] == 'n'
-        end, result),
+        end, result)[1],
         vim.tbl_filter(function(tbl)
           return tbl[1] == 'v'
-        end, result),
+        end, result)[1],
       }
       assert.are.same({
         {
@@ -176,7 +176,7 @@ describe('legendary.utils', function()
           keymap[2].v,
           vim.tbl_extend('keep', keymap.opts, { desc = keymap.description }),
         },
-      }, result, vim.inspect(result))
+      }, result)
     end)
   end)
 end)
