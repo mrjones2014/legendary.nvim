@@ -2,6 +2,7 @@
 ensure-test-deps:
 	mkdir -p vendor
 	if test ! -d ./vendor/plenary.nvim; then git clone git@github.com:nvim-lua/plenary.nvim.git ./vendor/plenary.nvim/; fi
+	if test ! -d ./vendor/luassert; then git clone git@github.com:Olivine-Labs/luassert.git ./vendor/luassert; fi
 
 .PHONY: update-test-deps
 update-test-deps: ensure-test-deps

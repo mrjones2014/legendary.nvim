@@ -79,26 +79,45 @@ function M.has_visual_mode(item)
   return false
 end
 
---- Set the given keymap
----@param keymap LegendaryItem
-function M.set_keymap(keymap)
-  if not M.is_user_keymap(keymap) then
-    return
-  end
+--- Take a `LegendaryItem` and return
+--- a list of tables, each table containing
+--- the arguments that are to be passed
+--- directly into vim.keymap.set
+function M.resolve_keymap(keymap)
+  local resolved_keymaps = {}
+  if type(keymap[2]) == 'table' then
+    for mode, impl in pairs(keymap[2]) do
+      local inner_map = { keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description }
+      if type(impl) == 'table' then
+        -- if inner map has opts, merge with outer opts, inner opts take precedence
+        local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
 
-  -- if not a keymap the user wants us to bind, bail
-  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
-    return
-  end
+        -- set defaults
+        if inner_opts.silent == nil then
+          inner_opts.silent = true
+        end
 
-  local opts = vim.deepcopy(keymap.opts or {})
-  -- set default options
-  if opts.silent == nil then
-    opts.silent = true
-  end
+        -- map description to neovim's internal `desc` field
+        inner_opts.desc = keymap.description
 
-  -- map description to neovim's internal `desc` field
-  opts.desc = opts.desc or keymap.description
+        inner_map[2] = impl[1]
+        inner_map.opts = inner_opts
+      else
+        local inner_opts = vim.tbl_deep_extend('keep', impl.opts or {}, keymap.opts or {})
+        -- set defaults
+        if inner_opts.silent == nil then
+          inner_opts.silent = true
+        end
+        -- map description to neovim's internal `desc` field
+        inner_opts.desc = keymap.description
+        inner_map.opts = inner_opts
+      end
+      table.insert(resolved_keymaps, { mode or 'n', inner_map[1], inner_map[2], inner_map.opts })
+    end
+
+    -- !! it's very important that we return here
+    return resolved_keymaps
+  end
 
   if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
     local orig = keymap[2]
@@ -115,14 +134,34 @@ function M.set_keymap(keymap)
     end
   end
 
-  if type(keymap[2]) == 'table' then
-    for mode, impl in pairs(keymap[2]) do
-      M.set_keymap({ keymap[1], impl, mode = mode, opts = keymap.opts, description = keymap.description })
-    end
+  local opts = vim.deepcopy(keymap.opts or {})
+  -- set default options
+  if opts.silent == nil then
+    opts.silent = true
+  end
+
+  -- map description to neovim's internal `desc` field
+  opts.desc = opts.desc or keymap.description
+
+  table.insert(resolved_keymaps, { keymap.mode or 'n', keymap[1], keymap[2], opts })
+  return resolved_keymaps
+end
+
+--- Set the given keymap
+---@param keymap LegendaryItem
+function M.set_keymap(keymap)
+  if not M.is_user_keymap(keymap) then
     return
   end
 
-  vim.keymap.set(keymap.mode or 'n', keymap[1], keymap[2], opts)
+  -- if not a keymap the user wants us to bind, bail
+  if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
+    return
+  end
+
+  for _, args in pairs(M.resolve_keymap(keymap)) do
+    vim.keymap.set(unpack(args))
+  end
 end
 
 function M.get_marks()
@@ -251,10 +290,19 @@ function M.get_definition(item, mode)
   mode = mode or vim.fn.mode()
   if M.is_user_keymap(item) or M.is_user_autocmd(item) then
     local def = item[2]
+    -- if it's a per-mode mapping,
+    -- unwrap the table and get the mapping
+    -- for current mode
     if type(def) == 'table' then
       def = item[2][mode]
       if def == nil and M.is_visual_mode(mode) then
         def = item[2]['x']
+      end
+
+      -- if it's a per-mode mapping with per-mode opts
+      -- unwrap the inner table
+      if type(def) == 'table' then
+        def = def[1]
       end
 
       return def
@@ -262,6 +310,25 @@ function M.get_definition(item, mode)
   end
 
   return item[1]
+end
+
+--- Get the resolved opts for a keymap table
+---@param item LegendaryItem but specifically a keymap one
+---@param mode string
+function M.resolve_opts(item, mode)
+  local params = M.resolve_keymap(item)
+  local keymap_params = vim.tbl_filter(function(param_list)
+    if type(param_list[1]) == 'string' then
+      return param_list[1] == mode or param_list[1] == 'x' and M.is_visual_mode(mode)
+    else
+      return vim.tbl_contains(param_list[1], mode) or (vim.tbl_contains(param_list[1], 'x') and M.is_visual_mode(mode))
+    end
+  end, params)[1]
+  if keymap_params then
+    return keymap_params[#keymap_params]
+  end
+
+  return {}
 end
 
 --- Helper function to send <ESC> properly
