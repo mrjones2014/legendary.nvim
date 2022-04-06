@@ -16,7 +16,7 @@ local formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
-function M.bind_keymap(keymap, kind)
+function M.bind_keymap(keymap, kind, is_which_key)
   keymap.kind = kind or 'legendary.keymap'
   keymap.id = next_id()
   require('legendary.types').LegendaryItem.validate(keymap)
@@ -34,14 +34,17 @@ function M.bind_keymap(keymap, kind)
     keymap.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  require('legendary.utils').set_keymap(keymap)
+  if not is_which_key then
+    require('legendary.utils').set_keymap(keymap)
+  end
+
   require('legendary.formatter').update_padding(keymap)
   table.insert(keymaps, keymap)
 end
 
 --- Bind a list of keymaps with legendary.nvim
 ---@param new_keymaps LegendaryItem[]
-function M.bind_keymaps(new_keymaps, kind)
+function M.bind_keymaps(new_keymaps, kind, is_which_key)
   if not new_keymaps or type(new_keymaps) ~= 'table' then
     return
   end
@@ -54,7 +57,7 @@ function M.bind_keymaps(new_keymaps, kind)
   end
 
   vim.tbl_map(function(keymap)
-    M.bind_keymap(keymap, kind)
+    M.bind_keymap(keymap, kind, is_which_key)
   end, new_keymaps)
 end
 

@@ -18,6 +18,7 @@ local M = {
   which_key = {
     mappings = {},
     opts = {},
+    do_binding = true,
   },
   auto_register_which_key = true,
   scratchpad = {
@@ -50,9 +51,14 @@ function M.setup(new_config)
   M.keymaps = new_config.keymaps or M.keymaps
   M.commands = new_config.commands or M.commands
   M.autocmds = new_config.autocmds or M.autocmds
-  M.which_key = new_config.which_key and new_config.which_key.mappings and new_config.which_key or M.which_key
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key, M.auto_register_which_key)
   M.scratchpad = new_config.scratchpad or M.scratchpad
+
+  new_config.which_key = new_config.which_key or {}
+  M.which_key.mappings = new_config.which_key.mappings or M.which_key.mappings
+  M.which_key.opts = new_config.which_key.opts or M.which_key.opts
+  M.which_key.do_binding = default_bool(new_config.which_key.do_binding, M.which_key.do_binding)
+
   require('legendary.types').LegendaryConfig.validate(M)
 end
 

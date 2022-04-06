@@ -40,7 +40,7 @@ function M.setup(new_config)
   end
 
   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then
-    require('legendary').bind_whichkey(config.which_key.mappings, config.which_key.opts)
+    require('legendary').bind_whichkey(config.which_key.mappings, config.which_key.opts, config.which_key.do_binding)
   end
 
   if config.auto_register_which_key then

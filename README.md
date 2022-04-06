@@ -114,7 +114,11 @@ require('legendary').setup({
     -- or alternatively have them auto-register,
     -- see section on which-key integration
     mappings = {},
-    opts = {}
+    opts = {},
+    -- whether or not to actually *bind* the keymaps,
+    -- true by default, set to false if you want to have
+    -- which-key.nvim handle binding them
+    do_binding = true,
   },
   -- Automatically add which-key tables to legendary
   -- see "which-key.nvim Integration" below for more details

@@ -41,9 +41,13 @@ end
 --- Bind a which-key.nvim table with legendary.nvim
 ---@param wk_tbls table
 ---@param wk_opts table
-function M.bind_whichkey(wk_tbls, wk_opts)
+---@param do_binding boolean whether or not to actually bind the keymaps, true by default
+function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
+  if do_binding == nil then
+    do_binding = true
+  end
   local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts)
-  require('legendary').bind_keymaps(legendary_tbls)
+  require('legendary').bind_keymaps(legendary_tbls, nil, do_binding)
 end
 
 --- Enable auto-registering of which-key.nvim tables
@@ -52,7 +56,7 @@ function M.whichkey_listen()
   local wk = require('which-key')
   local original = wk.register
   local listener = function(whichkey_tbls, whichkey_opts)
-    M.bind_whichkey(whichkey_tbls, whichkey_opts)
+    M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
     original(whichkey_tbls, whichkey_opts)
   end
   wk.register = listener
