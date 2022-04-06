@@ -12,7 +12,7 @@ local M = {
   end,
   formatter = nil,
   most_recent_item_at_top = true,
-  restore_visual_after_exec = true,
+  restore_visual_after_exec = false,
   keymaps = {},
   commands = {},
   autocmds = {},
