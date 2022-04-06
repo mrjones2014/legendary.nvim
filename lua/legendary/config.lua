@@ -12,7 +12,6 @@ local M = {
   end,
   formatter = nil,
   most_recent_item_at_top = true,
-  restore_visual_after_exec = true,
   keymaps = {},
   commands = {},
   autocmds = {},
@@ -48,7 +47,6 @@ function M.setup(new_config)
   M.select_prompt = new_config.select_prompt or M.select_prompt
   M.formatter = new_config.formatter or M.formatter
   M.most_recent_item_at_top = default_bool(new_config.most_recent_item_at_top, M.most_recent_item_at_top)
-  M.restore_visual_after_exec = default_bool(new_config.restore_visual_after_exec, M.restore_visual_after_exec)
   M.keymaps = new_config.keymaps or M.keymaps
   M.commands = new_config.commands or M.commands
   M.autocmds = new_config.autocmds or M.autocmds

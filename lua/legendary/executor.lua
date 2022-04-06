@@ -18,8 +18,18 @@ local function mode_from_table(modes, current_mode)
   return nil
 end
 
-local function exec(item, visual_selection)
-  local cmd = require('legendary.utils').get_definition(item)
+local function exec(item, mode, visual_selection)
+  local utils = require('legendary.utils')
+  local cmd = utils.get_definition(item, mode)
+  local opts = utils.resolve_opts(item, mode)
+
+  if mode == 'n' then -- normal mode
+    vim.cmd('stopinsert')
+  elseif mode == 'i' then -- insert mode
+    vim.cmd('startinsert')
+  elseif mode == 'v' then -- visual mode
+    vim.cmd('normal! gv')
+  end
 
   if type(cmd) == 'function' then
     cmd(visual_selection)
@@ -31,6 +41,9 @@ local function exec(item, visual_selection)
       cmd = cmd:gsub('{.*}$', ''):gsub('%[.*%]$', '')
       -- if unfinished command, remove trailing <CR>
       cmd = require('legendary.utils').strip_trailing_cr(cmd)
+    elseif opts.expr then
+      print('eval')
+      cmd = item[1]
     elseif vim.startswith(item.kind, 'legendary.command') then
       vim.cmd(require('legendary.utils').strip_leading_cmd_char(cmd))
       return
@@ -68,16 +81,7 @@ function M.try_execute(item, current_buf, visual_selection, current_mode, curren
     return
   end
 
-  if mode == 'n' then -- normal mode
-    vim.cmd('stopinsert')
-    exec(item)
-  elseif mode == 'i' then -- insert mode
-    vim.cmd('startinsert')
-    exec(item)
-  elseif mode == 'v' then -- visual mode
-    vim.cmd('normal! v')
-    exec(item, visual_selection)
-  end
+  exec(item, mode, visual_selection)
 
   vim.schedule(function()
     if vim.api.nvim_get_current_buf() ~= current_buf then
@@ -90,15 +94,6 @@ function M.try_execute(item, current_buf, visual_selection, current_mode, curren
       vim.cmd('stopinsert')
     elseif current_mode == 'i' then
       vim.cmd('startinsert')
-    elseif current_mode == 'v' then
-      if require('legendary.config').restore_visual_after_exec then
-        -- restore visual selection
-        require('legendary.utils').set_marks(visual_selection)
-        vim.cmd('normal! gv')
-      else
-        -- back to normal mode
-        require('legendary.utils').send_escape_key()
-      end
     end
   end)
 end
