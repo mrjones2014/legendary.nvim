@@ -312,6 +312,25 @@ function M.get_definition(item, mode)
   return item[1]
 end
 
+--- Get the resolved opts for a keymap table
+---@param item LegendaryItem but specifically a keymap one
+---@param mode string
+function M.resolve_opts(item, mode)
+  local params = M.resolve_keymap(item)
+  local keymap_params = vim.tbl_filter(function(param_list)
+    if type(param_list[1]) == 'string' then
+      return param_list[1] == mode or param_list[1] == 'x' and M.is_visual_mode(mode)
+    else
+      return vim.tbl_contains(param_list[1], mode) or (vim.tbl_contains(param_list[1], 'x') and M.is_visual_mode(mode))
+    end
+  end, params)[1]
+  if keymap_params then
+    return keymap_params[#keymap_params]
+  end
+
+  return {}
+end
+
 --- Helper function to send <ESC> properly
 function M.send_escape_key()
   vim.api.nvim_feedkeys(vim.api.nvim_eval('"\\<esc>"'), 'n', true)
