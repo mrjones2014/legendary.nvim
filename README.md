@@ -218,7 +218,7 @@ local keymaps = {
     '<leader>c',
     {
       n = { ':CommentToggle<CR>' opts = { noremap = true } },
-      v = {':VisualCommentToggle<CR>' opts = { silent = false } }
+      v = { ':VisualCommentToggle<CR>' opts = { silent = false } }
     },
     description = 'Toggle comment'
     -- if outer opts exist, the inner opts tables will be merged,
