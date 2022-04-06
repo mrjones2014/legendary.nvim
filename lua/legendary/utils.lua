@@ -290,10 +290,19 @@ function M.get_definition(item, mode)
   mode = mode or vim.fn.mode()
   if M.is_user_keymap(item) or M.is_user_autocmd(item) then
     local def = item[2]
+    -- if it's a per-mode mapping,
+    -- unwrap the table and get the mapping
+    -- for current mode
     if type(def) == 'table' then
       def = item[2][mode]
       if def == nil and M.is_visual_mode(mode) then
         def = item[2]['x']
+      end
+
+      -- if it's a per-mode mapping with per-mode opts
+      -- unwrap the inner table
+      if type(def) == 'table' then
+        def = def[1]
       end
 
       return def
