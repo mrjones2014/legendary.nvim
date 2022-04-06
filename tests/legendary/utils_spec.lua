@@ -141,5 +141,42 @@ describe('legendary.utils', function()
         },
       }, result)
     end)
+
+    it('when input has per-mode mappings, returns one keymap per mode', function()
+      local keymap = {
+        '<leader>c',
+        {
+          n = ':CommentToggle<CR>',
+          v = ':VisualCommentToggle<CR>',
+        },
+        description = 'Toggle comment',
+        opts = { silent = false },
+      }
+      local result = utils.resolve_keymap(keymap)
+      -- order is not guaranteed, so put the result
+      -- in a known order
+      result = {
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'n'
+        end, result),
+        vim.tbl_filter(function(tbl)
+          return tbl[1] == 'v'
+        end, result),
+      }
+      assert.are.same({
+        {
+          'n',
+          keymap[1],
+          keymap[2].n,
+          vim.tbl_extend('keep', keymap.opts, { desc = keymap.description }),
+        },
+        {
+          'v',
+          keymap[1],
+          keymap[2].v,
+          vim.tbl_extend('keep', keymap.opts, { desc = keymap.description }),
+        },
+      }, result, vim.inspect(result))
+    end)
   end)
 end)
