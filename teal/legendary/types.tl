@@ -1,71 +1,89 @@
-global type LegendaryModeMappingOpts = record
-   ['1']: string | function(): nil
+-- `unpack` is a global in neovim
+global unpack = ((_G as table).unpack or table.unpack) as function(table): any...
+
+global record LegendaryModeMappingOpts
+   {string | function(marks: table | nil): nil}
    opts: table | nil
 end
 
-global type LegendaryModeMapping = record
-   n: string | function(): nil | LegendaryModeMappingOpts
-   v: string | function(): nil | LegendaryModeMappingOpts
-   x: string | function(): nil | LegendaryModeMappingOpts
-   c: string | function(): nil | LegendaryModeMappingOpts
-   s: string | function(): nil | LegendaryModeMappingOpts
-   t: string | function(): nil | LegendaryModeMappingOpts
+global record LegendaryModeMapping
+   n: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   v: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   x: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   c: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   s: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   t: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
+   i: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
 end
 
 --- A legendary keymap
-global type LegendaryKeymap = record
-   ['1']: string
-   ['2']: string | function(): nil | LegendaryModeMapping | nil
+--- Note that the first element will *always*
+--- be a string, but I can't express that in
+--- the Teal type system
+global record LegendaryKeymap
+   {string | function(marks: table | nil): nil | LegendaryModeMapping | nil}
    mode: string | {string}
    description: string
    opts: table
    kind: string
-   id: number
+   id: integer
+   unfinished: boolean | nil
 end
 
 --- A legendary command
-global type LegendaryCommand = record
-   ['1']: string
-   ['2']: string | function | nil
+--- Note that the first element will *always*
+--- be a string, but I can't express that in
+--- the Teal type system
+global record LegendaryCommand
+   {string | function | nil}
    description: string
-   opts: table
+   opts: {string: any}
    kind: string
-   id: number
+   id: integer
+   unfinished: boolean | nil
 end
 
 --- A legendary autocmd
-global type LegendaryAutocmd = record
-   ['1']: string
-   ['2']: string | function | nil
+--- Note that the first element will *always*
+--- be a string, but I can't express that in
+--- the Teal type system
+global record LegendaryAutocmd
+   {string | function | nil}
    description: string
    opts: table
    kind: string
-   id: number
+   id: integer
 end
 
 --- A legendary augroup
-global type LegendaryAugroup = record
+global record LegendaryAugroup
    name: string
+   clear: boolean
    {LegendaryAutocmd}
 end
 
 --- Can be any of the legendary table types
-global type LegendaryItem = record
+global record LegendaryItem
+   id: integer
    kind: string
+   description: string | nil
 end
 
-global type LegendaryWhichKeys = record
+global record LegendaryWhichKeys
+   mappings: {table}
+   opts: table
 end
 
-global type LegendaryScratchpadDisplay = enum
+global enum LegendaryScratchpadDisplay
    'float'
+   'print'
 end
 
-global type LegendaryScratchpadConfig = record
+global record LegendaryScratchpadConfig
    display_results: LegendaryScratchpadDisplay
 end
 
-global type LegendaryConfig = record
+global record LegendaryConfig
    include_builtin: boolean
    include_legendary_cmds: boolean
    select_prompt: string | function(string): string
@@ -77,6 +95,7 @@ global type LegendaryConfig = record
    auto_register_which_key: boolean
    which_key: LegendaryWhichKeys
    scratchpad: LegendaryScratchpadConfig
+   setup: function(new_config: table): LegendaryConfig
 end
 
 local M = {}
@@ -97,8 +116,8 @@ end
 
 function M.validate_keymap(keymap: LegendaryKeymap)
    vim.validate({
-      [1] = { keymap[1], 'string' },
-      [2] = { keymap[2], { 'string', 'function', 'table' }, true },
+      ['1'] = { keymap[1], 'string' },
+      ['2'] = { keymap[2], { 'string', 'function', 'table' }, true },
       description = { keymap.description, 'string', true },
       mode = { keymap.mode, { 'string', 'table' }, true },
       opts = { keymap.opts, 'table', true },
@@ -109,8 +128,8 @@ end
 
 function M.validate_command(command: LegendaryCommand)
    vim.validate({
-      [1] = { command[1], 'string' },
-      [2] = { command[2], { 'string', 'function' }, true },
+      ['1'] = { command[1], 'string' },
+      ['2'] = { command[2], { 'string', 'function' }, true },
       description = { command.description, 'string', true },
       opts = { command.opts, 'table', true },
       kind = { command.kind, 'string' },
@@ -120,8 +139,8 @@ end
 
 function M.validate_autocmd(autocmd: LegendaryAutocmd)
    vim.validate({
-      [1] = { autocmd[1], 'string' },
-      [2] = { autocmd[2], { 'string', 'function' }, true },
+      ['1'] = { autocmd[1], 'string' },
+      ['2'] = { autocmd[2], { 'string', 'function' }, true },
       description = { autocmd.description, 'string', true },
       opts = { autocmd.opts, 'table', true },
       kind = { autocmd.kind, 'string' },
@@ -131,8 +150,6 @@ end
 
 function M.validate_augroup(au: LegendaryAugroup)
  -- the autocmds inside get validated by LegendaryItem.validate at bind time
- -- diagnostics see vim.validate() as not accepting any parameters for some reason
- ---@diagnostic disable-next-line: redundant-parameter
  vim.validate({
    name = { au.name, 'string' },
    clear = { au.clear, 'boolean', true },
