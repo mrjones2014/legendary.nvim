@@ -46,29 +46,6 @@ describe('legendary.utils', function()
     end)
   end)
 
-  describe('concat_lists(tbl1, tbl2)', function()
-    it('concats two list-like tables together', function()
-      local list1 = {
-        'item 1',
-        'item 2',
-        'item 3',
-      }
-      local list2 = {
-        'item 4',
-        'item 5',
-        'item 6',
-      }
-      assert.True(utils.tbl_deep_eq(utils.concat_lists(list1, list2), {
-        'item 1',
-        'item 2',
-        'item 3',
-        'item 4',
-        'item 5',
-        'item 6',
-      }))
-    end)
-  end)
-
   describe('list_contains(items, new_item)', function()
     it('returns true when items contains an identical item to new_item', function()
       local new_item = {

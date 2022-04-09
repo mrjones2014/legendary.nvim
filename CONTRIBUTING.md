@@ -1,5 +1,16 @@
 # Contributing
 
+## Setting Up
+
+To contribute, you will need to install the [Teal compiler](https://github.com/teal-language/tl).
+
+```sh
+luarocks install tl
+```
+
+Then, run `make init` which will set up a pre-commit git hook to automatically recompile the Teal code
+into Lua when you make a commit.
+
 ## Code Style
 
 When contributing to `legendary.nvim`, please make sure your code passes all checks.
