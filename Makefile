@@ -18,6 +18,18 @@ lint:
 	luacheck lua/ tests/
 	stylua --check lua/ tests/
 
+.PHONY: gen-types
+gen-types:
+	if test ! -d ./vendor/teal-types/; then git clone git@github.com:teal-language/teal-types.git ./vendor/teal-types/; fi
+	pushd ./vendor/teal-types/types/neovim/ && \
+	git reset --hard && \
+	git clean -f && \
+	git pull origin master && \
+	chmod +x autogen && \
+	./autogen && \
+	popd
+	cp ./vendor/teal-types/types/neovim/vim.d.tl ./teal/vim.d.tl
+
 .PHONY: check
 check: test
 check: lint
