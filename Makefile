@@ -40,6 +40,10 @@ build:
 	mv dist/ ../lua/ && \
 	popd
 
+.PHONY: init
+init:
+	git config core.hooksPath .githooks
+
 .PHONY: check
 check: test
 check: lint
