@@ -34,7 +34,7 @@ gen-types:
 	cp ./vendor/teal-types/types/neovim/vim.d.tl ./teal/vim.d.tl
 
 .PHONY: build
-build: gen-types
+build:
 	@rm -rf lua/ && \
 	cd ./teal/ && \
 	tl build && \
