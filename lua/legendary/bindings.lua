@@ -211,7 +211,7 @@ function M.find(item_kind)
    else
       items = vim.list_extend({}, keymaps)
       items = vim.list_extend(items, commands)
-      items = vim.list_extend(items, keymaps)
+      items = vim.list_extend(items, autocmds)
    end
 
 

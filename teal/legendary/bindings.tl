@@ -211,7 +211,7 @@ function M.find(item_kind: string | nil)
   else
     items = vim.list_extend({}, keymaps as {LegendaryItem})
     items = vim.list_extend(items, commands as {LegendaryItem})
-    items = vim.list_extend(items, keymaps as {LegendaryItem})
+    items = vim.list_extend(items, autocmds as {LegendaryItem})
   end
 
   -- only search for last used item if kind matches
