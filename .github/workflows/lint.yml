@@ -22,6 +22,7 @@ jobs:
     - name: Run Luacheck
       run: |
         luarocks install luacheck
+        luarocks install tl
         luacheck .
     - name: Run Stylua
       uses: JohnnyMorganz/stylua-action@1.0.0
@@ -29,6 +30,10 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --check .
         version: 0.10.1
+    - name: Ensure Teal Build Up To Date
+      run: |
+        make build
+        test -z "$(git diff --name-only)"
     - name: Install Neovim
       uses: rhysd/action-setup-vim@v1
       with:
