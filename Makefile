@@ -20,7 +20,9 @@ lint:
 
 .PHONY: gen-types
 gen-types:
-	if test ! -d ./vendor/teal-types/; then git clone git@github.com:teal-language/teal-types.git ./vendor/teal-types/; fi
+	# TODO change the git URL to git@github.com:teal-language/teal-types.git
+	# TODO once this PR is merged: https://github.com/teal-language/teal-types/pull/35
+	if test ! -d ./vendor/teal-types/; then git clone git@github.com:mrjones2014/teal-types.git ./vendor/teal-types/; fi
 	pushd ./vendor/teal-types/types/neovim/ && \
 	git reset --hard && \
 	git clean -f && \
