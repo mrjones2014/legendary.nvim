@@ -15,31 +15,31 @@ test: ensure-test-deps
 
 .PHONY: check
 check:
-	@pushd ./teal/ >/dev/null && \
+	@cd ./teal/ && \
 	tl check ./**/*.tl && \
-	popd >/dev/null
+	cd ..
 
 .PHONY: gen-types
 gen-types:
 	# TODO change the git URL to git@github.com:teal-language/teal-types.git
 	# TODO once this PR is merged: https://github.com/teal-language/teal-types/pull/35
 	@if test ! -d ./vendor/teal-types/; then git clone git@github.com:mrjones2014/teal-types.git ./vendor/teal-types/; fi
-	@pushd ./vendor/teal-types/types/neovim/ >/dev/null && \
+	@cd ./vendor/teal-types/types/neovim/ && \
 	git reset --hard && \
 	git clean -f && \
 	git pull origin master && \
 	chmod +x autogen && \
 	./autogen && \
-	popd >/dev/null
+	cd ../../../../
 	cp ./vendor/teal-types/types/neovim/vim.d.tl ./teal/vim.d.tl
 
 .PHONY: build
 build: gen-types
 	@rm -rf lua/ && \
-	pushd ./teal/ >/dev/null && \
+	cd ./teal/ && \
 	tl build && \
 	mv dist/ ../lua/ && \
-	popd >/dev/null
+	cd ..
 
 .PHONY: init
 init:
