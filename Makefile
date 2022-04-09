@@ -32,6 +32,14 @@ gen-types:
 	popd
 	cp ./vendor/teal-types/types/neovim/vim.d.tl ./teal/vim.d.tl
 
+.PHONY: build
+build:
+	rm -rf lua/ && \
+	pushd ./teal/ && \
+	tl build && \
+	mv dist/ ../lua/ && \
+	popd
+
 .PHONY: check
 check: test
 check: lint
