@@ -139,7 +139,7 @@ end
 
 function M.validate_autocmd(autocmd: LegendaryAutocmd)
    vim.validate({
-      ['1'] = { autocmd[1], 'string' },
+      ['1'] = { autocmd[1], { 'string', 'table' } },
       ['2'] = { autocmd[2], { 'string', 'function' }, true },
       description = { autocmd.description, 'string', true },
       opts = { autocmd.opts, 'table', true },
