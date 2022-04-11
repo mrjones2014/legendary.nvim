@@ -566,6 +566,8 @@ global record vim
       cinkeys: string
       cino: string
       cinoptions: string
+      cinscopedecls: string
+      cinsd: string
       cinw: string
       cinwords: string
       clipboard: string
@@ -1671,6 +1673,8 @@ global record vim
       cinkeys: string
       cino: string
       cinoptions: string
+      cinscopedecls: string
+      cinsd: string
       cinw: string
       cinwords: string
       cms: string
@@ -1923,12 +1927,11 @@ global record vim
          none of the above -> any
       --]]
 
-      nvim_add_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_add_highlight: function(integer--[[Buffer]], integer--[[Integer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_add_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_attach: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
       nvim_buf_call: function(integer--[[Buffer]], any--[[LuaRef]]): any--[[Object]]
       nvim_buf_clear_namespace: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
+      nvim_buf_create_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_del_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_buf_del_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]])--[[void]]
       nvim_buf_del_mark: function(integer--[[Buffer]], string--[[String]]): boolean--[[Boolean]]
@@ -1969,6 +1972,7 @@ global record vim
       nvim_create_autocmd: function(any--[[Object]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_create_buf: function(boolean--[[Boolean]], boolean--[[Boolean]]): integer--[[Buffer]]
       nvim_create_namespace: function(string--[[String]]): integer--[[Integer]]
+      nvim_create_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_del_augroup_by_id: function(integer--[[Integer]])--[[void]]
       nvim_del_augroup_by_name: function(string--[[String]])--[[void]]
       nvim_del_autocmd: function(integer--[[Integer]])--[[void]]
