@@ -238,7 +238,7 @@ function M.set_command(cmd)
     opts.buffer = nil
     vim.api.nvim_buf_add_user_command(buffer, M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
   else
-    vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
+    vim.api.nvim_create_user_command(M.strip_leading_cmd_char(cmd[1]), cmd[2], opts)
   end
 end
 
