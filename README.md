@@ -291,7 +291,7 @@ local commands = {
 }
 ```
 
-You can also pass options to the command via the `opts` property, see `:h nvim_add_user_command` to
+You can also pass options to the command via the `opts` property, see `:h nvim_create_user_command` to
 see available options. In addition to those options, `legendary.nvim` adds handling for an additional
 `buffer` option (a buffer handle, or `0` for current buffer), which will cause the command to be bound
 as a buffer-local command.
