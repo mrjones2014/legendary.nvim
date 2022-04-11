@@ -28,7 +28,7 @@ function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table): {Lege
     -- check wk.group because these don't represent standalone keymaps
     -- they basically represent a "folder" of other keymaps
     -- TODO support which-key mappings with buf values
-    if not wk.label or #(wk.group as string or '') == 0 or wk.buf ~= nil then
+    if not wk.label or ((type(wk.group) == 'boolean' and not wk.group) or (#(tostring(wk.group) or '') == 0)) or wk.buf ~= nil then
       goto continue
     end
 
