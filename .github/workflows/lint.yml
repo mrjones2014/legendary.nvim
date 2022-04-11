@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-lua:
-    name: Run Luacheck, Stylua, and Unit Tests
+    name: Run Teal Build and Unit Tests
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -19,16 +19,19 @@ jobs:
         luaVersion: "5.1.5"
     - name: Setup 'luarocks'
       uses: leafo/gh-actions-luarocks@v4
-    - name: Run Luacheck
+    - name: Instal Teal Compiler
       run: |
-        luarocks install luacheck
-        luacheck .
-    - name: Run Stylua
-      uses: JohnnyMorganz/stylua-action@1.0.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        args: --check .
-        version: 0.10.1
+        luarocks install tl
+    - name: Checkout teal-types
+      uses: actions/checkout@v2
+      with: # TODO change this to teal-language/teal-types when this PR is merged: https://github.com/teal-language/teal-types/pull/35
+        repository: mrjones2014/teal-types
+        path: vendor/plenary.nvim
+    - name: Ensure Teal Build Up To Date
+      run: |
+        make check
+        make build
+        test -z "$(git diff --name-only)"
     - name: Install Neovim
       uses: rhysd/action-setup-vim@v1
       with:

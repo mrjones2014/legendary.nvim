@@ -2,16 +2,6 @@ local assert = require('luassert')
 local helpers = require('legendary.helpers')
 
 describe('legendary.helpers', function()
-  describe('unpack(...)', function()
-    it('unpacks arguments', function()
-      local args = { 1, 2, 3 }
-      local result1, result2, result3 = helpers.unpack(args)
-      assert.are.same(result1, 1)
-      assert.are.same(result2, 2)
-      assert.are.same(result3, 3)
-    end)
-  end)
-
   describe('lazy(fn, ...)', function()
     it('returns a new function, does not execute the function immediately', function()
       local lazy_fn_executed = false
