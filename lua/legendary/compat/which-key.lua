@@ -28,7 +28,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
 
 
 
-      if not wk.label or #(wk.group or '') == 0 or wk.buf ~= nil then
+      if not wk.label or ((type(wk.group) == 'boolean' and not wk.group) or (#(tostring(wk.group) or '') > 0)) or wk.buf ~= nil then
          goto continue
       end
 
