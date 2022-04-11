@@ -233,9 +233,9 @@ function M.set_command(cmd: LegendaryCommand)
   if opts.buffer ~= nil then
     local buffer = opts.buffer as integer
     opts.buffer = nil
-    vim.api.nvim_buf_add_user_command(buffer, M.strip_leading_cmd_char(cmd[1] as string), cmd[2], opts)
+    vim.api.nvim_buf_create_user_command(buffer, M.strip_leading_cmd_char(cmd[1] as string), cmd[2], opts)
   else
-    vim.api.nvim_add_user_command(M.strip_leading_cmd_char(cmd[1] as string), cmd[2], opts)
+    vim.api.nvim_create_user_command(M.strip_leading_cmd_char(cmd[1] as string), cmd[2], opts)
   end
 end
 
