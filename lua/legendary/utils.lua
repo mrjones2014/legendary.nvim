@@ -314,7 +314,7 @@ end
 
 function M.resolve_opts(item, mode)
    if not vim.startswith(item.kind, 'legendary.keymap') then
-      return (item).opts
+      return ((item).opts) or {}
    end
 
    local params = M.resolve_keymap(item)
@@ -327,7 +327,7 @@ function M.resolve_opts(item, mode)
    end, params))[1]
    if keymap_params then
       local keymap_params_array = keymap_params
-      return keymap_params_array[#keymap_params_array]
+      return keymap_params_array[#keymap_params_array] or {}
    end
 
    return {}
