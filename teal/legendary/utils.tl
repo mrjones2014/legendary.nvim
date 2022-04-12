@@ -314,7 +314,7 @@ end
 ---@param mode string
 function M.resolve_opts(item: LegendaryItem, mode: string | nil): {string:any}
   if not vim.startswith(item.kind, 'legendary.keymap') then
-    return (item as table).opts as {string:any}
+    return ((item as table).opts as {string:any}) or {}
   end
 
   local params = M.resolve_keymap(item as LegendaryKeymap)
@@ -327,7 +327,7 @@ function M.resolve_opts(item: LegendaryItem, mode: string | nil): {string:any}
   end, params as {string}) as table)[1]
   if keymap_params then
     local keymap_params_array = keymap_params as {{string:any}}
-    return keymap_params_array[#keymap_params_array]
+    return keymap_params_array[#keymap_params_array] or {}
   end
 
   return {}
