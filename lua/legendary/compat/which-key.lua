@@ -17,7 +17,8 @@ end
 
 
 
-function M.parse_whichkey(which_key_tbls, which_key_opts)
+
+function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
    local wk_parsed = ((_G['require']('which-key.keys')).parse_mappings)(
    {},
    which_key_tbls,
@@ -36,14 +37,23 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
 
       ::continue::
    end, wk_parsed)
+
+   if not do_binding then
+      legendary_tbls = vim.tbl_map(function(item)
+         item[2] = nil
+         return item
+      end, legendary_tbls)
+   end
+
    return legendary_tbls
 end
 
 
 
 
-function M.bind_whichkey(wk_tbls, wk_opts)
-   local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts)
+
+function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
+   local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts, do_binding)
    require('legendary.bindings').bind_keymaps(legendary_tbls)
 end
 
@@ -53,7 +63,7 @@ function M.whichkey_listen()
    local wk = (_G['require']('which-key'))
    local original = wk.register
    local listener = function(whichkey_tbls, whichkey_opts)
-      M.bind_whichkey(whichkey_tbls, whichkey_opts)
+      M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
       original(whichkey_tbls, whichkey_opts)
    end
    wk.register = listener
