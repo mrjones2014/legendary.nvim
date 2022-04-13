@@ -56,15 +56,4 @@ M.setup = function(new_config: table)
   end
 end
 
-if not vim.keymap or not vim.keymap.set then
-  local function print_err()
-    require('legendary.utils').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
-  end
-
-  print_err()
-  for key, _ in pairs(M) do
-    M[key] = print_err
-  end
-end
-
 return M

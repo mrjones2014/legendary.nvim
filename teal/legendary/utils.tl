@@ -1,6 +1,12 @@
 require('legendary.types')
 local M = {}
 
+function M.notify(msg: string, level: integer | nil, title: string | nil)
+  level = level or vim.log.levels.ERROR
+  title = title or 'legendary.nvim'
+  vim.notify(msg, level, { title = title })
+end
+
 --- Get visual marks in format {start_line, start_col, end_line, end_col}
 function M.get_marks(): table
   local cursor = vim.api.nvim_win_get_cursor(0)
@@ -164,6 +170,11 @@ function M.set_keymap(keymap: LegendaryKeymap)
 
   -- if not a keymap the user wants us to bind, bail
   if type(keymap[2]) ~= 'string' and type(keymap[2]) ~= 'function' and type(keymap[2]) ~= 'table' then
+    return
+  end
+
+  if not vim.keymap or not vim.keymap.set then
+    M.notify('Sorry, binding keymaps with legendary.nvim requires Neovim 0.7.0 or higher!')
     return
   end
 
@@ -336,12 +347,6 @@ end
 --- Helper function to send <ESC> properly
 function M.send_escape_key()
   vim.api.nvim_feedkeys(vim.api.nvim_eval('"\\<esc>"') as string, 'n', true)
-end
-
-function M.notify(msg: string, level: integer | nil, title: string | nil)
-  level = level or vim.log.levels.ERROR
-  title = title or 'legendary.nvim'
-  vim.notify(msg, level, { title = title })
 end
 
 return M
