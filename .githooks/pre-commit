@@ -1,3 +1,4 @@
 #/usr/bin/env bash
 
 make build
+git add lua/
