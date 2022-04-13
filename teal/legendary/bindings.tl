@@ -111,7 +111,6 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
 
   if not vim.api.nvim_create_augroup then
     require('legendary.utils').notify(
-      --luacheck: ignore
       'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
     )
     return

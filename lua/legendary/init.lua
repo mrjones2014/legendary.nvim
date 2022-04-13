@@ -1,4 +1,4 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pairs = _tl_compat and _tl_compat.pairs or pairs; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string; require('legendary.types')
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string; require('legendary.types')
 
 local M = {}
 
@@ -53,17 +53,6 @@ M.setup = function(new_config)
       if whichkey_is_loaded then
          require('legendary.compat.which-key').whichkey_listen()
       end
-   end
-end
-
-if not vim.keymap or not vim.keymap.set then
-   local function print_err()
-      require('legendary.utils').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
-   end
-
-   print_err()
-   for key, _ in pairs(M) do
-      M[key] = print_err
    end
 end
 
