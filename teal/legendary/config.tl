@@ -44,6 +44,7 @@ function M.setup(new_config: table): LegendaryConfig
   end
 
   M.include_builtin = default_bool(new_config.include_builtin as boolean | nil, M.include_builtin)
+  M.include_legendary_cmds = default_bool(new_config.include_legendary_cmds as boolean | nil, M.include_legendary_cmds)
   M.select_prompt = (new_config.select_prompt or M.select_prompt) as (string | function(kind: string): string)
   M.formatter = (new_config.formatter or M.formatter) as function(item: LegendaryItem): {string}
   M.most_recent_item_at_top = default_bool(new_config.most_recent_item_at_top as boolean | nil, M.most_recent_item_at_top)
