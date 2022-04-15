@@ -13,14 +13,29 @@ update-test-deps: ensure-test-deps
 test: ensure-test-deps
 	nvim --headless --noplugin -u tests/testrc.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/testrc.lua' }"
 
-.PHONY: check
-check:
+.PHONY: check-teal
+check-teal:
+	@echo "Running \`tl check\`..."
 	@cd ./teal/ && \
 	tl check ./**/*.tl && \
 	echo "No type errors found" && \
 	cd .. && \
-	luacheck tests/ && \
-	stylua  tests/
+	echo ""
+
+.PHONY: check-luacheck
+check-luacheck:
+	@echo "Running \`luacheck\`..."
+	@luacheck tests/
+	@echo ""
+
+.PHONY: check-stylua # stylua gets run through a separate GitHub Action in CI
+check-stylua:
+	@if test -z "$$CI"; then echo "Running \`stylua\`..." && stylua tests/ && echo "No stylua errors found.\n"; fi
+
+.PHONY: check
+check: check-teal
+check: check-luacheck
+check: check-stylua
 
 .PHONY: gen-types
 gen-types:

@@ -17,11 +17,18 @@ jobs:
       uses: leafo/gh-actions-lua@v8
       with:
         luaVersion: "5.1.5"
+    - name: Run Stylua
+      uses: JohnnyMorganz/stylua-action@1.0.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --check tests/
+        version: 0.10.1
     - name: Setup 'luarocks'
       uses: leafo/gh-actions-luarocks@v4
     - name: Instal Teal Compiler
       run: |
         luarocks install tl
+        luarocks install luacheck
     - name: Checkout teal-types
       uses: actions/checkout@v2
       with: # TODO change this to teal-language/teal-types when this PR is merged: https://github.com/teal-language/teal-types/pull/35
