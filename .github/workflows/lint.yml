@@ -25,15 +25,10 @@ jobs:
         version: 0.10.1
     - name: Setup 'luarocks'
       uses: leafo/gh-actions-luarocks@v4
-    - name: Instal Teal Compiler
+    - name: Install Teal Compiler
       run: |
         luarocks install tl
         luarocks install luacheck
-    - name: Checkout teal-types
-      uses: actions/checkout@v2
-      with: # TODO change this to teal-language/teal-types when this PR is merged: https://github.com/teal-language/teal-types/pull/35
-        repository: mrjones2014/teal-types
-        path: vendor/plenary.nvim
     - name: Run Checks and Ensure Teal Build Up To Date
       run: |
         make check
