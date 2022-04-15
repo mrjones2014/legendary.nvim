@@ -23,7 +23,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Prerequisites
 
-- Neovim nightly (0.7+); specifically, this plugin depends on the following APIs:
+- Neovim 0.7.0+; specifically, this plugin depends on the following APIs:
   - `vim.keymap.set`
   - `vim.api.nvim_create_augroup`
   - `vim.api.nvim_create_autocmd`
