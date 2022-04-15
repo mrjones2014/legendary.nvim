@@ -17,6 +17,7 @@ test: ensure-test-deps
 check:
 	@cd ./teal/ && \
 	tl check ./**/*.tl && \
+	echo "No type errors found" && \
 	cd ..
 
 .PHONY: gen-types

@@ -2,11 +2,82 @@ local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 th
 local M = {}
 
 
+
 function M.get_marks()
    local cursor = vim.api.nvim_win_get_cursor(0)
    local cline, ccol = cursor[1], cursor[2]
    local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
    return { cline, ccol, vline, vcol }
+end
+
+
+
+
+
+
+function M.resolve_description(item)
+   if not item then
+      return item
+   end
+
+   if (item).description and #((item).description) > 0 then
+      return item
+   end
+
+   if (item).opts and ((item).opts).desc and #(((item).opts).desc) > 0 then
+      (item).description = ((item).opts).desc
+   end
+
+   return item
+end
+
+
+
+
+function M.has_per_mode_description(keymap)
+   if not keymap then
+      return false
+   end
+
+   if type(keymap[2]) ~= 'table' then
+      return false
+   end
+
+   for _, impl in pairs(keymap[2]) do
+      impl = M.resolve_description(impl)
+      if #((((impl).description)) or '') > 0 then
+         return true
+      end
+   end
+   return false
+end
+
+function M.resolve_with_per_mode_description(keymap)
+   if not keymap or type(keymap[2]) ~= 'table' or not M.has_per_mode_description(keymap) then
+      return { keymap }
+   end
+
+   local resolved_tbls = {}
+   for mode, impl in pairs(keymap[2]) do
+      local resolved_keymap = { keymap[1], kind = 'legendary.keymap' }
+      if type(impl) == 'table' then
+         resolved_keymap.opts = vim.tbl_deep_extend(
+         'keep',
+         ((impl).opts or {}),
+         keymap.opts or {})
+
+         resolved_keymap.mode = mode
+         resolved_keymap.description = (impl).description
+      else
+         resolved_keymap[2] = impl
+         resolved_keymap.opts = keymap.opts
+         resolved_keymap.description = keymap.description
+      end
+      resolved_keymap = M.resolve_description(resolved_keymap)
+      table.insert(resolved_tbls, resolved_keymap)
+   end
+
+   return resolved_tbls
 end
 
 
