@@ -1,11 +1,14 @@
 require('legendary.types')
 local M = {}
 
-local function wk_to_legendary(wk: table): LegendaryKeymap
+local function wk_to_legendary(wk: table, wk_opts: table): LegendaryKeymap
   local legendary: table = {}
   legendary[1] = wk.prefix
   if wk.cmd then
     legendary[2] = wk.cmd
+  end
+  if wk_opts and wk_opts.mode then
+    legendary.mode = wk_opts.mode
   end
   legendary.description = wk.label
   legendary.opts = wk.opts or {}
@@ -32,7 +35,7 @@ function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table): {Lege
       goto continue
     end
 
-    table.insert(legendary_tbls, wk_to_legendary(wk))
+    table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts))
 
     ::continue::
   end, wk_parsed)
