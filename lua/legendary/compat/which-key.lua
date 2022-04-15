@@ -1,11 +1,14 @@
 local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local table = _tl_compat and _tl_compat.table or table; require('legendary.types')
 local M = {}
 
-local function wk_to_legendary(wk)
+local function wk_to_legendary(wk, wk_opts)
    local legendary = {}
    legendary[1] = wk.prefix
    if wk.cmd then
       legendary[2] = wk.cmd
+   end
+   if wk_opts and wk_opts.mode then
+      legendary.mode = wk_opts.mode
    end
    legendary.description = wk.label
    legendary.opts = wk.opts or {}
@@ -32,7 +35,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts)
          goto continue
       end
 
-      table.insert(legendary_tbls, wk_to_legendary(wk))
+      table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts))
 
       ::continue::
    end, wk_parsed)
