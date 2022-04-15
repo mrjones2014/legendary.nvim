@@ -15,8 +15,8 @@ end
 
 
 
-function M.resolve_description(item)
-   if not item then
+function M.resolve_description(item, fallback)
+   if not item or type(item) ~= 'table' then
       return item
    end
 
@@ -26,6 +26,10 @@ function M.resolve_description(item)
 
    if (item).opts and ((item).opts).desc and #(((item).opts).desc) > 0 then
       (item).description = ((item).opts).desc
+   end
+
+   if #(((item).description or '')) == 0 then
+      (item).description = fallback
    end
 
    return item
@@ -52,10 +56,15 @@ function M.has_per_mode_description(keymap)
    return false
 end
 
+
+
+
 function M.resolve_with_per_mode_description(keymap)
    if not keymap or type(keymap[2]) ~= 'table' or not M.has_per_mode_description(keymap) then
       return { keymap }
    end
+
+   keymap = M.resolve_description(keymap)
 
    local resolved_tbls = {}
    for mode, impl in pairs(keymap[2]) do
@@ -69,11 +78,16 @@ function M.resolve_with_per_mode_description(keymap)
          resolved_keymap.mode = mode
          resolved_keymap.description = (impl).description
       else
-         resolved_keymap[2] = impl
+         resolved_keymap.mode = mode
          resolved_keymap.opts = keymap.opts
          resolved_keymap.description = keymap.description
       end
-      resolved_keymap = M.resolve_description(resolved_keymap)
+
+      local fallback_desc = keymap.description or ''
+      if #fallback_desc == 0 then
+         fallback_desc = (keymap.opts and keymap.opts.desc) or nil
+      end
+      resolved_keymap = M.resolve_description(resolved_keymap, fallback_desc)
       table.insert(resolved_tbls, resolved_keymap)
    end
 
