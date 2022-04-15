@@ -18,7 +18,9 @@ check:
 	@cd ./teal/ && \
 	tl check ./**/*.tl && \
 	echo "No type errors found" && \
-	cd ..
+	cd .. && \
+	luacheck tests/ && \
+	stylua  tests/
 
 .PHONY: gen-types
 gen-types:

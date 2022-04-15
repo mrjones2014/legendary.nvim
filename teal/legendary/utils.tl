@@ -15,8 +15,8 @@ end
 --- item.opts.desc
 ---@param item T where T is a LegendaryKeymap, LegendaryCommand or LegendaryAutocmd
 ---@return T
-function M.resolve_description<T>(item: T): T
-  if not item then
+function M.resolve_description<T>(item: T, fallback: string | nil): T
+  if not item or type(item) ~= 'table' then
     return item
   end
 
@@ -26,6 +26,10 @@ function M.resolve_description<T>(item: T): T
 
   if (item as table).opts and ((item as table).opts as table).desc and #(((item as table).opts as table).desc as string) > 0 then
     (item as table).description = ((item as table).opts as table).desc
+  end
+
+  if #(((item as table).description or '') as string) == 0 then
+    (item as table).description = fallback
   end
 
   return item
@@ -52,10 +56,15 @@ function M.has_per_mode_description(keymap: LegendaryKeymap): boolean
   return false
 end
 
+--- Get resolved LegendaryKeymaps for a LegendaryKeymap
+--- that may or may not have per-mode descriptions
+--- (and therefore should be treated as separate items)
 function M.resolve_with_per_mode_description(keymap: LegendaryKeymap): {LegendaryKeymap}
   if not keymap or type(keymap[2]) ~= 'table' or not M.has_per_mode_description(keymap) then
     return { keymap }
   end
+
+  keymap = M.resolve_description(keymap)
 
   local resolved_tbls: {LegendaryKeymap} = {}
   for mode, impl in pairs(keymap[2] as table) do
@@ -69,11 +78,16 @@ function M.resolve_with_per_mode_description(keymap: LegendaryKeymap): {Legendar
       resolved_keymap.mode = mode as string | {string}
       resolved_keymap.description = (impl as table).description as string
     else
-      resolved_keymap[2] = impl as string | function(marks: table | nil): nil
+      resolved_keymap.mode = mode as string | {string}
       resolved_keymap.opts = keymap.opts
       resolved_keymap.description = keymap.description
     end
-    resolved_keymap = M.resolve_description(resolved_keymap)
+
+    local fallback_desc = keymap.description or ''
+    if #fallback_desc == 0 then
+      fallback_desc = (keymap.opts and keymap.opts.desc as string) or nil
+    end
+    resolved_keymap = M.resolve_description(resolved_keymap, fallback_desc)
     table.insert(resolved_tbls, resolved_keymap)
   end
 
