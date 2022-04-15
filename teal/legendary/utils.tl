@@ -168,7 +168,7 @@ function M.set_keymap(keymap: LegendaryKeymap)
   end
 
   for _, args_tbl in pairs(M.resolve_keymap(keymap)) do
-    local args = args_tbl as {(string | {string}), string, (string | function()), vim.KeyMap.SetOptions}
+    local args = args_tbl as {(string | {string}), string, (string | function()), vim.keymap.SetOptions}
     vim.keymap.set(args[1], args[2], args[3], args[4])
   end
 end
