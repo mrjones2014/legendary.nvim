@@ -2,11 +2,82 @@ require('legendary.types')
 local M = {}
 
 --- Get visual marks in format {start_line, start_col, end_line, end_col}
+--- @return table in format {start_line, start_col, end_line, end_col}
 function M.get_marks(): table
   local cursor = vim.api.nvim_win_get_cursor(0)
   local cline, ccol = cursor[1], cursor[2]
   local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
   return { cline, ccol, vline, vcol }
+end
+
+--- If item.description is not set,
+--- try taking the description from
+--- item.opts.desc
+---@param item T where T is a LegendaryKeymap, LegendaryCommand or LegendaryAutocmd
+---@return T
+function M.resolve_description<T>(item: T): T
+  if not item then
+    return item
+  end
+
+  if (item as table).description and #((item as table).description as string) > 0 then
+    return item
+  end
+
+  if (item as table).opts and ((item as table).opts as table).desc and #(((item as table).opts as table).desc as string) > 0 then
+    (item as table).description = ((item as table).opts as table).desc
+  end
+
+  return item
+end
+
+--- Check if a LegendaryKeymap has per-mode descriptions set
+---@param keymap LegendaryKeymap
+---@return boolean true if the keymap has per-mode descriptions set
+function M.has_per_mode_description(keymap: LegendaryKeymap): boolean
+  if not keymap then
+    return false
+  end
+
+  if type(keymap[2]) ~= 'table' then
+    return false
+  end
+
+  for _, impl in pairs(keymap[2] as table) do
+    impl = M.resolve_description(impl)
+    if #((((impl as table).description) as string | nil) or '') > 0 then
+      return true
+    end
+  end
+  return false
+end
+
+function M.resolve_with_per_mode_description(keymap: LegendaryKeymap): {LegendaryKeymap}
+  if not keymap or type(keymap[2]) ~= 'table' or not M.has_per_mode_description(keymap) then
+    return { keymap }
+  end
+
+  local resolved_tbls: {LegendaryKeymap} = {}
+  for mode, impl in pairs(keymap[2] as table) do
+    local resolved_keymap: LegendaryKeymap = { keymap[1], kind = 'legendary.keymap' }
+    if type(impl) == 'table' then
+      resolved_keymap.opts = vim.tbl_deep_extend(
+        'keep',
+        ((impl as table).opts or {}) as table,
+        keymap.opts or {}
+      )
+      resolved_keymap.mode = mode as string | {string}
+      resolved_keymap.description = (impl as table).description as string
+    else
+      resolved_keymap[2] = impl as string | function(marks: table | nil): nil
+      resolved_keymap.opts = keymap.opts
+      resolved_keymap.description = keymap.description
+    end
+    resolved_keymap = M.resolve_description(resolved_keymap)
+    table.insert(resolved_tbls, resolved_keymap)
+  end
+
+  return resolved_tbls
 end
 
 --- Set visual marks from a table in the format
