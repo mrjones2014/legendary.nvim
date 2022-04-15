@@ -41,9 +41,6 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
   utils.set_keymap(keymap)
   require('legendary.formatter').update_padding(keymap as LegendaryItem)
   for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
-    if resolved_keymap[1] == '<leader>l' then
-      print(vim.inspect(resolved_keymap))
-    end
     keymap.id = next_id()
     table.insert(keymaps, resolved_keymap)
   end
@@ -206,9 +203,9 @@ end
 ---@param item_kind string
 function M.find(item_kind: string | nil)
   item_kind = item_kind or ''
-  local current_mode = vim.fn.mode() as string
+  local current_mode = (vim.fn.mode() or '') as string
   local visual_selection: table = nil
-  if current_mode and current_mode:sub(1, 1):lower() == 'v' then
+  if utils.is_visual_mode(current_mode) then
     visual_selection = utils.get_marks()
     utils.send_escape_key()
   end

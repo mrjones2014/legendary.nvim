@@ -201,8 +201,8 @@ function M.resolve_keymap(keymap: LegendaryKeymap): table
   if type(keymap[2]) == 'function' and M.has_visual_mode(keymap) then
     local orig = keymap[2] as function(marks: table | nil): nil
     keymap[2] = function(visual_selection: table): nil
-      local current_mode = vim.fn.mode() as string
-      if current_mode and current_mode:sub(1, 1):lower() == 'v' then
+      local current_mode = (vim.fn.mode() or '') as string
+      if M.is_visual_mode(current_mode) then
         -- ensure marks are set
         local marks = visual_selection or M.get_marks()
         M.set_marks(marks)

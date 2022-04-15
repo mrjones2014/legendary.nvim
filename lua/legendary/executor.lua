@@ -7,11 +7,7 @@ local function mode_from_table(modes, current_mode)
    end
 
    for _, mode in ipairs(modes) do
-      if mode == 'n' then
-         return mode
-      end
-
-      if mode == 'i' then
+      if mode == 'n' or mode == 'i' or require('legendary.utils').is_visual_mode(mode) then
          return mode
       end
    end
@@ -28,8 +24,13 @@ local function exec(item, mode, visual_selection)
       vim.cmd('stopinsert')
    elseif mode == 'i' then
       vim.cmd('startinsert')
-   elseif mode == 'v' then
+   elseif utils.is_visual_mode(mode) then
       vim.cmd('normal! gv')
+
+      if not utils.is_visual_mode((vim.fn.mode()) or '') then
+         utils.notify('Failed to enter visual mode, aborting execution.')
+         return
+      end
    end
 
    if type(cmd) == 'function' then
