@@ -19,8 +19,12 @@ end
 --- and parse them into legendary.nvim tables
 ---@param which_key_tbls table[]
 ---@param which_key_opts table
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it
 ---@return LegendaryItem[]
-function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table): {LegendaryKeymap}
+function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table, do_binding: boolean): {LegendaryKeymap}
+  if do_binding == nil then
+    do_binding = true
+  end
   local wk_parsed = ((_G['require']('which-key.keys') as table).parse_mappings as function(_: table, tbls: {table}, prefix: string): table)(
     {},
     which_key_tbls,
@@ -39,14 +43,23 @@ function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table): {Lege
 
     ::continue::
   end, wk_parsed)
+
+  if not do_binding then
+    legendary_tbls = vim.tbl_map(function(item: LegendaryKeymap): LegendaryKeymap
+      item[2] = nil
+      return item
+    end, legendary_tbls)
+  end
+
   return legendary_tbls
 end
 
 --- Bind a which-key.nvim table with legendary.nvim
 ---@param wk_tbls table
 ---@param wk_opts table
-function M.bind_whichkey(wk_tbls: {table}, wk_opts: table)
-  local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts)
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it
+function M.bind_whichkey(wk_tbls: {table}, wk_opts: table, do_binding: boolean)
+  local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts, do_binding)
   require('legendary.bindings').bind_keymaps(legendary_tbls)
 end
 
@@ -56,7 +69,7 @@ function M.whichkey_listen(): boolean
   local wk = (_G['require']('which-key') as table)
   local original = wk.register as function(tbls: {table}, opts: table)
   local listener = function(whichkey_tbls: {table}, whichkey_opts: table)
-    M.bind_whichkey(whichkey_tbls, whichkey_opts)
+    M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
     original(whichkey_tbls, whichkey_opts)
   end
   wk.register = listener

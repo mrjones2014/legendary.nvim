@@ -84,6 +84,7 @@ global type LegendaryItemFilter = function(item: LegendaryItem): boolean
 global record LegendaryWhichKeys
    mappings: {table}
    opts: table
+   do_binding: boolean
 end
 
 global enum LegendaryScratchpadDisplay
