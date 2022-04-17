@@ -13,21 +13,24 @@ local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
 local autocmds = require('legendary.config').autocmds
 
+local utils = require('legendary.utils')
+
 local formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
 function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
-  keymap.kind = kind or 'legendary.keymap'
+  keymap = utils.resolve_description(keymap)
+  keymap.kind = (kind or 'legendary.keymap') as LegendaryKind
   keymap.id = next_id()
   types.validate_keymap(keymap)
 
   if not keymap or type(keymap) ~= 'table' then
-    require('legendary.utils').notify(string.format('Expected table, got %s', type(keymap)))
+    utils.notify(string.format('Expected table, got %s', type(keymap)))
     return
   end
 
-  if require('legendary.utils').list_contains(keymaps, keymap) then
+  if utils.list_contains(keymaps, keymap) then
     return
   end
 
@@ -35,9 +38,12 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
     keymap.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  require('legendary.utils').set_keymap(keymap)
+  utils.set_keymap(keymap)
   require('legendary.formatter').update_padding(keymap as LegendaryItem)
-  table.insert(keymaps, keymap)
+  for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
+    keymap.id = next_id()
+    table.insert(keymaps, resolved_keymap)
+  end
 end
 
 --- Bind a list of keymaps with legendary.nvim
@@ -48,7 +54,7 @@ function M.bind_keymaps(new_keymaps: {LegendaryKeymap}, kind: string | nil)
   end
 
   if not vim.tbl_islist(new_keymaps) then
-    require('legendary.utils').notify(
+    utils.notify(
       string.format('Expected list-like table, got %s, at require("legendary").bind_keymaps', type(new_keymaps))
     )
     return
@@ -62,11 +68,12 @@ end
 --- Bind a single command with legendary.nvim
 ---@param cmd LegendaryItem
 function M.bind_command(cmd: LegendaryCommand, kind: string | nil)
-  cmd.kind = kind or 'legendary.command'
+  cmd = utils.resolve_description(cmd)
+  cmd.kind = (kind or 'legendary.command') as LegendaryKind
   cmd.id = next_id()
   types.validate_command(cmd)
   if not cmd or type(cmd) ~= 'table' then
-    require('legendary.utils').notify(string.format('Expected table, got %s', type(cmd)))
+    utils.notify(string.format('Expected table, got %s', type(cmd)))
     return
   end
 
@@ -74,11 +81,11 @@ function M.bind_command(cmd: LegendaryCommand, kind: string | nil)
     cmd.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  if require('legendary.utils').list_contains(commands, cmd) then
+  if utils.list_contains(commands, cmd) then
     return
   end
 
-  require('legendary.utils').set_command(cmd)
+  utils.set_command(cmd)
   require('legendary.formatter').update_padding(cmd as LegendaryItem)
   table.insert(commands, cmd)
 end
@@ -91,7 +98,7 @@ function M.bind_commands(cmds: {LegendaryCommand}, kind: string | nil)
   end
 
   if not vim.tbl_islist(cmds) then
-    require('legendary.utils').notify(
+    utils.notify(
       string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(cmds))
     )
     return
@@ -105,12 +112,13 @@ end
 --- Bind a single autocmd with legendary.nvim
 ---@param autocmd LegendaryItem
 local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind: string | nil)
-  autocmd.kind = kind or 'legendary.autocmd'
+  autocmd = utils.resolve_description(autocmd)
+  autocmd.kind = (kind or 'legendary.autocmd') as LegendaryKind
   autocmd.id = next_id()
   types.validate_autocmd(autocmd)
 
   if not vim.api.nvim_create_augroup then
-    require('legendary.utils').notify(
+    utils.notify(
       --luacheck: ignore
       'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
     )
@@ -118,11 +126,11 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
   end
 
   if not autocmd or type(autocmd) ~= 'table' then
-    require('legendary.utils').notify(string.format('Expected table, got %s', type(autocmd)))
+    utils.notify(string.format('Expected table, got %s', type(autocmd)))
     return
   end
 
-  if require('legendary.utils').list_contains(autocmds as {LegendaryAutocmd}, autocmd) then
+  if utils.list_contains(autocmds as {LegendaryAutocmd}, autocmd) then
     return
   end
 
@@ -130,7 +138,7 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
     autocmd.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
-  require('legendary.utils').set_autocmd(autocmd, group)
+  utils.set_autocmd(autocmd, group)
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
     require('legendary.formatter').update_padding(autocmd as LegendaryItem)
     table.insert(autocmds as {LegendaryAutocmd}, autocmd)
@@ -140,9 +148,10 @@ end
 --- Bind an augroup of autocmds
 ---@param augroup LegendaryAugroup
 local function bind_augroup(augroup: LegendaryAugroup, kind: string | nil)
+  augroup = utils.resolve_description(augroup)
   types.validate_augroup(augroup)
   if not vim.api.nvim_create_augroup then
-    require('legendary.utils').notify(
+    utils.notify(
       --luacheck: ignore
       'Sorry, managing autocmds via legendary.nvim is only supported on Neovim 0.7+ (requires `vim.api.nvim_create_augroup` and `vim.api.nvim_create_autocmd` API functions).'
     )
@@ -151,7 +160,7 @@ local function bind_augroup(augroup: LegendaryAugroup, kind: string | nil)
 
   local group_name = augroup and augroup.name or ''
   if #group_name == 0 then
-    require('legendary.utils').notify('augroup must have a name')
+    utils.notify('augroup must have a name')
     return
   end
 
@@ -172,15 +181,15 @@ end
 --- Bind a list of mixed augroups and autocmds
 ---@param au LegendaryAugroup[] | LegendaryItem[]
 function M.bind_autocmds(au: table, kind: string | nil)
-  if require('legendary.utils').is_user_augroup(au as LegendaryAugroup) then
+  if utils.is_user_augroup(au as LegendaryAugroup) then
     bind_augroup(au as LegendaryAugroup)
-  elseif require('legendary.utils').is_user_autocmd(au as LegendaryAutocmd) then
+  elseif utils.is_user_autocmd(au as LegendaryAutocmd) then
     bind_autocmd(au as LegendaryAutocmd)
   else
     vim.tbl_map(function(augroup_or_autocmd: table): nil
-      if require('legendary.utils').is_user_augroup(augroup_or_autocmd as LegendaryAugroup) then
+      if utils.is_user_augroup(augroup_or_autocmd as LegendaryAugroup) then
         bind_augroup(augroup_or_autocmd as LegendaryAugroup, kind)
-      elseif require('legendary.utils').is_user_autocmd(augroup_or_autocmd as LegendaryAutocmd) then
+      elseif utils.is_user_autocmd(augroup_or_autocmd as LegendaryAutocmd) then
         bind_autocmd(augroup_or_autocmd as LegendaryAutocmd, kind)
       end
     end, au)
@@ -194,11 +203,11 @@ end
 ---@param item_kind string
 function M.find(item_kind: string | nil)
   item_kind = item_kind or ''
-  local current_mode = vim.fn.mode() as string
+  local current_mode = (vim.fn.mode() or '') as string
   local visual_selection: table = nil
-  if current_mode and current_mode:sub(1, 1):lower() == 'v' then
-    visual_selection = require('legendary.utils').get_marks()
-    require('legendary.utils').send_escape_key()
+  if utils.is_visual_mode(current_mode) then
+    visual_selection = utils.get_marks()
+    utils.send_escape_key()
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local items: {LegendaryItem}

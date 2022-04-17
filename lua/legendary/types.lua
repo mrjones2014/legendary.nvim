@@ -1,6 +1,15 @@
 local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local table = _tl_compat and _tl_compat.table or table; local _tl_table_unpack = unpack or table.unpack
 unpack = ((_G).unpack or _tl_table_unpack)
 
+ LegendaryKind = {}
+
+
+
+
+
+
+
+
  LegendaryModeMappingOpts = {}
 
 
