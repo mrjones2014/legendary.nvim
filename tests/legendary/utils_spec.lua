@@ -234,4 +234,67 @@ describe('legendary.utils', function()
       }, result)
     end)
   end)
+
+  describe('resolve_with_per_mode_description', function()
+    it('should return a list with just the input if does not have per-mode descriptions', function()
+      local keymap = {
+        '<leader>l',
+        {
+          n = ':Something<CR>',
+          v = { ':SomethingElse<CR>' },
+        },
+      }
+      local result = utils.resolve_with_per_mode_description(keymap)
+      assert.are.same({ keymap }, result)
+    end)
+
+    it('should return separate LegendaryKeymaps when input has per-mode descriptions', function()
+      local keymap = {
+        '<leader>l',
+        {
+          -- should get outer desc
+          n = ':Something<CR>',
+          v = { ':SomethingElse<CR>', description = 'Something else' },
+          c = { ':AnotherThing<CR>', opts = { desc = 'Another thing' } },
+        },
+        description = 'Something',
+      }
+      local result = utils.resolve_with_per_mode_description(keymap)
+      -- order is not guaranteed, so put the result
+      -- in a known order
+      result = {
+        vim.tbl_filter(function(tbl)
+          return tbl.mode == nil or tbl.mode == 'n'
+        end, result)[1],
+        vim.tbl_filter(function(tbl)
+          return tbl.mode == 'v'
+        end, result)[1],
+        vim.tbl_filter(function(tbl)
+          return tbl.mode == 'c'
+        end, result)[1],
+      }
+      assert.are.same({
+        {
+          '<leader>l',
+          description = 'Something',
+          mode = 'n',
+          kind = 'legendary.keymap',
+        },
+        {
+          '<leader>l',
+          description = 'Something else',
+          mode = 'v',
+          kind = 'legendary.keymap',
+          opts = {},
+        },
+        {
+          '<leader>l',
+          description = 'Another thing',
+          mode = 'c',
+          opts = { desc = 'Another thing' },
+          kind = 'legendary.keymap',
+        },
+      }, result)
+    end)
+  end)
 end)
