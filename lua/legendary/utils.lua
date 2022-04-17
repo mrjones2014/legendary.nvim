@@ -1,6 +1,12 @@
 local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local ipairs = _tl_compat and _tl_compat.ipairs or ipairs; local pairs = _tl_compat and _tl_compat.pairs or pairs; local string = _tl_compat and _tl_compat.string or string; local table = _tl_compat and _tl_compat.table or table; require('legendary.types')
 local M = {}
 
+function M.notify(msg, level, title)
+   level = level or vim.log.levels.ERROR
+   title = title or 'legendary.nvim'
+   vim.notify(msg, level, { title = title })
+end
+
 
 
 function M.get_marks()
@@ -252,6 +258,11 @@ function M.set_keymap(keymap)
       return
    end
 
+   if not vim.keymap or not vim.keymap.set then
+      M.notify('Sorry, binding keymaps with legendary.nvim requires Neovim 0.7.0 or higher!')
+      return
+   end
+
    for _, args_tbl in pairs(M.resolve_keymap(keymap)) do
       local args = args_tbl
       vim.keymap.set(args[1], args[2], args[3], args[4])
@@ -421,12 +432,6 @@ end
 
 function M.send_escape_key()
    vim.api.nvim_feedkeys(vim.api.nvim_eval('"\\<esc>"'), 'n', true)
-end
-
-function M.notify(msg, level, title)
-   level = level or vim.log.levels.ERROR
-   title = title or 'legendary.nvim'
-   vim.notify(msg, level, { title = title })
 end
 
 return M

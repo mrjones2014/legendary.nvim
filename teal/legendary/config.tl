@@ -18,6 +18,7 @@ local M: LegendaryConfig = {
   which_key = {
     mappings = {},
     opts = {},
+    do_binding = true,
   },
   auto_register_which_key = true,
   scratchpad = {
@@ -30,6 +31,18 @@ local function default_bool(value: boolean | nil, default: boolean): boolean
     return default
   end
   return value
+end
+
+local function default_whichkey(new_config: table): LegendaryWhichKeys
+  if not new_config then
+    return M.which_key
+  end
+
+  return {
+    mappings = new_config.mappings or {},
+    opts = new_config.opts or {},
+    do_binding = default_bool(new_config.do_binding as boolean | nil, true)
+  }
 end
 
 ---Set user configuration
@@ -51,7 +64,7 @@ function M.setup(new_config: table): LegendaryConfig
   M.keymaps = (new_config.keymaps or M.keymaps) as {LegendaryKeymap}
   M.commands = (new_config.commands or M.commands) as {LegendaryCommand}
   M.autocmds = (new_config.autocmds or M.autocmds) as {LegendaryAugroup}
-  M.which_key = (new_config.which_key and (new_config.which_key as table).mappings and new_config.which_key or M.which_key) as LegendaryWhichKeys
+  M.which_key = default_whichkey(new_config.which_key as table)
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key as boolean | nil, M.auto_register_which_key)
   M.scratchpad = (new_config.scratchpad or M.scratchpad) as LegendaryScratchpadConfig
   require('legendary.types').validate_config(M)

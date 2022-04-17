@@ -45,7 +45,11 @@ M.setup = function(new_config: table)
   end
 
   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then
-    require('legendary.compat.which-key').bind_whichkey(config.which_key.mappings, config.which_key.opts)
+    require('legendary.compat.which-key').bind_whichkey(
+      config.which_key.mappings,
+      config.which_key.opts,
+      config.which_key.do_binding
+    )
   end
 
   if config.auto_register_which_key then
@@ -53,17 +57,6 @@ M.setup = function(new_config: table)
     if whichkey_is_loaded then
       require('legendary.compat.which-key').whichkey_listen()
     end
-  end
-end
-
-if not vim.keymap or not vim.keymap.set then
-  local function print_err()
-    require('legendary.utils').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
-  end
-
-  print_err()
-  for key, _ in pairs(M) do
-    M[key] = print_err
   end
 end
 
