@@ -201,7 +201,7 @@ end
 --- "keymaps" as a parameter, pass "commands" to find
 --- only commands, pass "autocmds" to find only autocmds.
 ---@param item_kind string
-function M.find(item_kind: string | nil)
+function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
   item_kind = item_kind or ''
   local current_mode = (vim.fn.mode() or '') as string
   local visual_selection: table = nil
@@ -223,6 +223,7 @@ function M.find(item_kind: string | nil)
     items = vim.list_extend(items, autocmds as {LegendaryItem})
   end
 
+
   -- only search for last used item if kind matches
   if
     require('legendary.config').most_recent_item_at_top
@@ -242,10 +243,33 @@ function M.find(item_kind: string | nil)
     ::last_used_item_found::
   end
 
+  filters = filters or {}
+  if type(filters) == 'function' then
+    filters = { filters as LegendaryItemFilter }
+  end
+
   -- buffer-specific items should only appear for the current buffer
-  items = vim.tbl_filter(function(item: LegendaryKeymap): boolean
+  table.insert(filters, function(item: LegendaryItem): boolean
     return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
-  end, items) as {LegendaryItem}
+  end)
+
+  for _, filter in ipairs(filters as {LegendaryItemFilter}) do
+    if type(filter) ~= 'function' then
+      utils.notify('Passed an item filter that is not a function', vim.log.levels.WARN)
+      goto skip_filter
+    end
+
+    items = vim.tbl_filter(function(item: LegendaryItem): boolean
+      local result = filter(item)
+      if type(result) ~= 'boolean' then
+        return true
+      end
+
+      return result
+    end, items)
+
+    ::skip_filter::
+  end
 
   local select_kind = string.format(
     'legendary.%s',
