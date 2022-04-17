@@ -24,8 +24,8 @@ jobs:
         luarocks install tl
     - name: Checkout teal-types
       uses: actions/checkout@v2
-      with: # TODO change this to teal-language/teal-types when this PR is merged: https://github.com/teal-language/teal-types/pull/35
-        repository: mrjones2014/teal-types
+      with:
+        repository: teal-language/teal-types
         path: vendor/plenary.nvim
     - name: Ensure Teal Build Up To Date
       run: |

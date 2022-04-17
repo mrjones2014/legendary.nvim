@@ -70,7 +70,7 @@ global record vim
       end
    end
    notify: function(msg: string, log_level: integer, opts: table)
-   notify_once: function(msg:string, level:integer, opt:table)
+   notify_once: function(msg: string, level: integer, opt: table)
    paste: function({string}, integer): boolean
    schedule_wrap: function(function): function
    deep_equal: function(any, any): boolean
@@ -145,44 +145,44 @@ global record vim
    end
    regex: function(string): Regex
 
-   diff: function(a:string, b:string):string
+   diff: function(a: string, b: string): string
    -- TODO
-   -- diff: function(a:string, b:string, options:DiffOptions):string | {integer}
+   -- diff: function(a: string, b: string, options: DiffOptions): string | {integer}
 
    record VersionInfo
-      api_compatible:integer
-      api_level:integer
-      api_prerelease:integer
-      major:integer
-      minor:integer
-      patch:integer
+      api_compatible: integer
+      api_level: integer
+      api_prerelease: integer
+      major: integer
+      minor: integer
+      patch: integer
    end
 
-   version:function():VersionInfo
+   version: function(): VersionInfo
 
-   uri_from_bufnr:function(bufnr:integer):string
-   uri_from_fname:function(path:string):string
-   uri_to_bufnr:function(uri:string):integer
-   uri_to_fname:function(uri:string):string
+   uri_from_bufnr: function(bufnr: integer): string
+   uri_from_fname: function(path: string): string
+   uri_to_bufnr: function(uri: string): integer
+   uri_to_fname: function(uri: string): string
 
-   pretty_print:function(obj:any):string
+   pretty_print: function(obj: any): string
 
-   region:function(bufnr:integer, pos1:{integer}, pos2:{integer}, regtype:string, inclusive:boolean):{integer:{integer}}
+   region: function(bufnr: integer, pos1: {integer}, pos2: {integer}, regtype: string, inclusive: boolean): {integer:{integer}}
 
    record filetype
       -- TODO - replace table with options record
-      add: function(filetypes:table)
+      add: function(filetypes: table)
 
-      match: function(name:string, bufnr:integer)
+      match: function(name: string, bufnr: integer)
    end
 
    record mpack
-      encode: function(obj:any):string
-      decode: function(str:string):any
+      encode: function(obj: any): string
+      decode: function(str: string): any
    end
 
    record spell
-      check: function(str:string):{{string | integer}}
+      check: function(str: string): {{string | integer}}
    end
 
    -- TODO: these are a pitiful approximation of luv's types
@@ -223,6 +223,19 @@ global record vim
 
       read_start: function(Pipe, function(string, string))
 
+      record Fs userdata end
+      fs_open: function(string, string|integer, integer): integer, string, string
+      fs_open: function(string, string|integer, integer, function(string, integer)): Fs
+
+      fs_close: function(integer): boolean, string, string
+      fs_close: function(integer, function(string, boolean)): Fs
+
+      fs_read: function(integer, integer, integer): string, string, string
+      fs_read: function(integer, integer, integer, function(string, integer)): Fs
+
+      fs_write: function(integer, string|{string}, integer): integer, string, string
+      fs_write: function(integer, string|{string}, integer, function(string, integer)): Fs
+
       record FsStat
          record Time
             sec: integer
@@ -255,11 +268,11 @@ global record vim
       fs_fstat: function(integer): FsStat, string, string
       fs_fstat: function(integer, function(string, FsStat))
 
-      record Dir userdata end
-      fs_scandir: function(string, function(string, Dir)): Dir, string, string
-      fs_scandir_next: function(Dir): string, string, string
+      fs_scandir: function(string, function(string, Fs)): Fs, string, string
+      fs_scandir_next: function(Fs): string, string, string
 
-      fs_mkdir: function(string, integer, function(string, boolean)): boolean | Dir, string, string
+      fs_mkdir: function(string, integer): boolean, string, string
+      fs_mkdir: function(string, integer, function(string, boolean)): Fs
    end
 
    in_fast_event: function(): boolean
@@ -286,27 +299,27 @@ global record vim
 
    types: {string|integer:string|integer}
 
-   record KeyMap
+   record keymap
       record DelOptions
-         buffer:boolean
+         buffer: boolean | integer
       end
 
       record SetOptions
-         unique:boolean
-         expr:boolean
-         script:boolean
-         nowait:boolean
-         remap:boolean
-         replace_keycodes:boolean
-         silent:boolean
-         buffer:boolean
+         buffer: boolean | integer
+         callback: function
+         desc: string
+         expr: boolean
+         nowait: boolean
+         remap: boolean
+         replace_keycodes: boolean
+         script: boolean
+         silent: boolean
+         unique: boolean
       end
 
-      set:function(mode:string|{string}, lhs:string, rhs:string|function(), opts:SetOptions)
-      del:function(modes:string|{string}, lhs:string, opts:DelOptions)
+      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOptions)
+      del: function(modes: string|{string}, lhs: string, opts: DelOptions)
    end
-
-   keymap: KeyMap
 
    record EventData --TODO: this is a vim thing, so types aren't really documented
       abort: any
