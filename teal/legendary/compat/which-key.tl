@@ -22,6 +22,9 @@ end
 ---@param do_binding boolean whether to bind the keymaps or let which-key handle it
 ---@return LegendaryItem[]
 function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table, do_binding: boolean): {LegendaryKeymap}
+  if do_binding == nil then
+    do_binding = true
+  end
   local wk_parsed = ((_G['require']('which-key.keys') as table).parse_mappings as function(_: table, tbls: {table}, prefix: string): table)(
     {},
     which_key_tbls,

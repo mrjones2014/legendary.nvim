@@ -22,6 +22,9 @@ end
 
 
 function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
+   if do_binding == nil then
+      do_binding = true
+   end
    local wk_parsed = ((_G['require']('which-key.keys')).parse_mappings)(
    {},
    which_key_tbls,
