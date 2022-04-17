@@ -45,7 +45,11 @@ M.setup = function(new_config: table)
   end
 
   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then
-    require('legendary.compat.which-key').bind_whichkey(config.which_key.mappings, config.which_key.opts)
+    require('legendary.compat.which-key').bind_whichkey(
+      config.which_key.mappings,
+      config.which_key.opts,
+      config.which_key.do_binding
+    )
   end
 
   if config.auto_register_which_key then
