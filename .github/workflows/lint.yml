@@ -17,17 +17,19 @@ jobs:
       uses: leafo/gh-actions-lua@v8
       with:
         luaVersion: "5.1.5"
+    - name: Run Stylua
+      uses: JohnnyMorganz/stylua-action@1.0.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --check tests/
+        version: 0.10.1
     - name: Setup 'luarocks'
       uses: leafo/gh-actions-luarocks@v4
-    - name: Instal Teal Compiler
+    - name: Install Teal Compiler
       run: |
         luarocks install tl
-    - name: Checkout teal-types
-      uses: actions/checkout@v2
-      with:
-        repository: teal-language/teal-types
-        path: vendor/plenary.nvim
-    - name: Ensure Teal Build Up To Date
+        luarocks install luacheck
+    - name: Run Checks and Ensure Teal Build Up To Date
       run: |
         make check
         make build

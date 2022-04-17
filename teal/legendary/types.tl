@@ -1,6 +1,15 @@
 -- `unpack` is a global in neovim
 global unpack = ((_G as table).unpack or table.unpack) as function(table): any...
 
+global enum LegendaryKind
+   'legendary.keymap'
+   'legendary.keymap.builtin'
+   'legendary.command'
+   'legendary.command.builtin'
+   'legendary.augroup'
+   'legendary.autocmd'
+end
+
 global record LegendaryModeMappingOpts
    {string | function(marks: table | nil): nil}
    opts: table | nil
@@ -25,7 +34,7 @@ global record LegendaryKeymap
    mode: string | {string}
    description: string
    opts: table
-   kind: string
+   kind: LegendaryKind
    id: integer
    unfinished: boolean | nil
 end
@@ -38,7 +47,7 @@ global record LegendaryCommand
    {string | function | nil}
    description: string
    opts: {string: any}
-   kind: string
+   kind: LegendaryKind
    id: integer
    unfinished: boolean | nil
 end
@@ -51,7 +60,7 @@ global record LegendaryAutocmd
    {string | function | nil}
    description: string
    opts: table
-   kind: string
+   kind: LegendaryKind
    id: integer
 end
 
@@ -65,7 +74,7 @@ end
 --- Can be any of the legendary table types
 global record LegendaryItem
    id: integer
-   kind: string
+   kind: LegendaryKind
    description: string | nil
 end
 
