@@ -176,6 +176,9 @@ require('legendary').bind_whichkey(
 
 The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar.
 
+Descriptions can be specified either in the top-level `description` property
+on each table, or inside the `opts` table as `opts.desc = 'Description goes here'`.
+
 For `autocmd`s, you must include a `description` property for it to appear in the finder.
 This is a design decision because keymaps and commands are frequently executed manually,
 so they should appear in the finder by default, while executing `autocmd`s manually with
@@ -234,6 +237,37 @@ local keymaps = {
     {
       n = { ':CommentToggle<CR>' opts = { noremap = true } },
       v = { ':VisualCommentToggle<CR>' opts = { silent = false } }
+    },
+    description = 'Toggle comment'
+    -- if outer opts exist, the inner opts tables will be merged,
+    -- with the inner opts taking precedence
+    opts = { expr = false }
+  }
+}
+```
+
+If you want the per-mode mappings to be treated as separate keymaps,
+you can specify a separate description per-mode:
+
+```lua
+local keymaps = {
+  {
+    '<leader>c',
+    {
+      n = {
+        ':Something<CR>',
+        description = 'Something in normal mode',
+        opts = { noremap = true }
+      },
+      v = {
+        ':SomethingElse<CR>'
+        opts = {
+          -- you can also specify description through opts.desc
+          -- if you prefer
+          desc = 'Something else in visual mode',
+          silent = false,
+        }
+      }
     },
     description = 'Toggle comment'
     -- if outer opts exist, the inner opts tables will be merged,
