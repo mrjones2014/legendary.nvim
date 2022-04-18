@@ -76,7 +76,10 @@ global record LegendaryItem
    id: integer
    kind: LegendaryKind
    description: string | nil
+   opts: table
 end
+
+global type LegendaryItemFilter = function(item: LegendaryItem): boolean
 
 global record LegendaryWhichKeys
    mappings: {table}
