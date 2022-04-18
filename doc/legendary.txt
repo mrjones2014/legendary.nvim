@@ -135,7 +135,11 @@ structure for keymap, command, and `augroup`/`autocmd` tables, see
         -- or alternatively have them auto-register,
         -- see section on which-key integration
         mappings = {},
-        opts = {}
+        opts = {},
+        -- controls whether legendary.nvim actually binds they keymaps,
+        -- or if you want to let which-key.nvim handle the bindings.
+        -- if not passed, true by default
+        do_binding = {},
       },
       -- Automatically add which-key tables to legendary
       -- see "which-key.nvim Integration" below for more details
@@ -171,13 +175,24 @@ There’s a couple ways you can choose to do it:
       which_key = {
         mappings = your_which_key_tables,
         opts = your_which_key_opts,
+        -- false if which-key.nvim handles binding them,
+        -- set to true if you want legendary.nvim to handle binding
+        -- the mappings; if not passed, true by default
+        do_binding = false,
       },
     })
     
     -- or, if you'd prefer to manually register with legendary.nvim
     require('legendary').setup({ auto_register_which_key = false })
     require('which-key').register(your_which_key_tables, your_which_key_opts)
-    require('legendary').bind_whichkey(your_which_key_tables, your_which_key_opts)
+    require('legendary').bind_whichkey(
+      your_which_key_tables,
+      your_which_key_opts,
+      -- false if which-key.nvim handles binding them,
+      -- set to true if you want legendary.nvim to handle binding
+      -- the mappings; if not passed, true by default
+      false,
+    )
 <
 
 
