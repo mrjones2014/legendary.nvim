@@ -86,6 +86,8 @@ module.
 require('legendary').find(nil, require('legendary.filters').current_mode())
 -- filter keymaps by normal mode
 require('legendary').find(nil, require('legendary.filters').mode('n'))
+-- show only keymaps and filter by normal mode
+require('legendary').find('keymaps', require('legendary.filters').mode('n'))
 -- filter keymaps by normal mode and that start with <leader>
 require('legendary').find(nil, {
   require('legendary.filters').mode('n'),
