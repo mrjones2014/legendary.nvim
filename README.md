@@ -51,19 +51,52 @@ To trigger the finder for your configured keymaps, commands, and `augroup`/`auto
 Lua:
 
 ```lua
-require('legendary').find() -- search keymaps, commands, and autocmds
-require('legendary').find('keymaps') -- search keymaps
-require('legendary').find('commands') -- search commands
-require('legendary').find('autocmds') -- search autocmds
+-- search keymaps, commands, and autocmds
+require('legendary').find()
+-- search keymaps
+require('legendary').find('keymaps')
+-- search commands
+require('legendary').find('commands')
+-- search autocmds
+require('legendary').find('autocmds')
 ```
 
 Vim commands:
 
 ```VimL
-:Legendary " search keymaps, commands, and autocmds
-:Legendary keymaps " search keymaps
-:Legendary commands " search commands
-:Legendary autocmds " search autocmds
+" search keymaps, commands, and autocmds
+:Legendary
+
+" search keymaps
+:Legendary keymaps
+
+" search commands
+:Legendary commands
+
+" search autocmds
+:Legendary autocmds
+```
+
+In Lua, you can also specify filters in the second argument. It can be either a function, or a list of functions,
+with the signature `function(item: LegendaryItem): boolean`. There are some pre-made filters in the `legendary.filters`
+module.
+
+```lua
+-- filter keymaps by current mode
+require('legendary').find(nil, require('legendary.filters').current_mode())
+-- filter keymaps by normal mode
+require('legendary').find(nil, require('legendary.filters').mode('n'))
+-- filter keymaps by normal mode and that start with <leader>
+require('legendary').find(nil, {
+  require('legendary.filters').mode('n'),
+  function(item)
+    if not string.find(item.kind, 'keymap') then
+      return true
+    end
+
+    return vim.startswith(item[1], '<leader>')
+  end
+})
 ```
 
 ## Configuration
@@ -465,6 +498,33 @@ require('legendary').bind_autocmds(augroup)
 require('legendary').bind_autocmds(autocmd)
 require('legendary').bind_autocmds({
   -- your augroups and autocmds here
+})
+
+-- search keymaps, commands, and autocmds
+require('legendary').find()
+-- search keymaps
+require('legendary').find('keymaps')
+-- search commands
+require('legendary').find('commands')
+-- search autocmds
+require('legendary').find('autocmds')
+
+-- filter keymaps by current mode
+require('legendary').find(nil, require('legendary.filters').current_mode())
+-- find only keymaps, and filter by current mode
+require('legendary').find('keymaps', require('legendary.filters').current_mode())
+-- filter keymaps by normal mode
+require('legendary').find(nil, require('legendary.filters').mode('n'))
+-- filter keymaps by normal mode and that start with <leader>
+require('legendary').find(nil, {
+  require('legendary.filters').mode('n'),
+  function(item)
+    if not string.find(item.kind, 'keymap') then
+      return true
+    end
+
+    return vim.startswith(item[1], '<leader>')
+  end
 })
 ```
 

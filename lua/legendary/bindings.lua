@@ -200,7 +200,7 @@ end
 
 
 
-function M.find(item_kind)
+function M.find(item_kind, filters)
    item_kind = item_kind or ''
    local current_mode = (vim.fn.mode() or '')
    local visual_selection = nil
@@ -223,6 +223,7 @@ function M.find(item_kind)
    end
 
 
+
    if
 require('legendary.config').most_recent_item_at_top and
       last_used_item and
@@ -241,10 +242,33 @@ require('legendary.config').most_recent_item_at_top and
       ::last_used_item_found::
    end
 
+   filters = filters or {}
+   if type(filters) == 'function' then
+      filters = { filters }
+   end
 
-   items = vim.tbl_filter(function(item)
+
+   table.insert(filters, function(item)
       return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
-   end, items)
+   end)
+
+   for _, filter in ipairs(filters) do
+      if type(filter) ~= 'function' then
+         utils.notify('Passed an item filter that is not a function', vim.log.levels.WARN)
+         goto skip_filter
+      end
+
+      items = vim.tbl_filter(function(item)
+         local result = filter(item)
+         if type(result) ~= 'boolean' then
+            return true
+         end
+
+         return result
+      end, items)
+
+      ::skip_filter::
+   end
 
    local select_kind = string.format(
    'legendary.%s',
