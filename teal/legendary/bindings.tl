@@ -34,7 +34,7 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
     return
   end
 
-  if keymap.opts and keymap.opts.buffer == 0 then
+  if keymap.opts and (keymap.opts.buffer == 0 or keymap.opts.buffer == true) then
     keymap.opts.buffer = vim.api.nvim_get_current_buf()
   end
 
