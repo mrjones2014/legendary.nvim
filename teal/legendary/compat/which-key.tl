@@ -65,15 +65,33 @@ end
 
 --- Enable auto-registering of which-key.nvim tables
 --- with legendary.nvim
-function M.whichkey_listen(): boolean
-  local wk = (_G['require']('which-key') as table)
-  local original = wk.register as function(tbls: {table}, opts: table)
-  local listener = function(whichkey_tbls: {table}, whichkey_opts: table)
-    M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
-    original(whichkey_tbls, whichkey_opts)
+function M.whichkey_listen(halt: boolean): boolean
+  local loaded, which_key = pcall(
+    _G['require'] as (function(module: string): table),
+    'which-key'
+  )
+
+  if loaded then
+    local wk = which_key as table
+    local original = wk.register as function(tbls: {table}, opts: table)
+    local listener = function(whichkey_tbls: {table}, whichkey_opts: table)
+      M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
+      original(whichkey_tbls, whichkey_opts)
+    end
+    wk.register = listener
+    return true
+  elseif not halt then
+    -- if which-key is not loaded, set up package.searchers
+    -- to load the listener once which-key loads
+    local searcher = function(module: string): nil
+      if module == 'which-key' then
+        M.whichkey_listen(true)
+      end
+
+      return nil
+    end
+    table.insert(package.searchers, 1, searcher)
   end
-  wk.register = listener
-  return true
 end
 
 return M
