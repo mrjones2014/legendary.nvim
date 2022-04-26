@@ -1,9 +1,37 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string; require('legendary.types')
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string
+
+require('legendary.types')
 
 local M = {}
 
-M = vim.tbl_extend('error', M, require('legendary.compat.which-key'))
-M = vim.tbl_extend('error', M, require('legendary.bindings'))
+local wk = require('legendary.compat.which-key')
+
+
+M.bind_whichkey = wk.bind_whichkey
+
+
+M.parse_whichkey = wk.parse_whichkey
+
+
+M.whichkey_listen = wk.whichkey_listen
+
+
+local b = require('legendary.bindings')
+
+
+M.bind_keymap = b.bind_keymap
+
+
+M.bind_keymaps = b.bind_keymaps
+
+
+M.bind_command = b.bind_command
+
+
+M.bind_command = b.bind_commands
+
+
+M.bind_autocmds = b.bind_autocmds
 
 
 

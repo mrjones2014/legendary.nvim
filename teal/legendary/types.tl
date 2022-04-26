@@ -1,6 +1,9 @@
+---@mod legendary.types require('legendary.types')
+
 -- `unpack` is a global in neovim
 global unpack = ((_G as table).unpack or table.unpack) as function(table): any...
 
+---@class LegendaryKind Enum containing the valid `kind` values
 global enum LegendaryKind
    'legendary.keymap'
    'legendary.keymap.builtin'
@@ -10,11 +13,22 @@ global enum LegendaryKind
    'legendary.autocmd'
 end
 
+---@class LegendaryModeMappingOpts The value of a per-mode mapping with per-mode opts
+---@field [1] string | function(table | nil): nil
+---@field opts table | nil
 global record LegendaryModeMappingOpts
    {string | function(marks: table | nil): nil}
    opts: table | nil
 end
 
+---@class LegendaryModeMapping The value of a per-mode mapping
+---@field n string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field v string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field x string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field c string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field s string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field t string | (function(table | nil): nil) | LegendaryModeMappingOpts
+---@field i string | (function(table | nil): nil) | LegendaryModeMappingOpts
 global record LegendaryModeMapping
    n: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
    v: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
@@ -25,10 +39,14 @@ global record LegendaryModeMapping
    i: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
 end
 
---- A legendary keymap
---- Note that the first element will *always*
---- be a string, but I can't express that in
---- the Teal type system
+---@class LegendaryKeymap A legendary keymap
+---@field [1] string
+---@field [2] string | (function(table | nil): nil) | LegendaryModeMapping | nil
+---@field mode string | {string}
+---@field description string | nil
+---@field opts table | nil
+---@field kind string
+---@field unfinished boolean | nil
 global record LegendaryKeymap
    {string | function(marks: table | nil): nil | LegendaryModeMapping | nil}
    mode: string | {string}
@@ -39,10 +57,14 @@ global record LegendaryKeymap
    unfinished: boolean | nil
 end
 
---- A legendary command
---- Note that the first element will *always*
---- be a string, but I can't express that in
---- the Teal type system
+---@class LegendaryCommand A legendary command
+---@field [1] string
+---@field [2] string | function | nil
+---@field mode string | {string}
+---@field description string | nil
+---@field opts table | nil
+---@field kind string
+---@field unfinished boolean | nil
 global record LegendaryCommand
    {string | function | nil}
    description: string
@@ -52,10 +74,12 @@ global record LegendaryCommand
    unfinished: boolean | nil
 end
 
---- A legendary autocmd
---- Note that the first element will *always*
---- be a string, but I can't express that in
---- the Teal type system
+---@class LegendaryAutocmd A legendary autocmd
+---@field [1] string
+---@field [2] string | function | nil
+---@field description string | nil
+---@field opts table | nil
+---@field kind string
 global record LegendaryAutocmd
    {string | function | nil}
    description: string
@@ -64,14 +88,20 @@ global record LegendaryAutocmd
    id: integer
 end
 
---- A legendary augroup
+---@class LegendaryAugroup A legendary augroup
+---@field name string
+---@field clear boolean
+---@field {LegendaryAutocmd}
 global record LegendaryAugroup
    name: string
    clear: boolean
    {LegendaryAutocmd}
 end
 
---- Can be any of the legendary table types
+---@class LegendaryItem Can be any of the legendary table types
+---@field description string | nil
+---@field opts table | nil
+---@field kind string
 global record LegendaryItem
    id: integer
    kind: LegendaryKind
@@ -79,6 +109,8 @@ global record LegendaryItem
    opts: table
 end
 
+---@class LegendaryItemFilter A type alias for
+--- `function(item: LegendaryItem): boolean`
 global type LegendaryItemFilter = function(item: LegendaryItem): boolean
 
 global record LegendaryWhichKeys
@@ -87,15 +119,30 @@ global record LegendaryWhichKeys
    do_binding: boolean
 end
 
+---@class LegendaryScratchpadDisplay enum containing value options for config.scratchpad.display_results
 global enum LegendaryScratchpadDisplay
    'float'
    'print'
 end
 
+---@class LegendaryScratchpadConfig The config table for the Legendary scratchpad
 global record LegendaryScratchpadConfig
    display_results: LegendaryScratchpadDisplay
 end
 
+---@class LegendaryConfig Configuration table for legendary
+---@field include_builtin boolean
+---@field include_legendary_cmds boolean
+---@field select_prompt string | function(string): string
+---@field formatter function(LegendaryItem): {string}
+---@field most_recent_item_at_top boolean
+---@field keymaps {LegendaryKeymap}
+---@field commands {LegendaryCommand}
+---@field autocmds {LegendaryAugroup}
+---@field auto_register_which_key boolean
+---@field which_key LegendaryWhichKeys
+---@field scratchpad LegendaryScratchpadConfig
+---@field setup function(new_config: table): LegendaryConfig
 global record LegendaryConfig
    include_builtin: boolean
    include_legendary_cmds: boolean

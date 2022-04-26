@@ -1,3 +1,5 @@
+---@mod legendary.formatter require('legendary.formatter')
+
 require('legendary.types')
 local M = {}
 

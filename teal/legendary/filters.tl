@@ -1,7 +1,13 @@
+---@mod legendary.filters require('legendary.filters')
+
 require('legendary.types')
 
 local M = {}
 
+--- Return a `LegendaryItemFilter` that filters items
+--- by the specified mode
+---@param mode string
+---@return LegendaryItemFilter
 function M.mode(mode: string): LegendaryItemFilter
   return function(item: LegendaryItem): boolean
     -- ignore everything but keymaps since they aren't tied to a mode
@@ -19,6 +25,9 @@ function M.mode(mode: string): LegendaryItemFilter
   end
 end
 
+--- Return a `LegendaryItemFilter` that filters items
+--- by the current mode
+---@return LegendaryItemFilter
 function M.current_mode(): LegendaryItemFilter
   return M.mode((vim.fn.mode() or 'n') as string)
 end

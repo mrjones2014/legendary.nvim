@@ -57,6 +57,10 @@ build:
 	mv dist/ ../lua/ && \
 	cd ..
 
+.PHONY: api-docs
+api-docs:
+	./gen-api-docs.bash
+
 .PHONY: init
 init:
 	git config core.hooksPath .githooks

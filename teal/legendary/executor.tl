@@ -1,3 +1,5 @@
+---@mod legendary.executor require('legendary.executor')
+
 require('legendary.types')
 local M = {}
 
@@ -57,7 +59,17 @@ end
 
 --- Attmept to execute the selected item
 ---@param item LegendaryItem
-function M.try_execute(item: LegendaryItem, current_buf: integer, visual_selection: table | nil, current_mode: string, current_cursor_pos: {integer, integer})
+---@param current_buf integer
+---@param visual_selection table | nil, { row, col, row, col }
+---@param current_mode
+---@param current_cursor_pos table, { row, col }
+function M.try_execute(
+  item: LegendaryItem,
+  current_buf: integer,
+  visual_selection: table | nil,
+  current_mode: string,
+  current_cursor_pos: {integer, integer}
+)
   if not item then
     return
   end

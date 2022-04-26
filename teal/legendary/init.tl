@@ -1,9 +1,37 @@
+---@mod legendary require('legendary')
+
 require('legendary.types')
 
-local M = {}
+local M: table = {}
 
-M = vim.tbl_extend('error', M as table, require('legendary.compat.which-key') as table)
-M = vim.tbl_extend('error', M as table, require('legendary.bindings') as table)
+local wk = require('legendary.compat.which-key')
+
+--- Alias to `require('legendary.compat.which-key).bind_whichkey`
+M.bind_whichkey = wk.bind_whichkey
+
+--- Alias to `require('legendary.compat.which-key).parse_whichkey`
+M.parse_whichkey = wk.parse_whichkey
+
+--- Alias to `require('legendary.compat.which-key).whichkey_listen`
+M.whichkey_listen = wk.whichkey_listen
+
+
+local b = require('legendary.bindings')
+
+--- Alias to `require('legendary.bindings').bind_keymap`
+M.bind_keymap = b.bind_keymap
+
+--- Alias to `require('legendary.bindings').bind_keymaps`
+M.bind_keymaps = b.bind_keymaps
+
+--- Alias to `require('legendary.bindings').bind_command`
+M.bind_command = b.bind_command
+
+--- Alias to `require('legendary.bindings').bind_commands`
+M.bind_command = b.bind_commands
+
+--- Alias to `require('legendary.bindings').bind_autocmds`
+M.bind_autocmds = b.bind_autocmds
 
 --- Set configuration. If config.auto_register_which_key == true
 --- and which-key.nvim is loaded to the runtimepath, legendary.nvim
