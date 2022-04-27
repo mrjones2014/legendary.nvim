@@ -28,7 +28,7 @@ M.bind_keymaps = b.bind_keymaps
 M.bind_command = b.bind_command
 
 --- Alias to `require('legendary.bindings').bind_commands`
-M.bind_command = b.bind_commands
+M.bind_commands = b.bind_commands
 
 --- Alias to `require('legendary.bindings').bind_autocmds`
 M.bind_autocmds = b.bind_autocmds
