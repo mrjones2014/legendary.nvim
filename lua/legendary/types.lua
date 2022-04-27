@@ -160,6 +160,8 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 local M = {}
 
+
+
 function M.validate_config(config)
    vim.validate({
       include_builtin = { config.include_builtin, 'boolean', true },
@@ -174,6 +176,8 @@ function M.validate_config(config)
    })
 end
 
+
+
 function M.validate_keymap(keymap)
    vim.validate({
       ['1'] = { keymap[1], 'string' },
@@ -186,6 +190,8 @@ function M.validate_keymap(keymap)
    })
 end
 
+
+
 function M.validate_command(command)
    vim.validate({
       ['1'] = { command[1], 'string' },
@@ -197,6 +203,8 @@ function M.validate_command(command)
    })
 end
 
+
+
 function M.validate_autocmd(autocmd)
    vim.validate({
       ['1'] = { autocmd[1], { 'string', 'table' } },
@@ -207,6 +215,9 @@ function M.validate_autocmd(autocmd)
       id = { autocmd.id, 'number' },
    })
 end
+
+
+
 
 function M.validate_augroup(au)
 
