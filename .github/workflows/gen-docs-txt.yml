@@ -3,6 +3,11 @@ on:
   push:
     branches: [ master ]
 jobs:
+  generateTOC:
+    name: TOC Generator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/toc-generator@v4
   gen-docs:
     name: Autogenerate doc/legendary.txt
     runs-on: ubuntu-latest
