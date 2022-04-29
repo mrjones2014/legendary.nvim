@@ -225,9 +225,13 @@ unless a description is provided.
 <summary>
 <h3>
 <!-- panvimdoc-ignore-end -->
+
 Keymaps
+
 <!-- panvimdoc-ignore-start -->
+
 (click to expand)
+
 </h3>
 </summary>
 <!-- panvimdoc-ignore-end -->
@@ -377,9 +381,13 @@ local keymaps = {
 <summary>
 <h3>
 <!-- panvimdoc-ignore-end -->
+
 Commands
+
 <!-- panvimdoc-ignore-start -->
+
 (click to expand)
+
 </h3>
 </summary>
 <!-- panvimdoc-ignore-end -->
@@ -421,9 +429,13 @@ local commands = {
 <summary>
 <h3>
 <!-- panvimdoc-ignore-end -->
+
 <code>augroup</code>s and <code>autocmd</code>s
+
 <!-- panvimdoc-ignore-start -->
+
 (click to expand)
+
 </h3>
 </summary>
 <!-- panvimdoc-ignore-end -->
