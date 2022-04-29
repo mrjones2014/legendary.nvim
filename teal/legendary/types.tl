@@ -39,7 +39,7 @@ global record LegendaryModeMapping
    i: string | function(marks: table | nil): nil | LegendaryModeMappingOpts
 end
 
----@class LegendaryKeymap A legendary keymap
+---@class LegendaryKeymap A legendary keymap. You can add keymaps to the finder without binding them by omitting the second list element.
 ---@field [1] string
 ---@field [2] string | (function(table | nil): nil) | LegendaryModeMapping | nil
 ---@field mode string | {string}
@@ -57,7 +57,7 @@ global record LegendaryKeymap
    unfinished: boolean | nil
 end
 
----@class LegendaryCommand A legendary command
+---@class LegendaryCommand A legendary command. You can add commands to the finder without binding them by omitting the second list element.
 ---@field [1] string
 ---@field [2] string | function | nil
 ---@field mode string | {string}
