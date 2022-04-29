@@ -220,8 +220,17 @@ so they should appear in the finder by default, while executing `autocmd`s manua
 `:doautocmd` is a much less common use-case, so `autocmd`s are hidden from the finder
 unless a description is provided.
 
+<!-- panvimdoc-ignore-start -->
 <details>
-<summary><h3>Keymaps<!-- panvimdoc-ignore-start --> (click to expand)<!-- panvimdoc-ignore-end --></h3></summary>
+<summary>
+<h3>
+<!-- panvimdoc-ignore-end -->
+Keymaps
+<!-- panvimdoc-ignore-start -->
+(click to expand)
+</h3>
+</summary>
+<!-- panvimdoc-ignore-end -->
 
 For keymaps you are mapping yourself (as opposed to mappings set by other plugins),
 the first two elements are the key and the handler, respectively. The handler
@@ -359,10 +368,21 @@ local keymaps = {
 }
 ```
 
+<!-- panvimdoc-ignore-start -->
 </details>
+<!-- panvimdoc-ignore-end -->
 
+<!-- panvimdoc-ignore-start -->
 <details>
-<summary><h3>Commands<!-- panvimdoc-ignore-start --> (click to expand)<!-- panvimdoc-ignore-end --></h3></summary>
+<summary>
+<h3>
+<!-- panvimdoc-ignore-end -->
+Commands
+<!-- panvimdoc-ignore-start -->
+(click to expand)
+</h3>
+</summary>
+<!-- panvimdoc-ignore-end -->
 
 Command tables follow the exact same structure as keymaps, but specify a command name instead of a key code.
 
@@ -392,10 +412,21 @@ local commands = {
 }
 ```
 
+<!-- panvimdoc-ignore-start -->
 </details>
+<!-- panvimdoc-ignore-end -->
 
+<!-- panvimdoc-ignore-start -->
 <details>
-<summary><h3><code>augroup</code>s and <code>autocmd</code>s<!-- panvimdoc-ignore-start --> (click to expand)<!-- panvimdoc-ignore-end --></h3></summary>
+<summary>
+<h3>
+<!-- panvimdoc-ignore-end -->
+<code>augroup</code>s and <code>autocmd</code>s
+<!-- panvimdoc-ignore-start -->
+(click to expand)
+</h3>
+</summary>
+<!-- panvimdoc-ignore-end -->
 
 `augroup` tables are very simple. They have a `name` property, and a `clear` property which defaults to `true`.
 This will clear the `augroup` when creating it, equivalent to `au!`. `autocmd` tables nested within `augroup`
@@ -470,7 +501,9 @@ local augroups = {
 }
 ```
 
+<!-- panvimdoc-ignore-start -->
 </details>
+<!-- panvimdoc-ignore-end -->
 
 ## Lua API
 
