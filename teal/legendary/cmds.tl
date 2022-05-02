@@ -89,6 +89,19 @@ M.cmds = {
     require('legendary.scratchpad').lua_eval_buf,
     description = 'Eval the whole buffer as Lua',
   },
+  {
+    ':LegendaryApi',
+    function()
+      vim.cmd(string.format('e %s/%s', vim.g.legendary_root_dir, 'doc/legendary-api.txt'))
+      local buf_id = vim.api.nvim_get_current_buf()
+      vim.api.nvim_buf_set_option(buf_id, 'filetype', 'help')
+      vim.api.nvim_buf_set_option(buf_id, 'buftype', 'help')
+      vim.api.nvim_buf_set_name(buf_id, string.format('Legendary API Docs [%s]', buf_id))
+      vim.api.nvim_win_set_buf(0, buf_id)
+      vim.api.nvim_buf_set_option(buf_id, 'modifiable', false)
+    end,
+    description = "Show Legendary's full API documentation",
+  }
 }
 
 --- Bind the Legendary commands.

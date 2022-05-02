@@ -517,12 +517,25 @@ local augroups = {
 </details>
 <!-- panvimdoc-ignore-end -->
 
+## Utilities
+
+`legendary.nvim` also provides some utilities for developing Lua keymaps, commands, etc.
+The following commands are available once `legendary.nvim` is loaded:
+
+- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
+- `:LegendaryEvalLine` - evaluate the current line as a Lua expression
+- `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
+- `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
+
+Any `return` value from evaluated Lua is displayed by your configured method (either `print`ed
+to the command area, or displayed in a float, see [configuration](#configuration)).
+
 ## Lua API
 
 You can also manually bind new items after you've already called `require('legendary').setup()`.
 This can be useful for things like binding language-specific keyaps in the LSP `on_attach` function.
 
-The following API functions are available:
+The main API functions are described below. To see full API documentation, run `:LegendaryApi`.
 
 ```lua
 -- bind a single keymap
@@ -575,19 +588,8 @@ require('legendary').find(nil, {
 })
 ```
 
-### Item Kinds
-
-`legendary.nvim` will set the `kind` option on `vim.ui.select()` to `legendary.keymaps`,
-`legendary.commands`, `legendary.autocmds`, or `legendary.items`, depending on whether you
-are searching keymaps, commands, autocmds, or all.
-
-The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
-or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
-
-Builtins will have `kind = 'legendary.keymap.bulitin'`, `kind = 'legendary.command.builtin'`,
-or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, or autocmd.
-
-### Lua Helpers for Creating Mappings, Commands, and Autocmds
+There are also helper functions in the `require('legendary.helpers')` module to help you
+create lazily-evaluated keymaps, commands, and autocmds.
 
 When creating keymaps to Lua functions, the Lua expressions are evaluated at the time the mappings
 table is first read by nvim. This means you typically need to pass a function _reference_ instead
@@ -653,18 +655,17 @@ local helpers = require('legendary.helpers')
 helpers.vsplit_then(helpers.lazy_required_fn('telescope', 'find_file', { only_cwd = true }))
 ```
 
-## Utilities
+## Item Kinds
 
-`legendary.nvim` also provides some utilities for developing Lua keymaps, commands, etc.
-The following commands are available once `legendary.nvim` is loaded:
+`legendary.nvim` will set the `kind` option on `vim.ui.select()` to `legendary.keymaps`,
+`legendary.commands`, `legendary.autocmds`, or `legendary.items`, depending on whether you
+are searching keymaps, commands, autocmds, or all.
 
-- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
-- `:LegendaryEvalLine` - evaluate the current line as a Lua expression
-- `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
-- `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
+The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
+or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
 
-Any `return` value from evaluated Lua is displayed by your configured method (either `print`ed
-to the command area, or displayed in a float, see [configuration](#configuration)).
+Builtins will have `kind = 'legendary.keymap.bulitin'`, `kind = 'legendary.command.builtin'`,
+or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, or autocmd.
 
 ## Sponsors
 
