@@ -7,30 +7,52 @@ local M: table = {}
 local wk = require('legendary.compat.which-key')
 
 --- Alias to `require('legendary.compat.which-key).bind_whichkey`
+--- Bind a which-key.nvim table with legendary.nvim
+---@param wk_tbls table
+---@param wk_opts table
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it
 M.bind_whichkey = wk.bind_whichkey
 
 --- Alias to `require('legendary.compat.which-key).parse_whichkey`
+--- Take which-key.nvim tables
+--- and parse them into legendary.nvim tables
+---@param which_key_tbls table[]
+---@param which_key_opts table
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it
+---@return LegendaryItem[]
 M.parse_whichkey = wk.parse_whichkey
 
 --- Alias to `require('legendary.compat.which-key).whichkey_listen`
+--- Enable auto-registering of which-key.nvim tables
+--- with legendary.nvim
 M.whichkey_listen = wk.whichkey_listen
 
 
 local b = require('legendary.bindings')
 
 --- Alias to `require('legendary.bindings').bind_keymap`
+--- Bind a single keymap with legendary.nvim
+---@param keymap LegendaryItem
 M.bind_keymap = b.bind_keymap
 
 --- Alias to `require('legendary.bindings').bind_keymaps`
+--- Bind a list of keymaps with legendary.nvim
+---@param new_keymaps LegendaryItem[]
 M.bind_keymaps = b.bind_keymaps
 
 --- Alias to `require('legendary.bindings').bind_command`
+--- Bind a single command with legendary.nvim
+---@param cmd LegendaryItem
 M.bind_command = b.bind_command
 
 --- Alias to `require('legendary.bindings').bind_commands`
+--- Bind a list of commands with legendary.nvim
+---@param cmds LegendaryItem[]
 M.bind_commands = b.bind_commands
 
 --- Alias to `require('legendary.bindings').bind_autocmds`
+--- Bind a list of mixed augroups and autocmds
+---@param au LegendaryAugroup[] | LegendaryItem[]
 M.bind_autocmds = b.bind_autocmds
 
 --- Set configuration. If config.auto_register_which_key == true

@@ -7,10 +7,22 @@ local M = {}
 local wk = require('legendary.compat.which-key')
 
 
+
+
+
+
 M.bind_whichkey = wk.bind_whichkey
 
 
+
+
+
+
+
+
 M.parse_whichkey = wk.parse_whichkey
+
+
 
 
 M.whichkey_listen = wk.whichkey_listen
@@ -19,16 +31,26 @@ M.whichkey_listen = wk.whichkey_listen
 local b = require('legendary.bindings')
 
 
+
+
 M.bind_keymap = b.bind_keymap
+
+
 
 
 M.bind_keymaps = b.bind_keymaps
 
 
+
+
 M.bind_command = b.bind_command
 
 
+
+
 M.bind_commands = b.bind_commands
+
+
 
 
 M.bind_autocmds = b.bind_autocmds

@@ -8,7 +8,7 @@ if [[ $OSTYPE == 'darwin'* ]]; then
     ./teal/legendary/filters.tl \
     ./teal/legendary/formatter.tl \
     ./teal/legendary/helpers.tl \
-    ./teal/legendary/types.tl
+    ./teal/legendary/types.tl >doc/legendary-api.txt
 else
   ./vendor/bin/lemmy-help-linux \
     ./teal/legendary/init.tl \
@@ -17,5 +17,8 @@ else
     ./teal/legendary/filters.tl \
     ./teal/legendary/formatter.tl \
     ./teal/legendary/helpers.tl \
-    ./teal/legendary/types.tl
+    ./teal/legendary/types.tl >doc/legendary-api.txt
 fi
+
+whitespace_trimmed=$(sed 's/^[ \t]*//;s/[ \t]*$//' <doc/legendary-api.txt)
+echo -e "$whitespace_trimmed" >doc/legendary-api.txt
