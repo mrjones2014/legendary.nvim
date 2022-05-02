@@ -220,6 +220,9 @@ so they should appear in the finder by default, while executing `autocmd`s manua
 `:doautocmd` is a much less common use-case, so `autocmd`s are hidden from the finder
 unless a description is provided.
 
+You can also run `:LegendaryApi`, then search for `/legendary.types` to read the full API
+documentation on accepted types.
+
 <!-- panvimdoc-ignore-start -->
 <details>
 <summary>
