@@ -529,6 +529,7 @@ The following commands are available once `legendary.nvim` is loaded:
 - `:LegendaryEvalLine` - evaluate the current line as a Lua expression
 - `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a Lua snippet
 - `:LegendaryEvalBuf` - evaluate the entire current buffer as a Lua snippet
+- `:LegendaryApi` - view full Lua API docs for `legendary.nvim`
 
 Any `return` value from evaluated Lua is displayed by your configured method (either `print`ed
 to the command area, or displayed in a float, see [configuration](#configuration)).
