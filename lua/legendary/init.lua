@@ -59,6 +59,15 @@ M.bind_autocmds = b.bind_autocmds
 
 
 
+
+
+
+M.find = b.find
+
+
+
+
+
 M.setup = function(new_config)
    local config = require('legendary.config')
    config.setup(new_config)
