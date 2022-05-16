@@ -1,3 +1,5 @@
+---@mod legendary.helpers require('legendary.helpers')
+
 require('legendary.types')
 local M = {}
 

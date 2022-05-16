@@ -1,0 +1,351 @@
+================================================================================
+require('legendary')                                                 *legendary*
+
+M.setup({new_config})                                          *legendary.setup*
+Set configuration. If config.auto_register_which_key == true
+and which-key.nvim is loaded to the runtimepath, legendary.nvim
+will start listening and auto-adding keymaps when added to which-key.nvim
+
+Parameters: ~
+{new_config}  (LegendaryConfig)
+
+
+================================================================================
+require('legendary.compat.which-key')               *legendary.compat.which-key*
+
+*legendary.compat.which-key.parse_whichkey*
+M.parse_whichkey({which_key_tbls}, {which_key_opts}, {do_binding})
+Take which-key.nvim tables
+and parse them into legendary.nvim tables
+
+Parameters: ~
+{which_key_tbls}  (table[])
+{which_key_opts}  (table)
+{do_binding}      (boolean)   whether to bind the keymaps or let which-key handle i
+
+Returns: ~
+{LegendaryItem[]}
+
+
+*legendary.compat.which-key.bind_whichkey*
+M.bind_whichkey({wk_tbls}, {wk_opts}, {do_binding})
+Bind a which-key.nvim table with legendary.nvim
+
+Parameters: ~
+{wk_tbls}     (table)
+{wk_opts}     (table)
+{do_binding}  (boolean)   whether to bind the keymaps or let which-key handle i
+
+
+M.whichkey_listen()                 *legendary.compat.which-key.whichkey_listen*
+Enable auto-registering of which-key.nvim tables
+with legendary.nvim
+
+
+================================================================================
+require('legendary.executor')                               *legendary.executor*
+
+*legendary.executor.try_execute*
+M.try_execute({item}, {current_buf}, {visual_selection}, {current_mode})
+Attmept to execute the selected item
+
+Parameters: ~
+{item}              (LegendaryItem)
+{current_buf}       (integer)
+{visual_selection}  (table)           | nil, { row, col, row, col }
+{current_mode}      (---@param)       current_cursor_pos table, { row, col }
+
+
+================================================================================
+require('legendary.filters')                                 *legendary.filters*
+
+M.mode({mode})                                          *legendary.filters.mode*
+Return a `LegendaryItemFilter` that filters items
+by the specified mode
+
+Parameters: ~
+{mode}  (string)
+
+Returns: ~
+{LegendaryItemFilter}
+
+
+M.current_mode()                                *legendary.filters.current_mode*
+Return a `LegendaryItemFilter` that filters items
+by the current mode
+
+Returns: ~
+{LegendaryItemFilter}
+
+
+================================================================================
+require('legendary.formatter')                             *legendary.formatter*
+
+M.__clear_padding()                        *legendary.formatter.__clear_padding*
+for unit tests only, should not be called from plugin code!
+
+
+M.rpad({str}, {len})                                  *legendary.formatter.rpad*
+Right-pad strings to specified length
+
+Parameters: ~
+{str}  (string)    the string to pad
+{len}  (integer)   the padding value to use
+
+Returns: ~
+{string}  padded string
+
+
+M.get_default_format_values({item}) *legendary.formatter.get_default_format_values*
+Default implementation of config.formatter
+Column one:
+- Keymaps => modes
+- Commands => '<cmd>'
+- Autocmds => events
+Column 2:
+- Keymaps => key codes
+- Commands => command
+- Autocmds => patterns
+Column 3:
+- All => description
+
+Parameters: ~
+{item}  (LegendaryItem)
+
+Returns: ~
+{table}  values to forma
+
+
+M.get_format_values({item})              *legendary.formatter.get_format_values*
+Get the column values to be formatted
+for item. Uses config.formatter if not nil,
+default implementation otherwise.
+
+Parameters: ~
+{item}  (LegendaryItem)
+
+Returns: ~
+{table}  values to forma
+
+
+M.update_padding({item})                    *legendary.formatter.update_padding*
+Update cached column paddings.
+
+Parameters: ~
+{item}  (LegendaryItem)
+
+
+M.get_padding()                                *legendary.formatter.get_padding*
+Returns a READ-ONLY COPY of the current padding values.
+Note that this is a COPY of the table so it will not update,
+and writing to it will not do anything. Padding is managed
+internally by the formatter and should not be modified manually.
+
+Returns: ~
+{table}  table containing the padding value for each column.
+
+
+M.format({item})                                    *legendary.formatter.format*
+Format a LegendaryItem to a string
+
+Parameters: ~
+{item}  (LegendaryItem)
+
+Returns: ~
+{string}
+
+
+================================================================================
+require('legendary.helpers')                                 *legendary.helpers*
+
+M.lazy({fn})                                            *legendary.helpers.lazy*
+Given a function reference and some arguments
+return a new function that will call the original
+function with the given arguments
+
+Parameters: ~
+{fn}  (function)
+
+Returns: ~
+{function}
+
+
+M.lazy_required_fn({module_name}, {fn_name})  *legendary.helpers.lazy_required_fn*
+Given a Lua path to require, the name of a function in the `require`d module,
+and some arguments, return a new function that will call
+he function `fn_name` in module `module_name` with the specified args
+
+Parameters: ~
+{module_name}  (string)
+{fn_name}      (string)
+
+Returns: ~
+{function}
+
+
+M.split_then({fn})                                *legendary.helpers.split_then*
+Given a Lua function, return a new function
+hat will create a horizontal split before
+calling the specified function.
+
+Parameters: ~
+{fn}  (function)
+
+Returns: ~
+{function}
+
+
+M.vsplit_then({fn})                              *legendary.helpers.vsplit_then*
+Given a Lua function, return a new function
+hat will create a vertical split before
+calling the specified function.
+
+Parameters: ~
+{fn}  (function)
+
+Returns: ~
+{function}
+
+
+================================================================================
+require('legendary.types')                                     *legendary.types*
+
+LegendaryKind                                                    *LegendaryKind*
+Enum containing the valid `kind` values
+
+
+LegendaryModeMappingOpts                              *LegendaryModeMappingOpts*
+The value of a per-mode mapping with per-mode opts
+
+Fields: ~
+{[1]}   (string)   | function(table | nil): nil
+{opts}  (table)    | nil
+
+
+LegendaryModeMapping                                        *LegendaryModeMapping*
+The value of a per-mode mapping
+
+Fields: ~
+{n}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{v}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{x}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{c}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{s}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{t}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+{i}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
+
+
+LegendaryKeymap                                                                                   *LegendaryKeymap*
+A legendary keymap. You can add keymaps to the finder without binding them by omitting the second list element.
+
+Fields: ~
+{[1]}          (string)
+{[2]}          (string)    | (function(table | nil): nil) | LegendaryModeMapping | nil
+{mode}         (string)    | {string}
+{description}  (string)    | nil
+{opts}         (table)     | nil
+{kind}         (string)
+{unfinished}   (boolean)   | nil
+
+
+LegendaryCommand                                                                                   *LegendaryCommand*
+A legendary command. You can add commands to the finder without binding them by omitting the second list element.
+
+Fields: ~
+{[1]}          (string)
+{[2]}          (string)    | function | nil
+{mode}         (string)    | {string}
+{description}  (string)    | nil
+{opts}         (table)     | nil
+{kind}         (string)
+{unfinished}   (boolean)   | nil
+
+
+LegendaryAutocmd                                              *LegendaryAutocmd*
+A legendary autocmd
+
+Fields: ~
+{[1]}          (string)
+{[2]}          (string)   | function | nil
+{description}  (string)   | nil
+{opts}         (table)    | nil
+{kind}         (string)
+
+
+LegendaryAugroup                                              *LegendaryAugroup*
+A legendary augroup
+
+Fields: ~
+{name}   (string)
+{clear}  (boolean)
+
+
+LegendaryItem                                                    *LegendaryItem*
+Can be any of the legendary table types
+
+Fields: ~
+{description}  (string)   | nil
+{opts}         (table)    | nil
+{kind}         (string)
+
+
+LegendaryItemFilter                                        *LegendaryItemFilter*
+A type alias for
+
+
+LegendaryScratchpadDisplay                          *LegendaryScratchpadDisplay*
+enum containing value options for config.scratchpad.display_results
+
+
+LegendaryScratchpadConfig                            *LegendaryScratchpadConfig*
+The config table for the Legendary scratchpad
+
+
+LegendaryConfig                                                *LegendaryConfig*
+Configuration table for legendary
+
+Fields: ~
+{include_builtin}          (boolean)
+{include_legendary_cmds}   (boolean)
+{select_prompt}            (string)     | function(string): string
+{formatter}                (function)   (LegendaryItem): {string}
+{most_recent_item_at_top}  (boolean)
+
+
+M.validate_config({config})                    *legendary.types.validate_config*
+Validator function for configuration table
+
+Parameters: ~
+{config}  (LegendaryConfig)
+
+
+M.validate_keymap({keymap})                    *legendary.types.validate_keymap*
+Validator function for LegendaryKeymaps
+
+Parameters: ~
+{keymap}  (LegendaryKeymap)
+
+
+M.validate_command({command})                 *legendary.types.validate_command*
+Validator function for LegendaryCommands
+
+Parameters: ~
+{command}  (LegendaryCommand)
+
+
+M.validate_autocmd({autocmd})                 *legendary.types.validate_autocmd*
+Validator function for LegendaryAutocmds
+
+Parameters: ~
+{autocmd}  (LegendaryAutocmd)
+
+
+M.validate_augroup({au})                      *legendary.types.validate_augroup*
+Validator function for LegendaryAugroups
+Note: does NOT validate the LegendaryAutocmds inside i
+
+Parameters: ~
+{au}  (LegendaryAugroup)
+
+
+vim:tw=78:ts=8:noet:ft=help:norl:

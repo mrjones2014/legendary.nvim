@@ -1,3 +1,5 @@
+---@mod legendary.compat.which-key require('legendary.compat.which-key')
+
 require('legendary.types')
 local M = {}
 
