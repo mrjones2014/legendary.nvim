@@ -55,6 +55,15 @@ M.bind_commands = b.bind_commands
 ---@param au LegendaryAugroup[] | LegendaryItem[]
 M.bind_autocmds = b.bind_autocmds
 
+--- Alias to `require('legendary.bindings).find`
+--- Find keymaps, commands, or both (both by default)
+--- with legendary.nvim. To find only keymaps, pass
+--- "keymaps" as a parameter, pass "commands" to find
+--- only commands, pass "autocmds" to find only autocmds.
+---@param item_kind string | nil
+---@param filters {LegendaryItemFilter} | nil
+M.find = b.find
+
 --- Set configuration. If config.auto_register_which_key == true
 --- and which-key.nvim is loaded to the runtimepath, legendary.nvim
 --- will start listening and auto-adding keymaps when added to which-key.nvim
