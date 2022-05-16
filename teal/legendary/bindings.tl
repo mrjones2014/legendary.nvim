@@ -199,7 +199,8 @@ end
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
 --- only commands, pass "autocmds" to find only autocmds.
----@param item_kind string
+---@param item_kind string | nil
+---@param filters {LegendaryItemFilter} | nil
 function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
   item_kind = item_kind or ''
   local current_mode = (vim.fn.mode() or '') as string

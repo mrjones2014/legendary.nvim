@@ -1,4 +1,6 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local ipairs = _tl_compat and _tl_compat.ipairs or ipairs; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string; require('legendary.types')
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local ipairs = _tl_compat and _tl_compat.ipairs or ipairs; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string
+
+require('legendary.types')
 local M = {}
 
 local function mode_from_table(modes, current_mode)
@@ -57,7 +59,17 @@ end
 
 
 
-function M.try_execute(item, current_buf, visual_selection, current_mode, current_cursor_pos)
+
+
+
+
+function M.try_execute(
+   item,
+   current_buf,
+   visual_selection,
+   current_mode,
+   current_cursor_pos)
+
    if not item then
       return
    end

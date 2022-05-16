@@ -200,6 +200,7 @@ end
 
 
 
+
 function M.find(item_kind, filters)
    item_kind = item_kind or ''
    local current_mode = (vim.fn.mode() or '')
