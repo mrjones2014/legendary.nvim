@@ -13,6 +13,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 - Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
+- Anonymous mappings -- show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
 - Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
 - Show your most recently executed keymap, command, or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
@@ -232,9 +233,6 @@ documentation on accepted types.
 Keymaps
 
 <!-- panvimdoc-ignore-start -->
-
-(click to expand)
-
 </h3>
 </summary>
 <!-- panvimdoc-ignore-end -->
@@ -247,6 +245,16 @@ can be a command string like `:wa<CR>` or a Lua function. Example:
 local keymaps = {
   { '<leader>s', ':wa<CR>', description = 'Write all buffers', opts = {} },
   { '<leader>fm', vim.lsp.buf.formatting_sync, description = 'Format buffer with LSP' },
+}
+```
+
+For "anonymous" mappings (you want them to appear in the finder but don't want `legendary.nvim`
+to handle creating them, e.g. for plugin keymappings), just omit the second entry (the "implementation"):
+
+```lua
+local keymaps = {
+  { '<leader>s', description = 'Write all buffers', opts = {} },
+  { '<leader>fm', description = 'Format buffer with LSP' },
 }
 ```
 
@@ -388,9 +396,6 @@ local keymaps = {
 Commands
 
 <!-- panvimdoc-ignore-start -->
-
-(click to expand)
-
 </h3>
 </summary>
 <!-- panvimdoc-ignore-end -->
@@ -420,6 +425,18 @@ local commands = {
   { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
   -- or
   { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
+}
+```
+
+For "anonymous" commands (commands you want to appear in the finder but don't need `legendary.nvim` to
+handle creating), just omit the second entry (the "implementation"):
+
+```lua
+local commands = {
+  {
+    ':LspRestart',
+    description = 'Restart any attached LSP clients',
+  },
 }
 ```
 
