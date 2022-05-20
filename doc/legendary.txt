@@ -26,6 +26,7 @@ FEATURES                                                  *legendary-features*
 
 - Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with which-key.nvim <https://github.com/folke/which-key.nvim>, use your existing `which-key.nvim` tables with `legendary.nvim`
+- Anonymous mappings – show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like dressing.nvim <https://github.com/stevearc/dressing.nvim> for a VS Code command palette like interface
 - Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
 - Show your most recently executed keymap, command, or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
@@ -266,6 +267,18 @@ handler can be a command string like `:wa<CR>` or a Lua function. Example:
 <
 
 
+For "anonymous" mappings (you want them to appear in the finder but don’t
+want `legendary.nvim` to handle creating them, e.g. for plugin keymappings),
+just omit the second entry (the "implementation"):
+
+>
+    local keymaps = {
+      { '<leader>s', description = 'Write all buffers', opts = {} },
+      { '<leader>fm', description = 'Format buffer with LSP' },
+    }
+<
+
+
 If you need to pass parameters to the Lua function or call a function
 dynamically from a plugin, you can use the following helper functions:
 
@@ -431,6 +444,20 @@ the command line.
       { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
       -- or
       { ':MyCommand [some_argument]<CR>', description = 'Command with argument', unfinished = true },
+    }
+<
+
+
+For "anonymous" commands (commands you want to appear in the finder but don’t
+need `legendary.nvim` to handle creating), just omit the second entry (the
+"implementation"):
+
+>
+    local commands = {
+      {
+        ':LspRestart',
+        description = 'Restart any attached LSP clients',
+      },
     }
 <
 
