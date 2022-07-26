@@ -684,7 +684,7 @@ are searching keymaps, commands, autocmds, or all.
 The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
 or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
 
-Builtins will have `kind = 'legendary.keymap.bulitin'`, `kind = 'legendary.command.builtin'`,
+Builtins will have `kind = 'legendary.keymap.builtin'`, `kind = 'legendary.command.builtin'`,
 or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, or autocmd.
 
 ## Sponsors
