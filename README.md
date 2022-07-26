@@ -454,7 +454,6 @@ local commands = {
 
 <!-- panvimdoc-ignore-start -->
 
-(click to expand)
 
 </h3>
 </summary>
