@@ -15,7 +15,7 @@ local autocmds = require('legendary.config').autocmds
 
 local utils = require('legendary.utils')
 
-local formatter = require('legendary.formatter')
+local default_formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
@@ -201,8 +201,9 @@ end
 --- only commands, pass "autocmds" to find only autocmds.
 ---@param item_kind string | nil
 ---@param filters {LegendaryItemFilter} | nil
-function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
-  item_kind = item_kind or ''
+function M.find(opts: LegendaryFindOpts)
+  opts = opts or {}
+  local item_kind = opts.kind or ''
   local current_mode = (vim.fn.mode() or '') as string
   local visual_selection: table = nil
   if utils.is_visual_mode(current_mode) then
@@ -211,11 +212,11 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local items: {LegendaryItem}
-  if item_kind == 'legendary.keymap' then
+  if string.find(item_kind, 'keymap') then
     items = keymaps as {LegendaryItem}
-  elseif item_kind == 'legendary.command' then
+  elseif string.find(item_kind, 'command') then
     items = commands as {LegendaryItem}
-  elseif item_kind == 'legendary.autocmd' then
+  elseif string.find(item_kind, 'autocmd') then
     items = autocmds as {LegendaryItem}
   else
     items = vim.list_extend({}, keymaps as {LegendaryItem})
@@ -243,7 +244,7 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
     ::last_used_item_found::
   end
 
-  filters = filters or {}
+  local filters = opts.filters or {}
   if type(filters) == 'function' then
     filters = { filters as LegendaryItemFilter }
   end
@@ -280,10 +281,14 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
     prompt = (prompt as function(kind: string): string)(select_kind)
   end
 
+  local formatter = function(item: LegendaryItem): string
+      return default_formatter.format(item, opts.formatter)
+  end
+
   vim.ui.select(items, {
     prompt = vim.trim((prompt as string | nil) or ''),
     kind = select_kind,
-    format_item = formatter.format,
+    format_item = formatter,
   }, function(selected: LegendaryItem)
     if not selected then
       return
