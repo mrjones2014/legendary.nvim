@@ -114,8 +114,9 @@ end
 global type LegendaryItemFilter = function(item: LegendaryItem): boolean
 
 ---@class LegendaryFormatter A type alias for
---- `function(item: LegendaryItem): {string}` used for formatting items for the finder
-global type LegendaryFormatter = function(LegendaryItem): {string}
+--- `function(item: LegendaryItem, mode: string): {string}` used for formatting items for the finder
+--- `mode` is the mode that legendary was triggered from
+global type LegendaryFormatter = function(LegendaryItem, string): {string}
 
 ---@class Options accepted by `require('legendary').find()`
 ---@field kind 'keymaps' | 'commands' | 'autocmds' | nil

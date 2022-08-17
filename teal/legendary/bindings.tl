@@ -15,7 +15,7 @@ local autocmds = require('legendary.config').autocmds
 
 local utils = require('legendary.utils')
 
-local default_formatter = require('legendary.formatter')
+local formatter = require('legendary.formatter')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
@@ -39,7 +39,7 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
   end
 
   utils.set_keymap(keymap)
-  require('legendary.formatter').update_padding(keymap as LegendaryItem)
+  formatter.update_padding(keymap as LegendaryItem)
   for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
     keymap.id = next_id()
     table.insert(keymaps, resolved_keymap)
@@ -86,7 +86,7 @@ function M.bind_command(cmd: LegendaryCommand, kind: string | nil)
   end
 
   utils.set_command(cmd)
-  require('legendary.formatter').update_padding(cmd as LegendaryItem)
+  formatter.update_padding(cmd as LegendaryItem)
   table.insert(commands, cmd)
 end
 
@@ -139,7 +139,7 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
 
   utils.set_autocmd(autocmd, group)
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-    require('legendary.formatter').update_padding(autocmd as LegendaryItem)
+    formatter.update_padding(autocmd as LegendaryItem)
     table.insert(autocmds as {LegendaryAutocmd}, autocmd)
   end
 end
@@ -202,14 +202,16 @@ end
 ---@param item_kind string | nil
 ---@param filters {LegendaryItemFilter} | nil
 function M.find(opts: LegendaryFindOpts, _deprecated: any)
+  opts = opts or {}
+
   if type(opts) ~= 'table' or _deprecated ~= nil then
     opts = {}
     vim.notify("The API for `require('legendary').find()` has changed, please see https://github.com/mrjones2014/legendary.nvim#usage and update your usages.")
   end
 
-  opts = opts or {}
   local item_kind = opts.kind or ''
   local current_mode = (vim.fn.mode() or '') as string
+  local current_buf = vim.api.nvim_get_current_buf()
   local visual_selection: table = nil
   if utils.is_visual_mode(current_mode) then
     visual_selection = utils.get_marks()
@@ -256,7 +258,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
 
   -- buffer-specific items should only appear for the current buffer
   table.insert(filters, function(item: LegendaryItem): boolean
-    return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
+    return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == current_buf
   end)
 
   for _, filter in ipairs(filters as {LegendaryItemFilter}) do
@@ -286,14 +288,16 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     prompt = (prompt as function(kind: string): string)(select_kind)
   end
 
-  local formatter = function(item: LegendaryItem): string
-      return default_formatter.format(item, opts.formatter)
+  local format_item = function(item: LegendaryItem): string
+    return formatter.format(item, current_mode, opts.formatter)
   end
+
+  print(vim.inspect(format_item))
 
   vim.ui.select(items, {
     prompt = vim.trim((prompt as string | nil) or ''),
     kind = select_kind,
-    format_item = formatter,
+    format_item = format_item,
   }, function(selected: LegendaryItem)
     if not selected then
       return
@@ -309,7 +313,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     vim.schedule(function()
       require('legendary.executor').try_execute(
         selected,
-        vim.api.nvim_get_current_buf(),
+        current_buf,
         visual_selection,
         current_mode,
         cursor_position
