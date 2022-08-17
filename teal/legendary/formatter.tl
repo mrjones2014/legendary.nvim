@@ -87,7 +87,11 @@ end
 --- default implementation otherwise.
 ---@param item LegendaryItem
 ---@return table the values to format
-function M.get_format_values(item: LegendaryItem): {string}
+function M.get_format_values(item: LegendaryItem, ephemeral_formatter: LegendaryFormatter | nil): {string}
+  if ephemeral_formatter ~= nil then
+    return (ephemeral_formatter as LegendaryFormatter)(item)
+  end
+
   local formatter = require('legendary.config').formatter
   if formatter and type(formatter) == 'function' then
     local values = formatter(item)
@@ -132,8 +136,8 @@ end
 --- Format a LegendaryItem to a string
 ---@param item LegendaryItem
 ---@return string
-function M.format(item: LegendaryItem): string
-  local values = M.get_format_values(item)
+function M.format(item: LegendaryItem, formatter: LegendaryFormatter | nil): string
+  local values = M.get_format_values(item, formatter)
 
   local strs = {}
   for i, value in ipairs(values) do
