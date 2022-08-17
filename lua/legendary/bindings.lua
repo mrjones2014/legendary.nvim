@@ -201,7 +201,12 @@ end
 
 
 
-function M.find(opts)
+function M.find(opts, _deprecated)
+   if type(opts) ~= 'table' or _deprecated ~= nil then
+      opts = {}
+      vim.notify("The API for `require('legendary').find()` has changed, please see https://github.com/mrjones2014/legendary.nvim#usage and update your usages.")
+   end
+
    opts = opts or {}
    local item_kind = opts.kind or ''
    local current_mode = (vim.fn.mode() or '')

@@ -201,7 +201,12 @@ end
 --- only commands, pass "autocmds" to find only autocmds.
 ---@param item_kind string | nil
 ---@param filters {LegendaryItemFilter} | nil
-function M.find(opts: LegendaryFindOpts)
+function M.find(opts: LegendaryFindOpts, _deprecated: any)
+  if type(opts) ~= 'table' or _deprecated ~= nil then
+    opts = {}
+    vim.notify("The API for `require('legendary').find()` has changed, please see https://github.com/mrjones2014/legendary.nvim#usage and update your usages.")
+  end
+
   opts = opts or {}
   local item_kind = opts.kind or ''
   local current_mode = (vim.fn.mode() or '') as string
