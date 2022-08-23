@@ -113,6 +113,21 @@ end
 --- `function(item: LegendaryItem): boolean`
 global type LegendaryItemFilter = function(item: LegendaryItem): boolean
 
+---@class LegendaryFormatter A type alias for
+--- `function(item: LegendaryItem, mode: string): {string}` used for formatting items for the finder
+--- `mode` is the mode that legendary was triggered from
+global type LegendaryFormatter = function(LegendaryItem, string): {string}
+
+---@class Options accepted by `require('legendary').find()`
+---@field kind 'keymaps' | 'commands' | 'autocmds' | nil
+---@field filters {LegendaryItemFilter} | nil
+---@field formatter LegendaryFormatter | nil
+global record LegendaryFindOpts
+   kind: string | nil
+   filters: {LegendaryItemFilter} | nil
+   formatter: LegendaryFormatter
+end
+
 global record LegendaryWhichKeys
    mappings: {table}
    opts: table
@@ -147,7 +162,7 @@ global record LegendaryConfig
    include_builtin: boolean
    include_legendary_cmds: boolean
    select_prompt: string | function(string): string
-   formatter: function(LegendaryItem): {string}
+   formatter: LegendaryFormatter
    most_recent_item_at_top: boolean
    keymaps: {LegendaryKeymap}
    commands: {LegendaryCommand}

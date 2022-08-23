@@ -29,6 +29,7 @@ end
 --- by the current mode
 ---@return LegendaryItemFilter
 function M.current_mode(): LegendaryItemFilter
+print(vim.fn.mode())
   return M.mode((vim.fn.mode() or 'n') as string)
 end
 

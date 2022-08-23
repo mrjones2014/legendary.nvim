@@ -27,7 +27,7 @@ jobs:
       uses: leafo/gh-actions-luarocks@v4
     - name: Install Teal Compiler
       run: |
-        luarocks install tl
+        luarocks install tl 0.13.2
         luarocks install luacheck
     - name: Run Checks and Ensure Teal Build Up To Date
       run: |

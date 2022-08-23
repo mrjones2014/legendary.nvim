@@ -49,20 +49,7 @@ Plug "mrjones2014/legendary.nvim"
 
 To trigger the finder for your configured keymaps, commands, and `augroup`/`autocmd`s:
 
-Lua:
-
-```lua
--- search keymaps, commands, and autocmds
-require('legendary').find()
--- search keymaps
-require('legendary').find('keymaps')
--- search commands
-require('legendary').find('commands')
--- search autocmds
-require('legendary').find('autocmds')
-```
-
-Vim commands:
+Commands:
 
 ```VimL
 " search keymaps, commands, and autocmds
@@ -78,26 +65,57 @@ Vim commands:
 :Legendary autocmds
 ```
 
-In Lua, you can also specify filters in the second argument. It can be either a function, or a list of functions,
-with the signature `function(item: LegendaryItem): boolean`. There are some pre-made filters in the `legendary.filters`
-module.
+Lua API:
+
+The `require('legend').find()` function takes an `opts` table with the following fields (all optional):
+
+```lua
+{
+  -- pass 'keymaps', 'commands', or 'autocmds' to search only one type of item
+  kind = nil,
+  -- pass a list of filter functions or a single filter function with
+  -- the signature `function(item): boolean`
+  -- `require('legendary.filters').mode(mode)` and `require('legendary.filters').current_mode()`
+  -- are provided for convenience
+  filters = {},
+  -- pass a function with the signature `function(item): {string}`
+  -- returning a list of strings where each string is one column
+  -- use this to override the configured formatter for just one call
+  formatter = nil,
+}
+```
+
+Examples:
 
 ```lua
 -- filter keymaps by current mode
-require('legendary').find(nil, require('legendary.filters').current_mode())
+require('legendary').find({ filters = require('legendary.filters').current_mode() })
 -- filter keymaps by normal mode
-require('legendary').find(nil, require('legendary.filters').mode('n'))
+require('legendary').find({ filters = require('legendary.filters').mode('n') })
 -- show only keymaps and filter by normal mode
-require('legendary').find('keymaps', require('legendary.filters').mode('n'))
+require('legendary').find({ kind = 'keymaps', filters = require('legendary.filters').mode('n') })
 -- filter keymaps by normal mode and that start with <leader>
-require('legendary').find(nil, {
-  require('legendary.filters').mode('n'),
-  function(item)
-    if not string.find(item.kind, 'keymap') then
-      return true
-    end
+require('legendary').find({
+  filters = {
+    require('legendary.filters').mode('n'),
+    function(item)
+      if not string.find(item.kind, 'keymap') then
+        return true
+      end
 
-    return vim.startswith(item[1], '<leader>')
+      return vim.startswith(item[1], '<leader>')
+    end
+  }
+})
+-- filter keymaps by current mode, and only display current mode in first column
+require('legendary').find({
+  filters = { require('legendary.filters').current_mode() },
+  formatter = function(item, mode)
+    local values = require('legendary.formatter').get_default_format_values(item)
+    if string.find(item.kind 'keymap') then
+      values[1] = mode
+    end
+    return values
   end
 })
 ```
@@ -123,9 +141,10 @@ require('legendary').setup({
   -- and 'Legendary Autocmds' when searching autocmds.
   select_prompt = nil,
   -- Optionally pass a custom formatter function. This function
-  -- receives the item as a parameter and must return a table of
-  -- non-nil string values for display. It must return the same
-  -- number of values for each item to work correctly.
+  -- receives the item as a parameter and the mode that legendary
+  -- was triggered from (e.g. `function(item, mode): {string}`)
+  -- and must return a table of non-nil string values for display.
+  -- It must return the same number of values for each item to work correctly.
   -- The values will be used as column values when formatted.
   -- See function `get_default_format_values(item)` in
   -- `lua/legendary/formatter.lua` to see default implementation.
@@ -453,7 +472,6 @@ local commands = {
 <code>augroup</code>s and <code>autocmd</code>s
 
 <!-- panvimdoc-ignore-start -->
-
 
 </h3>
 </summary>

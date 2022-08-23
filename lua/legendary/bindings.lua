@@ -39,7 +39,7 @@ function M.bind_keymap(keymap, kind)
    end
 
    utils.set_keymap(keymap)
-   require('legendary.formatter').update_padding(keymap)
+   formatter.update_padding(keymap)
    for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
       keymap.id = next_id()
       table.insert(keymaps, resolved_keymap)
@@ -86,7 +86,7 @@ function M.bind_command(cmd, kind)
    end
 
    utils.set_command(cmd)
-   require('legendary.formatter').update_padding(cmd)
+   formatter.update_padding(cmd)
    table.insert(commands, cmd)
 end
 
@@ -139,7 +139,7 @@ local function bind_autocmd(autocmd, group, kind)
 
    utils.set_autocmd(autocmd, group)
    if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-      require('legendary.formatter').update_padding(autocmd)
+      formatter.update_padding(autocmd)
       table.insert(autocmds, autocmd)
    end
 end
@@ -201,9 +201,17 @@ end
 
 
 
-function M.find(item_kind, filters)
-   item_kind = item_kind or ''
+function M.find(opts, _deprecated)
+   opts = opts or {}
+
+   if type(opts) ~= 'table' or _deprecated ~= nil then
+      opts = {}
+      vim.notify("The API for `require('legendary').find()` has changed, please see https://github.com/mrjones2014/legendary.nvim#usage and update your usages.")
+   end
+
+   local item_kind = opts.kind or ''
    local current_mode = (vim.fn.mode() or '')
+   local current_buf = vim.api.nvim_get_current_buf()
    local visual_selection = nil
    if utils.is_visual_mode(current_mode) then
       visual_selection = utils.get_marks()
@@ -211,11 +219,11 @@ function M.find(item_kind, filters)
    end
    local cursor_position = vim.api.nvim_win_get_cursor(0)
    local items
-   if item_kind == 'legendary.keymap' then
+   if string.find(item_kind, 'keymap') then
       items = keymaps
-   elseif item_kind == 'legendary.command' then
+   elseif string.find(item_kind, 'command') then
       items = commands
-   elseif item_kind == 'legendary.autocmd' then
+   elseif string.find(item_kind, 'autocmd') then
       items = autocmds
    else
       items = vim.list_extend({}, keymaps)
@@ -243,14 +251,14 @@ require('legendary.config').most_recent_item_at_top and
       ::last_used_item_found::
    end
 
-   filters = filters or {}
+   local filters = opts.filters or {}
    if type(filters) == 'function' then
       filters = { filters }
    end
 
 
    table.insert(filters, function(item)
-      return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
+      return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == current_buf
    end)
 
    for _, filter in ipairs(filters) do
@@ -280,10 +288,16 @@ require('legendary.config').most_recent_item_at_top and
       prompt = (prompt)(select_kind)
    end
 
+   local format_item = function(item)
+      return formatter.format(item, current_mode, opts.formatter)
+   end
+
+   print(vim.inspect(format_item))
+
    vim.ui.select(items, {
       prompt = vim.trim((prompt) or ''),
       kind = select_kind,
-      format_item = formatter.format,
+      format_item = format_item,
    }, function(selected)
       if not selected then
          return
@@ -299,7 +313,7 @@ require('legendary.config').most_recent_item_at_top and
       vim.schedule(function()
          require('legendary.executor').try_execute(
          selected,
-         vim.api.nvim_get_current_buf(),
+         current_buf,
          visual_selection,
          current_mode,
          cursor_position)
