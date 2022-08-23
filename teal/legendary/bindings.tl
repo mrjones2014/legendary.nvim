@@ -39,7 +39,7 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
   end
 
   utils.set_keymap(keymap)
-  require('legendary.formatter').update_padding(keymap as LegendaryItem)
+  formatter.update_padding(keymap as LegendaryItem)
   for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
     keymap.id = next_id()
     table.insert(keymaps, resolved_keymap)
@@ -86,7 +86,7 @@ function M.bind_command(cmd: LegendaryCommand, kind: string | nil)
   end
 
   utils.set_command(cmd)
-  require('legendary.formatter').update_padding(cmd as LegendaryItem)
+  formatter.update_padding(cmd as LegendaryItem)
   table.insert(commands, cmd)
 end
 
@@ -139,7 +139,7 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
 
   utils.set_autocmd(autocmd, group)
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-    require('legendary.formatter').update_padding(autocmd as LegendaryItem)
+    formatter.update_padding(autocmd as LegendaryItem)
     table.insert(autocmds as {LegendaryAutocmd}, autocmd)
   end
 end
@@ -201,9 +201,17 @@ end
 --- only commands, pass "autocmds" to find only autocmds.
 ---@param item_kind string | nil
 ---@param filters {LegendaryItemFilter} | nil
-function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
-  item_kind = item_kind or ''
+function M.find(opts: LegendaryFindOpts, _deprecated: any)
+  opts = opts or {}
+
+  if type(opts) ~= 'table' or _deprecated ~= nil then
+    opts = {}
+    vim.notify("The API for `require('legendary').find()` has changed, please see https://github.com/mrjones2014/legendary.nvim#usage and update your usages.")
+  end
+
+  local item_kind = opts.kind or ''
   local current_mode = (vim.fn.mode() or '') as string
+  local current_buf = vim.api.nvim_get_current_buf()
   local visual_selection: table = nil
   if utils.is_visual_mode(current_mode) then
     visual_selection = utils.get_marks()
@@ -211,11 +219,11 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local items: {LegendaryItem}
-  if item_kind == 'legendary.keymap' then
+  if string.find(item_kind, 'keymap') then
     items = keymaps as {LegendaryItem}
-  elseif item_kind == 'legendary.command' then
+  elseif string.find(item_kind, 'command') then
     items = commands as {LegendaryItem}
-  elseif item_kind == 'legendary.autocmd' then
+  elseif string.find(item_kind, 'autocmd') then
     items = autocmds as {LegendaryItem}
   else
     items = vim.list_extend({}, keymaps as {LegendaryItem})
@@ -243,14 +251,14 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
     ::last_used_item_found::
   end
 
-  filters = filters or {}
+  local filters = opts.filters or {}
   if type(filters) == 'function' then
     filters = { filters as LegendaryItemFilter }
   end
 
   -- buffer-specific items should only appear for the current buffer
   table.insert(filters, function(item: LegendaryItem): boolean
-    return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == vim.api.nvim_get_current_buf()
+    return item.opts == nil or item.opts.buffer == nil or item.opts.buffer == current_buf
   end)
 
   for _, filter in ipairs(filters as {LegendaryItemFilter}) do
@@ -280,10 +288,16 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
     prompt = (prompt as function(kind: string): string)(select_kind)
   end
 
+  local format_item = function(item: LegendaryItem): string
+    return formatter.format(item, current_mode, opts.formatter)
+  end
+
+  print(vim.inspect(format_item))
+
   vim.ui.select(items, {
     prompt = vim.trim((prompt as string | nil) or ''),
     kind = select_kind,
-    format_item = formatter.format,
+    format_item = format_item,
   }, function(selected: LegendaryItem)
     if not selected then
       return
@@ -299,7 +313,7 @@ function M.find(item_kind: string | nil, filters: {LegendaryItemFilter} | nil)
     vim.schedule(function()
       require('legendary.executor').try_execute(
         selected,
-        vim.api.nvim_get_current_buf(),
+        current_buf,
         visual_selection,
         current_mode,
         cursor_position

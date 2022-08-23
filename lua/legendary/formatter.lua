@@ -87,10 +87,17 @@ end
 
 
 
-function M.get_format_values(item)
+function M.get_format_values(item, mode, one_shot_formatter)
+   if one_shot_formatter ~= nil then
+      local fmt = one_shot_formatter
+      local values = fmt(item, mode)
+
+      return vim.list_extend({}, values)
+   end
+
    local formatter = require('legendary.config').formatter
    if formatter and type(formatter) == 'function' then
-      local values = formatter(item)
+      local values = formatter(item, mode)
 
       for i, value in ipairs(values) do
          if value == nil then
@@ -132,8 +139,8 @@ end
 
 
 
-function M.format(item)
-   local values = M.get_format_values(item)
+function M.format(item, mode, formatter)
+   local values = M.get_format_values(item, mode, formatter)
 
    local strs = {}
    for i, value in ipairs(values) do

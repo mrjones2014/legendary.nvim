@@ -113,6 +113,21 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
  LegendaryItemFilter = {}
 
+
+
+
+ LegendaryFormatter = {}
+
+
+
+
+
+ LegendaryFindOpts = {}
+
+
+
+
+
  LegendaryWhichKeys = {}
 
 

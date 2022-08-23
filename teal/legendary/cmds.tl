@@ -18,17 +18,17 @@ M.cmds = {
       end
 
       if vim.trim((opts.args as string):lower()) == 'keymaps' then
-        require('legendary.bindings').find('legendary.keymap')
+        require('legendary.bindings').find({ kind = 'legendary.keymap' })
         return
       end
 
       if vim.trim((opts.args as string):lower()) == 'commands' then
-        require('legendary.bindings').find('legendary.command')
+        require('legendary.bindings').find({ kind = 'legendary.command' })
         return
       end
 
       if vim.trim((opts.args as string):lower()) == 'autocmds' then
-        require('legendary.bindings').find('legendary.autocmd')
+        require('legendary.bindings').find({ kind = 'legendary.autocmd' })
         return
       end
 
