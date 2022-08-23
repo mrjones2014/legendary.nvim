@@ -2,7 +2,7 @@ local assert = require('luassert')
 local formatter = require('legendary.formatter')
 
 describe('formatter', function()
-  describe('format(item)', function()
+  describe('format(item, mode, formatter)', function()
     it('formats properly with default formatter', function()
       -- ensure using default function
       require('legendary.config').formatter = nil
@@ -36,6 +36,17 @@ describe('formatter', function()
       local item = { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
       local formatted = formatter.format(item)
       assert.are.same(formatted, '<leader>c │ :CommentToggle<CR> │ n│v │ Toggle comment')
+    end)
+
+    it('uses one-shot formatter when provided', function()
+      -- ensure using default function
+      require('legendary.config').formatter = nil
+      local item = { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v', 'x' } }
+      local oneshot_formatter = function(item_to_format, mode)
+        return { item_to_format[1], item_to_format[2], mode, 'this is a custom format' }
+      end
+      local formatted = formatter.format(item, 'n', oneshot_formatter)
+      assert.are.same(formatted, '<leader>c │ :CommentToggle<CR> │ n │ this is a custom format')
     end)
   end)
 
