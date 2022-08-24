@@ -292,8 +292,6 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     return formatter.format(item, current_mode, opts.formatter)
   end
 
-  print(vim.inspect(format_item))
-
   vim.ui.select(items, {
     prompt = vim.trim((prompt as string | nil) or ''),
     kind = select_kind,
