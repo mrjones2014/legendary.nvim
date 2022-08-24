@@ -292,8 +292,6 @@ require('legendary.config').most_recent_item_at_top and
       return formatter.format(item, current_mode, opts.formatter)
    end
 
-   print(vim.inspect(format_item))
-
    vim.ui.select(items, {
       prompt = vim.trim((prompt) or ''),
       kind = select_kind,
