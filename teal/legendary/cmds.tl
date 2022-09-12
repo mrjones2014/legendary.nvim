@@ -32,6 +32,11 @@ M.cmds = {
         return
       end
 
+      if vim.trim((opts.args as string):lower()) == 'functions' then
+        require('legendary.bindings').find({ kind = 'legendary.function' })
+        return
+      end
+
       require('legendary.bindings').find()
     end,
     description = 'Find keymaps and commands with vim.ui.select()',
@@ -50,7 +55,11 @@ M.cmds = {
           return { 'autocmds' }
         end
 
-        return { 'keymaps', 'commands', 'autocmds' }
+        if arg_lead and vim.trim(arg_lead):sub(1, 1):lower() == 'f' then
+          return { 'functions' }
+        end
+
+        return { 'keymaps', 'commands', 'autocmds', 'functions' }
       end,
     },
   },

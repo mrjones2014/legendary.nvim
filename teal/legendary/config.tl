@@ -15,6 +15,7 @@ local M: LegendaryConfig = {
   keymaps = {},
   commands = {},
   autocmds = {},
+  functions = {},
   which_key = {
     mappings = {},
     opts = {},
@@ -64,6 +65,7 @@ function M.setup(new_config: table): LegendaryConfig
   M.keymaps = (new_config.keymaps or M.keymaps) as {LegendaryKeymap}
   M.commands = (new_config.commands or M.commands) as {LegendaryCommand}
   M.autocmds = (new_config.autocmds or M.autocmds) as {LegendaryAugroup}
+  M.functions = (new_config.functions or M.functions) as {LegendaryFunction}
   M.which_key = default_whichkey(new_config.which_key as table)
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key as boolean | nil, M.auto_register_which_key)
   M.scratchpad = (new_config.scratchpad or M.scratchpad) as LegendaryScratchpadConfig

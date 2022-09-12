@@ -11,6 +11,7 @@ global enum LegendaryKind
    'legendary.command.builtin'
    'legendary.augroup'
    'legendary.autocmd'
+   'legendary.function'
 end
 
 ---@class LegendaryModeMappingOpts The value of a per-mode mapping with per-mode opts
@@ -60,7 +61,6 @@ end
 ---@class LegendaryCommand A legendary command. You can add commands to the finder without binding them by omitting the second list element.
 ---@field [1] string
 ---@field [2] string | function | nil
----@field mode string | {string}
 ---@field description string | nil
 ---@field opts table | nil
 ---@field kind string
@@ -72,6 +72,19 @@ global record LegendaryCommand
    kind: LegendaryKind
    id: integer
    unfinished: boolean | nil
+end
+
+---@class LegendaryFunction A legendary function.
+---@field [1] function
+---@field description string | nil
+---@field opts table | nil
+---@field kind string
+global record LegendaryFunction
+   {function}
+   description: string
+   opts: {string: any}
+   kind: LegendaryKind
+   id: integer
 end
 
 ---@class LegendaryAutocmd A legendary autocmd
@@ -167,6 +180,7 @@ global record LegendaryConfig
    keymaps: {LegendaryKeymap}
    commands: {LegendaryCommand}
    autocmds: {LegendaryAugroup}
+   functions: {LegendaryFunction}
    auto_register_which_key: boolean
    which_key: LegendaryWhichKeys
    scratchpad: LegendaryScratchpadConfig
@@ -241,5 +255,18 @@ function M.validate_augroup(au: LegendaryAugroup)
    clear = { au.clear, 'boolean', true },
  })
 end
+
+--- Validator function for LegendaryFunctions
+---@param au LegendaryFunction
+function M.validate_function(command: LegendaryFunction)
+   vim.validate({
+      ['1'] = { command[1], 'function' },
+      description = { command.description, 'string' },
+      opts = { command.opts, 'table', true },
+      kind = { command.kind, 'string' },
+      id = { command.id, 'number' },
+   })
+end
+
 
 return M

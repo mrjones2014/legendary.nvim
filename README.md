@@ -16,8 +16,8 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Anonymous mappings -- show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
 - Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
-- Show your most recently executed keymap, command, or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
-- Buffer-local keymaps, commands, and autocmds only appear in the finder for the current buffer
+- Show your most recently executed keymap, command, function or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
+- Buffer-local keymaps, commands, functions and autocmds only appear in the finder for the current buffer
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
 - A `legendary.helpers` module to help create lazily-evaluated keymaps and commands. Have an idea for a new helper? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/90) or submit a PR!
@@ -60,6 +60,9 @@ Commands:
 
 " search commands
 :Legendary commands
+
+" search functions
+:Legendary functions
 
 " search autocmds
 :Legendary autocmds
@@ -159,6 +162,10 @@ require('legendary').setup({
   -- Initial commands to bind
   commands = {
     -- your command tables here
+  },
+  -- Initial functions to bind
+  functions = {
+    -- your function tables here
   },
   -- Initial augroups and autocmds to bind
   autocmds = {
@@ -370,8 +377,10 @@ local keymaps = {
 ```
 
 If you want a keymap to apply to both normal and insert mode, use a Lua function.
-The function will be given a table containing the visual selection range (the marks
-will also be set). This allows you to create mappings like:
+
+If called in visual mode, the function will be given a table containing the visual
+selection range (the marks will also be set) of the form `{ cline, ccol, vline, vcol }`,
+where `c` corresponds to the cursor position, and `v` the visual selection (see `:h line()` and `:h col()`). This allows you to create mappings like:
 
 ```lua
 local keymaps = {
@@ -458,6 +467,61 @@ local commands = {
   },
 }
 ```
+
+<!-- panvimdoc-ignore-start -->
+</details>
+<!-- panvimdoc-ignore-end -->
+
+<!-- panvimdoc-ignore-start -->
+<details>
+<summary>
+<h3>
+<!-- panvimdoc-ignore-end -->
+
+Functions
+
+<!-- panvimdoc-ignore-start -->
+
+</h3>
+</summary>
+<!-- panvimdoc-ignore-end -->
+
+Functions follow a similar structure as anonymous commands, but description is **required**.
+
+If called in visual mode, the function will be given a table containing the visual selection range (the marks will also be set) of the form `{ cline, ccol, vline, vcol }`, where `c` corresponds to the cursor position, and `v` the visual selection (see `:h line()` and `:h col()`).
+
+```lua
+local functions = {
+  {
+    function()
+      vim.lsp.buf.code_action({
+        filter = function(a)
+          return a.isPreferred
+        end,
+        apply = true,
+      })
+    end,
+    description = "Auto Fix...",
+  },
+  {
+    function(visual_selection)
+      if visual_selection then
+        local cline, _, vline, _ = unpack(visual_selection)
+        require("gitsigns").reset_hunk({ cline, vline })
+      else
+        require("gitsigns").reset_hunk()
+      end
+    end,
+    description = "Revert Selected Ranges/Reset the lines of the hunk",
+  },
+  lazy(vim.cmd.Telescope, "git_files"), description = "Git Files",
+}
+```
+
+You can also pass options via the `opts` property:
+
+- `buffer` option (a buffer handle, or `0` for current buffer), which will
+  make the function visible only in the specified buffer.
 
 <!-- panvimdoc-ignore-start -->
 </details>
@@ -590,6 +654,13 @@ require('legendary').bind_commands({
   -- your commands here
 })
 
+-- bind a single function
+require('legendary').bind_command(function)
+-- bind a list of functions
+require('legendary').bind_functions({
+  -- your functions here
+})
+
 -- bind single or multiple augroups and/or autocmds
 -- these all use the same function
 require('legendary').bind_autocmds(augroup)
@@ -598,12 +669,14 @@ require('legendary').bind_autocmds({
   -- your augroups and autocmds here
 })
 
--- search keymaps, commands, and autocmds
+-- search keymaps, commands, functions, and autocmds
 require('legendary').find()
 -- search keymaps
 require('legendary').find('keymaps')
 -- search commands
 require('legendary').find('commands')
+-- search functions
+require('legendary').find('functions')
 -- search autocmds
 require('legendary').find('autocmds')
 
@@ -696,14 +769,14 @@ helpers.vsplit_then(helpers.lazy_required_fn('telescope', 'find_file', { only_cw
 ## Item Kinds
 
 `legendary.nvim` will set the `kind` option on `vim.ui.select()` to `legendary.keymaps`,
-`legendary.commands`, `legendary.autocmds`, or `legendary.items`, depending on whether you
-are searching keymaps, commands, autocmds, or all.
+`legendary.commands`, `legendary.functions`, `legendary.autocmds`, or `legendary.items`, depending on whether you
+are searching keymaps, commands, functions, autocmds, or all.
 
 The individual items will have `kind = 'legendary.keymap'`, `kind = 'legendary.command'`,
-or `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
+or `kind = 'legendary.function'`, `kind = 'legendary.autocmd'`, depending on whether it is a keymap, command, or autocmd.
 
 Builtins will have `kind = 'legendary.keymap.builtin'`, `kind = 'legendary.command.builtin'`,
-or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, or autocmd.
+`kind = 'legendary.function'`, or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, function, or autocmd.
 
 ## Sponsors
 
