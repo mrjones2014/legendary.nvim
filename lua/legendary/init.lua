@@ -58,6 +58,17 @@ M.bind_autocmds = b.bind_autocmds
 
 
 
+M.bind_function = b.bind_function
+
+
+
+
+M.bind_functions = b.bind_functions
+
+
+
+
+
 
 
 
@@ -101,6 +112,17 @@ M.setup = function(new_config)
 
    if config.autocmds and #config.autocmds > 0 then
       require('legendary.bindings').bind_autocmds(config.autocmds)
+   end
+
+   if config.functions and type(config.functions) ~= 'table' then
+      require('legendary.utils').notify(
+      string.format('functions must be a list-like table, got: %s', type(config.functions)))
+
+      return
+   end
+
+   if config.functions and #config.functions > 0 then
+      require('legendary.bindings').bind_functions(config.functions)
    end
 
    if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then

@@ -12,6 +12,7 @@ local last_used_item: LegendaryItem
 local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
 local autocmds = require('legendary.config').autocmds
+local functions = require('legendary.config').functions
 
 local utils = require('legendary.utils')
 
@@ -195,6 +196,50 @@ function M.bind_autocmds(au: table, kind: string | nil)
   end
 end
 
+--- Bind a single function with legendary.nvim
+---@param fn LegendaryFunction
+function M.bind_function(fn: LegendaryFunction, kind: string | nil)
+  fn = utils.resolve_description(fn)
+  fn.kind = (kind or 'legendary.function') as LegendaryKind
+  fn.id = next_id()
+  types.validate_function(fn)
+
+  if not fn or type(fn) ~= 'table' then
+    utils.notify(string.format('Expected table, got %s', type(fn)))
+    return
+  end
+
+  if fn.opts and fn.opts.buffer == 0 then
+    fn.opts.buffer = vim.api.nvim_get_current_buf()
+  end
+
+  if utils.list_contains(functions, fn) then
+    return
+  end
+
+  require('legendary.formatter').update_padding(fn as LegendaryItem)
+  table.insert(functions, fn)
+end
+
+--- Bind a list of functions with legendary.nvim
+---@param fns LegendaryFunction[]
+function M.bind_functions(fns: {LegendaryFunction}, kind: string | nil)
+  if not fns or type(fns) ~= 'table' then
+    return
+  end
+
+  if not vim.tbl_islist(fns) then
+    utils.notify(
+      string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(fns))
+    )
+    return
+  end
+
+  vim.tbl_map(function(fn: LegendaryFunction): nil
+    M.bind_function(fn, kind)
+  end, fns)
+end
+
 --- Find keymaps, commands, or both (both by default)
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
@@ -225,10 +270,13 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     items = commands as {LegendaryItem}
   elseif string.find(item_kind, 'autocmd') then
     items = autocmds as {LegendaryItem}
+  elseif item_kind == 'legendary.function' then
+    items = functions as {LegendaryItem}
   else
     items = vim.list_extend({}, keymaps as {LegendaryItem})
     items = vim.list_extend(items, commands as {LegendaryItem})
     items = vim.list_extend(items, autocmds as {LegendaryItem})
+    items = vim.list_extend(items, functions as {LegendaryItem})
   end
 
 
