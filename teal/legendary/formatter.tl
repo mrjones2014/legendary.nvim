@@ -19,6 +19,10 @@ function M.rpad(str: string, len: integer): string
 end
 
 local function col1_str(item: LegendaryItem): string
+  if vim.startswith(item.kind or '', 'legendary.function') or type((item as table)[1]) == 'function' then
+    return '<function>'
+  end
+
   if vim.startswith(item.kind or '', 'legendary.command') then
     return '<cmd>'
   end
@@ -45,6 +49,10 @@ local function col1_str(item: LegendaryItem): string
 end
 
 local function col2_str(item: LegendaryItem): string
+  if vim.startswith(item.kind or '', 'legendary.function') or type((item as table)[1]) == 'function' then
+    return ''
+  end
+
   if vim.startswith(item.kind or '', 'legendary.autocmd') then
     local patterns = (item as table).opts and ((item as table).opts as table).pattern or '*'
     if type(patterns) == 'table' then
@@ -65,10 +73,12 @@ end
 --- Column one:
 ---   - Keymaps => modes
 ---   - Commands => '<cmd>'
+---   - Functions => '<function>'
 ---   - Autocmds => events
 --- Column 2:
 ---   - Keymaps => key codes
 ---   - Commands => command
+---   - Functions => ''
 ---   - Autocmds => patterns
 --- Column 3:
 ---   - All => description
@@ -100,12 +110,8 @@ function M.get_format_values(item: LegendaryItem, mode: string, one_shot_formatt
     local values = formatter(item, mode)
     -- normalize values
     for i, value in ipairs(values) do
-      if value == nil then
-        values[i] = ''
-      end
-
       if type(value) ~= 'string' then
-        values[i] = tostring(value)
+        values[i] = tostring(value or '')
       end
     end
 

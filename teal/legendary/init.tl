@@ -55,11 +55,22 @@ M.bind_commands = b.bind_commands
 ---@param au LegendaryAugroup[] | LegendaryItem[]
 M.bind_autocmds = b.bind_autocmds
 
+--- Alias to `require('legendary.bindings').bind_function`
+--- Bind a single function with legendary.nvim
+---@param function LegendaryFunction
+M.bind_function = b.bind_function
+
+--- Alias to `require('legendary.bindings').bind_functions`
+--- Bind a list of functions with legendary.nvim
+---@param functions LegendaryFunctions[]
+M.bind_functions = b.bind_functions
+
 --- Alias to `require('legendary.bindings).find`
 --- Find keymaps, commands, or both (both by default)
 --- with legendary.nvim. To find only keymaps, pass
 --- "keymaps" as a parameter, pass "commands" to find
---- only commands, pass "autocmds" to find only autocmds.
+--- only commands, pass "autocmds" to find only autocmds,
+--- pass 'functions' to find only functions.
 ---@param item_kind string | nil
 ---@param filters {LegendaryItemFilter} | nil
 M.find = b.find
@@ -101,6 +112,17 @@ M.setup = function(new_config: table)
 
   if config.autocmds and #config.autocmds > 0 then
     require('legendary.bindings').bind_autocmds(config.autocmds)
+  end
+
+  if config.functions and type(config.functions) ~= 'table' then
+    require('legendary.utils').notify(
+      string.format('functions must be a list-like table, got: %s', type(config.functions))
+    )
+    return
+  end
+
+  if config.functions and #config.functions > 0 then
+    require('legendary.bindings').bind_functions(config.functions)
   end
 
   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then

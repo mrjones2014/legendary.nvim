@@ -12,6 +12,7 @@ local last_used_item
 local keymaps = require('legendary.config').keymaps
 local commands = require('legendary.config').commands
 local autocmds = require('legendary.config').autocmds
+local functions = require('legendary.config').functions
 
 local utils = require('legendary.utils')
 
@@ -197,6 +198,50 @@ end
 
 
 
+function M.bind_function(fn, kind)
+   fn = utils.resolve_description(fn)
+   fn.kind = (kind or 'legendary.function')
+   fn.id = next_id()
+   types.validate_function(fn)
+
+   if not fn or type(fn) ~= 'table' then
+      utils.notify(string.format('Expected table, got %s', type(fn)))
+      return
+   end
+
+   if fn.opts and fn.opts.buffer == 0 then
+      fn.opts.buffer = vim.api.nvim_get_current_buf()
+   end
+
+   if utils.list_contains(functions, fn) then
+      return
+   end
+
+   require('legendary.formatter').update_padding(fn)
+   table.insert(functions, fn)
+end
+
+
+
+function M.bind_functions(fns, kind)
+   if not fns or type(fns) ~= 'table' then
+      return
+   end
+
+   if not vim.tbl_islist(fns) then
+      utils.notify(
+      string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(fns)))
+
+      return
+   end
+
+   vim.tbl_map(function(fn)
+      M.bind_function(fn, kind)
+   end, fns)
+end
+
+
+
 
 
 
@@ -225,10 +270,13 @@ function M.find(opts, _deprecated)
       items = commands
    elseif string.find(item_kind, 'autocmd') then
       items = autocmds
+   elseif item_kind == 'legendary.function' then
+      items = functions
    else
       items = vim.list_extend({}, keymaps)
       items = vim.list_extend(items, commands)
       items = vim.list_extend(items, autocmds)
+      items = vim.list_extend(items, functions)
    end
 
 

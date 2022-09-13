@@ -57,7 +57,7 @@ local function exec(item: LegendaryItem, mode: string, visual_selection: table)
   end
 end
 
---- Attmept to execute the selected item
+--- Attempt to execute the selected item
 ---@param item LegendaryItem
 ---@param current_buf integer
 ---@param visual_selection table | nil, { row, col, row, col }

@@ -304,6 +304,20 @@ function M.append_trailing_cr(cmd_str: string): string
   return cmd
 end
 
+
+--- Check if given item is a user-defined function
+---@param cmd any
+---@return boolean
+function M.is_user_function(cmd: LegendaryFunction): boolean
+  return not not (
+      cmd ~= nil
+      and type(cmd) == 'table'
+      and type(cmd[1]) == 'function'
+      and type(cmd.description) == 'string'
+      and cmd.description ~= ''
+    )
+end
+
 --- Check if given item is a user-defined command
 ---@param cmd any
 ---@return boolean
@@ -381,6 +395,10 @@ end
 ---@return string | function
 function M.get_definition(item: table, mode: string | nil): string | function(marks: table): nil
   mode = mode or vim.fn.mode() as string
+  if M.is_user_function(item as LegendaryFunction) then
+    return item[1] as function(marks: table): nil
+  end
+
   if M.is_user_keymap(item as LegendaryKeymap) or M.is_user_autocmd(item as LegendaryAutocmd) then
     local def = (item as table)[2]
     -- if it's a per-mode mapping,

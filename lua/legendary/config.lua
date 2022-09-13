@@ -15,6 +15,7 @@ local M = {
    keymaps = {},
    commands = {},
    autocmds = {},
+   functions = {},
    which_key = {
       mappings = {},
       opts = {},
@@ -64,6 +65,7 @@ function M.setup(new_config)
    M.keymaps = (new_config.keymaps or M.keymaps)
    M.commands = (new_config.commands or M.commands)
    M.autocmds = (new_config.autocmds or M.autocmds)
+   M.functions = (new_config.functions or M.functions)
    M.which_key = default_whichkey(new_config.which_key)
    M.auto_register_which_key = default_bool(new_config.auto_register_which_key, M.auto_register_which_key)
    M.scratchpad = (new_config.scratchpad or M.scratchpad)

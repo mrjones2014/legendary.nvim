@@ -16,6 +16,7 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 
 
+
  LegendaryModeMappingOpts = {}
 
 
@@ -64,9 +65,21 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 
 
-
  LegendaryCommand = {}
 
+
+
+
+
+
+
+
+
+
+
+
+
+ LegendaryFunction = {}
 
 
 
@@ -173,6 +186,7 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 
 
+
 local M = {}
 
 
@@ -241,5 +255,18 @@ function M.validate_augroup(au)
       clear = { au.clear, 'boolean', true },
    })
 end
+
+
+
+function M.validate_function(command)
+   vim.validate({
+      ['1'] = { command[1], 'function' },
+      description = { command.description, 'string' },
+      opts = { command.opts, 'table', true },
+      kind = { command.kind, 'string' },
+      id = { command.id, 'number' },
+   })
+end
+
 
 return M
