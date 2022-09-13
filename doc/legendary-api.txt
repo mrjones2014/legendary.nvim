@@ -21,7 +21,7 @@ and parse them into legendary.nvim tables
 Parameters: ~
 {which_key_tbls}  (table[])
 {which_key_opts}  (table)
-{do_binding}      (boolean)   whether to bind the keymaps or let which-key handle i
+{do_binding}      (boolean)   whether to bind the keymaps or let which-key handle it
 
 Returns: ~
 {LegendaryItem[]}
@@ -34,7 +34,7 @@ Bind a which-key.nvim table with legendary.nvim
 Parameters: ~
 {wk_tbls}     (table)
 {wk_opts}     (table)
-{do_binding}  (boolean)   whether to bind the keymaps or let which-key handle i
+{do_binding}  (boolean)   whether to bind the keymaps or let which-key handle it
 
 
 M.whichkey_listen()                 *legendary.compat.which-key.whichkey_listen*
@@ -47,7 +47,7 @@ require('legendary.executor')                               *legendary.executor*
 
 *legendary.executor.try_execute*
 M.try_execute({item}, {current_buf}, {visual_selection}, {current_mode})
-Attmept to execute the selected item
+Attempt to execute the selected item
 
 Parameters: ~
 {item}              (LegendaryItem)
@@ -101,10 +101,12 @@ Default implementation of config.formatter
 Column one:
 - Keymaps => modes
 - Commands => '<cmd>'
+- Functions => '<function>'
 - Autocmds => events
 Column 2:
 - Keymaps => key codes
 - Commands => command
+- Functions => ''
 - Autocmds => patterns
 Column 3:
 - All => description
@@ -113,7 +115,7 @@ Parameters: ~
 {item}  (LegendaryItem)
 
 Returns: ~
-{table}  values to forma
+{table}  values to format
 
 
 M.get_format_values({item})              *legendary.formatter.get_format_values*
@@ -125,7 +127,7 @@ Parameters: ~
 {item}  (LegendaryItem)
 
 Returns: ~
-{table}  values to forma
+{table}  values to format
 
 
 M.update_padding({item})                    *legendary.formatter.update_padding*
@@ -173,7 +175,7 @@ Returns: ~
 M.lazy_required_fn({module_name}, {fn_name})  *legendary.helpers.lazy_required_fn*
 Given a Lua path to require, the name of a function in the `require`d module,
 and some arguments, return a new function that will call
-he function `fn_name` in module `module_name` with the specified args
+the function `fn_name` in module `module_name` with the specified args
 
 Parameters: ~
 {module_name}  (string)
@@ -185,7 +187,7 @@ Returns: ~
 
 M.split_then({fn})                                *legendary.helpers.split_then*
 Given a Lua function, return a new function
-hat will create a horizontal split before
+that will create a horizontal split before
 calling the specified function.
 
 Parameters: ~
@@ -197,7 +199,7 @@ Returns: ~
 
 M.vsplit_then({fn})                              *legendary.helpers.vsplit_then*
 Given a Lua function, return a new function
-hat will create a vertical split before
+that will create a vertical split before
 calling the specified function.
 
 Parameters: ~
@@ -254,11 +256,20 @@ A legendary command. You can add commands to the finder without binding them by 
 Fields: ~
 {[1]}          (string)
 {[2]}          (string)    | function | nil
-{mode}         (string)    | {string}
 {description}  (string)    | nil
 {opts}         (table)     | nil
 {kind}         (string)
 {unfinished}   (boolean)   | nil
+
+
+LegendaryFunction                                            *LegendaryFunction*
+A legendary function.
+
+Fields: ~
+{[1]}          (function)
+{description}  (string)     | nil
+{opts}         (table)      | nil
+{kind}         (string)
 
 
 LegendaryAutocmd                                              *LegendaryAutocmd*
@@ -291,6 +302,14 @@ Fields: ~
 
 LegendaryItemFilter                                        *LegendaryItemFilter*
 A type alias for
+
+
+LegendaryFormatter                                          *LegendaryFormatter*
+A type alias for
+
+
+Options                                                                *Options*
+accepted by `require('legendary').find()`
 
 
 LegendaryScratchpadDisplay                          *LegendaryScratchpadDisplay*
@@ -342,10 +361,17 @@ Parameters: ~
 
 M.validate_augroup({au})                      *legendary.types.validate_augroup*
 Validator function for LegendaryAugroups
-Note: does NOT validate the LegendaryAutocmds inside i
+Note: does NOT validate the LegendaryAutocmds inside it
 
 Parameters: ~
 {au}  (LegendaryAugroup)
+
+
+M.validate_function({au})                    *legendary.types.validate_function*
+Validator function for LegendaryFunctions
+
+Parameters: ~
+{au}  (LegendaryFunction)
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:

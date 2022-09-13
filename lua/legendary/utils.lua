@@ -307,6 +307,20 @@ end
 
 
 
+
+function M.is_user_function(cmd)
+   return not not (
+   cmd ~= nil and
+   type(cmd) == 'table' and
+   type(cmd[1]) == 'function' and
+   type(cmd.description) == 'string' and
+   cmd.description ~= '')
+
+end
+
+
+
+
 function M.is_user_command(cmd)
    return not not (
    cmd ~= nil and
@@ -381,6 +395,10 @@ end
 
 function M.get_definition(item, mode)
    mode = mode or vim.fn.mode()
+   if M.is_user_function(item) then
+      return item[1]
+   end
+
    if M.is_user_keymap(item) or M.is_user_autocmd(item) then
       local def = (item)[2]
 

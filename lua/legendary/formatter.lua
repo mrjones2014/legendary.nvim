@@ -19,6 +19,10 @@ function M.rpad(str, len)
 end
 
 local function col1_str(item)
+   if vim.startswith(item.kind or '', 'legendary.function') or type((item)[1]) == 'function' then
+      return '<function>'
+   end
+
    if vim.startswith(item.kind or '', 'legendary.command') then
       return '<cmd>'
    end
@@ -45,6 +49,10 @@ local function col1_str(item)
 end
 
 local function col2_str(item)
+   if vim.startswith(item.kind or '', 'legendary.function') or type((item)[1]) == 'function' then
+      return ''
+   end
+
    if vim.startswith(item.kind or '', 'legendary.autocmd') then
       local patterns = (item).opts and ((item).opts).pattern or '*'
       if type(patterns) == 'table' then
@@ -60,6 +68,8 @@ end
 local function col3_str(item)
    return item.description or ''
 end
+
+
 
 
 
@@ -100,12 +110,8 @@ function M.get_format_values(item, mode, one_shot_formatter)
       local values = formatter(item, mode)
 
       for i, value in ipairs(values) do
-         if value == nil then
-            values[i] = ''
-         end
-
          if type(value) ~= 'string' then
-            values[i] = tostring(value)
+            values[i] = tostring(value or '')
          end
       end
 
