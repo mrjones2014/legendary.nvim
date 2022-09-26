@@ -135,10 +135,12 @@ global type LegendaryFormatter = function(LegendaryItem, string): {string}
 ---@field kind 'keymaps' | 'commands' | 'autocmds' | nil
 ---@field filters {LegendaryItemFilter} | nil
 ---@field formatter LegendaryFormatter | nil
+---@field select_prompt nil | string | function(string): string
 global record LegendaryFindOpts
    kind: string | nil
    filters: {LegendaryItemFilter} | nil
    formatter: LegendaryFormatter
+   select_prompt: nil | string | function(string): string
 end
 
 global record LegendaryWhichKeys

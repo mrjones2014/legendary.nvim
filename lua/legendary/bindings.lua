@@ -327,7 +327,7 @@ require('legendary.config').most_recent_item_at_top and
    'legendary.%s',
    type(item_kind) == 'string' and #item_kind > 0 and item_kind or 'items')
 
-   local prompt = require('legendary.config').select_prompt
+   local prompt = opts.select_prompt or require('legendary.config').select_prompt
    if type(prompt) == 'function' then
       prompt = (prompt)(select_kind)
    end

@@ -29,7 +29,6 @@ end
 
 
 function M.current_mode()
-   print(vim.fn.mode())
    return M.mode((vim.fn.mode() or 'n'))
 end
 

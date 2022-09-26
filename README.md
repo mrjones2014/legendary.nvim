@@ -85,6 +85,9 @@ The `require('legend').find()` function takes an `opts` table with the following
   -- returning a list of strings where each string is one column
   -- use this to override the configured formatter for just one call
   formatter = nil,
+  -- pass a string, or a function with the signature `function(kind: string): string`
+  -- to customize the select prompt for the current call
+  select_prompt = nil,
 }
 ```
 
@@ -97,6 +100,14 @@ require('legendary').find({ filters = require('legendary.filters').current_mode(
 require('legendary').find({ filters = require('legendary.filters').mode('n') })
 -- show only keymaps and filter by normal mode
 require('legendary').find({ kind = 'keymaps', filters = require('legendary.filters').mode('n') })
+-- customize the select prompt
+require('legendary').find({ select_prompt = 'Custom prompt' })
+require('legendary').find({
+  kind = 'keymaps',
+  select_prompt = function(kind)
+    return string.format('Finding %s', kind)
+  end
+})
 -- filter keymaps by normal mode and that start with <leader>
 require('legendary').find({
   filters = {
