@@ -1,3 +1,5 @@
+default: build
+
 .PHONY: ensure-test-deps
 ensure-test-deps:
 	@mkdir -p vendor

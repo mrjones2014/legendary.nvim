@@ -3,13 +3,6 @@ local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 th
 require('legendary.types')
 local M = {}
 
-local padding = {}
-
-
-function M.__clear_padding()
-   padding = {}
-end
-
 
 
 
@@ -123,29 +116,28 @@ end
 
 
 
-function M.update_padding(item)
-   local values = M.get_format_values(item)
-   for i, value in ipairs(values) do
-      local len = vim.fn.strdisplaywidth(value)
-      if len > (padding[i] or 0) then
-         padding[i] = len
+
+
+
+function M.compute_padding(items, mode, formatter)
+   local padding = {}
+   for _, item in ipairs(items) do
+      local values = M.get_format_values(item, mode, formatter)
+      for i, value in ipairs(values) do
+         local len = vim.fn.strdisplaywidth(value)
+         if len > (padding[i] or 0) then
+            padding[i] = len
+         end
       end
    end
+
+   return padding
 end
 
 
 
 
-
-
-function M.get_padding()
-   return vim.deepcopy(padding)
-end
-
-
-
-
-function M.format(item, mode, formatter)
+function M.format(item, mode, padding, formatter)
    local values = M.get_format_values(item, mode, formatter)
 
    local strs = {}
