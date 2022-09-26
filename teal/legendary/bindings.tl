@@ -327,7 +327,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     'legendary.%s',
     type(item_kind) == 'string' and #item_kind > 0 and item_kind or 'items'
   )
-  local prompt = require('legendary.config').select_prompt
+  local prompt = opts.select_prompt or require('legendary.config').select_prompt
   if type(prompt) == 'function' then
     prompt = (prompt as function(kind: string): string)(select_kind)
   end
