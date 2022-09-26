@@ -3,13 +3,6 @@
 require('legendary.types')
 local M = {}
 
-local padding: {integer} = {}
-
---- for unit tests only, should not be called from plugin code!
-function M.__clear_padding()
-  padding = {}
-end
-
 ---Right-pad strings to specified length
 ---@param str string the string to pad
 ---@param len integer the padding value to use
@@ -121,31 +114,30 @@ function M.get_format_values(item: LegendaryItem, mode: string, one_shot_formatt
   return M.get_default_format_values(item)
 end
 
---- Update cached column paddings.
----@param item LegendaryItem
-function M.update_padding(item: LegendaryItem)
-  local values = M.get_format_values(item)
-  for i, value in ipairs(values) do
-    local len = vim.fn.strdisplaywidth(value) as integer
-    if len > (padding[i] or 0) then
-      padding[i] = len
+---Compute padding values given items, mode, and formatter
+---@param items {LegendaryItem} the items being searched
+---@param mode string current mode
+---@mode formatter LegendaryFormatter|nil the formatter to use, or nil for default
+---@returns {integer}
+function M.compute_padding(items: {LegendaryItem}, mode: string, formatter: LegendaryFormatter | nil): {integer}
+  local padding: {integer} = {}
+  for _, item in ipairs(items) do
+    local values = M.get_format_values(item, mode, formatter)
+    for i, value in ipairs(values) do
+      local len = vim.fn.strdisplaywidth(value) as integer
+      if len > (padding[i] or 0) then
+        padding[i] = len
+      end
     end
   end
-end
 
---- Returns a READ-ONLY COPY of the current padding values.
---- Note that this is a COPY of the table so it will not update,
---- and writing to it will not do anything. Padding is managed
---- internally by the formatter and should not be modified manually.
----@return table a table containing the padding value for each column.
-function M.get_padding(): {integer}
-  return vim.deepcopy(padding)
+  return padding
 end
 
 --- Format a LegendaryItem to a string
 ---@param item LegendaryItem
 ---@return string
-function M.format(item: LegendaryItem, mode: string, formatter: LegendaryFormatter | nil): string
+function M.format(item: LegendaryItem, mode: string, padding: {integer}, formatter: LegendaryFormatter | nil): string
   local values = M.get_format_values(item, mode, formatter)
 
   local strs = {}

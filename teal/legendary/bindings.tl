@@ -40,7 +40,6 @@ function M.bind_keymap(keymap: LegendaryKeymap, kind: string | nil)
   end
 
   utils.set_keymap(keymap)
-  formatter.update_padding(keymap as LegendaryItem)
   for _, resolved_keymap in ipairs(utils.resolve_with_per_mode_description(keymap)) do
     keymap.id = next_id()
     table.insert(keymaps, resolved_keymap)
@@ -87,7 +86,6 @@ function M.bind_command(cmd: LegendaryCommand, kind: string | nil)
   end
 
   utils.set_command(cmd)
-  formatter.update_padding(cmd as LegendaryItem)
   table.insert(commands, cmd)
 end
 
@@ -140,7 +138,6 @@ local function bind_autocmd(autocmd: LegendaryAutocmd, group: string | nil, kind
 
   utils.set_autocmd(autocmd, group)
   if autocmd.description and #autocmd.description > 0 and not (autocmd.opts or {}).once then
-    formatter.update_padding(autocmd as LegendaryItem)
     table.insert(autocmds as {LegendaryAutocmd}, autocmd)
   end
 end
@@ -217,7 +214,6 @@ function M.bind_function(fn: LegendaryFunction, kind: string | nil)
     return
   end
 
-  require('legendary.formatter').update_padding(fn as LegendaryItem)
   table.insert(functions, fn)
 end
 
@@ -336,8 +332,9 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     prompt = (prompt as function(kind: string): string)(select_kind)
   end
 
+  local padding = formatter.compute_padding(items, current_mode, opts.formatter)
   local format_item = function(item: LegendaryItem): string
-    return formatter.format(item, current_mode, opts.formatter)
+    return formatter.format(item, current_mode, padding, opts.formatter)
   end
 
   vim.ui.select(items, {
