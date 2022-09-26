@@ -81,7 +81,7 @@ The `require('legend').find()` function takes an `opts` table with the following
   -- `require('legendary.filters').mode(mode)` and `require('legendary.filters').current_mode()`
   -- are provided for convenience
   filters = {},
-  -- pass a function with the signature `function(item): {string}`
+  -- pass a function with the signature `function(item, mode): {string}`
   -- returning a list of strings where each string is one column
   -- use this to override the configured formatter for just one call
   formatter = nil,
@@ -115,7 +115,7 @@ require('legendary').find({
   filters = { require('legendary.filters').current_mode() },
   formatter = function(item, mode)
     local values = require('legendary.formatter').get_default_format_values(item)
-    if string.find(item.kind 'keymap') then
+    if string.find(item.kind, 'keymap') then
       values[1] = mode
     end
     return values

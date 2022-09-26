@@ -74,7 +74,7 @@ describe('formatter', function()
         formatter.update_padding(item)
       end, items)
 
-      local padding = formatter.get_padding()
+      local padding = formatter.compute_padding(items, 'n')
       assert.are.same(#padding, 3)
       assert.are.same(padding[1], #'<leader>c')
       assert.are.same(padding[2], #'lua vim.lsp.buf.definition')
@@ -100,7 +100,7 @@ describe('formatter', function()
         formatter.update_padding(item)
       end, items)
 
-      local padding = formatter.get_padding()
+      local padding = formatter.compute_padding(items, 'n')
       assert.are.same(#padding, 1)
       assert.are.same(padding[1], 1)
     end)
@@ -132,7 +132,7 @@ describe('formatter', function()
         end, items)
 
         local padded = {}
-        local padding = formatter.get_padding()
+        local padding = formatter.compute_padding(items, 'n')
         vim.tbl_map(function(item)
           table.insert(padded, {
             formatter.rpad(item[1], padding[1]),
