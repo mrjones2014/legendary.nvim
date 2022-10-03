@@ -109,6 +109,8 @@ global record vim
    tbl_filter: function<T>(function(T): (boolean), {T}): {T}
    tbl_filter: function(function(any): (boolean), {any}): {any}
 
+   tbl_get: function(table, ...: string | integer): any
+
    tbl_flatten: function<T>({T|{T}}): {T}
    tbl_flatten: function({any|{any}}): {any}
 
@@ -874,8 +876,11 @@ global record vim
       mousefocus: boolean
       mousehide: boolean
       mousem: string
+      mousemev: boolean
       mousemodel: string
+      mousemoveevent: boolean
       mouses: string
+      mousescroll: string
       mouseshape: string
       mouset: number
       mousetime: number
@@ -1158,6 +1163,7 @@ global record vim
       wak: string
       warn: boolean
       wb: boolean
+      wbr: string
       wc: number
       wcm: number
       wd: number
@@ -1177,6 +1183,7 @@ global record vim
       wildoptions: string
       wim: string
       winaltkeys: string
+      winbar: string
       winbl: number
       winblend: number
       window: number
@@ -1429,8 +1436,11 @@ global record vim
       mousefocus: boolean
       mousehide: boolean
       mousem: string
+      mousemev: boolean
       mousemodel: string
+      mousemoveevent: boolean
       mouses: string
+      mousescroll: string
       mouseshape: string
       mouset: number
       mousetime: number
@@ -1904,8 +1914,10 @@ global record vim
       stl: string
       ve: string
       virtualedit: string
+      wbr: string
       wfh: boolean
       wfw: boolean
+      winbar: string
       winbl: number
       winblend: number
       winfixheight: boolean
@@ -1919,11 +1931,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.7.0
+            neovim version: 0.8.0
 
             compatible: 0
-            level: 9
-            prerelease: true
+            level: 10
+            prerelease: false
       --]]
 
       --[[
@@ -1980,6 +1992,7 @@ global record vim
       nvim_call_function: function(string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_chan_send: function(integer--[[Integer]], string--[[String]])--[[void]]
       nvim_clear_autocmds: function({string:any}--[[Dictionary]])--[[void]]
+      nvim_cmd: function({string:any}--[[Dictionary]], {string:any}--[[Dictionary]]): string--[[String]]
       nvim_command: function(string--[[String]])--[[void]]
       nvim_create_augroup: function(string--[[String]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_create_autocmd: function(any--[[Object]], {string:any}--[[Dictionary]]): integer--[[Integer]]
@@ -2043,6 +2056,7 @@ global record vim
       nvim_open_term: function(integer--[[Buffer]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_open_win: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): integer--[[Window]]
       nvim_out_write: function(string--[[String]])--[[void]]
+      nvim_parse_cmd: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_parse_expression: function(string--[[String]], string--[[String]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
       nvim_paste: function(string--[[String]], boolean--[[Boolean]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_put: function({string}--[[ArrayOf(String)]], string--[[String]], boolean--[[Boolean]], boolean--[[Boolean]])--[[void]]
@@ -2056,6 +2070,8 @@ global record vim
       nvim_set_current_win: function(integer--[[Window]])--[[void]]
       nvim_set_decoration_provider: function(integer--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
+      nvim_set_hl_ns: function(integer--[[Integer]])--[[void]]
+      nvim_set_hl_ns_fast: function(integer--[[Integer]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
@@ -2097,6 +2113,7 @@ global record vim
       nvim_win_set_config: function(integer--[[Window]], {string:any}--[[Dictionary]])--[[void]]
       nvim_win_set_cursor: function(integer--[[Window]], {integer,integer}--[[ArrayOf(Integer, 2)]])--[[void]]
       nvim_win_set_height: function(integer--[[Window]], integer--[[Integer]])--[[void]]
+      nvim_win_set_hl_ns: function(integer--[[Window]], integer--[[Integer]])--[[void]]
       nvim_win_set_option: function(integer--[[Window]], string--[[String]], any--[[Object]])--[[void]]
       nvim_win_set_var: function(integer--[[Window]], string--[[String]], any--[[Object]])--[[void]]
       nvim_win_set_width: function(integer--[[Window]], integer--[[Integer]])--[[void]]
