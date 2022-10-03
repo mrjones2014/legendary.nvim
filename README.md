@@ -707,7 +707,7 @@ require('legendary').find(nil, {
   require('legendary.filters').mode('n'),
   function(item)
     if not string.find(item.kind, 'keymap') then
-      return true
+      return false
     end
 
     return vim.startswith(item[1], '<leader>')
