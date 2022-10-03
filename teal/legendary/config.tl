@@ -28,25 +28,6 @@ local M: LegendaryConfig = {
   },
 }
 
-local function default_bool(value: boolean | nil, default: boolean): boolean
-  if value == nil then
-    return default
-  end
-  return value
-end
-
-local function default_whichkey(new_config: table): LegendaryWhichKeys
-  if not new_config then
-    return M.which_key
-  end
-
-  return {
-    mappings = new_config.mappings or {},
-    opts = new_config.opts or {},
-    do_binding = default_bool(new_config.do_binding as boolean | nil, true)
-  }
-end
-
 ---Set user configuration
 ---@param new_config LegendaryConfig
 function M.setup(new_config: table): LegendaryConfig
@@ -58,19 +39,11 @@ function M.setup(new_config: table): LegendaryConfig
     return
   end
 
-  M.include_builtin = default_bool(new_config.include_builtin as boolean | nil, M.include_builtin)
-  M.include_legendary_cmds = default_bool(new_config.include_legendary_cmds as boolean | nil, M.include_legendary_cmds)
-  M.select_prompt = (new_config.select_prompt or M.select_prompt) as (string | function(kind: string): string)
-  M.formatter = (new_config.formatter or M.formatter) as function(item: LegendaryItem): {string}
-  M.most_recent_item_at_top = default_bool(new_config.most_recent_item_at_top as boolean | nil, M.most_recent_item_at_top)
-  M.keymaps = (new_config.keymaps or M.keymaps) as {LegendaryKeymap}
-  M.commands = (new_config.commands or M.commands) as {LegendaryCommand}
-  M.autocmds = (new_config.autocmds or M.autocmds) as {LegendaryAugroup}
-  M.functions = (new_config.functions or M.functions) as {LegendaryFunction}
-  M.which_key = default_whichkey(new_config.which_key as table)
-  M.auto_register_which_key = default_bool(new_config.auto_register_which_key as boolean | nil, M.auto_register_which_key)
-  M.scratchpad = vim.tbl_deep_extend('force', M.scratchpad as table, (new_config.scratchpad or {}) as table) as LegendaryScratchpadConfig
-  require('legendary.types').validate_config(M)
+  local result = vim.tbl_deep_extend("force", M as table, new_config or {})
+  for key, value in pairs(result) do
+    (M as table)[key as string] = value
+  end
+
   return M
 end
 
