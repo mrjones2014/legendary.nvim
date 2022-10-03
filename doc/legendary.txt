@@ -714,7 +714,7 @@ The main API functions are described below. To see full API documentation, run
       require('legendary.filters').mode('n'),
       function(item)
         if not string.find(item.kind, 'keymap') then
-          return true
+          return false
         end
     
         return vim.startswith(item[1], '<leader>')
