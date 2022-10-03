@@ -302,7 +302,9 @@ you can use the following helper functions:
 local helpers = require('legendary.helpers')
 local keymaps = {
   { '<leader>p', helpers.lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
-  { '<leader>f', helpers.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) }
+  { '<leader>f', helpers.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) },
+  -- you can use a dot in the 2nd parameter to access functions nested in tables
+  { '<leader>tt', helpers.lazy_required_fn('neotest', 'run.run') },
 }
 ```
 
@@ -743,6 +745,16 @@ require('legendary.helpers').lazy_required_fn('telescope.builtin', 'oldfiles', {
 -- this will *return a new function* defined as:
 function()
   require('telescope.bulitin')['oldfiles']({ only_cwd = true })
+end
+```
+
+You can also use dots to access functions that are nested within tables, for example with Neotest:
+
+```lua
+require('legendary.helpers').lazy_required_fn('neotest', 'run.run')
+-- this will *return a new function* defined as:
+function()
+  require('neotest')['run']['run']()
 end
 ```
 
