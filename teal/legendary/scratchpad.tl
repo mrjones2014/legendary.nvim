@@ -118,24 +118,34 @@ local function load_cache(buf: integer)
   end
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.bo.ft = 'lua' -- this needs to be reset on load
 end
 
 local function write_cache_autocmd(buf: integer)
   vim.api.nvim_create_autocmd('TextChanged', {
     callback = function()
-      local config = require('legendary.config').scratchpad
-      local cache_path = config and config.cache_file or string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary/scratch.lua')
-      local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-      local file = io.open(cache_path, 'w+')
-      if not file then
-        return
-      end
+      pcall(function()
+        local config = require('legendary.config').scratchpad
+        local cache_path = config and config.cache_file or string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary/scratch.lua')
+        local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+        local file = io.open(cache_path, 'w+')
+        if not file then
+          return
+        end
 
-      local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
-      file:write(table.concat(lines, line_ending))
-      file:close()
+        local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
+        file:write(table.concat(lines, line_ending))
+        file:close()
+      end)
     end,
-    buffer = buf
+    buffer = buf,
+  })
+
+  vim.api.nvim_create_autocmd('BufReadCmd', {
+    callback = function()
+      pcall(load_cache, buf)
+    end,
+    buffer = buf,
   })
 end
 
@@ -148,7 +158,7 @@ function M.create_scratchpad_buffer()
   vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
   vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
   vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad')
-  load_cache(buf_id)
+  pcall(load_cache, buf_id)
   write_cache_autocmd(buf_id)
   vim.api.nvim_win_set_buf(0, buf_id)
   vim.cmd('redrawstatus')
