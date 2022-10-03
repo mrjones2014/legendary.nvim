@@ -24,6 +24,7 @@ local M: LegendaryConfig = {
   auto_register_which_key = true,
   scratchpad = {
     display_results = 'float',
+    cache_file = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
   },
 }
 
@@ -68,7 +69,7 @@ function M.setup(new_config: table): LegendaryConfig
   M.functions = (new_config.functions or M.functions) as {LegendaryFunction}
   M.which_key = default_whichkey(new_config.which_key as table)
   M.auto_register_which_key = default_bool(new_config.auto_register_which_key as boolean | nil, M.auto_register_which_key)
-  M.scratchpad = (new_config.scratchpad or M.scratchpad) as LegendaryScratchpadConfig
+  M.scratchpad = vim.tbl_deep_extend('force', M.scratchpad as table, (new_config.scratchpad or {}) as table) as LegendaryScratchpadConfig
   require('legendary.types').validate_config(M)
   return M
 end
