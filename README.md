@@ -202,6 +202,9 @@ require('legendary').setup({
     -- either 'print' or 'float'
     -- Pressing q or <ESC> will close the float
     display_results = 'float',
+    -- cache the contents of the scratchpad to a file and restore it
+    -- next time you open the scratchpad
+    cache_file = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
   },
 })
 ```
