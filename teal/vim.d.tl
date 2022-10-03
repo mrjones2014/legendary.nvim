@@ -109,7 +109,7 @@ global record vim
    tbl_filter: function<T>(function(T): (boolean), {T}): {T}
    tbl_filter: function(function(any): (boolean), {any}): {any}
 
-   tbl_get: function(table, ...: string | integer): any
+   tbl_get: function(any, ...: any): any
 
    tbl_flatten: function<T>({T|{T}}): {T}
    tbl_flatten: function({any|{any}}): {any}
