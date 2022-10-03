@@ -15,6 +15,19 @@ function M.lazy(fn: function(...: any), ...: any): function()
   end
 end
 
+local function is_function(a: any): boolean
+  if type(a) == 'function' then
+    return true
+  end
+
+  local mt = getmetatable(a)
+  if not mt then
+    return false
+  end
+
+  return not not mt.__call
+end
+
 --- Given a Lua path to require, the name of a function in the `require`d module,
 --- and some arguments, return a new function that will call
 --- the function `fn_name` in module `module_name` with the specified args
@@ -24,7 +37,26 @@ end
 function M.lazy_required_fn(module_name: string, fn_name: string, ...: any): function()
   local args = { ... }
   return function()
-    ((_G['require'](module_name) as table)[fn_name] as function(...: any))(unpack(args))
+    local module = (_G['require'](module_name) as table)
+    if string.find(fn_name, '%.') then
+      local fn: any = module
+      for _, key in ipairs(vim.split(fn_name, '%.')) do
+        fn = (fn as table)[key]
+        if fn == nil then
+          vim.notify('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
+          return
+        end
+      end
+      if not is_function(fn) then
+        vim.notify('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
+        return
+      end
+      local final_fn = fn as function
+      final_fn(unpack(args))
+    else
+      local fn = module[fn_name] as function
+      fn(unpack(args))
+    end
   end
 end
 
