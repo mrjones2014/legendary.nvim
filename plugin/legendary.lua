@@ -10,4 +10,5 @@ if not vim.keymap or not vim.keymap.set then
 end
 
 require('legendary.cmds').bind()
+
 vim.g.legendary_loaded = true

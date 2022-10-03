@@ -158,6 +158,7 @@ end
 ---@class LegendaryScratchpadConfig The config table for the Legendary scratchpad
 global record LegendaryScratchpadConfig
    display_results: LegendaryScratchpadDisplay
+   cache_file: string
 end
 
 ---@class LegendaryConfig Configuration table for legendary
