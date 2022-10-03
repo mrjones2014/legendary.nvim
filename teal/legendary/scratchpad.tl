@@ -9,19 +9,6 @@ local display_strategies = {
   'print',
 }
 
-function M.create_scratchpad_buffer()
-  if last_scratchpad_buf_id ~= nil then
-    pcall(vim.api.nvim_buf_delete, last_scratchpad_buf_id, { force = true })
-  end
-
-  local buf_id = vim.api.nvim_create_buf(true, true)
-  vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
-  vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad')
-  vim.api.nvim_win_set_buf(0, buf_id)
-  last_scratchpad_buf_id = buf_id
-end
-
 local function create_results_floating_win(lines: {string})
   if last_results_buf_id ~= nil then
     pcall(vim.api.nvim_buf_delete, last_results_buf_id, { force = true })
@@ -117,6 +104,58 @@ function M.exec_lua(lua_str: string)
     print_multiline(result)
   end
 end
+
+local function load_cache(buf: integer)
+  local config = require('legendary.config').scratchpad
+  local cache_path = config and config.cache_file or string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary/scratch.lua')
+  if vim.fn.filereadable(cache_path) == 0 then
+    return
+  end
+
+  local lines = {}
+  for line in io.lines(cache_path) do
+    lines[#lines + 1] = line
+  end
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+end
+
+local function write_cache_autocmd(buf: integer)
+  vim.api.nvim_create_autocmd('TextChanged', {
+    callback = function()
+      local config = require('legendary.config').scratchpad
+      local cache_path = config and config.cache_file or string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary/scratch.lua')
+      local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+      local file = io.open(cache_path, 'w+')
+      if not file then
+        return
+      end
+
+      local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
+      file:write(table.concat(lines, line_ending))
+      file:close()
+    end,
+    buffer = buf
+  })
+end
+
+function M.create_scratchpad_buffer()
+  if last_scratchpad_buf_id ~= nil then
+    pcall(vim.api.nvim_buf_delete, last_scratchpad_buf_id, { force = true })
+  end
+
+  local buf_id = vim.api.nvim_create_buf(true, true)
+  vim.api.nvim_buf_set_option(buf_id, 'filetype', 'lua')
+  vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
+  vim.api.nvim_buf_set_name(buf_id, 'Legendary Scratchpad')
+  load_cache(buf_id)
+  write_cache_autocmd(buf_id)
+  vim.api.nvim_win_set_buf(0, buf_id)
+  vim.cmd('redrawstatus')
+  last_scratchpad_buf_id = buf_id
+end
+
+
 
 function M.lua_eval_current_line()
   local current_line = vim.api.nvim_get_current_line()
