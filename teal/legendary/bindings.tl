@@ -226,7 +226,7 @@ function M.bind_functions(fns: {LegendaryFunction}, kind: string | nil)
 
   if not vim.tbl_islist(fns) then
     utils.notify(
-      string.format('Expected list-like table, got %s, at require("legendary").bind_commands', type(fns))
+      string.format('Expected list-like table, got %s, at require("legendary").bind_functions', type(fns))
     )
     return
   end
