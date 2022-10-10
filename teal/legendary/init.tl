@@ -134,10 +134,7 @@ M.setup = function(new_config: table)
   end
 
   if config.auto_register_which_key then
-    local whichkey_is_loaded, _ = pcall((_G['require'] as function(module: string): table), 'which-key')
-    if whichkey_is_loaded then
-      require('legendary.compat.which-key').whichkey_listen()
-    end
+    require('legendary.compat.which-key').whichkey_listen()
   end
 end
 

@@ -1,4 +1,4 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local string = _tl_compat and _tl_compat.string or string
 
 require('legendary.types')
 
@@ -134,10 +134,7 @@ M.setup = function(new_config)
    end
 
    if config.auto_register_which_key then
-      local whichkey_is_loaded, _ = pcall((_G['require']), 'which-key')
-      if whichkey_is_loaded then
-         require('legendary.compat.which-key').whichkey_listen()
-      end
+      require('legendary.compat.which-key').whichkey_listen()
    end
 end
 

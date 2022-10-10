@@ -1,4 +1,4 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local package = _tl_compat and _tl_compat.package or package; local pcall = _tl_compat and _tl_compat.pcall or pcall; local table = _tl_compat and _tl_compat.table or table
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local pcall = _tl_compat and _tl_compat.pcall or pcall; local table = _tl_compat and _tl_compat.table or table
 
 require('legendary.types')
 local M = {}
@@ -67,7 +67,7 @@ end
 
 
 
-function M.whichkey_listen(halt)
+function M.whichkey_listen()
    local loaded, which_key = pcall(
    _G['require'],
    'which-key')
@@ -82,17 +82,8 @@ function M.whichkey_listen(halt)
       end
       wk.register = listener
       return true
-   elseif not halt then
-
-
-      local searcher = function(module)
-         if module == 'which-key' then
-            M.whichkey_listen(true)
-         end
-
-         return nil
-      end
-      table.insert(package.searchers, 1, searcher)
+   else
+      vim.notify('which-key.nvim not available. If you are lazy-loading, be sure that which-key.nvim is added to runtime path before running legendary.nvim config.')
    end
 end
 

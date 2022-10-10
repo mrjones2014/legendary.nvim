@@ -67,7 +67,7 @@ end
 
 --- Enable auto-registering of which-key.nvim tables
 --- with legendary.nvim
-function M.whichkey_listen(halt: boolean): boolean
+function M.whichkey_listen(): boolean
   local loaded, which_key = pcall(
     _G['require'] as (function(module: string): table),
     'which-key'
@@ -82,17 +82,8 @@ function M.whichkey_listen(halt: boolean): boolean
     end
     wk.register = listener
     return true
-  elseif not halt then
-    -- if which-key is not loaded, set up package.searchers
-    -- to load the listener once which-key loads
-    local searcher = function(module: string): nil
-      if module == 'which-key' then
-        M.whichkey_listen(true)
-      end
-
-      return nil
-    end
-    table.insert(package.searchers, 1, searcher)
+  else
+    vim.notify('which-key.nvim not available. If you are lazy-loading, be sure that which-key.nvim is added to runtime path before running legendary.nvim config.')
   end
 end
 

@@ -21,7 +21,7 @@ local M: LegendaryConfig = {
     opts = {},
     do_binding = true,
   },
-  auto_register_which_key = true,
+  auto_register_which_key = false,
   scratchpad = {
     display_results = 'float',
     cache_file = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
