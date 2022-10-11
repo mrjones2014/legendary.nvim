@@ -145,7 +145,7 @@ function M.format(item, mode, padding, formatter)
       table.insert(strs, M.rpad(value, padding[i] or 0))
    end
 
-   local format_str = string.format('%%s%s', string.rep(' │ %s', #values - 1))
+   local format_str = string.format('%%s%s', string.rep(string.format(' %s %%s', require('legendary.config').col_separator_char), #values - 1))
    return string.format(format_str, unpack(strs))
 end
 

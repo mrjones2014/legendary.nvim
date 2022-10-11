@@ -179,6 +179,7 @@ global record LegendaryConfig
    include_legendary_cmds: boolean
    select_prompt: string | function(string): string
    formatter: LegendaryFormatter
+   col_separator_char: string
    most_recent_item_at_top: boolean
    keymaps: {LegendaryKeymap}
    commands: {LegendaryCommand}

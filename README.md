@@ -163,6 +163,7 @@ require('legendary').setup({
   -- See function `get_default_format_values(item)` in
   -- `lua/legendary/formatter.lua` to see default implementation.
   formatter = nil,
+  col_separator_char = '│',
   -- When you trigger an item via legendary.nvim,
   -- show it at the top next time you use legendary.nvim
   most_recent_item_at_top = true,
@@ -802,9 +803,3 @@ or `kind = 'legendary.function'`, `kind = 'legendary.autocmd'`, depending on whe
 
 Builtins will have `kind = 'legendary.keymap.builtin'`, `kind = 'legendary.command.builtin'`,
 `kind = 'legendary.function'`, or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, function, or autocmd.
-
-## Sponsors
-
-Huge thanks to my sponsors for helping to support this project:
-
-- [@olimorris](https://github.com/olimorris)

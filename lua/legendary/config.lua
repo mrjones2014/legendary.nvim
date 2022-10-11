@@ -11,6 +11,7 @@ local M = {
       return string.gsub(' ' .. kind:gsub('%.', ' '), '%W%l', string.upper):sub(2)
    end,
    formatter = nil,
+   col_separator_char = '│',
    most_recent_item_at_top = true,
    keymaps = {},
    commands = {},
