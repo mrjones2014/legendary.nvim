@@ -415,9 +415,9 @@ function M.get_definition(item, mode)
          if type(def) == 'table' then
             def = (def)[1]
          end
-
-         return def
       end
+
+      return def
    end
 
    return (item)[1]
