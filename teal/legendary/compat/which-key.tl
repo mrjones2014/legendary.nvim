@@ -12,7 +12,7 @@ local function wk_to_legendary(wk: table, wk_opts: table): LegendaryKeymap
   if wk_opts and wk_opts.mode then
     legendary.mode = wk_opts.mode
   end
-  legendary.description = wk.label
+  legendary.description = wk.label or vim.tbl_get(wk, 'opts', 'desc')
   legendary.opts = wk.opts or {}
   return legendary as LegendaryKeymap
 end
@@ -27,17 +27,16 @@ function M.parse_whichkey(which_key_tbls: {table}, which_key_opts: table, do_bin
   if do_binding == nil then
     do_binding = true
   end
-  local wk_parsed = ((_G['require']('which-key.keys') as table).parse_mappings as function(_: table, tbls: {table}, prefix: string): table)(
-    {},
+  local wk_parsed = ((_G['require']('which-key.mappings') as table).parse as function(tbls: {table}, opts: table): table)(
     which_key_tbls,
-    which_key_opts and (which_key_opts.prefix as string | nil) or ''
+    which_key_opts
   )
   local legendary_tbls: {LegendaryKeymap} = {}
   vim.tbl_map(function(wk: table): nil
     -- check wk.group because these don't represent standalone keymaps
     -- they basically represent a "folder" of other keymaps
     -- TODO support which-key mappings with buf values
-    if not wk.label or ((type(wk.group) == 'boolean' and not wk.group) or (wk.group ~= nil and tostring(wk.group) ~= '')) or wk.buf ~= nil then
+    if not vim.tbl_get(wk, 'opts', 'desc') or wk.group == true then
       goto continue
     end
 
