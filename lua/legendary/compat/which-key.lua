@@ -12,8 +12,10 @@ local function wk_to_legendary(wk, wk_opts)
    if wk_opts and wk_opts.mode then
       legendary.mode = wk_opts.mode
    end
-   legendary.description = wk.label
+   legendary.description = wk.label or vim.tbl_get(wk, 'opts', 'desc')
    legendary.opts = wk.opts or {}
+   vim.notify(vim.inspect(legendary))
+   print(vim.inspect(legendary))
    return legendary
 end
 
@@ -27,17 +29,16 @@ function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
    if do_binding == nil then
       do_binding = true
    end
-   local wk_parsed = ((_G['require']('which-key.keys')).parse_mappings)(
-   {},
+   local wk_parsed = ((_G['require']('which-key.mappings')).parse)(
    which_key_tbls,
-   which_key_opts and (which_key_opts.prefix) or '')
+   which_key_opts)
 
    local legendary_tbls = {}
    vim.tbl_map(function(wk)
 
 
 
-      if not wk.label or ((type(wk.group) == 'boolean' and not wk.group) or (wk.group ~= nil and tostring(wk.group) ~= '')) or wk.buf ~= nil then
+      if not vim.tbl_get(wk, 'opts', 'desc') or wk.group == true then
          goto continue
       end
 
