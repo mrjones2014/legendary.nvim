@@ -415,9 +415,9 @@ function M.get_definition(item: table, mode: string | nil): string | function(ma
       if type(def) == 'table' then
         def = (def as table)[1]
       end
-
-      return def as string | function(marks: table): nil
     end
+
+    return def as string | function(marks: table): nil
   end
 
   return (item as table)[1] as string | function(marks: table): nil
