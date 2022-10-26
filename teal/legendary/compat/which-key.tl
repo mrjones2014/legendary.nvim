@@ -14,8 +14,6 @@ local function wk_to_legendary(wk: table, wk_opts: table): LegendaryKeymap
   end
   legendary.description = wk.label or vim.tbl_get(wk, 'opts', 'desc')
   legendary.opts = wk.opts or {}
-  vim.notify(vim.inspect(legendary))
-  print(vim.inspect(legendary))
   return legendary as LegendaryKeymap
 end
 
