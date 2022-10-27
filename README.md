@@ -265,6 +265,7 @@ function(kind: LegendaryKind|nil)
   return {
     keymaps = {}, -- keymaps here
     commands = {}, -- commands here
+    functions = {}, -- functions here
   }
 end
 ```
@@ -273,9 +274,11 @@ Plugins are called dynamically so you can check for conditional keymaps/commands
 
 The following plugins are currently included with `legendary.nvim`:
 
-| Neovim Plugin Name                                         | `legendary.nvim` Plugin Key |
-| ---------------------------------------------------------- | --------------------------- |
-| [diffview.nvim](https://github.com/sindrets/diffview.nvim) | `diffview`                  |
+| Neovim Plugin Name                                                    | `legendary.nvim` Plugin Key |
+| --------------------------------------------------------------------- | --------------------------- |
+| [diffview.nvim](https://github.com/sindrets/diffview.nvim)            | `diffview`                  |
+| [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim) | `smart_splits`              |
+| [op.nvim](https://github.com/mrjones2014/op.nvim)                     | `op`                        |
 
 ## Table Structures
 

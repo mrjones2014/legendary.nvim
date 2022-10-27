@@ -9,6 +9,7 @@ local function with_defaults(data)
    return vim.tbl_deep_extend("keep", data or {}, {
       keymaps = {},
       commands = {},
+      functions = {},
    })
 end
 

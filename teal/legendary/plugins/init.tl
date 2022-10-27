@@ -9,6 +9,7 @@ local function with_defaults(data: LegendaryPluginData): LegendaryPluginData
   return vim.tbl_deep_extend("keep", data or {}, {
     keymaps = {},
     commands = {},
+    functions = {},
   }) as LegendaryPluginData
 end
 
@@ -29,6 +30,10 @@ local function set_kinds(data: LegendaryPluginData): LegendaryPluginData
 
   for _, command in ipairs(data.commands) do
     command.kind = 'legendary.command'
+  end
+
+  for _, func in ipairs(data.functions) do
+    func.kind = 'legendary.function'
   end
 
   return data

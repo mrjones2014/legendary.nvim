@@ -271,6 +271,7 @@ function M.find(opts, _deprecated)
       items = autocmds
    elseif item_kind == 'legendary.function' then
       items = functions
+      items = vim.list_extend(items, plugins_data.functions)
    else
       items = vim.list_extend({}, keymaps)
       items = vim.list_extend(items, commands)
@@ -278,6 +279,7 @@ function M.find(opts, _deprecated)
       items = vim.list_extend(items, functions)
       items = vim.list_extend(items, plugins_data.keymaps)
       items = vim.list_extend(items, plugins_data.commands)
+      items = vim.list_extend(items, plugins_data.functions)
    end
 
 

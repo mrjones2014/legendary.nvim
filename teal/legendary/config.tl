@@ -29,6 +29,8 @@ local M: LegendaryConfig = {
   },
   plugins = {
     diffview = false,
+    smart_splits = false,
+    op = false,
   }
 }
 

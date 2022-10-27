@@ -19,6 +19,7 @@ global type LegendaryPlugin = function(kind: LegendaryKind|nil)
 global record LegendaryPluginData
    keymaps: {LegendaryKeymap}
    commands: {LegendaryCommand}
+   functions: {LegendaryFunction}
 end
 
 ---@class LegendaryModeMappingOpts The value of a per-mode mapping with per-mode opts

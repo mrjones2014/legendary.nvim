@@ -271,6 +271,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     items = autocmds as {LegendaryItem}
   elseif item_kind == 'legendary.function' then
     items = functions as {LegendaryItem}
+    items = vim.list_extend(items, plugins_data.functions as {LegendaryItem})
   else
     items = vim.list_extend({}, keymaps as {LegendaryItem})
     items = vim.list_extend(items, commands as {LegendaryItem})
@@ -278,6 +279,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     items = vim.list_extend(items, functions as {LegendaryItem})
     items = vim.list_extend(items, plugins_data.keymaps as {LegendaryItem})
     items = vim.list_extend(items, plugins_data.commands as {LegendaryItem})
+    items = vim.list_extend(items, plugins_data.functions as {LegendaryItem})
   end
 
   -- only search for last used item if kind matches

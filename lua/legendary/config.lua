@@ -29,6 +29,8 @@ local M = {
    },
    plugins = {
       diffview = false,
+      smart_splits = false,
+      op = false,
    },
 }
 
