@@ -21,6 +21,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
 - A `legendary.helpers` module to help create lazily-evaluated keymaps and commands. Have an idea for a new helper? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/90) or submit a PR!
+- A plugin system to automatically add keymaps and commands from other plugins to `legendary.nvim`, see [plugins](#plugins)
 
 ## Prerequisites
 
@@ -207,6 +208,11 @@ require('legendary').setup({
     -- next time you open the scratchpad
     cache_file = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
   },
+  -- enabled plugins,
+  -- all plugins are disabled by default
+  plugins = {
+    diffview = false,
+  }
 })
 ```
 
@@ -247,6 +253,15 @@ require('legendary').bind_whichkey(
   false,
 )
 ```
+
+### Plugins
+
+`legendary.nvim` can automatically add track commands and keymaps from other plugins using a plugin system. The following
+plugins are currently implemented:
+
+| Neovim Plugin Name                                         | `legendary.nvim` Plugin Key |
+| ---------------------------------------------------------- | --------------------------- |
+| [diffview.nvim](https://github.com/sindrets/diffview.nvim) | `diffview`                  |
 
 ## Table Structures
 

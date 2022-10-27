@@ -19,14 +19,19 @@ local COMMANDS = {
 }
 
 return function(kind: LegendaryKind): LegendaryPluginData
+  -- workaround Teal type system for dynamic require
+  local dynrequire = require
+  local diffview_installed, _ = pcall(dynrequire, 'diffview') as (boolean, any)
+  if not diffview_installed then
+      return {}
+  end
+
   local data: LegendaryPluginData = {}
   if not kind or #tostring(kind) == 0 or (not not string.find(kind, 'command')) then
     data.commands = COMMANDS
   end
 
   if not kind or #tostring(kind) == 0 or (not not string.find(kind, 'keymap')) then
-    -- workaround Teal type system for dynamic require
-    local dynrequire = require
     local ok, diffview_lib = pcall(dynrequire, 'diffview.lib') as (boolean, DiffViewLib)
     if not ok then
       goto plugin_return
