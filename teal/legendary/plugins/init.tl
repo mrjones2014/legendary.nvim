@@ -15,7 +15,6 @@ end
 
 local function try_run_plugin(plugin: LegendaryPlugin, kind: LegendaryKind|nil): LegendaryPluginData
   local ok, values = pcall(plugin, kind) as (boolean, LegendaryPluginData)
-    print(vim.inspect(ok), vim.inspect(values))
   if not ok then
     return with_defaults()
   end
@@ -40,10 +39,7 @@ local function set_kinds(data: LegendaryPluginData): LegendaryPluginData
 end
 
 function M.run_plugins(kind: LegendaryKind|nil): LegendaryPluginData
-  local data: LegendaryPluginData = {
-    keymaps = {},
-    commands = {},
-  }
+  local data = with_defaults()
 
   local plugins = require('legendary.config').plugins
   for plugin_name, enabled in pairs(plugins) do
@@ -61,6 +57,7 @@ function M.run_plugins(kind: LegendaryKind|nil): LegendaryPluginData
     local values = try_run_plugin(plugin, kind)
     data.keymaps = vim.list_extend(data.keymaps, values.keymaps)
     data.commands = vim.list_extend(data.commands, values.commands)
+    data.functions = vim.list_extend(data.functions, values.functions)
 
     ::plugins_continue::
   end

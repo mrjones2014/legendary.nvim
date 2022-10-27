@@ -31,6 +31,7 @@ local M: LegendaryConfig = {
     diffview = false,
     smart_splits = false,
     op = false,
+    onedarkpro = false,
   }
 }
 

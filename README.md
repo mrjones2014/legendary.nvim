@@ -212,6 +212,9 @@ require('legendary').setup({
   -- all plugins are disabled by default
   plugins = {
     diffview = false,
+    smart_splits = false,
+    op = false,
+    onedarkpro = false,
   }
 })
 ```
@@ -279,6 +282,7 @@ The following plugins are currently included with `legendary.nvim`:
 | [diffview.nvim](https://github.com/sindrets/diffview.nvim)            | `diffview`                  |
 | [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim) | `smart_splits`              |
 | [op.nvim](https://github.com/mrjones2014/op.nvim)                     | `op`                        |
+| [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim)       | `onedarkpro`                |
 
 ## Table Structures
 
