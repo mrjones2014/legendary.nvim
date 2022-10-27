@@ -27,6 +27,9 @@ local M = {
       display_results = 'float',
       cache_file = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
    },
+   plugins = {
+      diffview = false,
+   },
 }
 
 

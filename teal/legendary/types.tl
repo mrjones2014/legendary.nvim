@@ -14,6 +14,13 @@ global enum LegendaryKind
    'legendary.function'
 end
 
+global type LegendaryPlugin = function(kind: LegendaryKind|nil)
+
+global record LegendaryPluginData
+   keymaps: {LegendaryKeymap}
+   commands: {LegendaryCommand}
+end
+
 ---@class LegendaryModeMappingOpts The value of a per-mode mapping with per-mode opts
 ---@field [1] string | function(table | nil): nil
 ---@field opts table | nil
@@ -188,6 +195,7 @@ global record LegendaryConfig
    auto_register_which_key: boolean
    which_key: LegendaryWhichKeys
    scratchpad: LegendaryScratchpadConfig
+   plugins: {string: boolean}
    setup: function(new_config: table): LegendaryConfig
 end
 

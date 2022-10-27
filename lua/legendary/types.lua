@@ -14,6 +14,13 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 
 
+ LegendaryPlugin = {}
+
+ LegendaryPluginData = {}
+
+
+
+
 
 
 
@@ -175,6 +182,7 @@ unpack = ((_G).unpack or _tl_table_unpack)
 
 
  LegendaryConfig = {}
+
 
 
 

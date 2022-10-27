@@ -15,8 +15,8 @@ local autocmds = require('legendary.config').autocmds
 local functions = require('legendary.config').functions
 
 local utils = require('legendary.utils')
-
 local formatter = require('legendary.formatter')
+local plugins = require('legendary.plugins')
 
 
 
@@ -259,11 +259,14 @@ function M.find(opts, _deprecated)
       utils.send_escape_key()
    end
    local cursor_position = vim.api.nvim_win_get_cursor(0)
+   local plugins_data = plugins.run_plugins(item_kind)
    local items
    if string.find(item_kind, 'keymap') then
       items = keymaps
+      items = vim.list_extend(items, plugins_data.keymaps)
    elseif string.find(item_kind, 'command') then
       items = commands
+      items = vim.list_extend(items, plugins_data.commands)
    elseif string.find(item_kind, 'autocmd') then
       items = autocmds
    elseif item_kind == 'legendary.function' then
@@ -273,8 +276,9 @@ function M.find(opts, _deprecated)
       items = vim.list_extend(items, commands)
       items = vim.list_extend(items, autocmds)
       items = vim.list_extend(items, functions)
+      items = vim.list_extend(items, plugins_data.keymaps)
+      items = vim.list_extend(items, plugins_data.commands)
    end
-
 
 
    if

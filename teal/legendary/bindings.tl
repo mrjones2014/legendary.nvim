@@ -15,8 +15,8 @@ local autocmds = require('legendary.config').autocmds
 local functions = require('legendary.config').functions
 
 local utils = require('legendary.utils')
-
 local formatter = require('legendary.formatter')
+local plugins = require('legendary.plugins')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
@@ -259,11 +259,14 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     utils.send_escape_key()
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
+  local plugins_data = plugins.run_plugins(item_kind as LegendaryKind|nil)
   local items: {LegendaryItem}
   if string.find(item_kind, 'keymap') then
     items = keymaps as {LegendaryItem}
+    items = vim.list_extend(items, plugins_data.keymaps as {LegendaryItem})
   elseif string.find(item_kind, 'command') then
     items = commands as {LegendaryItem}
+    items = vim.list_extend(items, plugins_data.commands as {LegendaryItem})
   elseif string.find(item_kind, 'autocmd') then
     items = autocmds as {LegendaryItem}
   elseif item_kind == 'legendary.function' then
@@ -273,8 +276,9 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     items = vim.list_extend(items, commands as {LegendaryItem})
     items = vim.list_extend(items, autocmds as {LegendaryItem})
     items = vim.list_extend(items, functions as {LegendaryItem})
+    items = vim.list_extend(items, plugins_data.keymaps as {LegendaryItem})
+    items = vim.list_extend(items, plugins_data.commands as {LegendaryItem})
   end
-
 
   -- only search for last used item if kind matches
   if
