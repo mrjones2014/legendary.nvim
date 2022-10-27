@@ -256,8 +256,22 @@ require('legendary').bind_whichkey(
 
 ### Plugins
 
-`legendary.nvim` can automatically add track commands and keymaps from other plugins using a plugin system. The following
-plugins are currently implemented:
+`legendary.nvim` can automatically add track commands and keymaps from other plugins using a plugin system.
+Neovim plugins can also provide their own plugins by adding a module `legendary/plugins/myplugin.lua` which
+returns a function with the following signature:
+
+```teal
+function(kind: LegendaryKind|nil)
+  return {
+    keymaps = {}, -- keymaps here
+    commands = {}, -- commands here
+  }
+end
+```
+
+Plugins are called dynamically so you can check for conditional keymaps/commands before returning them.
+
+The following plugins are currently included with `legendary.nvim`:
 
 | Neovim Plugin Name                                         | `legendary.nvim` Plugin Key |
 | ---------------------------------------------------------- | --------------------------- |
