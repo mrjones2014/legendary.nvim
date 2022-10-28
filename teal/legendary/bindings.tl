@@ -16,7 +16,7 @@ local functions = require('legendary.config').functions
 
 local utils = require('legendary.utils')
 local formatter = require('legendary.formatter')
-local plugins = require('legendary.plugins')
+local plugin_manager = require('legendary.plugin-manager')
 
 --- Bind a single keymap with legendary.nvim
 ---@param keymap LegendaryItem
@@ -259,7 +259,7 @@ function M.find(opts: LegendaryFindOpts, _deprecated: any)
     utils.send_escape_key()
   end
   local cursor_position = vim.api.nvim_win_get_cursor(0)
-  local plugins_data = plugins.run_plugins(item_kind as LegendaryKind|nil)
+  local plugins_data = plugin_manager.run_plugins(item_kind as LegendaryKind|nil)
   local items: {LegendaryItem}
   if string.find(item_kind, 'keymap') then
     items = keymaps as {LegendaryItem}
