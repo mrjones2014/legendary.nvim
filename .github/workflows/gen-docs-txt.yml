@@ -44,4 +44,6 @@ jobs:
             git commit -m "chore: generated vimdoc"
             git push --force https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY} ${VIMDOC_BRANCH}
             gh pr create --fill --base ${GITHUB_REF#refs/heads/} --head ${VIMDOC_BRANCH} || true
+          else
+            echo 'No changes to docs.'
           fi
