@@ -8,7 +8,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 <sup>Theme used in recording is [lighthaus.nvim](https://github.com/mrjones2014/lighthaus.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
 <details>
-<summary>Table of Contents (click to expand)</summary>
+<summary>Documentation Table of Contents (click to expand)</summary>
 
 - [Features](#features)
 - [Prerequisites](#prerequisites)
