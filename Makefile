@@ -27,7 +27,7 @@ update-doc-deps: ensure-doc-deps
 .PHONY: gen-vimdoc
 gen-vimdoc: update-doc-deps
 	@echo 'Installing Treesitter parsers...'
-	@nvim --headless -c 'TSUpdateSync markdown' -c 'TSUpdateSync markdown_inline'
+	@nvim --headless -c 'TSUpdateSync markdown' -c 'TSUpdateSync markdown_inline' -c 'qa'
 	@echo 'Generating vimdocs...'
 	@nvim --headless -c ':luafile ./gen-vimdoc.lua'
 
