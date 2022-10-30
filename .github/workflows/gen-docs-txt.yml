@@ -25,6 +25,17 @@ jobs:
         with:
           vimdoc: legendary
           description: keymaps - commands - autocmds
+          pandoc:
+            - ./README.md
+            - ./doc/table_structures/README.md
+            - ./doc/table_structures/KEYMAPS.md
+            - ./doc/table_structures/COMMANDS.md
+            - ./doc/table_structures/FUNCTIONS.md
+            - ./doc/table_structures/AUTOCMDS.md
+            - ./doc/API.md
+            - ./doc/MAPPING_DEVELOPMENT.md
+            - ./doc/USAGE_EXAMPLES.md
+            - ./doc/WHICH_KEY.md
       - name: Create PR
         run: |
           if ! [[ -z $(git status -s) ]]; then
