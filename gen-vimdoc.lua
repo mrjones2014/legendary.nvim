@@ -25,8 +25,6 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
-vim.cmd('TSUpdateSync')
-
 for input, output in pairs(DOC_FILES) do
   require('ts-vimdoc').docgen({
     input_file = input,
