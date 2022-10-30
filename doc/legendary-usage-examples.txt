@@ -1,0 +1,81 @@
+==============================================================================
+USAGE EXAMPLES                                 *legendary.nvim-usage-examples*
+
+
+
+------------------------------------------------------------------------------
+FILTER ITEMS BY CURRENT MODE     *legendary.nvim-filter-items-by-current-mode*
+
+
+>
+    require('legendary').find({ filters = require('legendary.filters').current_mode() })
+<
+
+------------------------------------------------------------------------------
+FILTER ITEMS BY NORMAL MODE       *legendary.nvim-filter-items-by-normal-mode*
+
+
+>
+    require('legendary').find({ filters = require('legendary.filters').mode('n') })
+<
+
+------------------------------------------------------------------------------
+FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary.nvim-filter-to-only-keymaps-and-by-current-mode*
+
+
+>
+    require('legendary').find({ kind = 'keymaps', filters = require('legendary.filters').mode('n') })
+<
+
+------------------------------------------------------------------------------
+CUSTOMIZE SELECT PROMPT TITLE   *legendary.nvim-customize-select-prompt-title*
+
+
+>
+    require('legendary').find({ select_prompt = 'Custom prompt' })
+    -- OR
+    require('legendary').find({
+      kind = 'keymaps',
+      select_prompt = function(kind)
+        return string.format('Finding %s', kind)
+      end
+    })
+<
+
+------------------------------------------------------------------------------
+FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary.nvim-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
+
+
+>
+    require('legendary').find({
+      filters = {
+        require('legendary.filters').mode('n'),
+        function(item)
+          if not string.find(item.kind, 'keymap') then
+            return true
+          end
+    
+          return vim.startswith(item[1], '<leader>')
+        end
+      }
+    })
+<
+
+------------------------------------------------------------------------------
+FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*legendary.nvim-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column*
+
+
+>
+    require('legendary').find({
+      filters = { require('legendary.filters').current_mode() },
+      formatter = function(item, mode)
+        local values = require('legendary.formatter').get_default_format_values(item)
+        if string.find(item.kind, 'keymap') then
+          values[1] = mode
+        end
+        return values
+      end
+    })
+<
+
+vim:tw=78:ts=8:ft=help:norl:

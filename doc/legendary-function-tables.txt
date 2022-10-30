@@ -1,0 +1,45 @@
+==============================================================================
+FUNCTIONS                                           *legendary.nvim-functions*
+
+
+Functions follow a similar structure as anonymous commands <./COMMANDS.md>,
+but description is **required**.
+
+If called in visual mode, the function will be given a table containing the
+visual selection range (the marks will also be set) of the form `{ cline,
+ccol, vline, vcol }`, where `c` corresponds to the cursor position, and `v`
+the visual selection (see `:h line()` and `:h col()`).
+
+>
+    local functions = {
+      {
+        function()
+          vim.lsp.buf.code_action({
+            filter = function(a)
+              return a.isPreferred
+            end,
+            apply = true,
+          })
+        end,
+        description = "Auto Fix...",
+      },
+      {
+        function(visual_selection)
+          if visual_selection then
+            local cline, _, vline, _ = unpack(visual_selection)
+            require("gitsigns").reset_hunk({ cline, vline })
+          else
+            require("gitsigns").reset_hunk()
+          end
+        end,
+        description = "Revert Selected Ranges/Reset the lines of the hunk",
+      },
+      lazy(vim.cmd.Telescope, "git_files"), description = "Git Files",
+    }
+<
+You can also pass options via the `opts` property:
+
+- `buffer` option (a buffer handle, or `0` for current buffer), which will
+  make the function visible only in the specified buffer.
+
+vim:tw=78:ts=8:ft=help:norl:
