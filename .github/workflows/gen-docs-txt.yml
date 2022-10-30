@@ -20,25 +20,12 @@ jobs:
           printf 'VIMDOC_BRANCH=bot/vimdoc/%s\n' ${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
       - name: Checkout to vimdoc branch
         run: git checkout -b ${VIMDOC_BRANCH}
-      - name: panvimdoc
-        uses: kdheepak/panvimdoc@v2.7.1
-        with:
-          vimdoc: legendary
-          description: keymaps - commands - autocmds
-          - pandoc: ./README.md
-          - pandoc: ./doc/table_structures/README.md
-          - pandoc: ./doc/table_structures/KEYMAPS.md
-          - pandoc: ./doc/table_structures/COMMANDS.md
-          - pandoc: ./doc/table_structures/FUNCTIONS.md
-          - pandoc: ./doc/table_structures/AUTOCMDS.md
-          - pandoc: ./doc/API.md
-          - pandoc: ./doc/MAPPING_DEVELOPMENT.md
-          - pandoc: ./doc/USAGE_EXAMPLES.md
-          - pandoc: ./doc/WHICH_KEY.md
+      - name: gen-vimdocs
+        run: make gen-vimdoc
       - name: Create PR
         run: |
           if ! [[ -z $(git status -s) ]]; then
-            git add doc/legendary.txt
+            git add doc/
             git commit -m "chore: generated vimdoc"
             git push --force https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY} ${VIMDOC_BRANCH}
             gh pr create --fill --base ${GITHUB_REF#refs/heads/} --head ${VIMDOC_BRANCH} || true
