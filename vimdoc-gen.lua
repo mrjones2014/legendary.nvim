@@ -1,10 +1,3 @@
-vim.cmd([[
-  set rtp+=.
-  set rtp+=vendor/nvim-treesitter
-  set rtp+=vendor/ts-vimdoc.nvim
-  runtime plugin/nvim-treesitter.lua
-]])
-
 local DOC_FILES = {
   ['./README.md'] = './doc/legendary.txt',
   ['./doc/API.md'] = './doc/legendary-lua-api.txt',
@@ -17,13 +10,6 @@ local DOC_FILES = {
   ['./doc/table_structures/FUNCTIONS.md'] = './doc/legendary-function-tables.txt',
   ['./doc/table_structures/AUTOCMDS.md'] = './doc/legendary-autocmd-tables.txt',
 }
-
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
-    'markdown',
-    'markdown_inline',
-  },
-})
 
 for input, output in pairs(DOC_FILES) do
   require('ts-vimdoc').docgen({
