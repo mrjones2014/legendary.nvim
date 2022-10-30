@@ -1,10 +1,10 @@
 ==============================================================================
-USAGE EXAMPLES                                 *legendary.nvim-usage-examples*
+USAGE EXAMPLES                                      *legendary-usage-examples*
 
 
 
 ------------------------------------------------------------------------------
-FILTER ITEMS BY CURRENT MODE     *legendary.nvim-filter-items-by-current-mode*
+FILTER ITEMS BY CURRENT MODE          *legendary-filter-items-by-current-mode*
 
 
 >
@@ -12,7 +12,7 @@ FILTER ITEMS BY CURRENT MODE     *legendary.nvim-filter-items-by-current-mode*
 <
 
 ------------------------------------------------------------------------------
-FILTER ITEMS BY NORMAL MODE       *legendary.nvim-filter-items-by-normal-mode*
+FILTER ITEMS BY NORMAL MODE            *legendary-filter-items-by-normal-mode*
 
 
 >
@@ -20,7 +20,7 @@ FILTER ITEMS BY NORMAL MODE       *legendary.nvim-filter-items-by-normal-mode*
 <
 
 ------------------------------------------------------------------------------
-FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary.nvim-filter-to-only-keymaps-and-by-current-mode*
+FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary-filter-to-only-keymaps-and-by-current-mode*
 
 
 >
@@ -28,7 +28,7 @@ FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary.nvim-filter-to-only-keymaps
 <
 
 ------------------------------------------------------------------------------
-CUSTOMIZE SELECT PROMPT TITLE   *legendary.nvim-customize-select-prompt-title*
+CUSTOMIZE SELECT PROMPT TITLE        *legendary-customize-select-prompt-title*
 
 
 >
@@ -43,7 +43,7 @@ CUSTOMIZE SELECT PROMPT TITLE   *legendary.nvim-customize-select-prompt-title*
 <
 
 ------------------------------------------------------------------------------
-FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary.nvim-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
+FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
 
 
 >
@@ -62,7 +62,7 @@ FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary.nvim-filt
 <
 
 ------------------------------------------------------------------------------
-FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*legendary.nvim-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column*
+FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*legendary-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column*
 
 
 >

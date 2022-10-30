@@ -1,5 +1,5 @@
 ==============================================================================
-MAPPING DEVELOPMENT UTILITIES   *legendary.nvim-mapping-development-utilities*
+MAPPING DEVELOPMENT UTILITIES        *legendary-mapping-development-utilities*
 
 
 `legendary.nvim` also provides some utilities to help with
@@ -7,7 +7,7 @@ mapping/command/autocmd development.
 
 
 ------------------------------------------------------------------------------
-COMMANDS                                             *legendary.nvim-commands*
+UTILITY COMMANDS                                  *legendary-utility-commands*
 
 
 - `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
@@ -22,7 +22,7 @@ configuration <../README.md#configuration>).
 
 
 ------------------------------------------------------------------------------
-LUA HELPERS                                       *legendary.nvim-lua-helpers*
+LUA HELPERS                                            *legendary-lua-helpers*
 
 
 `legendary.nvim` provides some helper functions for defining lazily-evaluated
@@ -30,7 +30,7 @@ keymaps.
 
 
                                                                               
-`LAZY`                                                 *legendary.nvim-`lazy`*
+`LAZY`                                                      *legendary-`lazy`*
 
 Returns a function that references another function with static arguments
 passed.
@@ -47,7 +47,7 @@ passed.
 <
 
                                                                               
-`LAZY_REQUIRED_FN`                         *legendary.nvim-`lazy_required_fn`*
+`LAZY_REQUIRED_FN`                              *legendary-`lazy_required_fn`*
 
 Returns a function that lazily references a function in another plugin or Lua
 module. It is able to access functions nested in the module table using
@@ -95,7 +95,7 @@ dot-notation. This helper can also handle passing static arguments.
 <
 
                                                                               
-`SPLIT_THEN`                                     *legendary.nvim-`split_then`*
+`SPLIT_THEN`                                          *legendary-`split_then`*
 
 Returns a function that creates a new split, then calls the passed function.
 
@@ -112,7 +112,7 @@ Returns a function that creates a new split, then calls the passed function.
 <
 
                                                                               
-`VSPLIT_THEN`                                   *legendary.nvim-`vsplit_then`*
+`VSPLIT_THEN`                                        *legendary-`vsplit_then`*
 
 Returns a function that creates a new vertical split, then calls the passed
 function.
@@ -130,7 +130,7 @@ function.
 <
 
 ==============================================================================
-COMPOSITION                                       *legendary.nvim-composition*
+COMPOSITION                                            *legendary-composition*
 
 
 Helpers can be composed together to create complex keymaps.

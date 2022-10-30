@@ -1,5 +1,5 @@
 ==============================================================================
-FUNCTIONS                                           *legendary.nvim-functions*
+FUNCTIONS                                                *legendary-functions*
 
 
 Functions follow a similar structure as anonymous commands <./COMMANDS.md>,

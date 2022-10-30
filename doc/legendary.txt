@@ -1,5 +1,5 @@
 ==============================================================================
-LEGENDARY.NVIM                                 *legendary.nvim-legendary.nvim*
+LEGENDARY.NVIM                                      *legendary-legendary.nvim*
 
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building
@@ -29,7 +29,7 @@ dressing.nvim <https://github.com/stevearc/dressing.nvim>. See Prerequisites
   <./doc/table_structures/AUTOCMDS.md>
 
 ------------------------------------------------------------------------------
-FEATURES                                             *legendary.nvim-features*
+FEATURES                                                  *legendary-features*
 
 
 - Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua
@@ -60,7 +60,7 @@ FEATURES                                             *legendary.nvim-features*
   PR!
 
 ------------------------------------------------------------------------------
-PREREQUISITES                                   *legendary.nvim-prerequisites*
+PREREQUISITES                                        *legendary-prerequisites*
 
 
 - (Optional) A `vim.ui.select()` handler; this provides the UI for the finder.
@@ -69,7 +69,7 @@ PREREQUISITES                                   *legendary.nvim-prerequisites*
   <https://github.com/stevearc/dressing.nvim>.
 
 ------------------------------------------------------------------------------
-INSTALLATION                                     *legendary.nvim-installation*
+INSTALLATION                                          *legendary-installation*
 
 
 With `packer.nvim`:
@@ -84,7 +84,7 @@ With `vim-plug`:
 <
 
 ------------------------------------------------------------------------------
-USAGE                                                   *legendary.nvim-usage*
+USAGE                                                        *legendary-usage*
 
 
 To trigger the finder for your configured keymaps, commands, and
@@ -136,7 +136,7 @@ examples.
 
 
 ------------------------------------------------------------------------------
-CONFIGURATION                                   *legendary.nvim-configuration*
+CONFIGURATION                                        *legendary-configuration*
 
 
 Default configuration is shown below. For a detailed explanation of the
@@ -215,7 +215,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
 <
 
 ------------------------------------------------------------------------------
-ITEM KINDS                                         *legendary.nvim-item-kinds*
+ITEM KINDS                                              *legendary-item-kinds*
 
 
 `legendary.nvim` will set the `kind` option on `vim.ui.select()` to

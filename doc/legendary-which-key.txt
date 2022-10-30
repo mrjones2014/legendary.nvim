@@ -1,5 +1,5 @@
 ==============================================================================
-`WHICH-KEY.NVIM` INTEGRATION     *legendary.nvim-`which-key.nvim`-integration*
+`WHICH-KEY.NVIM` INTEGRATION          *legendary-`which-key.nvim`-integration*
 
 
 Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables

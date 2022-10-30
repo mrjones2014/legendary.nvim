@@ -1,4 +1,3 @@
 repl.lua
-doc/tags
 vendor/*
 !vendor/bin/
