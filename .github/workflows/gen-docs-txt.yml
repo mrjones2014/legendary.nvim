@@ -18,6 +18,11 @@ jobs:
           git config --local user.email "<>"
           git config --local user.name "github-actions[bot]"
           printf 'VIMDOC_BRANCH=bot/vimdoc/%s\n' ${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+        version: nightly
       - name: Checkout ts-vimdoc.nvim
         uses: actions/checkout@v2
         with:
