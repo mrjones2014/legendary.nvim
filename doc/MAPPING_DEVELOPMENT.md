@@ -3,7 +3,7 @@
 `legendary.nvim` also provides some utilities to help with
 mapping/command/autocmd development.
 
-## Commands
+## Utility Commands
 
 - `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
 - `:LegendaryEvalLine` - evaluate the current line as a Lua expression

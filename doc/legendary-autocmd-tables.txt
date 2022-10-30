@@ -1,5 +1,5 @@
 ==============================================================================
-AUGROUPS AND AUTOCMDS                   *legendary.nvim-augroups-and-autocmds*
+AUGROUPS AND AUTOCMDS                        *legendary-augroups-and-autocmds*
 
 
 `augroup` tables are very simple. They have a `name` property, and a `clear`

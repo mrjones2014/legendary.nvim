@@ -30,6 +30,7 @@ gen-vimdoc: update-doc-deps
 	@nvim --headless -u ./vimdocrc.lua -c 'TSUpdateSync markdown' -c 'TSUpdateSync markdown_inline' -c 'qa'
 	@echo 'Generating vimdocs...'
 	@nvim --headless -u ./vimdocrc.lua -c 'luafile ./vimdoc-gen.lua' -c 'qa'
+	@nvim --headless -u ./vimdocrc.lua -c 'helptags doc' -c 'qa'
 
 .PHONY: test
 test: ensure-test-deps

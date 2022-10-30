@@ -1,5 +1,5 @@
 ==============================================================================
-LUA API                                               *legendary.nvim-lua-api*
+LUA API                                                    *legendary-lua-api*
 
 
 You can also manually bind new items after you've already called

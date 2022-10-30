@@ -1,5 +1,5 @@
 ==============================================================================
-TABLE STRUCTURES                             *legendary.nvim-table-structures*
+TABLE STRUCTURES                                  *legendary-table-structures*
 
 
 The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar.

@@ -1,5 +1,5 @@
 ==============================================================================
-COMMANDS                                             *legendary.nvim-commands*
+COMMANDS                                                  *legendary-commands*
 
 
 Command tables follow the exact same structure as keymaps <./KEYMAPS.md>, but

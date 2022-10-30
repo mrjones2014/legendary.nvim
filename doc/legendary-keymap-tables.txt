@@ -1,5 +1,5 @@
 ==============================================================================
-KEYMAPS                                               *legendary.nvim-keymaps*
+KEYMAPS                                                    *legendary-keymaps*
 
 
 For keymaps you are mapping yourself (as opposed to mappings set by other
