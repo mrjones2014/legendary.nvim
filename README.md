@@ -196,3 +196,7 @@ or `kind = 'legendary.function'`, `kind = 'legendary.autocmd'`, depending on whe
 
 Builtins will have `kind = 'legendary.keymap.builtin'`, `kind = 'legendary.command.builtin'`,
 `kind = 'legendary.function'`, or `kind = 'legendary.autocmd'`, depending on whether it is a built-in keymap, command, function, or autocmd.
+
+---
+
+Additional documentation can be found under [./doc/](./doc/).
