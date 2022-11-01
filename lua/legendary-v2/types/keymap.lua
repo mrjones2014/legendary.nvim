@@ -3,17 +3,17 @@ local Id = require('legendary-v2.id')
 local util = require('legendary-v2.util')
 
 ---@class ModeKeymapOpts
----@field [1] string|fun()
+---@field implementation string|fun()
 ---@field opts table|nil
 
 ---@class ModeKeymap
----@field n string|fun()|ModeKeymapOpts
----@field v string|fun()|ModeKeymapOpts
----@field x string|fun()|ModeKeymapOpts
----@field c string|fun()|ModeKeymapOpts
----@field s string|fun()|ModeKeymapOpts
----@field t string|fun()|ModeKeymapOpts
----@field i string|fun()|ModeKeymapOpts
+---@field n ModeKeymapOpts
+---@field v ModeKeymapOpts
+---@field x ModeKeymapOpts
+---@field c ModeKeymapOpts
+---@field s ModeKeymapOpts
+---@field t ModeKeymapOpts
+---@field i ModeKeymapOpts
 
 ---@class Keymap
 ---@field keys string
@@ -24,6 +24,9 @@ local util = require('legendary-v2.util')
 ---@field id integer
 local Keymap = class('Keymap')
 
+---Parse a keymap
+---@param tbl table
+---@return Keymap
 function Keymap:parse(tbl)
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
@@ -53,18 +56,24 @@ function Keymap:parse(tbl)
 
   self.mode_mappings = {}
   if tbl[2] == nil then
-    return
+    return self
   end
 
   if type(tbl[2]) == 'table' then
-    self.mode_mappings = tbl[2]
+    for mode, mapping in pairs(tbl[2]) do
+      if type(mapping) == 'table' then
+        self.mode_mappings[mode] = { implementation = mapping[1], opts = mapping.opts }
+      else
+        self.mode_mappings[mode] = { implementation = mapping }
+      end
+    end
   else
     if type(tbl.mode) == 'table' then
       for _, mode in ipairs(tbl.mode) do
-        self.mode_mappings[mode] = tbl[2]
+        self.mode_mappings[mode] = { implementation = tbl[2] }
       end
     else
-      self.mode_mappings[tbl.mode or 'n'] = tbl[2]
+      self.mode_mappings[tbl.mode or 'n'] = { implementation = tbl[2] }
     end
   end
 
@@ -73,14 +82,12 @@ end
 
 function Keymap:apply()
   for mode, mapping in pairs(self.mode_mappings) do
-    if type(mapping) == 'table' then
-      local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
-      opts.desc = opts.desc or self.description
-      vim.keymap.set(mode, self.keys, mapping[1], opts)
-    else
-      vim.keymap.set(mode, self.keys, mapping, self.opts or {})
-    end
+    local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
+    opts.desc = opts.desc or self.description
+    vim.keymap.set(mode, self.keys, mapping.implementation, opts)
   end
+
+  return self
 end
 
 return Keymap
