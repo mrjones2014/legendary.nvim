@@ -1,6 +1,6 @@
 local class = require('legendary-v2.middleclass')
-local Item = require('legendary-v2.types.item')
 local Id = require('legendary-v2.id')
+local util = require('legendary-v2.util')
 
 ---@class ModeKeymapOpts
 ---@field [1] string|fun()
@@ -16,18 +16,13 @@ local Id = require('legendary-v2.id')
 ---@field i string|fun()|ModeKeymapOpts
 
 ---@class Keymap
----@field [1] string
----@field [2] string|fun()|ModeKeymap
----@field mode string|table
+---@field keys string
+---@field mode_mappings ModeKeymap
 ---@field description string
 ---@field kind 'legendary.keymap'
 ---@field opts table
----@field unfinished boolean
-local Keymap = class('Keymap', Item)
-
-local function get_desc(tbl)
-  return tbl.description or tbl.desc or vim.tbl_get(tbl, 'opts', 'desc')
-end
+---@field id integer
+local Keymap = class('Keymap')
 
 function Keymap:parse(tbl)
   vim.validate({
@@ -35,8 +30,7 @@ function Keymap:parse(tbl)
     ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
     mode = { tbl.mode, { 'string', 'table' }, true },
     opts = { tbl.opts, { 'table' }, true },
-    description = { get_desc(tbl), { 'string' }, true },
-    unfinished = { tbl.unfinished, { 'boolean' }, true },
+    description = { util.get_desc(tbl), { 'string' }, true },
   })
 
   if type(tbl[2]) == 'table' then
@@ -52,11 +46,10 @@ function Keymap:parse(tbl)
   end
 
   self.keys = tbl[1]
-  self.description = get_desc(tbl)
+  self.description = util.get_desc(tbl)
   self.kind = 'legendary.keymap'
   self.opts = tbl.opts or {}
   self.id = Id.new()
-  self.unfinished = tbl.unfinished == nil and false or tbl.unfinished
 
   self.mode_mappings = {}
   if tbl[2] == nil then
@@ -81,9 +74,13 @@ end
 function Keymap:apply()
   for mode, mapping in pairs(self.mode_mappings) do
     if type(mapping) == 'table' then
-      vim.keymap.set(mode, self.keys, mapping[1], vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {}))
+      local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
+      opts.desc = opts.desc or self.description
+      vim.keymap.set(mode, self.keys, mapping[1], opts)
     else
       vim.keymap.set(mode, self.keys, mapping, self.opts or {})
     end
   end
 end
+
+return Keymap
