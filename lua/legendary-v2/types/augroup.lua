@@ -10,6 +10,8 @@ local util = require('legendary-v2.util')
 ---@field kind 'legendary.augroup'
 local Augroup = class('Augroup')
 
+---Parse an augroup table
+---@param tbl Augroup
 function Augroup:parse(tbl)
   vim.validate({
     name = { tbl.name, { 'string' } },
@@ -23,6 +25,8 @@ function Augroup:parse(tbl)
   for _, autocmd in ipairs(tbl) do
     table.insert(self, Autocmd:parse(autocmd))
   end
+
+  return self
 end
 
 ---Apply the augroup, creating *both the group and it's autocmds*
