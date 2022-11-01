@@ -26,6 +26,7 @@ end
 ---@field opts table
 ---@field unfinished boolean
 ---@field id integer
+---@field kind 'legendary.command'
 local Command = class('Command')
 
 ---Parse a command table
@@ -40,15 +41,12 @@ function Command:parse(tbl)
     unfinished = { tbl.unfinished, { 'boolean' }, true },
   })
 
+  self.kind = 'legendary.command'
   self.cmd = tbl[1]
   self.implementation = tbl[2]
   self.description = util.get_desc(tbl)
   self.opts = tbl.opts
-  if tbl.unfinished == nil then
-    self.unfinished = false
-  else
-    self.unfinished = tbl.unfinished
-  end
+  self.unfinished = util.bool_default(tbl.unfinished, false)
   self.id = Id.new()
 
   return self
