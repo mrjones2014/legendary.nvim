@@ -3,7 +3,7 @@ local Keymap = require('legendary-v2.types.keymap')
 
 describe('Keymap', function()
   describe('parsing', function()
-    it('parses basic keymaps', function()
+    it('parses basic keymaps with string implementations', function()
       local tbl = { '<leader>f', ':SomeCommand', description = 'Some command', opts = { remap = false } }
       local keymap = Keymap:parse(tbl)
       assert.are.same(keymap.keys, tbl[1])
@@ -11,6 +11,16 @@ describe('Keymap', function()
       assert.are.same(keymap.kind, 'legendary.keymap')
       assert.are.same(keymap.opts.noremap, tbl.opts.noremap)
       assert.are.same(keymap.mode_mappings, { n = { implementation = ':SomeCommand' } })
+    end)
+
+    it('parses basic keymaps with function implementations', function()
+      local tbl = { '<leader>f', function() end, description = 'Some command', opts = { remap = false } }
+      local keymap = Keymap:parse(tbl)
+      assert.are.same(keymap.keys, tbl[1])
+      assert.are.same(keymap.description, tbl.description)
+      assert.are.same(keymap.kind, 'legendary.keymap')
+      assert.are.same(keymap.opts.noremap, tbl.opts.noremap)
+      assert.are.same(keymap.mode_mappings, { n = { implementation = tbl[2] } })
     end)
 
     it('correctly parses when tbl has `mode` set', function()

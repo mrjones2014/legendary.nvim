@@ -80,6 +80,8 @@ function Keymap:parse(tbl)
   return self
 end
 
+---Bind the keymap in Neovim
+---@return Keymap
 function Keymap:apply()
   for mode, mapping in pairs(self.mode_mappings) do
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
