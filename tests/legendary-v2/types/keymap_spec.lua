@@ -2,7 +2,7 @@ local assert = require('luassert')
 local Keymap = require('legendary-v2.types.keymap')
 
 describe('Keymap', function()
-  describe('parsing', function()
+  describe('parse', function()
     it('parses basic keymaps with string implementations', function()
       local tbl = { '<leader>f', ':SomeCommand', description = 'Some command', opts = { remap = false } }
       local keymap = Keymap:parse(tbl)

@@ -2,7 +2,7 @@ local assert = require('luassert')
 local Command = require('legendary-v2.types.command')
 
 describe('Command', function()
-  describe('parsing', function()
+  describe('parse', function()
     it('parses basic commands with string implementations', function()
       local tbl = {
         ':MyCommand [some_arg]',

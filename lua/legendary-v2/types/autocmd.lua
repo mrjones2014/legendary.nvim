@@ -12,6 +12,8 @@ local util = require('legendary-v2.util')
 ---@field kind 'legendary.autocmd'
 local Autocmd = class('Autocmd')
 
+---Parse an autocmd table
+---@param tbl Autocmd
 function Autocmd:parse(tbl)
   vim.validate({
     ['1'] = { tbl[1], { 'string', 'table' } },
@@ -29,6 +31,8 @@ function Autocmd:parse(tbl)
   self.group = tbl.group
   self.id = Id.new()
   self.kind = 'legendary.autocmd'
+
+  return self
 end
 
 function Autocmd:apply()
@@ -37,6 +41,7 @@ function Autocmd:apply()
     command = type(self.implementation) == 'string' and self.implementation or nil,
   }, self.opts)
   vim.api.nvim_create_autocmd(self.events, opts)
+  return self
 end
 
 function Autocmd:with_group(group)
