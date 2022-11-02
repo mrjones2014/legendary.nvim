@@ -1,5 +1,6 @@
 local class = require('legendary-v2.middleclass')
 local util = require('legendary-v2.util')
+local Augroup = require('legendary-v2.types.augroup')
 
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function
 
@@ -49,7 +50,7 @@ end
 ---@alias ItemFilter fun(item:LegendaryItem):boolean
 
 ---Filter the ItemList. Returns a *new* ItemList,
----self remains immutable.
+---self remains immutable. Filters to runnable items by default.
 ---@param filters ItemFilter|ItemFilter[]
 ---@return LegendaryItem[]
 function ItemList:filter(filters)
@@ -59,20 +60,35 @@ function ItemList:filter(filters)
   end
 
   if #filters == 0 then
-    return self:get()
+    return self:runnables()
   end
 
   return vim.tbl_filter(function(item)
     return util.tbl_all(filters, function(filter)
       return filter(item)
     end)
-  end, self.items)
+  end, self:runnables())
 end
 
 ---Get a *copy* of the item list
 ---@return LegendaryItem[]
 function ItemList:get()
   return vim.deepcopy(self.items)
+end
+
+---Get executable items, e.g. augroups are collapsed to the autocmds they contain.
+function ItemList:runnables()
+  local runnables = {}
+
+  for _, item in ipairs(self.items) do
+    if item.class == Augroup then
+      runnables = vim.list_extend(runnables, item.autocmds, 1, #item.autocmds)
+    else
+      table.insert(runnables, item)
+    end
+  end
+
+  return runnables
 end
 
 return ItemList

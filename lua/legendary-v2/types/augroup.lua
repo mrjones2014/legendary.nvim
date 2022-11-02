@@ -8,6 +8,7 @@ local util = require('legendary-v2.util')
 ---@field clear boolean|nil
 ---@field id integer
 ---@field kind 'legendary.augroup'
+---@field autocmds Autocmd
 ---@field class Augroup
 local Augroup = class('Augroup')
 
@@ -26,8 +27,9 @@ function Augroup:parse(tbl) -- luacheck: no unused
   instance.clear = util.bool_default(tbl.clear, true)
   instance.id = Id.new()
   instance.kind = 'legendary.augroup'
+  instance.autocmds = {}
   for _, autocmd in ipairs(tbl) do
-    table.insert(instance, Autocmd:parse(autocmd))
+    table.insert(instance.autocmds, Autocmd:parse(autocmd))
   end
 
   return instance
@@ -38,7 +40,7 @@ end
 function Augroup:apply()
   local group = vim.api.nvim_create_augroup(self.name, { clear = self.clear })
 
-  for _, autocmd in ipairs(self) do
+  for _, autocmd in ipairs(self.autocmds) do
     autocmd:with_group(group):apply()
   end
 

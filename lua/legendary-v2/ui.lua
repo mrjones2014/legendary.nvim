@@ -1,10 +1,12 @@
 local Config = require('legendary-v2.config')
 local State = require('legendary-v2.state')
+local Format = require('legendary-v2.format')
 local M = {}
 
 ---@class LegendaryFindOpts
 ---@field filters ItemFilter[]
 ---@field prompt string|fun():string
+---@field formatter ItemFormatter
 
 ---Select an item
 ---@param opts LegendaryFindOpts
@@ -17,11 +19,12 @@ function M.select(opts, callback)
     prompt = prompt()
   end
 
+  local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter)
+
   vim.ui.select(items, {
     prompt = prompt,
     format_item = function(item)
-      -- TODO
-      return item.description
+      return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding)
     end,
   }, callback)
 end
