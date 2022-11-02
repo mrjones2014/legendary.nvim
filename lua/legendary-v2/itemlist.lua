@@ -13,6 +13,7 @@ local ItemList = class('ItemList')
 function ItemList:initialize()
   self.items = {}
   self.builtins_added = false
+  self.duplicate_tracker = {}
 end
 
 ---Create a new ItemList
@@ -59,13 +60,11 @@ function ItemList:add(items)
       goto add_loop_continue
     end
 
-    -- TODO this sucks, optimize this :/
-    local existing_items = vim.tbl_filter(function(existing_item)
-      return item.class == existing_item.class and vim.inspect(existing_item) == vim.inspect(item)
-    end, self.items)
-
-    if #existing_items > 0 then
+    local id = item:id()
+    if self.duplicate_tracker[id] then
       goto add_loop_continue
+    else
+      self.duplicate_tracker[id] = true
     end
 
     table.insert(self.items, item)

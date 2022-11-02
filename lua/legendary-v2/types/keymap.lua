@@ -1,5 +1,4 @@
 local class = require('legendary-v2.middleclass')
-local Id = require('legendary-v2.id')
 local util = require('legendary-v2.util')
 
 ---@class ModeKeymapOpts
@@ -21,7 +20,6 @@ local util = require('legendary-v2.util')
 ---@field description string
 ---@field kind 'legendary.keymap'
 ---@field opts table
----@field id integer
 ---@field class Keymap
 local Keymap = class('Keymap')
 
@@ -55,7 +53,6 @@ function Keymap:parse(tbl) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.kind = 'legendary.keymap'
   instance.opts = tbl.opts or {}
-  instance.id = Id.new()
 
   instance.mode_mappings = {}
   if tbl[2] == nil then
@@ -93,6 +90,10 @@ function Keymap:apply()
   end
 
   return self
+end
+
+function Keymap:id()
+  return string.format('%s %s %s', self.keys, self:modes(), self.description)
 end
 
 function Keymap:modes()
