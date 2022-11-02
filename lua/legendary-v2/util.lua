@@ -98,7 +98,6 @@ function M.get_marks()
   local cursor = vim.api.nvim_win_get_cursor(0)
   local cline, ccol = cursor[1], cursor[2]
   local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
-  print(vim.inspect({ cline, ccol, vline, vcol }))
   if ccol > vcol then
     local swap = vcol
     vcol = ccol + 1

@@ -43,6 +43,11 @@ end
 ---@param opts LegendaryFindOpts
 function M.find(opts)
   local context = Executor.build_pre_context()
+  -- lazily add built-ins if needed
+  if Config.include_builtin then
+    State.items:add_builtins()
+  end
+
   Ui.select(opts, function(selected)
     if not selected then
       return
