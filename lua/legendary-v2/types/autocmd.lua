@@ -1,12 +1,10 @@
 local class = require('legendary-v2.middleclass')
-local Id = require('legendary-v2.id')
 local util = require('legendary-v2.util')
 
 ---@class Autocmd
 ---@field events string[]
 ---@field implementation string|function
 ---@field opts table
----@field id integer
 ---@field description string
 ---@field group string|integer|nil
 ---@field kind 'legendary.autocmd'
@@ -33,7 +31,6 @@ function Autocmd:parse(tbl) -- luacheck: no unused
   instance.opts = tbl.opts
   instance.description = util.get_desc(tbl)
   instance.group = tbl.group
-  instance.id = Id.new()
   instance.kind = 'legendary.autocmd'
 
   return instance
@@ -47,6 +44,10 @@ function Autocmd:apply()
   }, self.opts)
   vim.api.nvim_create_autocmd(self.events, opts)
   return self
+end
+
+function Autocmd:id()
+  return string.format('%s %s', table.concat(self.events, ','), self.description)
 end
 
 function Autocmd:with_group(group)

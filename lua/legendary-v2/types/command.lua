@@ -1,5 +1,4 @@
 local class = require('legendary-v2.middleclass')
-local Id = require('legendary-v2.id')
 local util = require('legendary-v2.util')
 
 local function sanitize_cmd_name(cmd_orig)
@@ -25,7 +24,6 @@ end
 ---@field description string
 ---@field opts table
 ---@field unfinished boolean
----@field id integer
 ---@field kind 'legendary.command'
 ---@field class Command
 local Command = class('Command')
@@ -50,7 +48,6 @@ function Command:parse(tbl) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts
   instance.unfinished = util.bool_default(tbl.unfinished, false)
-  instance.id = Id.new()
 
   return instance
 end
@@ -70,6 +67,10 @@ function Command:apply()
   -- strip param names between [] or {}
   vim.api.nvim_create_user_command(self:vim_cmd(), self.implementation, opts)
   return self
+end
+
+function Command:id()
+  return string.format('%s %s', self.cmd, self.description)
 end
 
 ---Return self.cmd with leading : or <cmd> and trailing <cr> removed

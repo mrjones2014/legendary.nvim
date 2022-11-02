@@ -1,12 +1,10 @@
 local class = require('legendary-v2.middleclass')
-local Id = require('legendary-v2.id')
 local Autocmd = require('legendary-v2.types.autocmd')
 local util = require('legendary-v2.util')
 
 ---@class Augroup : Autocmd[]
 ---@field name string
 ---@field clear boolean|nil
----@field id integer
 ---@field kind 'legendary.augroup'
 ---@field autocmds Autocmd
 ---@field class Augroup
@@ -25,7 +23,6 @@ function Augroup:parse(tbl) -- luacheck: no unused
 
   instance.name = tbl.name
   instance.clear = util.bool_default(tbl.clear, true)
-  instance.id = Id.new()
   instance.kind = 'legendary.augroup'
   instance.autocmds = {}
   for _, autocmd in ipairs(tbl) do
@@ -45,6 +42,10 @@ function Augroup:apply()
   end
 
   return self
+end
+
+function Augroup:id()
+  return string.format('%s %s', self.name, self.clear)
 end
 
 return Augroup
