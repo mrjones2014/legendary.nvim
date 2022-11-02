@@ -68,8 +68,13 @@ function Command:apply()
   -- replace any argument placeholders for display purposes wrapped in {} or []
   -- % is escape character in gsub patterns
   -- strip param names between [] or {}
-  vim.api.nvim_create_user_command(sanitize_cmd_name(self.cmd), self.implementation, opts)
+  vim.api.nvim_create_user_command(self:vim_cmd(), self.implementation, opts)
   return self
+end
+
+---Return self.cmd with leading : or <cmd> and trailing <cr> removed
+function Command:vim_cmd()
+  return sanitize_cmd_name(self.cmd)
 end
 
 return Command

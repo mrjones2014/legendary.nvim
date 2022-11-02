@@ -83,4 +83,35 @@ function M.is_function(func)
   return func.class == require('legendary-v2.types.function')
 end
 
+function M.is_visual_mode(mode_str)
+  mode_str = mode_str or ''
+  if mode_str == 'nov' or mode_str == 'noV' or mode_str == 'no' then
+    return false
+  end
+
+  return not not (string.find(mode_str:lower(), 'v') or string.find(mode_str:lower(), '') or mode_str == 'x')
+end
+
+---Get visual marks in format {start_line, start_col, end_line, end_col}
+---@return table in format {start_line, start_col, end_line, end_col}
+function M.get_marks()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local cline, ccol = cursor[1], cursor[2]
+  local vline, vcol = vim.fn.line('v'), vim.fn.col('v')
+  print(vim.inspect({ cline, ccol, vline, vcol }))
+  if ccol > vcol then
+    local swap = vcol
+    vcol = ccol + 1
+    ccol = swap
+  end
+  return { cline, ccol, vline, vcol }
+end
+
+--- Set visual marks from a table in the format
+--- {start_line, start_col, end_line, end_col}
+function M.set_marks(visual_selection)
+  vim.fn.setpos("'<", { 0, visual_selection[1], visual_selection[2], 0 })
+  vim.fn.setpos("'>", { 0, visual_selection[3], visual_selection[4], 0 })
+end
+
 return M
