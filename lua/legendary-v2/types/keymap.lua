@@ -39,12 +39,12 @@ function Keymap:parse(tbl) -- luacheck: no unused
   if type(tbl[2]) == 'table' then
     vim.validate({
       n = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      v = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      x = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      c = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      s = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      t = { tbl[2].n, { 'string', 'function', 'table' }, true },
-      i = { tbl[2].n, { 'string', 'function', 'table' }, true },
+      v = { tbl[2].v, { 'string', 'function', 'table' }, true },
+      x = { tbl[2].x, { 'string', 'function', 'table' }, true },
+      c = { tbl[2].c, { 'string', 'function', 'table' }, true },
+      s = { tbl[2].s, { 'string', 'function', 'table' }, true },
+      t = { tbl[2].t, { 'string', 'function', 'table' }, true },
+      i = { tbl[2].i, { 'string', 'function', 'table' }, true },
     })
   end
 
