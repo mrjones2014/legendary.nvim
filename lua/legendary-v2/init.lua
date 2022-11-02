@@ -28,25 +28,10 @@ local M = {}
 function M.setup(cfg)
   Config.setup(cfg)
 
-  State.items:add(vim.tbl_map(function(keymap)
-    return Keymap:parse(keymap)
-  end, Config.keymaps))
-
-  State.items:add(vim.tbl_map(function(command)
-    return Command:parse(command)
-  end, Config.commands))
-
-  State.items:add(vim.tbl_map(function(augroup_or_autocmd)
-    if type(augroup_or_autocmd.name) == 'string' and #augroup_or_autocmd.name > 0 then
-      return Augroup:parse(augroup_or_autocmd)
-    else
-      return Autocmd:parse(augroup_or_autocmd)
-    end
-  end, Config.autocmds))
-
-  State.items:add(vim.tbl_map(function(func)
-    return Function:parse(func)
-  end, Config.functions))
+  M.keymaps(Config.keymaps)
+  M.commands(Config.commands)
+  M.funcs(Config.functions)
+  M.autocmds(Config.autocmds)
 
   -- apply items
   vim.tbl_map(function(item)
@@ -123,17 +108,19 @@ end
 ---@param aus (Autocmd|Augroup)[]
 function M.autocmds(aus)
   if not vim.tbl_islist(aus) then
-    error(string.format('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus)))
+    vim.notify(string.format('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus)))
     return
   end
 
-  State.items:add(vim.tbl_map(function(augroup_or_autocmd)
+  for _, augroup_or_autocmd in ipairs(aus) do
     if type(augroup_or_autocmd.name) == 'string' and #augroup_or_autocmd.name > 0 then
-      return Augroup:parse(augroup_or_autocmd)
+      local autocmds = Augroup:parse(augroup_or_autocmd --[[@as Augroup]]):apply().autocmds
+      State.items:add(autocmds)
     else
-      return Autocmd:parse(augroup_or_autocmd)
+      -- Only add Autocmds to the list since Augroups can't be executed
+      State.items:add({ Autocmd:parse(augroup_or_autocmd) })
     end
-  end, aus))
+  end
 end
 
 ---Bind a *single autocmd/augroup*

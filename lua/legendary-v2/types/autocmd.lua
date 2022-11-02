@@ -41,7 +41,7 @@ function Autocmd:apply()
     callback = type(self.implementation) == 'function' and self.implementation or nil,
     command = type(self.implementation) == 'string' and self.implementation or nil,
     group = self.group,
-  }, self.opts)
+  }, self.opts or {})
   vim.api.nvim_create_autocmd(self.events, opts)
   return self
 end

@@ -7,6 +7,7 @@ local config = {
   col_separator_char = '│',
   default_item_formatter = nil,
   include_builtin = true,
+  most_recent_items_at_top = true,
 }
 
 ---@class LegendaryConfig
