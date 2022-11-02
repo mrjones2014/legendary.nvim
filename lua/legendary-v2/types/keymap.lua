@@ -95,4 +95,15 @@ function Keymap:apply()
   return self
 end
 
+function Keymap:modes()
+  local modes = {}
+  for mode, mapping in pairs(self.mode_mappings) do
+    if mapping then
+      table.insert(modes, mode)
+    end
+  end
+
+  return modes
+end
+
 return Keymap

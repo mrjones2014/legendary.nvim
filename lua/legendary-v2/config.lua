@@ -4,6 +4,8 @@ local config = {
   autocmds = {},
   functions = {},
   select_prompt = ' legendary.nvim ',
+  col_separator_char = '│',
+  default_item_formatter = nil,
 }
 
 ---@class LegendaryConfig
@@ -12,6 +14,8 @@ local config = {
 ---@field autocmds (Augroup|Autocmd)[]
 ---@field functions Function[]
 ---@field select_prompt string|fun():string
+---@field col_separator_char string
+---@field default_item_formatter ItemFormatter
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]
