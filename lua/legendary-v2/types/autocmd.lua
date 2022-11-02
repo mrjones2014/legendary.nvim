@@ -4,7 +4,7 @@ local util = require('legendary-v2.util')
 
 ---@class Autocmd
 ---@field events string[]
----@field implementation string|fun()
+---@field implementation string|function
 ---@field opts table
 ---@field id integer
 ---@field description string
@@ -42,6 +42,7 @@ function Autocmd:apply()
   local opts = vim.tbl_deep_extend('keep', {
     callback = type(self.implementation) == 'function' and self.implementation or nil,
     command = type(self.implementation) == 'string' and self.implementation or nil,
+    group = self.group,
   }, self.opts)
   vim.api.nvim_create_autocmd(self.events, opts)
   return self
