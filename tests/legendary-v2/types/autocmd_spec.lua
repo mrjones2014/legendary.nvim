@@ -99,4 +99,16 @@ describe('Autocmd', function()
       assert.are.same(autocmd.callback, tbl[2])
     end)
   end)
+
+  describe('with_group', function()
+    it('sets the augroup on the autocmd', function()
+      local tbl = {
+        'BufEnter',
+        ':SomeCommand<CR>',
+      }
+      local autocmd = Autocmd:parse(tbl)
+      local with_group = autocmd:with_group('SomeGroup')
+      assert.are.same(with_group.group, 'SomeGroup')
+    end)
+  end)
 end)
