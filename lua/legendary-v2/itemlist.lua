@@ -19,36 +19,31 @@ end
 
 ---Add an item to the ItemList. This function
 ---handles excluding duplicate items and items without descriptions.
----@param ... LegendaryItem[]
-function ItemList:add(...)
-  local items = { ... }
+---@param items LegendaryItem[]
+function ItemList:add(items)
   if #items == 0 then
     return
   end
 
-  if #items > 1 then
-    for _, item in ipairs(items) do
-      self:add(item)
-    end
-    return
-  end
-
   ---@type LegendaryItem
-  local item = items[1]
-  if not item.description or #item.description == 0 then
-    return
+  for _, item in ipairs(items) do
+    if not item.description or #item.description == 0 then
+      goto add_loop_continue
+    end
+
+    -- TODO optimize this :/
+    local existing_items = vim.tbl_filter(function(existing_item)
+      return item.class == existing_item.class and vim.inspect(existing_item) == vim.inspect(item)
+    end, self.items)
+
+    if #existing_items > 0 then
+      goto add_loop_continue
+    end
+
+    table.insert(self.items, item)
+
+    ::add_loop_continue::
   end
-
-  -- TODO optimize this :/
-  local existing_items = vim.tbl_filter(function(existing_item)
-    return item.class == existing_item.class and vim.inspect(existing_item) == vim.inspect(item)
-  end, self.items)
-
-  if #existing_items > 0 then
-    return
-  end
-
-  table.insert(self.items, item)
 end
 
 ---@alias ItemFilter fun(item:LegendaryItem):boolean
@@ -63,11 +58,21 @@ function ItemList:filter(filters)
     filters = { filters }
   end
 
+  if #filters == 0 then
+    return self:get()
+  end
+
   return vim.tbl_filter(function(item)
     return util.tbl_all(filters, function(filter)
       return filter(item)
     end)
   end, self.items)
+end
+
+---Get a *copy* of the item list
+---@return LegendaryItem[]
+function ItemList:get()
+  return vim.deepcopy(self.items)
 end
 
 return ItemList
