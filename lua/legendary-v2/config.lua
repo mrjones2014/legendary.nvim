@@ -6,6 +6,7 @@ local config = {
   select_prompt = ' legendary.nvim ',
   col_separator_char = '│',
   default_item_formatter = nil,
+  include_builtin = true,
 }
 
 ---@class LegendaryConfig
@@ -16,6 +17,7 @@ local config = {
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string
 ---@field default_item_formatter ItemFormatter
+---@field include_builtin boolean
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]
