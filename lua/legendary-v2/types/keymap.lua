@@ -24,10 +24,10 @@ local util = require('legendary-v2.util')
 ---@field id integer
 local Keymap = class('Keymap')
 
----Parse a keymap
+---Parse a new keymap table
 ---@param tbl table
 ---@return Keymap
-function Keymap:parse(tbl)
+function Keymap:parse(tbl) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
     ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
@@ -48,36 +48,38 @@ function Keymap:parse(tbl)
     })
   end
 
-  self.keys = tbl[1]
-  self.description = util.get_desc(tbl)
-  self.kind = 'legendary.keymap'
-  self.opts = tbl.opts or {}
-  self.id = Id.new()
+  local instance = Keymap()
 
-  self.mode_mappings = {}
+  instance.keys = tbl[1]
+  instance.description = util.get_desc(tbl)
+  instance.kind = 'legendary.keymap'
+  instance.opts = tbl.opts or {}
+  instance.id = Id.new()
+
+  instance.mode_mappings = {}
   if tbl[2] == nil then
-    return self
+    return instance
   end
 
   if type(tbl[2]) == 'table' then
     for mode, mapping in pairs(tbl[2]) do
       if type(mapping) == 'table' then
-        self.mode_mappings[mode] = { implementation = mapping[1], opts = mapping.opts }
+        instance.mode_mappings[mode] = { implementation = mapping[1], opts = mapping.opts }
       else
-        self.mode_mappings[mode] = { implementation = mapping }
+        instance.mode_mappings[mode] = { implementation = mapping }
       end
     end
   else
     if type(tbl.mode) == 'table' then
       for _, mode in ipairs(tbl.mode) do
-        self.mode_mappings[mode] = { implementation = tbl[2] }
+        instance.mode_mappings[mode] = { implementation = tbl[2] }
       end
     else
-      self.mode_mappings[tbl.mode or 'n'] = { implementation = tbl[2] }
+      instance.mode_mappings[tbl.mode or 'n'] = { implementation = tbl[2] }
     end
   end
 
-  return self
+  return instance
 end
 
 ---Bind the keymap in Neovim

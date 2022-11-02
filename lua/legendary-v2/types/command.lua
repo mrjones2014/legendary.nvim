@@ -29,10 +29,10 @@ end
 ---@field kind 'legendary.command'
 local Command = class('Command')
 
----Parse a command table
+---Parse a new command table
 ---@param tbl table
 ---@return Command
-function Command:parse(tbl)
+function Command:parse(tbl) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
     ['2'] = { tbl[2], { 'string', 'function' }, true },
@@ -41,15 +41,17 @@ function Command:parse(tbl)
     unfinished = { tbl.unfinished, { 'boolean' }, true },
   })
 
-  self.kind = 'legendary.command'
-  self.cmd = tbl[1]
-  self.implementation = tbl[2]
-  self.description = util.get_desc(tbl)
-  self.opts = tbl.opts
-  self.unfinished = util.bool_default(tbl.unfinished, false)
-  self.id = Id.new()
+  local instance = Command()
 
-  return self
+  instance.kind = 'legendary.command'
+  instance.cmd = tbl[1]
+  instance.implementation = tbl[2]
+  instance.description = util.get_desc(tbl)
+  instance.opts = tbl.opts
+  instance.unfinished = util.bool_default(tbl.unfinished, false)
+  instance.id = Id.new()
+
+  return instance
 end
 
 ---Create the user command

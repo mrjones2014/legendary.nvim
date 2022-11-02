@@ -12,9 +12,10 @@ local util = require('legendary-v2.util')
 ---@field kind 'legendary.autocmd'
 local Autocmd = class('Autocmd')
 
----Parse an autocmd table
----@param tbl Autocmd
-function Autocmd:parse(tbl)
+---Parse a new autocmd table
+---@param tbl table
+---@return Autocmd
+function Autocmd:parse(tbl) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string', 'table' } },
     ['2'] = { tbl[2], { 'string', 'function' } },
@@ -23,16 +24,18 @@ function Autocmd:parse(tbl)
     group = { tbl.group, { 'string', 'number' }, true },
   })
 
-  -- if tbl[1] is a string, convert to a list with 1 string in it
-  self.events = type(tbl[1]) == 'string' and { tbl[1] } or tbl[1]
-  self.implementation = tbl[2]
-  self.opts = tbl.opts
-  self.description = util.get_desc(tbl)
-  self.group = tbl.group
-  self.id = Id.new()
-  self.kind = 'legendary.autocmd'
+  local instance = Autocmd()
 
-  return self
+  -- if tbl[1] is a string, convert to a list with 1 string in it
+  instance.events = type(tbl[1]) == 'string' and { tbl[1] } or tbl[1]
+  instance.implementation = tbl[2]
+  instance.opts = tbl.opts
+  instance.description = util.get_desc(tbl)
+  instance.group = tbl.group
+  instance.id = Id.new()
+  instance.kind = 'legendary.autocmd'
+
+  return instance
 end
 
 function Autocmd:apply()
