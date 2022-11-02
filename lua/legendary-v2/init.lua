@@ -1,6 +1,7 @@
 local Config = require('legendary-v2.config')
 local State = require('legendary-v2.state')
 local Ui = require('legendary-v2.ui')
+local Executor = require('legendary-v2.executor')
 local Keymap = require('legendary-v2.types.keymap')
 local Command = require('legendary-v2.types.command')
 local Augroup = require('legendary-v2.types.augroup')
@@ -41,12 +42,13 @@ end
 ---Find items using vim.ui.select()
 ---@param opts LegendaryFindOpts
 function M.find(opts)
+  local context = Executor.build_pre_context()
   Ui.select(opts, function(selected)
     if not selected then
       return
     end
 
-    vim.notify(vim.inspect(selected))
+    Executor.exec_item(selected, context)
   end)
 end
 
