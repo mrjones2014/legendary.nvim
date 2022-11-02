@@ -27,6 +27,7 @@ end
 ---@field unfinished boolean
 ---@field id integer
 ---@field kind 'legendary.command'
+---@field class Command
 local Command = class('Command')
 
 ---Parse a new command table

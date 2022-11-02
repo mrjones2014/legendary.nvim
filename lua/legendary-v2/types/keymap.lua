@@ -22,6 +22,7 @@ local util = require('legendary-v2.util')
 ---@field kind 'legendary.keymap'
 ---@field opts table
 ---@field id integer
+---@field class Keymap
 local Keymap = class('Keymap')
 
 ---Parse a new keymap table

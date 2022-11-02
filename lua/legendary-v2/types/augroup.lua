@@ -8,6 +8,7 @@ local util = require('legendary-v2.util')
 ---@field clear boolean|nil
 ---@field id integer
 ---@field kind 'legendary.augroup'
+---@field class Augroup
 local Augroup = class('Augroup')
 
 ---Parse a new augroup table

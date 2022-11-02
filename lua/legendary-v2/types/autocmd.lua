@@ -10,6 +10,7 @@ local util = require('legendary-v2.util')
 ---@field description string
 ---@field group string|integer|nil
 ---@field kind 'legendary.autocmd'
+---@field class Autocmd
 local Autocmd = class('Autocmd')
 
 ---Parse a new autocmd table
