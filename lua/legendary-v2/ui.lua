@@ -1,6 +1,7 @@
 local Config = require('legendary-v2.config')
 local State = require('legendary-v2.state')
 local Format = require('legendary-v2.format')
+
 local M = {}
 
 ---@class LegendaryFindOpts
@@ -26,7 +27,9 @@ function M.select(opts, callback)
     format_item = function(item)
       return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding)
     end,
-  }, callback)
+  }, function(selected)
+    callback(selected)
+  end)
 end
 
 return M
