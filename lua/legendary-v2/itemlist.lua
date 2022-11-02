@@ -56,6 +56,7 @@ end
 ---Filter the ItemList. Returns a *new* ItemList,
 ---self remains immutable.
 ---@param filters ItemFilter|ItemFilter[]
+---@return LegendaryItem[]
 function ItemList:filter(filters)
   -- wrap in list to make following code more succinct
   if type(filters) ~= 'table' then
