@@ -1,8 +1,6 @@
 local class = require('legendary-v2.middleclass')
 local util = require('legendary-v2.util')
 local Augroup = require('legendary-v2.types.augroup')
-local Keymap = require('legendary-v2.types.keymap')
-local Command = require('legendary-v2.types.command')
 
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function
 
@@ -20,30 +18,6 @@ end
 ---@return ItemList
 function ItemList:create() -- luacheck: no unused
   return ItemList()
-end
-
----Optimized to skip validation for builtins
-function ItemList:add_builtins()
-  if self.builtins_added then
-    return
-  end
-
-  local Builtins = require('legendary-v2.builtins')
-  ---@diagnostic disable
-  self.items = vim.list_extend(
-    self.items,
-    vim.list_extend(
-      vim.tbl_map(function(keymap)
-        return Keymap:parse(keymap)
-      end, Builtins.builtin_keymaps),
-      vim.tbl_map(function(command)
-        return Command:parse(command)
-      end, Builtins.builtin_commands)
-    )
-  )
-  ---@diagnostic enable
-
-  self.builtins_added = true
 end
 
 ---Add an item to the ItemList. This function

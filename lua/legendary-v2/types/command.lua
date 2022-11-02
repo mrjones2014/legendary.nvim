@@ -61,10 +61,11 @@ function Command:apply()
 
   local opts = vim.deepcopy(self.opts or {})
   opts.desc = opts.desc or self.description
+  -- these are valid legendary.nvim options but
+  -- are only used for filtering and aren't used
+  -- for the actual command mapping
+  opts.buffer = nil
 
-  -- replace any argument placeholders for display purposes wrapped in {} or []
-  -- % is escape character in gsub patterns
-  -- strip param names between [] or {}
   vim.api.nvim_create_user_command(self:vim_cmd(), self.implementation, opts)
   return self
 end
@@ -75,6 +76,9 @@ end
 
 ---Return self.cmd with leading : or <cmd> and trailing <cr> removed
 function Command:vim_cmd()
+  -- replace any argument placeholders for display purposes wrapped in {} or []
+  -- % is escape character in gsub patterns
+  -- strip param names between [] or {}
   return sanitize_cmd_name(self.cmd)
 end
 
