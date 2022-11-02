@@ -1,3 +1,6 @@
+--- MODIFIED  from https://github.com/kikito/middleclass
+--- changed default __tostring
+
 local middleclass = {
   _VERSION = 'middleclass v4.1.1',
   _DESCRIPTION = 'Object Orientation for Lua',
@@ -76,7 +79,7 @@ local function _declareInstanceMethod(aClass, name, f)
 end
 
 local function _tostring(self)
-  return 'class ' .. self.name
+  return vim.inspect(self)
 end
 local function _call(self, ...)
   return self:new(...)
@@ -142,7 +145,7 @@ end
 
 local DefaultMixin = {
   __tostring = function(self)
-    return 'instance of ' .. tostring(self.class)
+    return vim.inspect(self)
   end,
 
   initialize = function(self, ...) end,
