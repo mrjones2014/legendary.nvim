@@ -41,7 +41,7 @@ function ItemList:add(...)
 
   -- TODO optimize this :/
   local existing_items = vim.tbl_filter(function(existing_item)
-    return vim.inspect(existing_item) == vim.inspect(item)
+    return item.class == existing_item.class and vim.inspect(existing_item) == vim.inspect(item)
   end, self.items)
 
   if #existing_items > 0 then
