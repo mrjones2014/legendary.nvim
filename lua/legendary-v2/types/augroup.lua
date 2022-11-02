@@ -10,23 +10,26 @@ local util = require('legendary-v2.util')
 ---@field kind 'legendary.augroup'
 local Augroup = class('Augroup')
 
----Parse an augroup table
+---Parse a new augroup table
 ---@param tbl Augroup
-function Augroup:parse(tbl)
+---@return Augroup
+function Augroup:parse(tbl) -- luacheck: no unused
   vim.validate({
     name = { tbl.name, { 'string' } },
     clear = { tbl.clear, { 'boolean' }, true },
   })
 
-  self.name = tbl.name
-  self.clear = util.bool_default(tbl.clear, true)
-  self.id = Id.new()
-  self.kind = 'legendary.augroup'
+  local instance = Augroup()
+
+  instance.name = tbl.name
+  instance.clear = util.bool_default(tbl.clear, true)
+  instance.id = Id.new()
+  instance.kind = 'legendary.augroup'
   for _, autocmd in ipairs(tbl) do
-    table.insert(self, Autocmd:parse(autocmd))
+    table.insert(instance, Autocmd:parse(autocmd))
   end
 
-  return self
+  return instance
 end
 
 ---Apply the augroup, creating *both the group and it's autocmds*
