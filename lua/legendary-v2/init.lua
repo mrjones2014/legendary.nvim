@@ -1,12 +1,12 @@
 local Config = require('legendary-v2.config')
-local State = require('legendary-v2.state')
+local State = require('legendary-v2.data.state')
 local Ui = require('legendary-v2.ui')
-local Executor = require('legendary-v2.executor')
-local Keymap = require('legendary-v2.types.keymap')
-local Command = require('legendary-v2.types.command')
-local Augroup = require('legendary-v2.types.augroup')
-local Autocmd = require('legendary-v2.types.autocmd')
-local Function = require('legendary-v2.types.function')
+local Executor = require('legendary-v2.api.executor')
+local Keymap = require('legendary-v2.data.keymap')
+local Command = require('legendary-v2.data.command')
+local Augroup = require('legendary-v2.data.augroup')
+local Autocmd = require('legendary-v2.data.autocmd')
+local Function = require('legendary-v2.data.function')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -42,7 +42,7 @@ function M.setup(cfg)
   if Config.include_builtin then
     -- inline require to avoid the cost of importing
     -- this somewhat large data file if not needed
-    local Builtins = require('legendary-v2.builtins')
+    local Builtins = require('legendary-v2.data.builtins')
 
     State.items:add(vim.tbl_map(function(keymap)
       return Keymap:parse(keymap)
