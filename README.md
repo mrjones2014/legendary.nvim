@@ -13,7 +13,6 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [Item Kinds](#item-kinds)
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
 - [Lua API](./doc/API.md)
@@ -101,7 +100,7 @@ The `require('legend').find()` function takes an `opts` table with the following
   -- returning a list of strings where each string is one column
   -- use this to override the configured formatter for just one call
   formatter = nil,
-  -- pass a string, or a function with the signature `function(kind: string): string`
+  -- pass a string, or a function that returns a string
   -- to customize the select prompt for the current call
   select_prompt = nil,
 }

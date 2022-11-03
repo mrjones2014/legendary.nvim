@@ -43,11 +43,7 @@ require('legendary').find({
   filters = {
     require('legendary.filters').mode('n'),
     function(item)
-      if not string.find(item.kind, 'keymap') then
-        return true
-      end
-
-      return vim.startswith(item[1], '<leader>')
+      return require('legendary.toolbox').is_keymap(item) and vim.startswith(item[1], '<leader>')
     end,
   },
 })

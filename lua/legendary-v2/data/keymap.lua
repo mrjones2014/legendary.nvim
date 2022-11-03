@@ -18,7 +18,6 @@ local util = require('legendary-v2.util')
 ---@field keys string
 ---@field mode_mappings ModeKeymap
 ---@field description string
----@field kind 'legendary.keymap'
 ---@field opts table
 ---@field class Keymap
 local Keymap = class('Keymap')
@@ -51,7 +50,6 @@ function Keymap:parse(tbl) -- luacheck: no unused
 
   instance.keys = tbl[1]
   instance.description = util.get_desc(tbl)
-  instance.kind = 'legendary.keymap'
   instance.opts = tbl.opts or {}
 
   instance.mode_mappings = {}

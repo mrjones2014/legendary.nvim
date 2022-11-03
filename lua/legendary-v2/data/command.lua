@@ -24,7 +24,6 @@ end
 ---@field description string
 ---@field opts table
 ---@field unfinished boolean
----@field kind 'legendary.command'
 ---@field class Command
 local Command = class('Command')
 
@@ -42,7 +41,6 @@ function Command:parse(tbl) -- luacheck: no unused
 
   local instance = Command()
 
-  instance.kind = 'legendary.command'
   instance.cmd = tbl[1]
   instance.implementation = tbl[2]
   instance.description = util.get_desc(tbl)

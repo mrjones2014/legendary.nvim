@@ -5,7 +5,6 @@ local util = require('legendary-v2.util')
 ---@field implementation function
 ---@field description string
 ---@field opts table
----@field kind 'legendary.function'
 ---@field class Function
 local Function = class('Function')
 
@@ -21,7 +20,6 @@ function Function:parse(tbl) -- luacheck: no unused
   instance.implementation = tbl[1]
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
-  instance.kind = 'legendary.function'
 
   return instance
 end
