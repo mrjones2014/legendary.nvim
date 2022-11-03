@@ -36,13 +36,9 @@ function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
     -- check wk.group because these don't represent standalone keymaps
     -- they basically represent a "folder" of other keymaps
     -- TODO support which-key mappings with buf values
-    if not vim.tbl_get(wk, 'opts', 'desc') or wk.group == true then
-      goto continue
+    if vim.tbl_get(wk, 'opts', 'desc') and not wk.group == true then
+      table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts))
     end
-
-    table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts))
-
-    ::continue::
   end, wk_parsed)
 
   if not do_binding then
