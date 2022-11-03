@@ -51,12 +51,13 @@ local config = {
     -- How to show the results of evaluated Lua code.
     -- 'print' for `print(result)`, 'float' for a floating window.
     results_view = 'float',
-    -- Path to the cache file used to restore scratchpad buffer contents,
-    -- set to `false` to disable restoring from cache.
-    cache_path = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
     -- Border style for floating windows related to the scratchpad
     float_border = 'rounded',
+    -- Whether to restore scratchpad contents from a cache file
+    keep_contents = true,
   },
+  -- Directory used for caches
+  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
 }
 
 ---@class LegendaryWhichkeyConfig
@@ -68,8 +69,8 @@ local config = {
 ---@class LegendaryScratchpadConfig
 ---@field view 'float'|'current'
 ---@field results_view 'float'|'print'
----@field cache_path string|false
 ---@field float_border string
+---@field keep_contents boolean
 
 ---@class LegendaryConfig
 ---@field keymaps Keymap[]
@@ -84,6 +85,7 @@ local config = {
 ---@field most_recent_items_at_top boolean
 ---@field which_key LegendaryWhichkeyConfig
 ---@field scratchpad LegendaryScratchpadConfig
+---@field cache_path string
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]

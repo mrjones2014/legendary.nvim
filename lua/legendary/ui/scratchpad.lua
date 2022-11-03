@@ -1,65 +1,50 @@
 local Config = require('legendary.config')
 local LuaTools = require('legendary.api.luatools')
+local Cache = require('legendary.api.cache')
 
 local M = {}
+
+local cache = Cache:new('legendary_scratchpad.lua')
 
 local scratchpad_buf_id = nil
 local results_buf_id = nil
 
 local function load_from_cache(buf)
-  local cache_path = Config.scratchpad.cache_path
-  if cache_path == false then
-    return
-  end
+  local ok, lines = pcall(function()
+    return cache:read()
+  end)
 
-  if vim.fn.filereadable(cache_path) == 0 then
-    return
+  if ok then
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.api.nvim_buf_set_option(buf, 'filetype', 'lua') -- this needs to be reset on load
   end
-
-  local lines = {}
-  for line in io.lines(cache_path) do
-    lines[#lines + 1] = line
-  end
-
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(buf, 'filetype', 'lua') -- this needs to be reset on load
 end
 
 local function write_cache(buf)
-  local cache_path = Config.scratchpad.cache_path
-  if type(cache_path) ~= 'string' then
-    return
-  end
-
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  local file = io.open(cache_path, 'w+')
-  if not file then
-    return
-  end
-
-  local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
-  file:write(table.concat(lines, line_ending))
-  file:close()
+  pcall(function()
+    cache:write(lines)
+  end)
 end
 
 local function write_cache_autocmd(buf)
   vim.api.nvim_create_autocmd('TextChanged', {
     callback = function()
-      pcall(write_cache, buf)
+      write_cache(buf)
     end,
     buffer = buf,
   })
 
   vim.api.nvim_create_autocmd('BufReadCmd', {
     callback = function()
-      pcall(load_from_cache, buf)
+      load_from_cache(buf)
     end,
     buffer = buf,
   })
 
   vim.api.nvim_create_autocmd('BufWriteCmd', {
     callback = function()
-      pcall(write_cache, buf)
+      write_cache(buf)
     end,
     buffer = buf,
   })
@@ -148,9 +133,8 @@ function M.open()
   vim.api.nvim_buf_set_option(scratchpad_buf_id, 'buftype', 'acwrite')
   vim.api.nvim_buf_set_name(scratchpad_buf_id, 'Legendary Scratchpad')
 
-  -- User sets to `false` to disable cache loading
-  if type(Config.scratchpad.cache_path) == 'string' then
-    pcall(load_from_cache, scratchpad_buf_id)
+  if Config.scratchpad.keep_contents then
+    load_from_cache(scratchpad_buf_id)
     write_cache_autocmd(scratchpad_buf_id)
   end
 

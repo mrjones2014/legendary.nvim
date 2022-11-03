@@ -118,12 +118,4 @@ M.bind = function()
   end, M.cmds)
 end
 
-M.register = function()
-  local items = vim.deepcopy(M.cmds)
-  local anonymous_cmds = vim.tbl_map(function(item)
-    item[2] = nil
-  end, items)
-  State.items:add(anonymous_cmds)
-end
-
 return M
