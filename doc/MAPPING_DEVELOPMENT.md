@@ -26,7 +26,7 @@ Returns a function that references another function with static arguments passed
 **Usage:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.lazy(my_function, 'arg1', 'arg2')
 -- returns a *new function* equivalent to:
 function()
@@ -43,7 +43,7 @@ handle passing static arguments.
 **Basic usage:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.lazy_required_fn('telescope.builtin', 'find_files')
 -- returns a *new function* equivalent to:
 function()
@@ -54,7 +54,7 @@ end
 **Passing static arguments:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.lazy_required_fn('telescope.builtin', 'find_files', { cwd_only = true })
 -- returns a *new function* equivalent to:
 function()
@@ -65,7 +65,7 @@ end
 **Referencing functions nested within a module table:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.lazy_required_fn('neotest', 'run.run')
 -- returns a *new function* equivalent to:
 function()
@@ -76,7 +76,7 @@ end
 **Passing multiple arguments:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.lazy_required_fn('myplugin', 'somefunction', 'arg1', 'arg2', 'arg3')
 -- returns a *new function* equivalent to:
 function()
@@ -91,7 +91,7 @@ Returns a function that creates a new split, then calls the passed function.
 **Usage:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.split_then(my_function)
 -- returns a *new function* equivalent to:
 function()
@@ -107,7 +107,7 @@ Returns a function that creates a new vertical split, then calls the passed func
 **Usage:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 h.vsplit_then(my_function)
 -- returns a *new function* equivalent to:
 function()
@@ -116,14 +116,34 @@ function()
 end
 ```
 
+### `is_visual_mode` and `get_marks`
+
+`is_visual_mode` can determine if the current mode is visual or any sub-mode of visual mode,
+and `get_marks` can be used to get the marks denoting the visual selection.
+
+```lua
+{
+  '<leader>t',
+  function()
+    if require('legendary.toolbox').is_visual_mode() then
+      local marks = require('legendary.toolbox').get_marks()
+      -- do something with marks
+    else
+      -- do something else if not visual mode
+    end
+  end,
+  description = 'Different behavior in visual mode',
+}
+```
+
 # Composition
 
-Helpers can be composed together to create complex keymaps.
+Helpers that wrap functions can be composed together to create complex keymaps.
 
 **Example:**
 
 ```lua
-local h = require('legendary.helpers')
+local h = require('legendary.toolbox')
 -- lazily create a vertical split, then use Telescope.nvim to
 -- find a file and open it in the new split
 h.vsplit_then(h.lazy_required_fn('telescope.builtin', 'find_files'))

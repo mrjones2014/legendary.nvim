@@ -7,7 +7,7 @@ local function rpad(str, len)
   return string.format('%s%s', str, string.rep(' ', len - (vim.fn.strdisplaywidth(str))))
 end
 
----@alias ItemFormatter fun(items:LegendaryItem[]):string[]
+---@alias ItemFormatter fun(items:LegendaryItem[],mode:string):string[]
 
 ---Default format
 ---@param item LegendaryItem
@@ -49,11 +49,12 @@ end
 
 ---Format items
 ---@param items LegendaryItem[]
+---@param mode string
 ---@param formatter ItemFormatter
-function M.compute_padding(items, formatter)
+function M.compute_padding(items, formatter, mode)
   formatter = formatter or M.default_format
   local format_values = vim.tbl_map(function(item)
-    return formatter(item)
+    return formatter(item, mode)
   end, items)
 
   local padding = {}
@@ -70,9 +71,15 @@ function M.compute_padding(items, formatter)
   return padding
 end
 
-function M.format_item(item, formatter, padding)
+---Format a single item, meant to be used in `vim.ui.select()`
+---@param item LegendaryItem
+---@param formatter ItemFormatter
+---@param padding integer[]
+---@param mode string
+---@return string
+function M.format_item(item, formatter, padding, mode)
   formatter = formatter or M.default_format
-  local values = formatter(item)
+  local values = formatter(item, mode)
   local cols = {}
   for i, col in ipairs(values) do
     table.insert(cols, rpad(col, padding[i] or 0))

@@ -7,44 +7,43 @@ The main API functions are described below. To see full API documentation, run `
 
 ```lua
 -- bind a single keymap
-require('legendary').bind_keymap(keymap)
+require('legendary').keymap(keymap)
 -- bind a list of keymaps
-require('legendary').bind_keymaps({
+require('legendary').keymaps({
   -- your keymaps here
 })
 
 -- bind a single command
-require('legendary').bind_command(command)
+require('legendary').command(command)
 -- bind a list of commands
-require('legendary').bind_commands({
+require('legendary').commands({
   -- your commands here
 })
 
 -- bind a single function
-require('legendary').bind_command(function)
+require('legendary').command(function)
 -- bind a list of functions
-require('legendary').bind_functions({
+require('legendary').functions({
   -- your functions here
 })
 
--- bind single or multiple augroups and/or autocmds
--- these all use the same function
-require('legendary').bind_autocmds(augroup)
-require('legendary').bind_autocmds(autocmd)
-require('legendary').bind_autocmds({
+-- bind a single augroup/autocmds
+require('legendary').autocmd(augroup_or_autocmd)
+-- bind a list of augroups/autocmds
+require('legendary').autocmds({
   -- your augroups and autocmds here
 })
 
 -- search keymaps, commands, functions, and autocmds
 require('legendary').find()
 -- search keymaps
-require('legendary').find({ kind = 'keymaps' })
+require('legendary').find({ filters = { require('legendary.filters').keymaps() } })
 -- search commands
-require('legendary').find({ kind = 'commands' })
+require('legendary').find({ filters = { require('legendary.filters').commands() } })
 -- search functions
-require('legendary').find({ kind = 'functions' })
+require('legendary').find({ filters = { require('legendary.filters').funcs() } })
 -- search autocmds
-require('legendary').find({ kind = 'autocmds' })
+require('legendary').find({ filters = { require('legendary.filters').autocmds() } })
 
 -- filter keymaps by current mode
 require('legendary').find({
