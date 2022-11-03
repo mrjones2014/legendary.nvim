@@ -61,10 +61,15 @@ function M.setup(cfg)
       return Command:parse(command)
     end, Builtins.builtin_commands))
   end
+
+  if Config.include_legendary_cmds then
+    require('legendary-v2.api.cmds').register()
+  end
 end
 
 ---Find items using vim.ui.select()
 ---@param opts LegendaryFindOpts
+---@overload fun()
 function M.find(opts)
   local context = Executor.build_pre_context()
 
