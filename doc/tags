@@ -1,7 +1,7 @@
 ItemFormatter	legendary-api.txt	/*ItemFormatter*
 M.autocmd	legendary-api.txt	/*M.autocmd*
 M.autocmds	legendary-api.txt	/*M.autocmds*
-M.autocmds	legendary-api.txt	/*M.autocmds*
+M.autocmds-filter	legendary-api.txt	/*M.autocmds-filter*
 M.command	legendary-api.txt	/*M.command*
 M.commands	legendary-api.txt	/*M.commands*
 M.current_mode	legendary-api.txt	/*M.current_mode*
