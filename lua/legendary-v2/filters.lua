@@ -1,7 +1,4 @@
-local Keymap = require('legendary-v2.data.keymap')
-local Command = require('legendary-v2.data.command')
-local Autocmd = require('legendary-v2.data.autocmd')
-local Function = require('legendary-v2.data.function')
+local Toolbox = require('legendary-v2.toolbox')
 
 local M = {}
 
@@ -11,8 +8,8 @@ local M = {}
 ---@return ItemFilter
 function M.mode(mode)
   return function(item)
-    -- ignore everything but keymaps since they aren't tied to a mode
-    if item.class ~= Keymap then
+    -- include everything that isn't a keymap since they aren't tied to a mode
+    if not Toolbox.is_keymap(item) then
       return true
     end
 
@@ -36,33 +33,25 @@ end
 ---Filter to only show keymaps
 ---@return ItemFilter
 function M.keymaps()
-  return function(item)
-    return item.class == Keymap
-  end
+  return Toolbox.is_keymap
 end
 
 ---Filter to only show commands
 ---@return ItemFilter
 function M.commands()
-  return function(item)
-    return item.class == Command
-  end
+  return Toolbox.is_command
 end
 
 ---Filter to only show autocmds
 ---@return ItemFilter
 function M.autocmds()
-  return function(item)
-    return item.class == Autocmd
-  end
+  return Toolbox.is_autocmd
 end
 
 ---Filter to only show functions
 ---@return ItemFilter
 function M.funcs()
-  return function(item)
-    return item.class == Function
-  end
+  return Toolbox.is_function
 end
 
 return M
