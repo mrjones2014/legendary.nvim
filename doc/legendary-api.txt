@@ -77,7 +77,7 @@ Returns: ~
 {ItemFilter}
 
 
-M.autocmds()                                                        *M.autocmds*
+M.autocmds()                                                        *M.autocmds-filter*
 Filter to only show autocmds
 
 Returns: ~
