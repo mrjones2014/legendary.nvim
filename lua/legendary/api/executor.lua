@@ -6,13 +6,13 @@ local function exec_feedkeys(keys)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 't', true)
 end
 
----@class Context
+---@class LegendaryEditorContext
 ---@field buf integer
 ---@field mode string
 ---@field cursor_pos integer[] { row, col }
 ---@field marks integer[]|nil
 
----Build a Context containing information about the editor
+---Build a context object containing information about the editor
 ---state *before* triggering the finder so that it can be
 ---restored before executing the item.
 ---@return table
@@ -26,7 +26,7 @@ function M.build_pre_context()
 end
 
 ---Restore editor state based on context
----@param context Context
+---@param context LegendaryEditorContext
 function M.restore_context(context, callback)
   Toolbox.set_marks(context.marks)
   if vim.startswith(context.mode, 'n') then
@@ -41,7 +41,7 @@ function M.restore_context(context, callback)
   end
 
   -- For some reason diagnostics says
-  --this signature is wrong but it isn't
+  -- this signature is wrong but it isn't
   ---@diagnostic disable
   vim.defer_fn(function()
     callback()
@@ -51,7 +51,7 @@ end
 
 ---Execute an item
 ---@param item LegendaryItem
----@param context Context
+---@param context LegendaryEditorContext
 function M.exec_item(item, context)
   vim.schedule(function()
     M.restore_context(context, function()

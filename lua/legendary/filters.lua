@@ -5,7 +5,7 @@ local M = {}
 --- Return a `LegendaryItemFilter` that filters items
 --- by the specified mode
 ---@param mode string
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.mode(mode)
   return function(item)
     -- include everything that isn't a keymap since they aren't tied to a mode
@@ -25,31 +25,31 @@ end
 
 --- Return a `LegendaryItemFilter` that filters items
 --- by the current mode
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.current_mode()
   return M.mode((vim.fn.mode() or 'n'))
 end
 
 ---Filter to only show keymaps
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.keymaps()
   return Toolbox.is_keymap
 end
 
 ---Filter to only show commands
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.commands()
   return Toolbox.is_command
 end
 
 ---Filter to only show autocmds
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.autocmds()
   return Toolbox.is_autocmd
 end
 
 ---Filter to only show functions
----@return ItemFilter
+---@return LegendaryItemFilter
 function M.funcs()
   return Toolbox.is_function
 end
