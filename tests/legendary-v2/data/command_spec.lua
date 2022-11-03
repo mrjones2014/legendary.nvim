@@ -1,5 +1,5 @@
 local assert = require('luassert')
-local Command = require('legendary-v2.types.command')
+local Command = require('legendary-v2.data.command')
 
 describe('Command', function()
   describe('parse', function()

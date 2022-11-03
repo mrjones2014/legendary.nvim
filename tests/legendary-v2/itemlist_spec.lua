@@ -1,8 +1,8 @@
 local assert = require('luassert')
 local Toolbox = require('legendary-v2.toolbox')
-local ItemList = require('legendary-v2.itemlist')
-local Keymap = require('legendary-v2.types.keymap')
-local Command = require('legendary-v2.types.command')
+local ItemList = require('legendary-v2.data.itemlist')
+local Keymap = require('legendary-v2.data.keymap')
+local Command = require('legendary-v2.data.command')
 
 describe('ItemList', function()
   describe('add', function()
