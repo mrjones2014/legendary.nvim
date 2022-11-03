@@ -1,141 +1,164 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local string = _tl_compat and _tl_compat.string or string
+local Config = require('legendary.config')
+local State = require('legendary.data.state')
+local Ui = require('legendary.ui')
+local Executor = require('legendary.api.executor')
+local Keymap = require('legendary.data.keymap')
+local Command = require('legendary.data.command')
+local Augroup = require('legendary.data.augroup')
+local Autocmd = require('legendary.data.autocmd')
+local Function = require('legendary.data.function')
+local LegendaryWhichKey = require('legendary.integrations.which-key')
 
-require('legendary.types')
+-- TODO leave this in here for a bit, take it out a few weeks/months
+-- after v2 is launched.
+local function show_notice()
+  vim.defer_fn(function()
+    vim.notify(
+      'legendary.nvim now uses semantic versioning via git tags. If you are experiencing errors with the new version, '
+        .. 'please pin to a version tag or update your configuration. See updated documentation at '
+        .. 'https://github.com/mrjones2014/legendary.nvim for more details.'
+    )
+  end, 500)
+end
+
+if vim.v.vim_did_enter then
+  show_notice()
+else
+  vim.api.nvim_create_autocmd('VimEnter', { callback = show_notice, once = true })
+end
+
+---@param parser LegendaryItem
+---@return fun(items:table[])
+local function build_parser_func(parser)
+  return function(items)
+    if not vim.tbl_islist(items) then
+      error(string.format('Expected list, got ', type(items)))
+      return
+    end
+
+    State.items:add(vim.tbl_map(function(item)
+      return parser:parse(item):apply()
+    end, items))
+  end
+end
 
 local M = {}
 
-local wk = require('legendary.compat.which-key')
-
-
-
-
-
-
-M.bind_whichkey = wk.bind_whichkey
-
-
-
-
-
-
-
-
-M.parse_whichkey = wk.parse_whichkey
-
-
-
-
-M.whichkey_listen = wk.whichkey_listen
-
-
-local b = require('legendary.bindings')
-
-
-
-
-M.bind_keymap = b.bind_keymap
-
-
-
-
-M.bind_keymaps = b.bind_keymaps
-
-
-
-
-M.bind_command = b.bind_command
-
-
-
-
-M.bind_commands = b.bind_commands
-
-
-
-
-M.bind_autocmds = b.bind_autocmds
-
-
-
-
-M.bind_function = b.bind_function
-
-
-
-
-M.bind_functions = b.bind_functions
-
-
-
-
-
-
-
-
-
-M.find = b.find
-
-
-
-
-
-M.setup = function(new_config)
-   local config = require('legendary.config')
-   config.setup(new_config)
-   if config.include_builtin then
-      require('legendary.builtins').register_builtins()
-   end
-
-   if config.include_legendary_cmds then
-      require('legendary.cmds').register()
-   end
-
-   if config.keymaps and type(config.keymaps) ~= 'table' then
-      require('legendary.utils').notify(string.format('keymaps must be a list-like table, got: %s', type(config.keymaps)))
+function M.setup(cfg)
+  Config.setup(cfg)
+
+  if Config.which_key.auto_register then
+    LegendaryWhichKey.whichkey_listen()
+  end
+
+  if #Config.which_key.mappings > 0 then
+    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
+  end
+
+  M.keymaps(Config.keymaps)
+  M.commands(Config.commands)
+  M.funcs(Config.functions)
+  M.autocmds(Config.autocmds)
+
+  -- apply items
+  vim.tbl_map(function(item)
+    item:apply()
+  end, State.items.items)
+
+  -- Add builtins after apply since they don't need applied
+  if Config.include_builtin then
+    -- inline require to avoid the cost of importing
+    -- this somewhat large data file if not needed
+    local Builtins = require('legendary.data.builtins')
+
+    State.items:add(vim.tbl_map(function(keymap)
+      return Keymap:parse(keymap)
+    end, Builtins.builtin_keymaps))
+
+    State.items:add(vim.tbl_map(function(command)
+      return Command:parse(command)
+    end, Builtins.builtin_commands))
+  end
+
+  if Config.include_legendary_cmds then
+    require('legendary.api.cmds').register()
+  end
+end
+
+---Find items using vim.ui.select()
+---@param opts LegendaryFindOpts
+---@overload fun()
+function M.find(opts)
+  local context = Executor.build_pre_context()
+
+  Ui.select(opts, function(selected)
+    if not selected then
       return
-   end
+    end
 
-   if config.keymaps and #config.keymaps > 0 then
-      require('legendary.bindings').bind_keymaps(config.keymaps)
-   end
+    Executor.exec_item(selected, context)
+  end)
+end
 
-   if config.commands and type(config.commands) ~= 'table' then
-      require('legendary.utils').notify(
-      string.format('commands must be a list-like table, got: %s', type(config.commands)))
+---@diagnostic disable: undefined-doc-param
+-- disable undefined-doc-param since we're dynamically generating these functions
+-- but I still want them to be annotated
 
-      return
-   end
+---Bind a *list of keymaps*
+---@param keymaps table[]
+M.keymaps = build_parser_func(Keymap)
 
-   if config.commands and #config.commands > 0 then
-      require('legendary.bindings').bind_commands(config.commands)
-   end
+---Bind a *single keymap*
+---@param keymap table
+function M.keymap(keymap)
+  M.keymaps({ keymap })
+end
 
-   if config.autocmds and #config.autocmds > 0 then
-      require('legendary.bindings').bind_autocmds(config.autocmds)
-   end
+---Bind a *list of commands*
+---@param commands table[]
+M.commands = build_parser_func(Command)
 
-   if config.functions and type(config.functions) ~= 'table' then
-      require('legendary.utils').notify(
-      string.format('functions must be a list-like table, got: %s', type(config.functions)))
+---Bind a *single command*
+---@param command table
+function M.command(command)
+  M.commands({ command })
+end
 
-      return
-   end
+---Bind a *list of functions*
+---@param functions table[]
+M.funcs = build_parser_func(Function)
 
-   if config.functions and #config.functions > 0 then
-      require('legendary.bindings').bind_functions(config.functions)
-   end
+---Bind a *single function*
+---@param function table
+function M.func(func)
+  M.funcs({ func })
+end
 
-   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then
-      require('legendary.compat.which-key').bind_whichkey(
-      config.which_key.mappings,
-      config.which_key.opts,
-      config.which_key.do_binding)
+---@diagnostic enable: undefined-doc-param
 
-   end
+---Bind a *list of* autocmds and/or augroups
+---@param aus (Autocmd|Augroup)[]
+function M.autocmds(aus)
+  if not vim.tbl_islist(aus) then
+    vim.notify(string.format('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus)))
+    return
+  end
 
-   if config.auto_register_which_key then
-      require('legendary.compat.which-key').whichkey_listen()
-   end
+  for _, augroup_or_autocmd in ipairs(aus) do
+    if type(augroup_or_autocmd.name) == 'string' and #augroup_or_autocmd.name > 0 then
+      local autocmds = Augroup:parse(augroup_or_autocmd --[[@as Augroup]]):apply().autocmds
+      State.items:add(autocmds)
+    else
+      -- Only add Autocmds to the list since Augroups can't be executed
+      State.items:add({ Autocmd:parse(augroup_or_autocmd):apply() })
+    end
+  end
+end
+
+---Bind a *single autocmd/augroup*
+---@param au Autocmd|Augroup
+function M.autocmd(au)
+  M.autocmds({ au })
 end
 
 return M
