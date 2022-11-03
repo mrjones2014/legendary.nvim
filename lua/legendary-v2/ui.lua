@@ -28,6 +28,9 @@ function M.select(opts, callback)
       return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding)
     end,
   }, function(selected)
+    if selected and Config.most_recent_items_at_top then
+      State.items:sort_inplace_by_recent(selected)
+    end
     callback(selected)
   end)
 end

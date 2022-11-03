@@ -19,6 +19,7 @@ local config = {
 ---@field col_separator_char string
 ---@field default_item_formatter ItemFormatter
 ---@field include_builtin boolean
+---@field most_recent_items_at_top boolean
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]
