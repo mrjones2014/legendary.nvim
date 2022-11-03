@@ -16,7 +16,7 @@ jobs:
     - name: Setup 'lua'
       uses: leafo/gh-actions-lua@v8
       with:
-        luaVersion: "5.1.5"
+        luaVersion: "luajit-openresty"
     - name: Run Stylua
       uses: JohnnyMorganz/stylua-action@1.0.0
       with:
