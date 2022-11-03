@@ -15,17 +15,19 @@ local M = {}
 function M.select(opts, callback)
   opts = opts or {}
   local items = State.items:filter(opts.filters or {})
-  local prompt = opts.prompt or Config.select_prompt
+  local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
     prompt = prompt()
   end
 
-  local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter)
+  local mode = vim.fn.mode()
+
+  local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, mode)
 
   vim.ui.select(items, {
     prompt = prompt,
     format_item = function(item)
-      return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding)
+      return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding, mode)
     end,
   }, function(selected)
     if selected and Config.most_recent_items_at_top then
