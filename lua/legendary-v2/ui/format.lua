@@ -1,8 +1,5 @@
 local Config = require('legendary-v2.config')
-local Keymap = require('legendary-v2.data.keymap')
-local Command = require('legendary-v2.data.command')
-local Autocmd = require('legendary-v2.data.autocmd')
-local Function = require('legendary-v2.data.function')
+local Toolbox = require('legendary-v2.toolbox')
 
 local M = {}
 
@@ -16,25 +13,25 @@ end
 ---@param item LegendaryItem
 ---@return string[]
 function M.default_format(item)
-  if item.class == Keymap then
+  if Toolbox.is_keymap(item) then
     return {
       table.concat(item:modes(), ', '),
       item.keys,
       item.description,
     }
-  elseif item.class == Command then
+  elseif Toolbox.is_command(item) then
     return {
       '',
       item.cmd,
       item.description,
     }
-  elseif item.class == Autocmd then
+  elseif Toolbox.is_autocmd(item) then
     return {
       table.concat(item.events, ', '),
       table.concat(vim.tbl_get(item, 'opts', 'pattern') or { '*' }, ', '),
       item.description,
     }
-  elseif item.class == Function then
+  elseif Toolbox.is_function(item) then
     return {
       '',
       '<function>',

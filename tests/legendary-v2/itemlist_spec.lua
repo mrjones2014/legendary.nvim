@@ -1,8 +1,8 @@
 local assert = require('luassert')
+local Toolbox = require('legendary-v2.toolbox')
 local ItemList = require('legendary-v2.itemlist')
 local Keymap = require('legendary-v2.types.keymap')
 local Command = require('legendary-v2.types.command')
-local util = require('legendary-v2.util')
 
 describe('ItemList', function()
   describe('add', function()
@@ -35,7 +35,7 @@ describe('ItemList', function()
       local command = Command:parse({ ':MyCommand', function() end, description = 'test cmd' })
       local list = ItemList:create()
       list:add({ keymap, command })
-      local filtered = list:filter(util.is_keymap)
+      local filtered = list:filter(Toolbox.is_keymap)
       assert.are.same(#filtered, 1)
       assert.are.same(filtered[1], keymap)
     end)
@@ -47,7 +47,7 @@ describe('ItemList', function()
       local list = ItemList:create()
       list:add({ keymap, keymap2, command })
       local filtered = list:filter({
-        util.is_keymap,
+        Toolbox.is_keymap,
         function(item)
           return item.description == keymap.description
         end,

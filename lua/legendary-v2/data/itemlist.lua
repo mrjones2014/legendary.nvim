@@ -1,6 +1,6 @@
 local class = require('legendary-v2.api.middleclass')
 local util = require('legendary-v2.util')
-local Augroup = require('legendary-v2.data.augroup')
+local Toolbox = require('legendary-v2.toolbox')
 
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function
 
@@ -30,7 +30,7 @@ function ItemList:add(items)
 
   ---@type LegendaryItem
   for _, item in ipairs(items) do
-    if item.class == Augroup then
+    if Toolbox.is_augroup(item) then
       local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '
         .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
       vim.notify(msg)
