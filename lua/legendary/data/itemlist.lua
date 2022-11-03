@@ -34,23 +34,16 @@ function ItemList:add(items)
       local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '
         .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
       vim.notify(msg)
-      goto add_loop_continue
-    end
-
-    if not item.description or #item.description == 0 then
-      goto add_loop_continue
-    end
-
-    local id = item:id()
-    if self.duplicate_tracker[id] then
-      goto add_loop_continue
     else
-      self.duplicate_tracker[id] = true
+      if item.description and #item.description == 0 then
+        local id = item:id()
+        if not self.duplicate_tracker[id] then
+          self.duplicate_tracker[id] = true
+        end
+
+        table.insert(self.items, item)
+      end
     end
-
-    table.insert(self.items, item)
-
-    ::add_loop_continue::
   end
 end
 
