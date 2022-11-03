@@ -167,12 +167,13 @@ require('legendary').setup({
     -- How to show the results of evaluated Lua code.
     -- 'print' for `print(result)`, 'float' for a floating window.
     results_view = 'float',
-    -- Path to the cache file used to restore scratchpad buffer contents,
-    -- set to `false` to disable restoring from cache.
-    cache_path = string.format('%s/%s', vim.fn.stdpath('cache'), 'legendary_scratch.lua'),
     -- Border style for floating windows related to the scratchpad
     float_border = 'rounded',
+    -- Whether to restore scratchpad contents from a cache file
+    keep_contents = true,
   },
+  -- Directory used for caches
+  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
 })
 ```
 

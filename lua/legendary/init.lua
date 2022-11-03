@@ -81,7 +81,7 @@ function M.setup(cfg)
   end
 
   if Config.include_legendary_cmds then
-    require('legendary.api.cmds').register()
+    State.items:add(require('legendary.api.cmds').cmds)
   end
 end
 
