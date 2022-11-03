@@ -22,7 +22,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --check tests/
-        version: 0.10.1
     - name: Setup 'luarocks'
       uses: leafo/gh-actions-luarocks@v4
     - name: Install Luacheck
