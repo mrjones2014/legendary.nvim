@@ -36,7 +36,7 @@ function M.setup(cfg)
   -- apply items
   vim.tbl_map(function(item)
     item:apply()
-  end, State.items:get())
+  end, State.items.items)
 
   -- Add builtins after apply since they don't need applied
   if Config.include_builtin then

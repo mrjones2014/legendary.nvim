@@ -30,6 +30,13 @@ function ItemList:add(items)
 
   ---@type LegendaryItem
   for _, item in ipairs(items) do
+    if item.class == Augroup then
+      local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '
+        .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
+      vim.notify(msg)
+      goto add_loop_continue
+    end
+
     if not item.description or #item.description == 0 then
       goto add_loop_continue
     end
@@ -50,7 +57,7 @@ end
 ---@alias ItemFilter fun(item:LegendaryItem):boolean
 
 ---Filter the ItemList. Returns a *new* ItemList,
----self remains immutable. Filters to runnable items by default.
+---self remains immutable.
 ---@param filters ItemFilter|ItemFilter[]
 ---@return LegendaryItem[]
 function ItemList:filter(filters)
@@ -60,35 +67,25 @@ function ItemList:filter(filters)
   end
 
   if #filters == 0 then
-    return self:runnables()
+    return self.items
   end
 
   return vim.tbl_filter(function(item)
     return util.tbl_all(filters, function(filter)
       return filter(item)
     end)
-  end, self:runnables())
+  end, self.items)
 end
 
----Get a *copy* of the item list
----@return LegendaryItem[]
-function ItemList:get()
-  return vim.deepcopy(self.items)
-end
-
----Get executable items, e.g. augroups are collapsed to the autocmds they contain.
-function ItemList:runnables()
-  local runnables = {}
-
-  for _, item in ipairs(self.items) do
-    if item.class == Augroup then
-      runnables = vim.list_extend(runnables, item.autocmds, 1, #item.autocmds)
-    else
-      table.insert(runnables, item)
-    end
-  end
-
-  return runnables
+---Sort *in place* to move the most
+---recent item to the top.
+---THIS MODIFIES THE LIST IN PLACE.
+---@param most_recent LegendaryItem
+function ItemList:sort_inplace_by_recent(most_recent)
+  local Sorter = require('legendary-v2.sorter')
+  self.items = Sorter.stable_sort(self.items, function(item)
+    return item == most_recent
+  end)
 end
 
 return ItemList

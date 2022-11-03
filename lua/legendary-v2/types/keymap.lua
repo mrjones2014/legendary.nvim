@@ -104,6 +104,10 @@ function Keymap:modes()
     end
   end
 
+  if #modes == 0 then
+    return { 'n' }
+  end
+
   return modes
 end
 
