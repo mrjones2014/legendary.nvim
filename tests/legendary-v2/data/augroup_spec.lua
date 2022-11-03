@@ -1,6 +1,6 @@
 local assert = require('luassert')
-local Augroup = require('legendary-v2.types.augroup')
-local Autocmd = require('legendary-v2.types.autocmd')
+local Augroup = require('legendary-v2.data.augroup')
+local Autocmd = require('legendary-v2.data.autocmd')
 
 describe('Augroup', function()
   describe('parse', function()
@@ -8,7 +8,6 @@ describe('Augroup', function()
       local tbl = { name = 'LegendaryTestAugroup', clear = false }
       local augroup = Augroup:parse(tbl)
       assert.are.same(augroup.name, tbl.name)
-      assert.are.same(augroup.kind, 'legendary.augroup')
       assert.False(augroup.clear)
     end)
 
@@ -26,7 +25,6 @@ describe('Augroup', function()
       }
       local augroup = Augroup:parse(tbl)
       assert.are.same(augroup.name, tbl.name)
-      assert.are.same(augroup.kind, 'legendary.augroup')
       assert.True(augroup.clear)
       assert.are.same(#augroup.autocmds, 1)
       assert.are.same(augroup.autocmds[1].class, Autocmd)

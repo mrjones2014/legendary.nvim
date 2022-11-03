@@ -1,5 +1,5 @@
 local assert = require('luassert')
-local Autocmd = require('legendary-v2.types.autocmd')
+local Autocmd = require('legendary-v2.data.autocmd')
 
 describe('Autocmd', function()
   describe('parse', function()
