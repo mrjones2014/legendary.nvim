@@ -1,5 +1,5 @@
-local class = require('legendary-v2.middleclass')
-local Autocmd = require('legendary-v2.types.autocmd')
+local class = require('legendary-v2.api.middleclass')
+local Autocmd = require('legendary-v2.data.autocmd')
 local util = require('legendary-v2.util')
 
 ---@class Augroup : Autocmd[]

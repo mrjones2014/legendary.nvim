@@ -1,8 +1,8 @@
 local Config = require('legendary-v2.config')
-local Keymap = require('legendary-v2.types.keymap')
-local Command = require('legendary-v2.types.command')
-local Autocmd = require('legendary-v2.types.autocmd')
-local Function = require('legendary-v2.types.function')
+local Keymap = require('legendary-v2.data.keymap')
+local Command = require('legendary-v2.data.command')
+local Autocmd = require('legendary-v2.data.autocmd')
+local Function = require('legendary-v2.data.function')
 
 local M = {}
 

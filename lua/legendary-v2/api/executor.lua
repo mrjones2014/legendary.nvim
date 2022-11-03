@@ -1,8 +1,8 @@
 local util = require('legendary-v2.util')
-local Keymap = require('legendary-v2.types.keymap')
-local Command = require('legendary-v2.types.command')
-local Autocmd = require('legendary-v2.types.autocmd')
-local Function = require('legendary-v2.types.function')
+local Keymap = require('legendary-v2.data.keymap')
+local Command = require('legendary-v2.data.command')
+local Autocmd = require('legendary-v2.data.autocmd')
+local Function = require('legendary-v2.data.function')
 
 local M = {}
 
@@ -44,9 +44,13 @@ function M.restore_context(context, callback)
     return
   end
 
+  -- For some reason diagnostics says
+  --this signature is wrong but it isn't
+  ---@diagnostic disable
   vim.defer_fn(function()
     callback()
   end, 1)
+  ---@diagnostic enable
 end
 
 ---Execute an item

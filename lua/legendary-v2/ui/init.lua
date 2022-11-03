@@ -1,6 +1,6 @@
 local Config = require('legendary-v2.config')
-local State = require('legendary-v2.state')
-local Format = require('legendary-v2.format')
+local State = require('legendary-v2.data.state')
+local Format = require('legendary-v2.ui.format')
 
 local M = {}
 

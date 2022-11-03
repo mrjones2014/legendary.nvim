@@ -39,7 +39,7 @@ end
 ---@return boolean
 function M.is_keymap(keymap)
   -- inline require to avoid circular dependency
-  return keymap.class == require('legendary-v2.types.keymap')
+  return keymap.class == require('legendary-v2.data.keymap')
 end
 
 ---Check if an item is a Command
@@ -47,7 +47,7 @@ end
 ---@return boolean
 function M.is_command(cmd)
   -- inline require to avoid circular dependency
-  return cmd.class == require('legendary-v2.types.command')
+  return cmd.class == require('legendary-v2.data.command')
 end
 
 ---Check if an item is an Augroup
@@ -55,7 +55,7 @@ end
 ---@return boolean
 function M.is_augroup(au)
   -- inline require to avoid circular dependency
-  return au.class == require('legendary-v2.types.augroup')
+  return au.class == require('legendary-v2.data.augroup')
 end
 
 ---Check if an item is an Autocmd
@@ -63,7 +63,7 @@ end
 ---@return boolean
 function M.is_autocmd(autocmd)
   -- inline require to avoid circular dependency
-  return autocmd.class == require('legendary-v2.types.autocmd')
+  return autocmd.class == require('legendary-v2.data.autocmd')
 end
 
 ---Check if an item is an Augroup or Autocmd
@@ -71,8 +71,8 @@ end
 ---@return boolean
 function M.is_augroup_or_autocmd(au_or_autocmd)
   -- inline require to avoid circular dependency
-  return au_or_autocmd.class == require('legendary-v2.types.augroup')
-    or au_or_autocmd.class == require('legendary-v2.types.autocmd')
+  return au_or_autocmd.class == require('legendary-v2.data.augroup')
+    or au_or_autocmd.class == require('legendary-v2.data.autocmd')
 end
 
 ---Check if an item is a Function
@@ -80,7 +80,7 @@ end
 ---@return boolean
 function M.is_function(func)
   -- inline require to avoid circular dependency
-  return func.class == require('legendary-v2.types.function')
+  return func.class == require('legendary-v2.data.function')
 end
 
 function M.is_visual_mode(mode_str)
