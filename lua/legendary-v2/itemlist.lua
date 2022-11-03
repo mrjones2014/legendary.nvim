@@ -83,7 +83,7 @@ end
 ---@param most_recent LegendaryItem
 function ItemList:sort_inplace_by_recent(most_recent)
   local Sorter = require('legendary-v2.sorter')
-  self.items = Sorter.stable_sort(self.items, function(item)
+  self.items = Sorter.mergesort(self.items, function(item)
     return item == most_recent
   end)
 end
