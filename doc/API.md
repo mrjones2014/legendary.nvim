@@ -52,9 +52,11 @@ require('legendary').find({
 
 -- find only keymaps, and filter by current mode
 require('legendary').find({
-  kind = 'keymaps',
-  filters = { require('legendary.filters').current_mode() }
-)
+  filters = {
+    require('legendary.filters').current_mode(),
+    require('legendary.filters').keymap(),
+  },
+})
 -- filter keymaps by normal mode
 require('legendary').find({
   filters = require('legendary.filters').mode('n')
@@ -64,11 +66,7 @@ require('legendary').find({
   filters = {
     require('legendary.filters').mode('n'),
     function(item)
-      if not string.find(item.kind, 'keymap') then
-        return false
-      end
-
-      return vim.startswith(item[1], '<leader>')
+      return require('legendary.toolbox').is_keymap(item) and vim.startswith(item[1], '<leader>')
     end
   }
 })

@@ -7,7 +7,6 @@ local util = require('legendary-v2.util')
 ---@field opts table
 ---@field description string
 ---@field group string|integer|nil
----@field kind 'legendary.autocmd'
 ---@field class Autocmd
 local Autocmd = class('Autocmd')
 
@@ -31,7 +30,6 @@ function Autocmd:parse(tbl) -- luacheck: no unused
   instance.opts = tbl.opts
   instance.description = util.get_desc(tbl)
   instance.group = tbl.group
-  instance.kind = 'legendary.autocmd'
 
   return instance
 end
