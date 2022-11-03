@@ -7,6 +7,7 @@ local Command = require('legendary-v2.data.command')
 local Augroup = require('legendary-v2.data.augroup')
 local Autocmd = require('legendary-v2.data.autocmd')
 local Function = require('legendary-v2.data.function')
+local LegendaryWhichKey = require('legendary-v2.integrations.which-key')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -27,6 +28,14 @@ local M = {}
 
 function M.setup(cfg)
   Config.setup(cfg)
+
+  if Config.which_key.auto_register then
+    LegendaryWhichKey.whichkey_listen()
+  end
+
+  if #Config.which_key.mappings > 0 then
+    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
+  end
 
   M.keymaps(Config.keymaps)
   M.commands(Config.commands)

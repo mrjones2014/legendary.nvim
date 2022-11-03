@@ -8,7 +8,19 @@ local config = {
   default_item_formatter = nil,
   include_builtin = true,
   most_recent_items_at_top = true,
+  which_key = {
+    auto_register = false,
+    mappings = {},
+    opts = {},
+    do_binding = true,
+  },
 }
+
+---@class LegendaryWhichkeyConfig
+---@field auto_register boolean
+---@field mappings table[]
+---@field opts table
+---@field do_binding boolean
 
 ---@class LegendaryConfig
 ---@field keymaps Keymap[]
@@ -20,6 +32,7 @@ local config = {
 ---@field default_item_formatter ItemFormatter
 ---@field include_builtin boolean
 ---@field most_recent_items_at_top boolean
+---@field which_key LegendaryWhichkeyConfig
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]
