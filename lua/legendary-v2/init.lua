@@ -132,7 +132,7 @@ function M.autocmds(aus)
       State.items:add(autocmds)
     else
       -- Only add Autocmds to the list since Augroups can't be executed
-      State.items:add({ Autocmd:parse(augroup_or_autocmd) })
+      State.items:add({ Autocmd:parse(augroup_or_autocmd):apply() })
     end
   end
 end
