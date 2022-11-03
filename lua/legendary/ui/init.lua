@@ -5,9 +5,9 @@ local Format = require('legendary.ui.format')
 local M = {}
 
 ---@class LegendaryFindOpts
----@field filters ItemFilter[]
+---@field filters LegendaryItemFilter[]
 ---@field prompt string|fun():string
----@field formatter ItemFormatter
+---@field formatter LegendaryItemFormatter
 
 ---Select an item
 ---@param opts LegendaryFindOpts

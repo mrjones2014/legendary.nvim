@@ -2,7 +2,7 @@ local class = require('legendary.api.middleclass')
 local Autocmd = require('legendary.data.autocmd')
 local util = require('legendary.util')
 
----@class Augroup : Autocmd[]
+---@class Augroup
 ---@field name string
 ---@field clear boolean|nil
 ---@field autocmds Autocmd

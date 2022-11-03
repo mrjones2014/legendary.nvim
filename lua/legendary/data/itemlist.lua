@@ -47,11 +47,11 @@ function ItemList:add(items)
   end
 end
 
----@alias ItemFilter fun(item:LegendaryItem):boolean
+---@alias LegendaryItemFilter fun(item:LegendaryItem):boolean
 
 ---Filter the ItemList. Returns a *new* ItemList,
 ---self remains immutable.
----@param filters ItemFilter|ItemFilter[]
+---@param filters LegendaryItemFilter|LegendaryItemFilter[]
 ---@return LegendaryItem[]
 function ItemList:filter(filters)
   -- wrap in list to make following code more succinct

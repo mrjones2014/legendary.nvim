@@ -78,7 +78,7 @@ local config = {
 ---@field functions Function[]
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string
----@field default_item_formatter ItemFormatter
+---@field default_item_formatter LegendaryItemFormatter
 ---@field include_builtin boolean
 ---@field include_legendary_cmds boolean
 ---@field most_recent_items_at_top boolean
