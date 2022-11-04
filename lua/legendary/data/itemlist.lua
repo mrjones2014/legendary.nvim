@@ -74,6 +74,12 @@ end
 ---THIS MODIFIES THE LIST IN PLACE.
 ---@param most_recent LegendaryItem
 function ItemList:sort_inplace_by_recent(most_recent)
+  if self.items[1] == most_recent then
+    -- nothing to do, and attempting to sort will cause
+    -- an error since it doesn't need to be sorted
+    return
+  end
+
   local Sorter = require('legendary.api.sorter')
   self.items = Sorter.mergesort(self.items, function(item)
     return item == most_recent
