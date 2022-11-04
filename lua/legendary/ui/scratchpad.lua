@@ -133,6 +133,19 @@ function M.open()
   vim.api.nvim_buf_set_option(scratchpad_buf_id, 'buftype', 'acwrite')
   vim.api.nvim_buf_set_name(scratchpad_buf_id, 'Legendary Scratchpad')
 
+  -- we either don't save it, or we're saving it
+  -- automatically, so just always set nomodified
+  vim.api.nvim_create_autocmd('TextChanged', {
+    callback = function()
+      ---@diagnostic disable
+      vim.defer_fn(function()
+        pcall(vim.api.nvim_buf_set_option, scratchpad_buf_id, 'modified', false)
+      end, 1)
+      ---@diagnostic enable
+    end,
+    buffer = scratchpad_buf_id,
+  })
+
   if Config.scratchpad.keep_contents then
     load_from_cache(scratchpad_buf_id)
     write_cache_autocmd(scratchpad_buf_id)
