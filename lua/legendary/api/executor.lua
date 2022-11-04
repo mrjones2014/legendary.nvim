@@ -1,5 +1,4 @@
 local Toolbox = require('legendary.toolbox')
-local util = require('legendary.util')
 
 local M = {}
 
@@ -65,18 +64,14 @@ function M.exec_item(item, context)
         else
           vim.cmd(cmd)
         end
-      elseif Toolbox.is_keymap(item) or Toolbox.is_autocmd(item) then
+      elseif Toolbox.is_keymap(item) then
+        exec_feedkeys(item.keys)
+      elseif Toolbox.is_autocmd(item) then
         local impl = item.implementation
         if type(impl) == 'function' then
           impl()
-        elseif type(impl) == 'string' then
-          if vim.startswith(impl, ':') or vim.startswith(impl:lower(), '<cmd>') then
-            vim.cmd(util.sanitize_cmd_str(impl))
-          else
-            exec_feedkeys(impl)
-          end
-        elseif Toolbox.is_keymap(item) then
-          exec_feedkeys(item.keys)
+        else
+          exec_feedkeys(impl)
         end
       end
     end)
