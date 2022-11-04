@@ -23,12 +23,10 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --check lua/ tests/
         version: 0.15.2
-    - name: Setup 'luarocks'
-      uses: leafo/gh-actions-luarocks@v4
-    - name: Install Luacheck
-      run: luarocks install luacheck
-    - name: Run Checks
-      run: make check
+    - name: Run Luacheck
+      uses: lunarmodules/luacheck@v1
+      with:
+        args: lua/legendary/ tests/
     - name: Install Neovim
       uses: rhysd/action-setup-vim@v1
       with:
