@@ -1,5 +1,4 @@
 local Command = require('legendary.data.command')
-local State = require('legendary.data.state')
 
 local M = {}
 
@@ -66,6 +65,11 @@ end, {
     ':LegendaryScratch',
     require('legendary.ui.scratchpad').open,
     description = 'Create a Lua scratchpad buffer to help develop commands and keymaps',
+  },
+  {
+    ':LegendaryScratchToggle',
+    require('legendary.ui.scratchpad').toggle,
+    description = 'Toggle the legendary.nvim Lua scratchpad buffer',
   },
   {
     ':LegendaryEvalLine',
