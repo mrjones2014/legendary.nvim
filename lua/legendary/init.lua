@@ -1,7 +1,6 @@
 local Config = require('legendary.config')
 local State = require('legendary.data.state')
 local Ui = require('legendary.ui')
-local Executor = require('legendary.api.executor')
 local Keymap = require('legendary.data.keymap')
 local Command = require('legendary.data.command')
 local Augroup = require('legendary.data.augroup')
@@ -89,15 +88,7 @@ end
 ---@param opts LegendaryFindOpts
 ---@overload fun()
 function M.find(opts)
-  local context = Executor.build_pre_context()
-
-  Ui.select(opts, function(selected)
-    if not selected then
-      return
-    end
-
-    Executor.exec_item(selected, context)
-  end)
+  Ui.select(opts)
 end
 
 ---@diagnostic disable: undefined-doc-param

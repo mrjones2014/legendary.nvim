@@ -10,7 +10,6 @@ local ItemList = class('ItemList')
 ---@private
 function ItemList:initialize()
   self.items = {}
-  self.builtins_added = false
   self.duplicate_tracker = {}
 end
 
