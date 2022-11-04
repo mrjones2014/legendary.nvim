@@ -28,7 +28,7 @@ local functions = {
     end,
     description = "Revert Selected Ranges/Reset the lines of the hunk",
   },
-  lazy(vim.cmd.Telescope, "git_files"), description = "Git Files",
+  { lazy(vim.cmd.Telescope, "git_files"), description = "Git Files" },
 }
 ```
 

@@ -27,6 +27,7 @@ end
 function Function:apply() -- luacheck: no unused
   -- no-op, just for the sake of keeping the same interface
   -- between item types
+  return self
 end
 
 function Function:id()
