@@ -45,8 +45,7 @@ check-stylua:
 	@if test -z "$$CI"; then echo "Running \`stylua\`..." && stylua tests/ && echo "No stylua errors found.\n"; fi
 
 .PHONY: check
-check: check-luacheck
-check: check-stylua
+check: check-luacheck check-stylua
 
 .PHONY: api-docs
 api-docs:

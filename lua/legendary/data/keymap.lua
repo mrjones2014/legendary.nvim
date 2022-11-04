@@ -13,6 +13,8 @@ local util = require('legendary.util')
 ---@field s ModeKeymapOpts
 ---@field t ModeKeymapOpts
 ---@field i ModeKeymapOpts
+---@field o ModeKeymapOpts
+---@field l ModeKeymapOpts
 
 ---@class Keymap
 ---@field keys string
@@ -43,6 +45,8 @@ function Keymap:parse(tbl) -- luacheck: no unused
       s = { tbl[2].s, { 'string', 'function', 'table' }, true },
       t = { tbl[2].t, { 'string', 'function', 'table' }, true },
       i = { tbl[2].i, { 'string', 'function', 'table' }, true },
+      o = { tbl[2].i, { 'string', 'function', 'table' }, true },
+      l = { tbl[2].i, { 'string', 'function', 'table' }, true },
     })
   end
 
@@ -125,6 +129,57 @@ function Keymap:modes()
   end
 
   return modes
+end
+
+function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unused
+  local ok, cmd_info = pcall(vim.api.nvim_parse_cmd, vimscript_str, {})
+  if not ok then
+    vim.notify(string.format('[legendary.nvim] Error parsing vimscript keymap: %s', cmd_info))
+    return
+  end
+
+  local keys = cmd_info.args[1]
+  local opts = {}
+  local rest = vim.list_slice(cmd_info.args, 2, #cmd_info.args)
+  local idx_of_rhs = 0
+  for _, arg in ipairs(rest) do
+    idx_of_rhs = idx_of_rhs + 1
+    local lower = arg:lower()
+    if lower == '<buffer>' then
+      opts.buffer = vim.api.nvim_get_current_buf()
+    elseif lower == '<nowait>' then
+      opts.nowait = true
+    elseif lower == '<silent>' then
+      opts.silent = true
+    elseif lower == '<script>' then -- luacheck: ignore
+      -- I don't think we can handle this one
+    elseif lower == '<expr>' then
+      opts.expr = true
+    elseif lower == '<unique>' then
+      opts.unique = true
+    else
+      break
+    end
+  end
+
+  local cmd = cmd_info.cmd:lower()
+  local cmd_first_char = cmd:sub(1, 1)
+  if cmd ~= 'map' and cmd ~= 'noremap' then
+    opts.mode = cmd_first_char
+    if vim.startswith(cmd, string.format('%sno', cmd_first_char)) then
+      opts.remap = false
+    else
+      opts.remap = true
+    end
+  else
+    opts.mode = { 'n', 'v', 's', 'o' }
+    if cmd == 'noremap' then
+      opts.remap = false
+    end
+  end
+
+  local rhs = table.concat(vim.list_slice(rest, idx_of_rhs, #rest))
+  return Keymap:parse({ keys, rhs, description = description, opts = opts })
 end
 
 return Keymap

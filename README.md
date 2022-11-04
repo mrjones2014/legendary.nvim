@@ -36,6 +36,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
 - A `legendary.toolbox` module to help create lazily-evaluated keymaps and commands, and item filter. Have an idea for a new helper? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/90) or submit a PR!
+- A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
 
 ## Prerequisites
 

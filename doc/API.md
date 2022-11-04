@@ -5,6 +5,8 @@ This can be useful for things like binding language-specific keyaps in the LSP `
 
 The main API functions are described below. To see full API documentation, run `:LegendaryApi`.
 
+## Binding Keymaps, Commands, Autocmds, and Functions
+
 ```lua
 -- bind a single keymap
 require('legendary').keymap(keymap)
@@ -70,4 +72,26 @@ require('legendary').find({
     end
   }
 })
+```
+
+## Converting Keymaps From Vimscript
+
+Keymaps can be parsed from Vimscript commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`).
+
+```lua
+-- Function signature
+require('legendary.data.keymap'):from_vimscript(vimscript_str, description)
+-- For example
+require('legendary.data.keymap'):from_vimscript(':vnoremap <silent> <leader>f :SomeCommand<CR>', 'Description of my keymap')
+-- Returns the following table
+{
+  '<leader>f',
+  ':SomeCommand<CR>',
+  description = 'Description of my keymap',
+  mode = 'v',
+  opts = {
+    silent = true,
+    remap = false,
+  },
+}
 ```
