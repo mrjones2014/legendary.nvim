@@ -37,7 +37,7 @@ test: ensure-test-deps
 .PHONY: check-luacheck
 check-luacheck:
 	@echo "Running \`luacheck\`..."
-	@luacheck tests/
+	@luacheck lua/legendary/ tests/
 	@echo ""
 
 .PHONY: check-stylua # stylua gets run through a separate GitHub Action in CI
