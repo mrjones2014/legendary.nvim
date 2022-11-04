@@ -84,7 +84,25 @@ function Keymap:apply()
   for mode, mapping in pairs(self.mode_mappings) do
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
     opts.desc = opts.desc or self.description
-    vim.keymap.set(mode, self.keys, mapping.implementation, opts)
+    if
+      type(mapping.implementation) == 'function'
+      or vim.tbl_get(mapping, 'opts', 'expr') == true
+      or (
+        type(mapping.implementation) == 'string'
+        and not vim.startswith(mapping.implementation, ':')
+        and not vim.startswith(mapping.implementation:lower(), '<cmd>')
+      )
+    then
+      vim.keymap.set(mode, self.keys, mapping.implementation, opts)
+    else
+      -- if it's a command, wrap in a function that calls `vim.cmd` to avoid
+      -- flashing the command line
+      local impl = mapping.implementation
+      local cmd = util.sanitize_cmd_str(impl)
+      vim.keymap.set(mode, self.keys, function()
+        vim.cmd(cmd)
+      end, opts)
+    end
   end
 
   return self
