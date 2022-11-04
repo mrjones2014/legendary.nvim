@@ -1,23 +1,6 @@
 local class = require('legendary.api.middleclass')
 local util = require('legendary.util')
 
-local function sanitize_cmd_name(cmd_orig)
-  local cmd = (cmd_orig .. ''):gsub('{.*}$', ''):gsub('%[.*%]$', '')
-  if vim.startswith(cmd:lower(), '<cmd>') then
-    cmd = cmd:sub(6)
-  elseif vim.startswith(cmd, ':') then
-    cmd = cmd:sub(2)
-  end
-
-  if vim.endswith(cmd:lower(), '<cr>') then
-    cmd = cmd:sub(1, #cmd - 4)
-  elseif vim.endswith(cmd, '\r') then
-    cmd = cmd:sub(1, #cmd - 2)
-  end
-
-  return vim.trim(cmd)
-end
-
 ---@class Command
 ---@field cmd string
 ---@field implementation string|function|nil
@@ -77,7 +60,7 @@ function Command:vim_cmd()
   -- replace any argument placeholders for display purposes wrapped in {} or []
   -- % is escape character in gsub patterns
   -- strip param names between [] or {}
-  return sanitize_cmd_name(self.cmd)
+  return util.sanitize_cmd_str(self.cmd)
 end
 
 return Command

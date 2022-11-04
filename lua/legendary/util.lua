@@ -34,4 +34,21 @@ function M.tbl_all(tbl, predicate)
   return true
 end
 
+function M.sanitize_cmd_str(cmd_str)
+  local cmd = (cmd_str .. ''):gsub('%{.*%}$', ''):gsub('%[.*%]$', '')
+  if vim.startswith(cmd:lower(), '<cmd>') then
+    cmd = cmd:sub(6)
+  elseif vim.startswith(cmd, ':') then
+    cmd = cmd:sub(2)
+  end
+
+  if vim.endswith(cmd:lower(), '<cr>') then
+    cmd = cmd:sub(1, #cmd - 4)
+  elseif vim.endswith(cmd, '\r') then
+    cmd = cmd:sub(1, #cmd - 2)
+  end
+
+  return vim.trim(cmd)
+end
+
 return M
