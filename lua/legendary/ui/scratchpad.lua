@@ -72,7 +72,7 @@ local function float(buf, size, minimal)
   vim.api.nvim_open_win(buf, true, win_opts)
 end
 
-function M.results_win(result, err)
+local function results_win(result, err)
   local lines = nil
   if err then
     lines = err
@@ -159,22 +159,38 @@ function M.open()
   end
 end
 
+function M.close()
+  if Config.scratchpad.view == 'float' then
+    pcall(vim.api.nvim_win_close, vim.api.nvim_get_current_win(), true)
+  else
+    pcall(vim.api.nvim_buf_delete, scratchpad_buf_id, true)
+  end
+end
+
+function M.toggle()
+  if vim.api.nvim_get_current_buf() == scratchpad_buf_id then
+    M.close()
+  else
+    M.open()
+  end
+end
+
 function M.lua_eval_buf()
   local all_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   local err, result = LuaTools.exec_lua(table.concat(all_lines, '\n'))
-  M.results_win(result, err)
+  results_win(result, err)
 end
 
 function M.lua_eval_range(line1, line2)
   local range = vim.api.nvim_buf_get_lines(0, math.max(line1 - 1, 0), line2, false)
   local err, result = LuaTools.exec_lua(table.concat(range, '\n'))
-  M.results_win(result, err)
+  results_win(result, err)
 end
 
 function M.lua_eval_current_line()
   local current_line = vim.api.nvim_get_current_line()
   local err, result = LuaTools.exec_lua(current_line)
-  M.results_win(result, err)
+  results_win(result, err)
 end
 
 return M
