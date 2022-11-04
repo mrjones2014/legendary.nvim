@@ -23,7 +23,7 @@ function M.select(opts)
 
   -- in addition to user filters, we also need to filter by buf
   local items = vim.tbl_filter(function(item)
-    local item_buf = vim.tbl_get(item, 'opts', 'buf')
+    local item_buf = vim.tbl_get(item, 'opts', 'buffer')
     return item_buf == nil or item_buf == context.buf
   end, State.items:filter(opts.filters or {}))
 
