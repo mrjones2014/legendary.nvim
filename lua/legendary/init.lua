@@ -8,24 +8,6 @@ local Autocmd = require('legendary.data.autocmd')
 local Function = require('legendary.data.function')
 local LegendaryWhichKey = require('legendary.integrations.which-key')
 
--- TODO leave this in here for a bit, take it out a few weeks/months
--- after v2 is launched.
-local function show_notice()
-  vim.defer_fn(function()
-    vim.notify(
-      'legendary.nvim now uses semantic versioning via git tags. If you are experiencing errors with the new version, '
-        .. 'please pin to a version tag or update your configuration. See updated documentation at '
-        .. 'https://github.com/mrjones2014/legendary.nvim for more details.'
-    )
-  end, 500)
-end
-
-if vim.v.vim_did_enter then
-  show_notice()
-else
-  vim.api.nvim_create_autocmd('VimEnter', { callback = show_notice, once = true })
-end
-
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
 local function build_parser_func(parser)
