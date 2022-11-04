@@ -62,6 +62,7 @@ local function float(buf, size, minimal)
     row = math.floor((vim.o.lines / 2) - (height / 2)),
     anchor = 'NW',
     border = Config.scratchpad.float_border,
+    zindex = 1,
   }
 
   if minimal then
