@@ -1,4 +1,8 @@
-# Legendary.nvim
+<center>
+
+# `legendary.nvim`
+
+</center>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
 
@@ -94,7 +98,8 @@ The `require('legend').find()` function takes an `opts` table with the following
 {
   -- pass a list of filter functions or a single filter function with
   -- the signature `function(item): boolean`
-  -- `require('legendary.filters').mode(mode)` and `require('legendary.filters').current_mode()`
+  -- `require('legendary.filters').mode(mode)` and
+  -- `require('legendary.filters').current_mode()`
   -- are provided for convenience
   filters = {},
   -- pass a function with the signature `function(item, mode): string[]`
