@@ -135,7 +135,7 @@ end
 ---into a Keymap
 ---@param vimscript_str string
 ---@param description string keymap description
----@return Keymap
+---@return Keymap,table
 function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unused
   local ok, cmd_info = pcall(vim.api.nvim_parse_cmd, vimscript_str, {})
   if not ok then
@@ -170,7 +170,7 @@ function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unuse
   local cmd_first_char = cmd:sub(1, 1)
   local mode
   if cmd ~= 'map' and cmd ~= 'noremap' then
-    mode = cmd_first_char
+    mode = { cmd_first_char }
     if vim.startswith(cmd, string.format('%sno', cmd_first_char)) then
       opts.remap = false
     else
@@ -193,7 +193,8 @@ function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unuse
   end
 
   local rhs = vim.trim(table.concat(vim.list_slice(cmd_info.args, idx_of_keys + 1, #cmd_info.args)))
-  return Keymap:parse({ keys, rhs, description = description, opts = opts, mode = mode })
+  local input = { keys, rhs, description = description, opts = opts, mode = mode }
+  return Keymap:parse(input), input
 end
 
 return Keymap
