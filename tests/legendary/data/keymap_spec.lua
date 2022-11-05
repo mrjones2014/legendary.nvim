@@ -162,16 +162,13 @@ describe('Keymap', function()
           end
 
           local keymap, input = Keymap:from_vimscript(map_cmd, 'Some command mapping')
-          assert.are.same(
-            input,
-            {
-              '<leader>t',
-              ':SomeCommand<CR>',
-              description = 'Some command mapping',
-              opts = expected_opts,
-              mode = mode_remap.mode,
-            }
-          )
+          assert.are.same(input, {
+            '<leader>t',
+            ':SomeCommand<CR>',
+            description = 'Some command mapping',
+            opts = expected_opts,
+            mode = mode_remap.mode,
+          })
           assert.are.same(keymap.opts, expected_opts)
           for _, mode in ipairs(mode_remap.mode) do
             assert.is_not_nil(keymap.mode_mappings[mode])
