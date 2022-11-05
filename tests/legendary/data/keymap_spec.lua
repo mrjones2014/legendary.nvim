@@ -75,6 +75,7 @@ describe('Keymap', function()
   end)
 
   describe('from_vimscript', function()
+    -- map of keymapping cmds to the mode(s) they indicate and whether it indicates remap or noremap
     local cmds = {
       ['map'] = { mode = { 'n', 'v', 's', 'o' }, remap = true },
       ['nmap'] = { mode = { 'n' }, remap = true },
@@ -100,6 +101,7 @@ describe('Keymap', function()
       ['tnoremap'] = { mode = { 't' }, remap = false },
     }
 
+    -- map of argument names to their resulting `opts` values
     local args_data = {
       buffer = { buffer = vim.api.nvim_get_current_buf() },
       nowait = { nowait = true },
@@ -139,7 +141,9 @@ describe('Keymap', function()
       end)
     end
 
-    local all_arg_combos = {}
+    -- all generate all combinations of any number of arguments,
+    -- starting with no arguments
+    local all_arg_combos = { {} }
     for combo in unique_combinations(vim.tbl_keys(args_data)) do
       table.insert(all_arg_combos, combo)
     end
