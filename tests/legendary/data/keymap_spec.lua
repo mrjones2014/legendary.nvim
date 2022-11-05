@@ -112,11 +112,6 @@ describe('Keymap', function()
       unique = { unique = true },
     }
 
-    -- Yields combinations of non-repeating items of tbl.
-    -- tbl is the source of items,
-    -- sub is a combination of items that all yielded combination ought to contain,
-    -- min it the minimum key of items that can be added to yielded combinations.
-
     ---Generate all combinations for any number of items from 1 to #values
     ---@generic T
     ---@param values T[]
