@@ -60,12 +60,14 @@ describe('Keymap', function()
         description = 'LegendaryKeymapTest',
       }):apply()
 
+      ---@type table
       local normal_keymap = vim.tbl_filter(function(k)
         return k.desc == 'LegendaryKeymapTest'
       end, vim.api.nvim_get_keymap('n'))[1]
       assert.are.same(normal_keymap.lhs, string.format('%st', vim.g.mapleader or '\\'))
       assert.are.same(type(normal_keymap.callback), 'function')
 
+      ---@type table
       local visual_keymap = vim.tbl_filter(function(k)
         return k.desc == 'LegendaryKeymapTest'
       end, vim.api.nvim_get_keymap('v'))[1]
@@ -110,30 +112,28 @@ describe('Keymap', function()
       unique = { unique = true },
     }
 
-    -- This function clones the array t and appends the item new to it.
-    local function append(t, new)
-      local clone = {}
-      for _, item in ipairs(t) do
-        clone[#clone + 1] = item
-      end
-      clone[#clone + 1] = new
-      return clone
-    end
-
     -- Yields combinations of non-repeating items of tbl.
     -- tbl is the source of items,
     -- sub is a combination of items that all yielded combination ought to contain,
     -- min it the minimum key of items that can be added to yielded combinations.
-    local function unique_combinations(tbl, sub, min)
+
+    ---Generate all combinations for any number of items from 1 to #values
+    ---@generic T
+    ---@param values T[]
+    ---@param sub T[]
+    ---@param min integer
+    ---@overload fun(values:any[]):any[]
+    ---@return fun(...):...T
+    local function unique_combinations(values, sub, min)
       sub = sub or {}
       min = min or 1
       return coroutine.wrap(function()
         if #sub > 0 then
           coroutine.yield(sub) -- yield short combination.
         end
-        if #sub < #tbl then
-          for i = min, #tbl do -- iterate over longer combinations.
-            for combo in unique_combinations(tbl, append(sub, tbl[i]), i + 1) do
+        if #sub < #values then
+          for i = min, #values do -- iterate over longer combinations.
+            for combo in unique_combinations(values, vim.list_extend(vim.deepcopy(sub), values[i]), i + 1) do
               coroutine.yield(combo)
             end
           end
