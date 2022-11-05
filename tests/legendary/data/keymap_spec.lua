@@ -133,7 +133,9 @@ describe('Keymap', function()
         end
         if #sub < #values then
           for i = min, #values do -- iterate over longer combinations.
-            for combo in unique_combinations(values, vim.list_extend(vim.deepcopy(sub), values[i]), i + 1) do
+            local newsub = vim.deepcopy(sub)
+            table.insert(newsub, values[i])
+            for combo in unique_combinations(values, newsub, i + 1) do
               coroutine.yield(combo)
             end
           end
