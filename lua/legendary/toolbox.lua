@@ -171,4 +171,14 @@ function M.set_marks(marks)
   vim.fn.setpos("'>", { 0, marks[3], marks[4], 0 })
 end
 
+---Parse a vimscript mapping command (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`)
+---and return a `legendary.nvim` keymapping table that can be used in your configuration.
+---@param vimscript_str string
+---@param description string
+---@return table
+function M.table_from_vimscript(vimscript_str, description)
+  local _, input = require('legendary.data.keymap'):from_vimscript(vimscript_str, description)
+  return input
+end
+
 return M
