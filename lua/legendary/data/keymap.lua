@@ -131,19 +131,21 @@ function Keymap:modes()
   return modes
 end
 
+---Parse a vimscript keymapping command (e.g. `vmap <silent> <leader>f :SomeCommand<CR>`)
+---into a Keymap
+---@param vimscript_str string
+---@param description string keymap description
+---@return Keymap
 function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unused
   local ok, cmd_info = pcall(vim.api.nvim_parse_cmd, vimscript_str, {})
   if not ok then
-    vim.notify(string.format('[legendary.nvim] Error parsing vimscript keymap: %s', cmd_info))
-    return
+    error(string.format('[legendary.nvim] Error parsing vimscript keymap: %s', cmd_info))
   end
 
-  local keys = cmd_info.args[1]
   local opts = {}
-  local rest = vim.list_slice(cmd_info.args, 2, #cmd_info.args)
-  local idx_of_rhs = 0
-  for _, arg in ipairs(rest) do
-    idx_of_rhs = idx_of_rhs + 1
+  local idx_of_keys = 0
+  for _, arg in ipairs(cmd_info.args) do
+    idx_of_keys = idx_of_keys + 1
     local lower = arg:lower()
     if lower == '<buffer>' then
       opts.buffer = vim.api.nvim_get_current_buf()
@@ -162,24 +164,36 @@ function Keymap:from_vimscript(vimscript_str, description) -- luacheck: no unuse
     end
   end
 
+  local keys = cmd_info.args[idx_of_keys]
+
   local cmd = cmd_info.cmd:lower()
   local cmd_first_char = cmd:sub(1, 1)
+  local mode
   if cmd ~= 'map' and cmd ~= 'noremap' then
-    opts.mode = cmd_first_char
+    mode = cmd_first_char
     if vim.startswith(cmd, string.format('%sno', cmd_first_char)) then
       opts.remap = false
     else
       opts.remap = true
     end
-  else
-    opts.mode = { 'n', 'v', 's', 'o' }
+  elseif cmd_info.bang then
+    mode = { 'i', 'c' }
     if cmd == 'noremap' then
       opts.remap = false
+    else
+      opts.remap = true
+    end
+  else
+    mode = { 'n', 'v', 's', 'o' }
+    if cmd == 'noremap' then
+      opts.remap = false
+    else
+      opts.remap = true
     end
   end
 
-  local rhs = table.concat(vim.list_slice(rest, idx_of_rhs, #rest))
-  return Keymap:parse({ keys, rhs, description = description, opts = opts })
+  local rhs = vim.trim(table.concat(vim.list_slice(cmd_info.args, idx_of_keys + 1, #cmd_info.args)))
+  return Keymap:parse({ keys, rhs, description = description, opts = opts, mode = mode })
 end
 
 return Keymap
