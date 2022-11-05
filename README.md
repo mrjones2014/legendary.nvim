@@ -1,8 +1,8 @@
-<center>
+<div align="center">
 
 # `legendary.nvim`
 
-</center>
+</div>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
 
