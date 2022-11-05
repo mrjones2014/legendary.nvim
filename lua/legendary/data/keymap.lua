@@ -1,5 +1,6 @@
 local class = require('legendary.api.middleclass')
 local util = require('legendary.util')
+local Toolbox = require('legendary.toolbox')
 
 ---@class ModeKeymapOpts
 ---@field implementation string|function
@@ -79,6 +80,12 @@ function Keymap:parse(tbl) -- luacheck: no unused
     end
   end
 
+  if instance.keys == '<S-j>' then
+    vim.defer_fn(function()
+      print(vim.inspect(instance.mode_mappings))
+    end, 1000)
+  end
+
   return instance
 end
 
@@ -104,6 +111,7 @@ function Keymap:apply()
       local impl = mapping.implementation
       local cmd = util.sanitize_cmd_str(impl)
       vim.keymap.set(mode, self.keys, function()
+        Toolbox.set_marks(Toolbox.get_marks())
         vim.cmd(cmd)
       end, opts)
     end

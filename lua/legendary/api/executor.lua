@@ -40,13 +40,9 @@ function M.restore_context(context, callback)
     return
   end
 
-  -- For some reason diagnostics says
-  -- this signature is wrong but it isn't
-  ---@diagnostic disable
-  vim.defer_fn(function()
+  vim.schedule(function()
     callback()
-  end, 1)
-  ---@diagnostic enable
+  end)
 end
 
 ---Execute an item
