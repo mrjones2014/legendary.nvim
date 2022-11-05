@@ -34,6 +34,12 @@ function M.tbl_all(tbl, predicate)
   return true
 end
 
+---Remove leading `:` or `<cmd>`,
+---remote trailing `<CR>` or `\r`,
+---and remove any parameter templates
+---like `:bufdo {Cmd}` => `bufdo`
+---@param cmd_str any
+---@return string
 function M.sanitize_cmd_str(cmd_str)
   local cmd = (cmd_str .. ''):gsub('%{.*%}$', ''):gsub('%[.*%]$', '')
   if vim.startswith(cmd:lower(), '<cmd>') then
