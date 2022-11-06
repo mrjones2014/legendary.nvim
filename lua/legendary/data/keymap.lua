@@ -80,12 +80,6 @@ function Keymap:parse(tbl) -- luacheck: no unused
     end
   end
 
-  if instance.keys == '<S-j>' then
-    vim.defer_fn(function()
-      print(vim.inspect(instance.mode_mappings))
-    end, 1000)
-  end
-
   return instance
 end
 
