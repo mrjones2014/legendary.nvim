@@ -109,7 +109,7 @@ require('legendary').setup({
 
 For more mapping features and more complicated setups see [Table Structures](./doc/table_structures/README.md).
 
-To trigger the finder for your configured keymaps, commands, and `augroup`/`autocmd`s:
+To trigger the finder for your configured keymaps, commands, `augroup`/`autocmd`s, and Lua functions:
 
 Commands:
 
@@ -210,5 +210,19 @@ require('legendary').setup({
     -- 'current' for current window, 'float'
     -- for floating window
     view = 'float',
-
+    -- How to show the results of evaluated Lua code.
+    -- 'print' for `print(result)`, 'float' for a floating window.
+    results_view = 'float',
+    -- Border style for floating windows related to the scratchpad
+    float_border = 'rounded',
+    -- Whether to restore scratchpad contents from a cache file
+    keep_contents = true,
+  },
+  -- Directory used for caches
+  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
+})
 ```
+
+---
+
+Additional documentation can be found under the [doc/](./doc/) directory.
