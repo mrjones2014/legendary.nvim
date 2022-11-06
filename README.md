@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🗺️ `legendary.nvim` 🗺️
+# 🗺️⚡ `legendary.nvim`
 
 </div>
 
@@ -30,7 +30,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Features
 
-- Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
+- Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions, as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
 - Anonymous mappings -- show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
