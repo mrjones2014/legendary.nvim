@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🗺️⚡ `legendary.nvim`
+# 🗺️ `legendary.nvim` ⚡
 
 </div>
 
