@@ -2,6 +2,8 @@
 
 # `legendary.nvim`
 
+[Features](#features) | [Prerequisites](#prerequisites) | [Installation](#installation) | [Quickstart](#quickstart) | [Configuration](#configuration)
+
 </div>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
