@@ -15,7 +15,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Quickstart](#quickstart)
 - [Configuration](#configuration)
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
@@ -69,7 +69,45 @@ Plug "mrjones2014/legendary.nvim", { 'tag': 'v1.0.0' }
 Plug "mrjones2014/legendary.nvim"
 ```
 
-## Usage
+## Quickstart
+
+Register keymaps through setup:
+
+```lua
+require('legendary').setup({
+  keymaps = {
+    -- map keys to a command
+    { '<leader>ff', ':Telescope find_files', description = 'Find files' },
+    -- map keys to a function
+    { '<leader>h', function() print('hello world!') end, description = 'Say hello' },
+    -- create keymaps with different implementations per-mode
+    {
+      '<leader>c',
+      { n = ':LinewiseCommentToggle<CR>', x = ":'<,'>BlockwiseCommentToggle<CR>" },
+      description = 'Toggle comment'
+    },
+  },
+  commands = {
+    -- easily create user commands
+    { ':SayHello', function() print('hello world!') end, description = 'Say hello as a command' },
+  },
+  autocmds = {
+    -- Create autocmds and augroups
+    { 'BufWritePre', vim.lsp.buf.format, description = 'Format on save' },
+    {
+      name = 'MyAugroup',
+      clear = true,
+      -- autocmds here
+    },
+  },
+  functions = {
+    -- Make arbitrary Lua functions that can be executed via the item finder
+    { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
+  },
+})
+```
+
+For more mapping features and more complicated setups see [Table Structures](./doc/table_structures/README.md).
 
 To trigger the finder for your configured keymaps, commands, and `augroup`/`autocmd`s:
 
@@ -172,19 +210,5 @@ require('legendary').setup({
     -- 'current' for current window, 'float'
     -- for floating window
     view = 'float',
-    -- How to show the results of evaluated Lua code.
-    -- 'print' for `print(result)`, 'float' for a floating window.
-    results_view = 'float',
-    -- Border style for floating windows related to the scratchpad
-    float_border = 'rounded',
-    -- Whether to restore scratchpad contents from a cache file
-    keep_contents = true,
-  },
-  -- Directory used for caches
-  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
-})
+
 ```
-
----
-
-Additional documentation can be found under the [doc/](./doc/) directory.
