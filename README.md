@@ -1,4 +1,10 @@
-# Legendary.nvim
+<div align="center">
+
+# `legendary.nvim`
+
+[Features](#features) | [Prerequisites](#prerequisites) | [Installation](#installation) | [Quickstart](#quickstart) | [Configuration](#configuration)
+
+</div>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
 
@@ -11,7 +17,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Quickstart](#quickstart)
 - [Configuration](#configuration)
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
@@ -26,7 +32,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Features
 
-- Define your keymaps, commands, and `augroup`/`autocmd`s as simple Lua tables, then bind them with `legendary.nvim`
+- Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions, as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
 - Anonymous mappings -- show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
@@ -44,6 +50,8 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
   - I recommend [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) paired with [dressing.nvim](https://github.com/stevearc/dressing.nvim).
 
 ## Installation
+
+This project uses git tags to adhere to [Semantic Versioning](https://semver.org/).
 
 With `packer.nvim`:
 
@@ -63,9 +71,47 @@ Plug "mrjones2014/legendary.nvim", { 'tag': 'v1.0.0' }
 Plug "mrjones2014/legendary.nvim"
 ```
 
-## Usage
+## Quickstart
 
-To trigger the finder for your configured keymaps, commands, and `augroup`/`autocmd`s:
+Register keymaps through setup:
+
+```lua
+require('legendary').setup({
+  keymaps = {
+    -- map keys to a command
+    { '<leader>ff', ':Telescope find_files', description = 'Find files' },
+    -- map keys to a function
+    { '<leader>h', function() print('hello world!') end, description = 'Say hello' },
+    -- create keymaps with different implementations per-mode
+    {
+      '<leader>c',
+      { n = ':LinewiseCommentToggle<CR>', x = ":'<,'>BlockwiseCommentToggle<CR>" },
+      description = 'Toggle comment'
+    },
+  },
+  commands = {
+    -- easily create user commands
+    { ':SayHello', function() print('hello world!') end, description = 'Say hello as a command' },
+  },
+  autocmds = {
+    -- Create autocmds and augroups
+    { 'BufWritePre', vim.lsp.buf.format, description = 'Format on save' },
+    {
+      name = 'MyAugroup',
+      clear = true,
+      -- autocmds here
+    },
+  },
+  functions = {
+    -- Make arbitrary Lua functions that can be executed via the item finder
+    { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
+  },
+})
+```
+
+For more mapping features and more complicated setups see [Table Structures](./doc/table_structures/README.md).
+
+To trigger the finder for your configured keymaps, commands, `augroup`/`autocmd`s, and Lua functions:
 
 Commands:
 
@@ -94,7 +140,8 @@ The `require('legend').find()` function takes an `opts` table with the following
 {
   -- pass a list of filter functions or a single filter function with
   -- the signature `function(item): boolean`
-  -- `require('legendary.filters').mode(mode)` and `require('legendary.filters').current_mode()`
+  -- `require('legendary.filters').mode(mode)` and
+  -- `require('legendary.filters').current_mode()`
   -- are provided for convenience
   filters = {},
   -- pass a function with the signature `function(item, mode): string[]`
