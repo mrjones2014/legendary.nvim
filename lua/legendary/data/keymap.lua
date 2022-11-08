@@ -80,6 +80,23 @@ function Keymap:parse(tbl) -- luacheck: no unused
     end
   end
 
+  -- TODO remove deprecation check
+  -- check if any mapping functions are expecting arguments,
+  -- since we don't pass them anymore
+  for mode, mapping in pairs(instance.mode_mappings) do
+    if Toolbox.is_visual_mode(mode) and type(mapping.implementation) == 'function' then
+      local dbg = debug.getinfo(mapping.implementation)
+      if dbg and dbg.nparams > 0 then
+        vim.deprecate(
+          'visual_selection marks passed to keymap callbacks',
+          "require('legendary.toolbos').is_visual_mode() and require('legendary.toolbox').get_marks()",
+          '2.0.1',
+          'legendary.nvim'
+        )
+      end
+    end
+  end
+
   return instance
 end
 
