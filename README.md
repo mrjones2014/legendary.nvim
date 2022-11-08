@@ -9,6 +9,7 @@
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time.
 
 https://user-images.githubusercontent.com/8648891/200597136-6d34d782-5e84-4058-90da-bcf3f78ba448.mp4
+
 <sup>Theme used in recording is [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
 <details>
