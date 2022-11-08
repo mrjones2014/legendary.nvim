@@ -7,6 +7,7 @@ local Augroup = require('legendary.data.augroup')
 local Autocmd = require('legendary.data.autocmd')
 local Function = require('legendary.data.function')
 local LegendaryWhichKey = require('legendary.integrations.which-key')
+local Deprecate = require('legendary.deprecate')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -138,76 +139,101 @@ end
 
 ---@deprecated
 function M.bind_keymap(keymap)
-  vim.deprecate("require('legendary').bind_keymap()", "require('legendary').keymap()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_keymap()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').keymap()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.keymap(keymap)
 end
 
 ---@deprecated
 function M.bind_keymaps(keymaps)
-  vim.deprecate("require('legendary').bind_keymaps()", "require('legendary').keymaps()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_keymaps()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').keymaps()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.keymaps(keymaps)
 end
 
 ---@deprecated
 function M.bind_command(command)
-  vim.deprecate("require('legendary').bind_command()", "require('legendary').command()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_command()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').command()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.command(command)
 end
 
 ---@deprecated
 function M.bind_commands(commands)
-  vim.deprecate("require('legendary').bind_commands()", "require('legendary').commands()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_commands()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').commands()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.commands(commands)
 end
 
 ---@deprecated
 function M.bind_function(func)
-  vim.deprecate("require('legendary').bind_function()", "require('legendary').func()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_function()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').func()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.func(func)
 end
 
 ---@deprecated
 function M.bind_functions(funcs)
-  vim.deprecate("require('legendary').bind_functions()", "require('legendary').funcs()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_functions()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').funcs()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.funcs(funcs)
 end
 
 ---@deprecated
 function M.bind_autocmds(funcs)
-  vim.deprecate("require('legendary').bind_functions()", "require('legendary').funcs()", '2.0.1', 'legendary.nvim')
+  Deprecate.write(
+    { "require('legendary').bind_functions()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').funcs()", 'WarningMsg' }
+  ).flush_if_vimenter()
   M.autocmds(funcs)
 end
 
 ---@deprecated
 function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
-  vim.deprecate(
-    "require('legendary').bind_whichkey()",
-    "require('legendary.integrations.which-key').bind_whichkey()",
-    '2.0.1',
-    'legendary.nvim'
-  )
+  Deprecate.write(
+    { "require('legendary').bind_whichkey()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').bind_whichkey()", 'WarningMsg' }
+  ).flush_if_vimenter()
   LegendaryWhichKey.bind_whichkey(wk_tbls, wk_opts, do_binding)
 end
 
 ---@deprecated
 function M.parse_whichkey(wk_tbls, wk_opts, do_binding)
-  vim.deprecate(
-    "require('legendary').parse_whichkey()",
-    "require('legendary.integrations.which-key').parse_whichkey()",
-    '2.0.1',
-    'legendary.nvim'
-  )
+  Deprecate.write(
+    { "require('legendary').parse_whichkey()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').parse_whichkey()", 'WarningMsg' }
+  ).flush_if_vimenter()
   LegendaryWhichKey.parse_whichkey(wk_tbls, wk_opts, do_binding)
 end
 
 ---@deprecated
 function M.whichkey_listen()
-  vim.deprecate(
-    "require('legendary').whichkey_listen()",
-    "require('legendary.integrations.which-key').whichkey_listen()",
-    '2.0.1',
-    'legendary.nvim'
-  )
+  Deprecate.write(
+    { "require('legendary').whichkey_listen()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').whichkey_listen()", 'WarningMsg' }
+  ).write_if_vimenter()
   LegendaryWhichKey.whichkey_listen()
 end
 

@@ -2,5 +2,10 @@
 
 ---@deprecated
 
-vim.deprecate("require('legendary.helpers')", "require('legendary.toolbox')", '2.0.1', 'legendary.nvim')
+require('legendary.deprecate').write(
+  { "require('legendary.helpers')", 'WarningMsg' },
+  'has been replaced by',
+  { "require('legendary.toolbox')", 'WarningMsg' }
+)
+
 return require('legendary.toolbox')

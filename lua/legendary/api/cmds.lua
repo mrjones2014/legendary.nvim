@@ -114,6 +114,13 @@ end, {
     end,
     description = "Show Legendary's full API documentation",
   },
+  {
+    ':LegendaryDeprecated',
+    function()
+      require('legendary.deprecate').flush()
+    end,
+    description = 'Show legendary.nvim deprecation warning messages, if any',
+  },
 })
 
 M.bind = function()
