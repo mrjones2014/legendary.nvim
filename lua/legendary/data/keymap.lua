@@ -1,7 +1,6 @@
 local class = require('legendary.api.middleclass')
 local util = require('legendary.util')
 local Toolbox = require('legendary.toolbox')
-local Deprecate = require('legendary.deprecate')
 
 ---@class ModeKeymapOpts
 ---@field implementation string|function
