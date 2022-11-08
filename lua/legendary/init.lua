@@ -134,4 +134,81 @@ function M.autocmd(au)
   M.autocmds({ au })
 end
 
+-- TODO remove deprecated methods
+
+---@deprecated
+function M.bind_keymap(keymap)
+  vim.deprecate("require('legendary').bind_keymap()", "require('legendary').keymap()", '2.0.1', 'legendary.nvim')
+  M.keymap(keymap)
+end
+
+---@deprecated
+function M.bind_keymaps(keymaps)
+  vim.deprecate("require('legendary').bind_keymaps()", "require('legendary').keymaps()", '2.0.1', 'legendary.nvim')
+  M.keymaps(keymaps)
+end
+
+---@deprecated
+function M.bind_command(command)
+  vim.deprecate("require('legendary').bind_command()", "require('legendary').command()", '2.0.1', 'legendary.nvim')
+  M.command(command)
+end
+
+---@deprecated
+function M.bind_commands(commands)
+  vim.deprecate("require('legendary').bind_commands()", "require('legendary').commands()", '2.0.1', 'legendary.nvim')
+  M.commands(commands)
+end
+
+---@deprecated
+function M.bind_function(func)
+  vim.deprecate("require('legendary').bind_function()", "require('legendary').func()", '2.0.1', 'legendary.nvim')
+  M.func(func)
+end
+
+---@deprecated
+function M.bind_functions(funcs)
+  vim.deprecate("require('legendary').bind_functions()", "require('legendary').funcs()", '2.0.1', 'legendary.nvim')
+  M.funcs(funcs)
+end
+
+---@deprecated
+function M.bind_autocmds(funcs)
+  vim.deprecate("require('legendary').bind_functions()", "require('legendary').funcs()", '2.0.1', 'legendary.nvim')
+  M.autocmds(funcs)
+end
+
+---@deprecated
+function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
+  vim.deprecate(
+    "require('legendary').bind_whichkey()",
+    "require('legendary.integrations.which-key').bind_whichkey()",
+    '2.0.1',
+    'legendary.nvim'
+  )
+  LegendaryWhichKey.bind_whichkey(wk_tbls, wk_opts, do_binding)
+end
+
+---@deprecated
+function M.parse_whichkey(wk_tbls, wk_opts, do_binding)
+  vim.deprecate(
+    "require('legendary').parse_whichkey()",
+    "require('legendary.integrations.which-key').parse_whichkey()",
+    '2.0.1',
+    'legendary.nvim'
+  )
+  LegendaryWhichKey.parse_whichkey(wk_tbls, wk_opts, do_binding)
+end
+
+---@deprecated
+function M.whichkey_listen()
+  vim.deprecate(
+    "require('legendary').whichkey_listen()",
+    "require('legendary.integrations.which-key').whichkey_listen()",
+    '2.0.1',
+    'legendary.nvim'
+  )
+  LegendaryWhichKey.whichkey_listen()
+end
+
 return M

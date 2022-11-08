@@ -95,8 +95,34 @@ local M = setmetatable({}, {
   end,
 })
 
+-- TODO remove deprecated notice
+---@param cfg LegendaryConfig|table
+local function check_deprecated(cfg)
+  if cfg.auto_register_which_key ~= nil then
+    vim.deprecate('config.auto_register_which_key', 'config.which_key.auto_register', '2.0.1', 'legendary.nvim')
+    cfg.which_key.auto_register = cfg.auto_register_which_key
+  end
+
+  if cfg.scratchpad.display_results ~= nil then
+    vim.deprecate('config.scratchpad.display_results', 'config.scratchpad.results_view', '2.0.1', 'legendary.nvim')
+    cfg.scratchpad.results_view = cfg.scratchpad.display_results
+  end
+
+  if cfg.scratchpad.cache_file ~= nil then
+    vim.deprecate(
+      'config.scratchpad.cache_file',
+      'config.scratchpad.keep_contents and config.cache_path',
+      '2.0.1',
+      'legendary.nvim'
+    )
+  end
+
+  return cfg
+end
+
 function M.setup(cfg)
   config = vim.tbl_deep_extend('force', config, cfg or {})
+  config = check_deprecated(config)
 end
 
 return M

@@ -80,9 +80,12 @@ Keymaps can be parsed from Vimscript commands (e.g. `vnoremap <silent> <leader>f
 
 ```lua
 -- Function signature
-require('legendary.data.keymap'):from_vimscript(vimscript_str, description)
+require('legendary.toolbox').table_from_vimscript(vimscript_str, description)
 -- For example
-require('legendary.data.keymap'):from_vimscript(':vnoremap <silent> <leader>f :SomeCommand<CR>', 'Description of my keymap')
+require('legendary.toolbox').table_from_vimscript(
+  ':vnoremap <silent> <expr> <leader>f :SomeCommand<CR>',
+  'Description of my keymap'
+)
 -- Returns the following table
 {
   '<leader>f',
@@ -91,6 +94,7 @@ require('legendary.data.keymap'):from_vimscript(':vnoremap <silent> <leader>f :S
   mode = 'v',
   opts = {
     silent = true,
+    expr = true,
     remap = false,
   },
 }
