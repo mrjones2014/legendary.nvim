@@ -1,6 +1,7 @@
-local class = require('legendary.api.middleclass')
+local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 local Toolbox = require('legendary.toolbox')
+local Sorter = require('legendary.vendor.sorter')
 
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function
 
@@ -80,7 +81,6 @@ function ItemList:sort_inplace_by_recent(most_recent)
     return
   end
 
-  local Sorter = require('legendary.api.sorter')
   self.items = Sorter.mergesort(self.items, function(item)
     return item == most_recent
   end)
