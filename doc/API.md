@@ -22,11 +22,11 @@ require('legendary').commands({
   -- your commands here
 })
 
--- bind a single function
-require('legendary').command(function)
+-- bind a single function table
+require('legendary').bind_function(fn_tbl)
 -- bind a list of functions
-require('legendary').functions({
-  -- your functions here
+require('legendary').bind_functions({
+  -- your function tables here
 })
 
 -- bind a single augroup/autocmds
