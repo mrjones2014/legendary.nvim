@@ -1,4 +1,4 @@
-local class = require('legendary.api.middleclass')
+local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 
 ---@class Function

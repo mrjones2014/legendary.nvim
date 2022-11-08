@@ -1,4 +1,4 @@
-local class = require('legendary.api.middleclass')
+local class = require('legendary.vendor.middleclass')
 local Config = require('legendary.config')
 
 local function create_cache_dir()
