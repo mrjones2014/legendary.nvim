@@ -89,7 +89,7 @@ function Keymap:parse(tbl) -- luacheck: no unused
       if dbg and dbg.nparams > 0 then
         vim.deprecate(
           'visual_selection marks passed to keymap callbacks',
-          "require('legendary.toolbos').is_visual_mode() and require('legendary.toolbox').get_marks()",
+          "require('legendary.toolbox').is_visual_mode() and require('legendary.toolbox').get_marks()",
           '2.0.1',
           'legendary.nvim'
         )
