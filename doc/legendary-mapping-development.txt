@@ -38,7 +38,7 @@ passed.
 **Usage:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.lazy(my_function, 'arg1', 'arg2')
     -- returns a *new function* equivalent to:
     function()
@@ -56,7 +56,7 @@ dot-notation. This helper can also handle passing static arguments.
 **Basic usage:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.lazy_required_fn('telescope.builtin', 'find_files')
     -- returns a *new function* equivalent to:
     function()
@@ -66,7 +66,7 @@ dot-notation. This helper can also handle passing static arguments.
 **Passing static arguments:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.lazy_required_fn('telescope.builtin', 'find_files', { cwd_only = true })
     -- returns a *new function* equivalent to:
     function()
@@ -76,7 +76,7 @@ dot-notation. This helper can also handle passing static arguments.
 **Referencing functions nested within a module table:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.lazy_required_fn('neotest', 'run.run')
     -- returns a *new function* equivalent to:
     function()
@@ -86,7 +86,7 @@ dot-notation. This helper can also handle passing static arguments.
 **Passing multiple arguments:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.lazy_required_fn('myplugin', 'somefunction', 'arg1', 'arg2', 'arg3')
     -- returns a *new function* equivalent to:
     function()
@@ -102,7 +102,7 @@ Returns a function that creates a new split, then calls the passed function.
 **Usage:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.split_then(my_function)
     -- returns a *new function* equivalent to:
     function()
@@ -120,7 +120,7 @@ function.
 **Usage:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     h.vsplit_then(my_function)
     -- returns a *new function* equivalent to:
     function()
@@ -129,16 +129,39 @@ function.
     end
 <
 
+                                                                              
+`IS_VISUAL_MODE` AND `GET_MARKS`  *legendary-`is_visual_mode`-and-`get_marks`*
+
+`is_visual_mode` can determine if the current mode is visual or any sub-mode
+of visual mode, and `get_marks` can be used to get the marks denoting the
+visual selection.
+
+>
+    {
+      '<leader>t',
+      function()
+        if require('legendary.toolbox').is_visual_mode() then
+          local marks = require('legendary.toolbox').get_marks()
+          -- do something with marks
+        else
+          -- do something else if not visual mode
+        end
+      end,
+      description = 'Different behavior in visual mode',
+    }
+<
+
 ==============================================================================
 COMPOSITION                                            *legendary-composition*
 
 
-Helpers can be composed together to create complex keymaps.
+Helpers that wrap functions can be composed together to create complex
+keymaps.
 
 **Example:**
 
 >
-    local h = require('legendary.helpers')
+    local h = require('legendary.toolbox')
     -- lazily create a vertical split, then use Telescope.nvim to
     -- find a file and open it in the new split
     h.vsplit_then(h.lazy_required_fn('telescope.builtin', 'find_files'))
