@@ -51,7 +51,8 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Installation
 
-This project uses git tags to adhere to [Semantic Versioning](https://semver.org/).
+This project uses git tags to adhere to [Semantic Versioning](https://semver.org/). To check the latest
+version, see the [git tag list](https://github.com/mrjones2014/legendary.nvim/tags).
 
 With `packer.nvim`:
 
