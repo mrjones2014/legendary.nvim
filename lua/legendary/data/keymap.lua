@@ -1,6 +1,5 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
-local Toolbox = require('legendary.toolbox')
 
 ---@class ModeKeymapOpts
 ---@field implementation string|function
