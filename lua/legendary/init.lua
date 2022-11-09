@@ -1,141 +1,240 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local string = _tl_compat and _tl_compat.string or string
+local Config = require('legendary.config')
+local State = require('legendary.data.state')
+local Ui = require('legendary.ui')
+local Keymap = require('legendary.data.keymap')
+local Command = require('legendary.data.command')
+local Augroup = require('legendary.data.augroup')
+local Autocmd = require('legendary.data.autocmd')
+local Function = require('legendary.data.function')
+local LegendaryWhichKey = require('legendary.integrations.which-key')
+local Deprecate = require('legendary.deprecate')
 
-require('legendary.types')
+---@param parser LegendaryItem
+---@return fun(items:table[])
+local function build_parser_func(parser)
+  return function(items)
+    if not vim.tbl_islist(items) then
+      error(string.format('Expected list, got ', type(items)))
+      return
+    end
+
+    State.items:add(vim.tbl_map(function(item)
+      return parser:parse(item):apply()
+    end, items))
+  end
+end
 
 local M = {}
 
-local wk = require('legendary.compat.which-key')
-
-
-
-
-
-
-M.bind_whichkey = wk.bind_whichkey
-
-
-
-
-
-
-
-
-M.parse_whichkey = wk.parse_whichkey
-
-
-
-
-M.whichkey_listen = wk.whichkey_listen
-
-
-local b = require('legendary.bindings')
-
-
-
-
-M.bind_keymap = b.bind_keymap
-
-
-
-
-M.bind_keymaps = b.bind_keymaps
-
-
-
-
-M.bind_command = b.bind_command
-
-
-
-
-M.bind_commands = b.bind_commands
-
-
-
-
-M.bind_autocmds = b.bind_autocmds
-
-
-
-
-M.bind_function = b.bind_function
-
-
-
-
-M.bind_functions = b.bind_functions
-
-
-
-
-
-
-
-
-
-M.find = b.find
-
-
-
-
-
-M.setup = function(new_config)
-   local config = require('legendary.config')
-   config.setup(new_config)
-   if config.include_builtin then
-      require('legendary.builtins').register_builtins()
-   end
-
-   if config.include_legendary_cmds then
-      require('legendary.cmds').register()
-   end
-
-   if config.keymaps and type(config.keymaps) ~= 'table' then
-      require('legendary.utils').notify(string.format('keymaps must be a list-like table, got: %s', type(config.keymaps)))
-      return
-   end
-
-   if config.keymaps and #config.keymaps > 0 then
-      require('legendary.bindings').bind_keymaps(config.keymaps)
-   end
-
-   if config.commands and type(config.commands) ~= 'table' then
-      require('legendary.utils').notify(
-      string.format('commands must be a list-like table, got: %s', type(config.commands)))
-
-      return
-   end
-
-   if config.commands and #config.commands > 0 then
-      require('legendary.bindings').bind_commands(config.commands)
-   end
-
-   if config.autocmds and #config.autocmds > 0 then
-      require('legendary.bindings').bind_autocmds(config.autocmds)
-   end
-
-   if config.functions and type(config.functions) ~= 'table' then
-      require('legendary.utils').notify(
-      string.format('functions must be a list-like table, got: %s', type(config.functions)))
-
-      return
-   end
-
-   if config.functions and #config.functions > 0 then
-      require('legendary.bindings').bind_functions(config.functions)
-   end
-
-   if config.which_key and config.which_key.mappings and #config.which_key.mappings > 0 then
-      require('legendary.compat.which-key').bind_whichkey(
-      config.which_key.mappings,
-      config.which_key.opts,
-      config.which_key.do_binding)
-
-   end
-
-   if config.auto_register_which_key then
-      require('legendary.compat.which-key').whichkey_listen()
-   end
+function M.setup(cfg)
+  Config.setup(cfg)
+
+  if Config.which_key.auto_register then
+    LegendaryWhichKey.whichkey_listen()
+  end
+
+  if #Config.which_key.mappings > 0 then
+    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
+  end
+
+  M.keymaps(Config.keymaps)
+  M.commands(Config.commands)
+  M.funcs(Config.functions)
+  M.autocmds(Config.autocmds)
+
+  -- apply items
+  vim.tbl_map(function(item)
+    item:apply()
+  end, State.items.items)
+
+  -- Add builtins after apply since they don't need applied
+  if Config.include_builtin then
+    -- inline require to avoid the cost of importing
+    -- this somewhat large data file if not needed
+    local Builtins = require('legendary.data.builtins')
+
+    State.items:add(vim.tbl_map(function(keymap)
+      return Keymap:parse(keymap)
+    end, Builtins.builtin_keymaps))
+
+    State.items:add(vim.tbl_map(function(command)
+      return Command:parse(command)
+    end, Builtins.builtin_commands))
+  end
+
+  if Config.include_legendary_cmds then
+    State.items:add(require('legendary.api.cmds').cmds)
+  end
+end
+
+---Find items using vim.ui.select()
+---@param opts LegendaryFindOpts
+---@overload fun()
+function M.find(opts)
+  Ui.select(opts)
+end
+
+---@diagnostic disable: undefined-doc-param
+-- disable undefined-doc-param since we're dynamically generating these functions
+-- but I still want them to be annotated
+
+---Bind a *list of keymaps*
+---@param keymaps table[]
+M.keymaps = build_parser_func(Keymap)
+
+---Bind a *single keymap*
+---@param keymap table
+function M.keymap(keymap)
+  M.keymaps({ keymap })
+end
+
+---Bind a *list of commands*
+---@param commands table[]
+M.commands = build_parser_func(Command)
+
+---Bind a *single command*
+---@param command table
+function M.command(command)
+  M.commands({ command })
+end
+
+---Bind a *list of functions*
+---@param functions table[]
+M.funcs = build_parser_func(Function)
+
+---Bind a *single function*
+---@param function table
+function M.func(func)
+  M.funcs({ func })
+end
+
+---@diagnostic enable: undefined-doc-param
+
+---Bind a *list of* autocmds and/or augroups
+---@param aus (Autocmd|Augroup)[]
+function M.autocmds(aus)
+  if not vim.tbl_islist(aus) then
+    vim.notify(string.format('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus)))
+    return
+  end
+
+  for _, augroup_or_autocmd in ipairs(aus) do
+    if type(augroup_or_autocmd.name) == 'string' and #augroup_or_autocmd.name > 0 then
+      local autocmds = Augroup:parse(augroup_or_autocmd --[[@as Augroup]]):apply().autocmds
+      State.items:add(autocmds)
+    else
+      -- Only add Autocmds to the list since Augroups can't be executed
+      State.items:add({ Autocmd:parse(augroup_or_autocmd):apply() })
+    end
+  end
+end
+
+---Bind a *single autocmd/augroup*
+---@param au Autocmd|Augroup
+function M.autocmd(au)
+  M.autocmds({ au })
+end
+
+-- TODO remove deprecated methods
+
+---@deprecated
+function M.bind_keymap(keymap)
+  Deprecate.write(
+    { "require('legendary').bind_keymap()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').keymap()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.keymap(keymap)
+end
+
+---@deprecated
+function M.bind_keymaps(keymaps)
+  Deprecate.write(
+    { "require('legendary').bind_keymaps()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').keymaps()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.keymaps(keymaps)
+end
+
+---@deprecated
+function M.bind_command(command)
+  Deprecate.write(
+    { "require('legendary').bind_command()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').command()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.command(command)
+end
+
+---@deprecated
+function M.bind_commands(commands)
+  Deprecate.write(
+    { "require('legendary').bind_commands()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').commands()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.commands(commands)
+end
+
+---@deprecated
+function M.bind_function(func)
+  Deprecate.write(
+    { "require('legendary').bind_function()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').func()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.func(func)
+end
+
+---@deprecated
+function M.bind_functions(funcs)
+  Deprecate.write(
+    { "require('legendary').bind_functions()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').funcs()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.funcs(funcs)
+end
+
+---@deprecated
+function M.bind_autocmds(funcs)
+  Deprecate.write(
+    { "require('legendary').bind_functions()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary').funcs()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  M.autocmds(funcs)
+end
+
+---@deprecated
+function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
+  Deprecate.write(
+    { "require('legendary').bind_whichkey()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').bind_whichkey()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  LegendaryWhichKey.bind_whichkey(wk_tbls, wk_opts, do_binding)
+end
+
+---@deprecated
+function M.parse_whichkey(wk_tbls, wk_opts, do_binding)
+  Deprecate.write(
+    { "require('legendary').parse_whichkey()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').parse_whichkey()", 'WarningMsg' }
+  ).flush_if_vimenter()
+  LegendaryWhichKey.parse_whichkey(wk_tbls, wk_opts, do_binding)
+end
+
+---@deprecated
+function M.whichkey_listen()
+  Deprecate.write(
+    { "require('legendary').whichkey_listen()", 'WarningMsg' },
+    'has been replaced by',
+    { "require('legendary.integrations.which-key').whichkey_listen()", 'WarningMsg' }
+  ).write_if_vimenter()
+  LegendaryWhichKey.whichkey_listen()
 end
 
 return M
