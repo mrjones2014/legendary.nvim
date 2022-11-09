@@ -32,17 +32,17 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 ## Features
 
-- Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions, as simple Lua tables, then bind them with `legendary.nvim`
+- Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions to run on the fly, as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
-- Anonymous mappings -- show mappings/commands in the finder without having `legendary.nvim` handle creating them
+- Execute normal, insert, and visual mode keymaps, commands, autocommands, and Lua functions when you select them
+- Show your most recently executed items at the top when triggered via `legendary.nvim` (can be disabled via config)
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
-- Execute normal, insert, and visual mode keymaps, commands, and autocommands, when you select them
-- Show your most recently executed keymap, command, function or autocmd at the top when triggered via `legendary.nvim` (can be disabled via config)
 - Buffer-local keymaps, commands, functions and autocmds only appear in the finder for the current buffer
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
 - A `legendary.toolbox` module to help create lazily-evaluated keymaps and commands, and item filter. Have an idea for a new helper? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/90) or submit a PR!
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
+- Anonymous mappings; show mappings/commands in the finder without having `legendary.nvim` handle creating them
 
 ## Prerequisites
 
@@ -57,7 +57,7 @@ With `packer.nvim`:
 
 ```lua
 -- to use a version
-use({ 'mrjones2014/legendary.nvim', tag = 'v1.0.0' })
+use({ 'mrjones2014/legendary.nvim', tag = 'v2.0.0' })
 -- or, to get rolling updates
 use({ 'mrjones2014/legendary.nvim' })
 ```
@@ -66,7 +66,7 @@ With `vim-plug`:
 
 ```VimL
 " to use a version
-Plug "mrjones2014/legendary.nvim", { 'tag': 'v1.0.0' }
+Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.0.0' }
 " or, to get rolling updates
 Plug "mrjones2014/legendary.nvim"
 ```
@@ -198,33 +198,5 @@ require('legendary').setup({
     -- see ./doc/WHICH_KEY.md for more details
     auto_register = false,
     -- you can put which-key.nvim tables here,
-    -- or alternatively have them auto-register,
-    -- see ./doc/WHICH_KEY.md
-    mappings = {},
-    opts = {},
-    -- controls whether legendary.nvim actually binds they keymaps,
-    -- or if you want to let which-key.nvim handle the bindings.
-    -- if not passed, true by default
-    do_binding = true,
-  },
-  scratchpad = {
-    -- How to open the scratchpad buffer,
-    -- 'current' for current window, 'float'
-    -- for floating window
-    view = 'float',
-    -- How to show the results of evaluated Lua code.
-    -- 'print' for `print(result)`, 'float' for a floating window.
-    results_view = 'float',
-    -- Border style for floating windows related to the scratchpad
-    float_border = 'rounded',
-    -- Whether to restore scratchpad contents from a cache file
-    keep_contents = true,
-  },
-  -- Directory used for caches
-  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
-})
+    -- or alternatively have them auto-registe
 ```
-
----
-
-Additional documentation can be found under the [doc/](./doc/) directory.
