@@ -198,5 +198,33 @@ require('legendary').setup({
     -- see ./doc/WHICH_KEY.md for more details
     auto_register = false,
     -- you can put which-key.nvim tables here,
-    -- or alternatively have them auto-registe
+    -- or alternatively have them auto-register,
+    -- see ./doc/WHICH_KEY.md
+    mappings = {},
+    opts = {},
+    -- controls whether legendary.nvim actually binds they keymaps,
+    -- or if you want to let which-key.nvim handle the bindings.
+    -- if not passed, true by default
+    do_binding = true,
+  },
+  scratchpad = {
+    -- How to open the scratchpad buffer,
+    -- 'current' for current window, 'float'
+    -- for floating window
+    view = 'float',
+    -- How to show the results of evaluated Lua code.
+    -- 'print' for `print(result)`, 'float' for a floating window.
+    results_view = 'float',
+    -- Border style for floating windows related to the scratchpad
+    float_border = 'rounded',
+    -- Whether to restore scratchpad contents from a cache file
+    keep_contents = true,
+  },
+  -- Directory used for caches
+  cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
+})
 ```
+
+---
+
+Additional documentation can be found under [doc/](./doc/).
