@@ -92,6 +92,9 @@ function Keymap:apply()
     if
       type(mapping.implementation) == 'function'
       or vim.tbl_get(mapping, 'opts', 'expr') == true
+      -- one user had a mapping like { 'l', ':', description = 'Enter command mode' }
+      -- this check allows that to work
+      or mapping.implementation == ':'
       or (
         type(mapping.implementation) == 'string'
         and not vim.startswith(mapping.implementation, ':')
