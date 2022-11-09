@@ -26,12 +26,12 @@ If you need to pass parameters to the Lua function or call a function
 dynamically from a plugin, you can use the following helper functions:
 
 >
-    local helpers = require('legendary.helpers')
+    local toolbox = require('legendary.toolbox')
     local keymaps = {
-      { '<leader>p', helpers.lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
-      { '<leader>f', helpers.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) },
+      { '<leader>p', toolbox.lazy(vim.lsp.buf.formatting_sync, nil, 1500), description = 'Format with 1.5s timeout' },
+      { '<leader>f', toolbox.lazy_required_fn('telescope.builtin', 'oldfiles', { only_cwd = true }) },
       -- you can use a dot in the 2nd parameter to access functions nested in tables
-      { '<leader>tt', helpers.lazy_required_fn('neotest', 'run.run') },
+      { '<leader>tt', toolbox.lazy_required_fn('neotest', 'run.run') },
     }
 <
 The keymap's mode defaults to normal (`n`), but you can set a different mode,

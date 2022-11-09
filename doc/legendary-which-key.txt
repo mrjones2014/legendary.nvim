@@ -11,7 +11,7 @@ There's a couple ways you can choose to do it:
     -- automatically register which-key.nvim tables with legendary.nvim
     -- when you register them with which-key.nvim.
     -- `setup()` must be called before `require('which-key).register()`
-    require('legendary').setup({ auto_register_which_key = true })
+    require('legendary').setup({ which_key = { auto_register = true } })
     -- now this will register them with both which-key.nvim and legendary.nvim
     require('which-key').register(your_which_key_tables, your_which_key_opts)
     
@@ -30,7 +30,7 @@ There's a couple ways you can choose to do it:
     
     -- or, if you'd prefer to manually register with legendary.nvim
     require('which-key').register(your_which_key_tables, your_which_key_opts)
-    require('legendary').bind_whichkey(
+    require('legendary.integrations.which-key').bind_whichkey(
       your_which_key_tables,
       your_which_key_opts,
       -- false if which-key.nvim handles binding them,

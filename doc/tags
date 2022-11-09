@@ -27,8 +27,10 @@ M.split_then	legendary-api.txt	/*M.split_then*
 M.vsplit_then	legendary-api.txt	/*M.vsplit_then*
 M.whichkey_listen	legendary-api.txt	/*M.whichkey_listen*
 Marks	legendary-api.txt	/*Marks*
+legendary-`is_visual_mode`-and-`get_marks`	legendary-mapping-development.txt	/*legendary-`is_visual_mode`-and-`get_marks`*
 legendary-`lazy_required_fn`	legendary-mapping-development.txt	/*legendary-`lazy_required_fn`*
 legendary-`lazy`	legendary-mapping-development.txt	/*legendary-`lazy`*
+legendary-`legendary.nvim`	legendary.txt	/*legendary-`legendary.nvim`*
 legendary-`split_then`	legendary-mapping-development.txt	/*legendary-`split_then`*
 legendary-`vsplit_then`	legendary-mapping-development.txt	/*legendary-`vsplit_then`*
 legendary-`which-key.nvim`-integration	legendary-which-key.txt	/*legendary-`which-key.nvim`-integration*
@@ -42,14 +44,12 @@ legendary-filter-items-by-current-mode	legendary-usage-examples.txt	/*legendary-
 legendary-filter-items-by-normal-mode	legendary-usage-examples.txt	/*legendary-filter-items-by-normal-mode*
 legendary-functions	legendary-function-tables.txt	/*legendary-functions*
 legendary-installation	legendary.txt	/*legendary-installation*
-legendary-item-kinds	legendary.txt	/*legendary-item-kinds*
 legendary-keymaps	legendary-keymap-tables.txt	/*legendary-keymaps*
-legendary-legendary.nvim	legendary.txt	/*legendary-legendary.nvim*
 legendary-lua-api	legendary-lua-api.txt	/*legendary-lua-api*
 legendary-lua-helpers	legendary-mapping-development.txt	/*legendary-lua-helpers*
 legendary-mapping-development-utilities	legendary-mapping-development.txt	/*legendary-mapping-development-utilities*
 legendary-prerequisites	legendary.txt	/*legendary-prerequisites*
+legendary-quickstart	legendary.txt	/*legendary-quickstart*
 legendary-table-structures	legendary-tables.txt	/*legendary-table-structures*
-legendary-usage	legendary.txt	/*legendary-usage*
 legendary-usage-examples	legendary-usage-examples.txt	/*legendary-usage-examples*
 legendary-utility-commands	legendary-mapping-development.txt	/*legendary-utility-commands*

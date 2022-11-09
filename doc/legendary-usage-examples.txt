@@ -8,7 +8,7 @@ FILTER ITEMS BY CURRENT MODE          *legendary-filter-items-by-current-mode*
 
 
 >
-    require('legendary').find({ filters = require('legendary.filters').current_mode() })
+    require('legendary').find({ filters = { require('legendary.filters').current_mode() } })
 <
 
 ------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ FILTER ITEMS BY NORMAL MODE            *legendary-filter-items-by-normal-mode*
 
 
 >
-    require('legendary').find({ filters = require('legendary.filters').mode('n') })
+    require('legendary').find({ filters = { require('legendary.filters').mode('n') } })
 <
 
 ------------------------------------------------------------------------------
@@ -24,7 +24,12 @@ FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary-filter-to-only-keymaps-and-
 
 
 >
-    require('legendary').find({ kind = 'keymaps', filters = require('legendary.filters').mode('n') })
+    require('legendary').find({
+      filters = {
+        require('legendary.filters').mode('n'),
+        require('legendary.filters').keymaps(),
+      },
+    })
 <
 
 ------------------------------------------------------------------------------
@@ -35,10 +40,10 @@ CUSTOMIZE SELECT PROMPT TITLE        *legendary-customize-select-prompt-title*
     require('legendary').find({ select_prompt = 'Custom prompt' })
     -- OR
     require('legendary').find({
-      kind = 'keymaps',
-      select_prompt = function(kind)
-        return string.format('Finding %s', kind)
-      end
+      filters = { require('legendary.filters').keymaps() },
+      select_prompt = function() -- can also be a function
+        return string.format('%s | Finding Keymaps', vim.fn.getcwd())
+      end,
     })
 <
 
@@ -51,13 +56,9 @@ FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-filter-ke
       filters = {
         require('legendary.filters').mode('n'),
         function(item)
-          if not string.find(item.kind, 'keymap') then
-            return true
-          end
-    
-          return vim.startswith(item[1], '<leader>')
-        end
-      }
+          return require('legendary.toolbox').is_keymap(item) and vim.startswith(item[1], '<leader>')
+        end,
+      },
     })
 <
 
@@ -69,8 +70,8 @@ FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*le
     require('legendary').find({
       filters = { require('legendary.filters').current_mode() },
       formatter = function(item, mode)
-        local values = require('legendary.formatter').get_default_format_values(item)
-        if string.find(item.kind, 'keymap') then
+        local values = require('legendary.ui.format').default_format(item)
+        if require('legendary.toolbox').is_keymap(item) then
           values[1] = mode
         end
         return values
