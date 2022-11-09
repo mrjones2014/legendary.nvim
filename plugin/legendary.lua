@@ -5,10 +5,10 @@ end
 vim.g.legendary_root_dir = vim.fn.expand('<sfile>:p:h:h')
 
 if not vim.keymap or not vim.keymap.set then
-  require('legendary.utils').notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!')
+  vim.notify('Sorry, legendary.nvim requires Neovim 0.7.0 or higher!', vim.log.levels.ERROR)
   return
 end
 
-require('legendary.cmds').bind()
+require('legendary.api.cmds').bind()
 
 vim.g.legendary_loaded = true

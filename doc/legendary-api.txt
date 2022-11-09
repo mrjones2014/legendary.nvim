@@ -1,65 +1,50 @@
-================================================================================
-require('legendary')                                                 *legendary*
+M.setup()                                                              *M.setup*
 
-M.setup({new_config})                                          *legendary.setup*
-Set configuration. If config.auto_register_which_key == true
-and which-key.nvim is loaded to the runtimepath, legendary.nvim
-will start listening and auto-adding keymaps when added to which-key.nvim
+
+M.find({opts})                                                          *M.find*
+Find items using vim.ui.select()
 
 Parameters: ~
-{new_config}  (LegendaryConfig)
+{opts}  (LegendaryFindOpts)  @overload fun()
 
 
-================================================================================
-require('legendary.compat.which-key')               *legendary.compat.which-key*
-
-*legendary.compat.which-key.parse_whichkey*
-M.parse_whichkey({which_key_tbls}, {which_key_opts}, {do_binding})
-Take which-key.nvim tables
-and parse them into legendary.nvim tables
+M.keymap({keymap})                                                    *M.keymap*
+Bind a *single keymap*
 
 Parameters: ~
-{which_key_tbls}  (table[])
-{which_key_opts}  (table)
-{do_binding}      (boolean)   whether to bind the keymaps or let which-key handle it
-
-Returns: ~
-{LegendaryItem[]}
+{keymap}  (table)
 
 
-*legendary.compat.which-key.bind_whichkey*
-M.bind_whichkey({wk_tbls}, {wk_opts}, {do_binding})
-Bind a which-key.nvim table with legendary.nvim
+M.command({command})                                                 *M.command*
+Bind a *single command*
 
 Parameters: ~
-{wk_tbls}     (table)
-{wk_opts}     (table)
-{do_binding}  (boolean)   whether to bind the keymaps or let which-key handle it
+{command}  (table)
 
 
-M.whichkey_listen()                 *legendary.compat.which-key.whichkey_listen*
-Enable auto-registering of which-key.nvim tables
-with legendary.nvim
-
-
-================================================================================
-require('legendary.executor')                               *legendary.executor*
-
-*legendary.executor.try_execute*
-M.try_execute({item}, {current_buf}, {visual_selection}, {current_mode})
-Attempt to execute the selected item
+M.func({function})                                                      *M.func*
+Bind a *single function*
 
 Parameters: ~
-{item}              (LegendaryItem)
-{current_buf}       (integer)
-{visual_selection}  (table)           | nil, { row, col, row, col }
-{current_mode}      (---@param)       current_cursor_pos table, { row, col }
+{function}  (table)
 
 
-================================================================================
-require('legendary.filters')                                 *legendary.filters*
+M.autocmds({aus})                                                   *M.autocmds*
+@diagnostic enable: undefined-doc-param
+Bind a *list of* autocmds and/or augroups
 
-M.mode({mode})                                          *legendary.filters.mode*
+Parameters: ~
+{aus}  (Autocmd|Augroup[])
+
+
+M.autocmd({au})                                                      *M.autocmd*
+Bind a *single autocmd/augroup*
+
+Parameters: ~
+{au}  (Autocmd|Augroup)
+
+
+M.mode({mode})                                                          *M.mode*
 Return a `LegendaryItemFilter` that filters items
 by the specified mode
 
@@ -67,311 +52,249 @@ Parameters: ~
 {mode}  (string)
 
 Returns: ~
-{LegendaryItemFilter}
+{ItemFilter}
 
 
-M.current_mode()                                *legendary.filters.current_mode*
+M.current_mode()                                                *M.current_mode*
 Return a `LegendaryItemFilter` that filters items
 by the current mode
 
 Returns: ~
-{LegendaryItemFilter}
+{ItemFilter}
 
 
-================================================================================
-require('legendary.formatter')                             *legendary.formatter*
-
-M.__clear_padding()                        *legendary.formatter.__clear_padding*
-for unit tests only, should not be called from plugin code!
-
-
-M.rpad({str}, {len})                                  *legendary.formatter.rpad*
-Right-pad strings to specified length
-
-Parameters: ~
-{str}  (string)    the string to pad
-{len}  (integer)   the padding value to use
+M.keymaps()                                                          *M.keymaps*
+Filter to only show keymaps
 
 Returns: ~
-{string}  padded string
+{ItemFilter}
 
 
-M.get_default_format_values({item}) *legendary.formatter.get_default_format_values*
-Default implementation of config.formatter
-Column one:
-- Keymaps => modes
-- Commands => '<cmd>'
-- Functions => '<function>'
-- Autocmds => events
-Column 2:
-- Keymaps => key codes
-- Commands => command
-- Functions => ''
-- Autocmds => patterns
-Column 3:
-- All => description
+M.commands()                                                        *M.commands*
+Filter to only show commands
+
+Returns: ~
+{ItemFilter}
+
+
+M.autocmds()                                                        *M.autocmds-filter*
+Filter to only show autocmds
+
+Returns: ~
+{ItemFilter}
+
+
+M.funcs()                                                              *M.funcs*
+Filter to only show functions
+
+Returns: ~
+{ItemFilter}
+
+
+M.lazy({fn})                                                            *M.lazy*
+Return a function with statically set arguments.
+
+Parameters: ~
+{fn}  (function)  The function to execute lazily
+@param ... any The arguments to pass to `fn` when called
+
+Returns: ~
+{function}
+
+
+M.lazy_required_fn({module_name}, {fn_name})
+Return a function which lazily `require`s a module and
+calls a function from it. Functions nested within tables
+may be accessed using dot-notation, i.e.
+`lazy_required_fn('module_name', 'some.nested.fn', some_argument)`
+
+Parameters: ~
+{module_name}  (string)  The module to `require`
+{fn_name}      (string)  The table path to the function
+@param ... any The arguments to pass to the function
+
+Returns: ~
+{function}
+
+
+M.split_then({fn})                                                *M.split_then*
+Return a function that creates a new horizontal
+split, then calls the given function.
+
+Parameters: ~
+{fn}  (function)  The function to call after creating a spli
+
+Returns: ~
+{function}
+
+
+M.vsplit_then({fn})                                              *M.vsplit_then*
+Return a function that creates a new vertical
+split, then calls the given function.
+
+Parameters: ~
+{fn}  (function)  The function to call after creating a spli
+
+Returns: ~
+{function}
+
+
+M.is_keymap({keymap})                                              *M.is_keymap*
+Check if an item is a Keymap
+
+Parameters: ~
+{keymap}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_command({cmd})                                               *M.is_command*
+Check if an item is a Command
+
+Parameters: ~
+{cmd}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_augroup({au})                                                *M.is_augroup*
+Check if an item is an Augroup
+
+Parameters: ~
+{au}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_autocmd({autocmd})                                           *M.is_autocmd*
+Check if an item is an Autocmd
+
+Parameters: ~
+{autocmd}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_augroup_or_autocmd({au_or_autocmd})               *M.is_augroup_or_autocmd*
+Check if an item is an Augroup or Autocmd
+
+Parameters: ~
+{au_or_autocmd}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_function({func})                                            *M.is_function*
+Check if an item is a Function
+
+Parameters: ~
+{func}  (LegendaryItem)
+
+Returns: ~
+{boolean}
+
+
+M.is_visual_mode({mode_str})                                  *M.is_visual_mode*
+Check if the given mode string indicates a visual mode or a sub-mode of visual mode.
+Defaults to `vim.fn.mode()`
+
+Parameters: ~
+{mode_str}  (string|nil)
+
+Returns: ~
+{boolean}  @overload fun()
+
+
+Marks                                                                    *Marks*
+
+
+M.get_marks()                                                      *M.get_marks*
+@field [1] integer
+@field [2] integer
+@field [3] integer
+@field [4] integer
+Get visual marks in format {start_line, start_col, end_line, end_col}
+
+Returns: ~
+{Marks}
+
+
+M.set_marks({marks})                                               *M.set_marks*
+Set visual marks from a table in the forma
+{start_line, start_col, end_line, end_col}
+
+Parameters: ~
+{marks}  (Marks)  the marks to se
+
+
+ItemFormatter                                                    *ItemFormatter*
+
+Type: ~
+fun(items:LegendaryItem[],mode:string):string[]
+
+
+M.default_format({item})                                      *M.default_format*
+Default forma
 
 Parameters: ~
 {item}  (LegendaryItem)
 
 Returns: ~
-{table}  values to format
+{string[]}
 
 
-M.get_format_values({item})              *legendary.formatter.get_format_values*
-Get the column values to be formatted
-for item. Uses config.formatter if not nil,
-default implementation otherwise.
+M.compute_padding({items}, {mode}, {formatter})
+Format items
 
 Parameters: ~
-{item}  (LegendaryItem)
-
-Returns: ~
-{table}  values to format
-
-
-M.update_padding({item})                    *legendary.formatter.update_padding*
-Update cached column paddings.
-
-Parameters: ~
-{item}  (LegendaryItem)
+{items}      (LegendaryItem[])
+{mode}       (string)
+{formatter}  (ItemFormatter)
 
 
-M.get_padding()                                *legendary.formatter.get_padding*
-Returns a READ-ONLY COPY of the current padding values.
-Note that this is a COPY of the table so it will not update,
-and writing to it will not do anything. Padding is managed
-internally by the formatter and should not be modified manually.
-
-Returns: ~
-{table}  table containing the padding value for each column.
-
-
-M.format({item})                                    *legendary.formatter.format*
-Format a LegendaryItem to a string
+M.format_item({item}, {formatter}, {padding}, {mode})
+Format a single item, meant to be used in `vim.ui.select()`
 
 Parameters: ~
-{item}  (LegendaryItem)
+{item}       (LegendaryItem)
+{formatter}  (ItemFormatter)
+{padding}    (integer[])
+{mode}       (string)
 
 Returns: ~
 {string}
 
 
-================================================================================
-require('legendary.helpers')                                 *legendary.helpers*
-
-M.lazy({fn})                                            *legendary.helpers.lazy*
-Given a function reference and some arguments
-return a new function that will call the original
-function with the given arguments
+M.parse_whichkey({which_key_tbls}, {which_key_opts}, {do_binding})
+Take which-key.nvim tables
+and parse them into legendary.nvim tables
 
 Parameters: ~
-{fn}  (function)
+{which_key_tbls}  (table[])
+{which_key_opts}  (table)
+{do_binding}      (boolean)  whether to bind the keymaps or let which-key handle i
 
 Returns: ~
-{function}
+{LegendaryItem[]}
 
 
-M.lazy_required_fn({module_name}, {fn_name})  *legendary.helpers.lazy_required_fn*
-Given a Lua path to require, the name of a function in the `require`d module,
-and some arguments, return a new function that will call
-the function `fn_name` in module `module_name` with the specified args
+M.bind_whichkey({wk_tbls}, {wk_opts}, {do_binding})
+Bind a which-key.nvim table with legendary.nvim
 
 Parameters: ~
-{module_name}  (string)
-{fn_name}      (string)
+{wk_tbls}     (table)
+{wk_opts}     (table)
+{do_binding}  (boolean)  whether to bind the keymaps or let which-key handle i
 
-Returns: ~
-{function}
 
-
-M.split_then({fn})                                *legendary.helpers.split_then*
-Given a Lua function, return a new function
-that will create a horizontal split before
-calling the specified function.
-
-Parameters: ~
-{fn}  (function)
-
-Returns: ~
-{function}
-
-
-M.vsplit_then({fn})                              *legendary.helpers.vsplit_then*
-Given a Lua function, return a new function
-that will create a vertical split before
-calling the specified function.
-
-Parameters: ~
-{fn}  (function)
-
-Returns: ~
-{function}
-
-
-================================================================================
-require('legendary.types')                                     *legendary.types*
-
-LegendaryKind                                                    *LegendaryKind*
-Enum containing the valid `kind` values
-
-
-LegendaryModeMappingOpts                              *LegendaryModeMappingOpts*
-The value of a per-mode mapping with per-mode opts
-
-Fields: ~
-{[1]}   (string)   | function(table | nil): nil
-{opts}  (table)    | nil
-
-
-LegendaryModeMapping                                        *LegendaryModeMapping*
-The value of a per-mode mapping
-
-Fields: ~
-{n}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{v}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{x}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{c}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{s}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{t}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-{i}  (string)   | (function(table | nil): nil) | LegendaryModeMappingOpts
-
-
-LegendaryKeymap                                                                                   *LegendaryKeymap*
-A legendary keymap. You can add keymaps to the finder without binding them by omitting the second list element.
-
-Fields: ~
-{[1]}          (string)
-{[2]}          (string)    | (function(table | nil): nil) | LegendaryModeMapping | nil
-{mode}         (string)    | {string}
-{description}  (string)    | nil
-{opts}         (table)     | nil
-{kind}         (string)
-{unfinished}   (boolean)   | nil
-
-
-LegendaryCommand                                                                                   *LegendaryCommand*
-A legendary command. You can add commands to the finder without binding them by omitting the second list element.
-
-Fields: ~
-{[1]}          (string)
-{[2]}          (string)    | function | nil
-{description}  (string)    | nil
-{opts}         (table)     | nil
-{kind}         (string)
-{unfinished}   (boolean)   | nil
-
-
-LegendaryFunction                                            *LegendaryFunction*
-A legendary function.
-
-Fields: ~
-{[1]}          (function)
-{description}  (string)     | nil
-{opts}         (table)      | nil
-{kind}         (string)
-
-
-LegendaryAutocmd                                              *LegendaryAutocmd*
-A legendary autocmd
-
-Fields: ~
-{[1]}          (string)
-{[2]}          (string)   | function | nil
-{description}  (string)   | nil
-{opts}         (table)    | nil
-{kind}         (string)
-
-
-LegendaryAugroup                                              *LegendaryAugroup*
-A legendary augroup
-
-Fields: ~
-{name}   (string)
-{clear}  (boolean)
-
-
-LegendaryItem                                                    *LegendaryItem*
-Can be any of the legendary table types
-
-Fields: ~
-{description}  (string)   | nil
-{opts}         (table)    | nil
-{kind}         (string)
-
-
-LegendaryItemFilter                                        *LegendaryItemFilter*
-A type alias for
-
-
-LegendaryFormatter                                          *LegendaryFormatter*
-A type alias for
-
-
-Options                                                                *Options*
-accepted by `require('legendary').find()`
-
-
-LegendaryScratchpadDisplay                          *LegendaryScratchpadDisplay*
-enum containing value options for config.scratchpad.display_results
-
-
-LegendaryScratchpadConfig                            *LegendaryScratchpadConfig*
-The config table for the Legendary scratchpad
-
-
-LegendaryConfig                                                *LegendaryConfig*
-Configuration table for legendary
-
-Fields: ~
-{include_builtin}          (boolean)
-{include_legendary_cmds}   (boolean)
-{select_prompt}            (string)     | function(string): string
-{formatter}                (function)   (LegendaryItem): {string}
-{most_recent_item_at_top}  (boolean)
-
-
-M.validate_config({config})                    *legendary.types.validate_config*
-Validator function for configuration table
-
-Parameters: ~
-{config}  (LegendaryConfig)
-
-
-M.validate_keymap({keymap})                    *legendary.types.validate_keymap*
-Validator function for LegendaryKeymaps
-
-Parameters: ~
-{keymap}  (LegendaryKeymap)
-
-
-M.validate_command({command})                 *legendary.types.validate_command*
-Validator function for LegendaryCommands
-
-Parameters: ~
-{command}  (LegendaryCommand)
-
-
-M.validate_autocmd({autocmd})                 *legendary.types.validate_autocmd*
-Validator function for LegendaryAutocmds
-
-Parameters: ~
-{autocmd}  (LegendaryAutocmd)
-
-
-M.validate_augroup({au})                      *legendary.types.validate_augroup*
-Validator function for LegendaryAugroups
-Note: does NOT validate the LegendaryAutocmds inside it
-
-Parameters: ~
-{au}  (LegendaryAugroup)
-
-
-M.validate_function({au})                    *legendary.types.validate_function*
-Validator function for LegendaryFunctions
-
-Parameters: ~
-{au}  (LegendaryFunction)
+M.whichkey_listen()                                          *M.whichkey_listen*
+Enable auto-registering of which-key.nvim tables
+with legendary.nvim
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:

@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-lua:
-    name: Run Teal Build and Unit Tests
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -18,22 +18,15 @@ jobs:
       with:
         luaVersion: "5.1.5"
     - name: Run Stylua
-      uses: JohnnyMorganz/stylua-action@1.0.0
+      uses: JohnnyMorganz/stylua-action@v1.1.2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        args: --check tests/
-        version: 0.10.1
-    - name: Setup 'luarocks'
-      uses: leafo/gh-actions-luarocks@v4
-    - name: Install Teal Compiler
-      run: |
-        luarocks install tl 0.13.2
-        luarocks install luacheck
-    - name: Run Checks and Ensure Teal Build Up To Date
-      run: |
-        make check
-        make build
-        test -z "$(git diff --name-only)"
+        args: --check lua/ tests/
+        version: 0.15.2
+    - name: Run Luacheck
+      uses: lunarmodules/luacheck@v1
+      with:
+        args: lua/legendary/ tests/
     - name: Install Neovim
       uses: rhysd/action-setup-vim@v1
       with:
