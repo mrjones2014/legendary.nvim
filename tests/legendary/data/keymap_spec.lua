@@ -74,6 +74,36 @@ describe('Keymap', function()
       assert.are.same(visual_keymap.lhs, string.format('%st', vim.g.mapleader or '\\'))
       assert.are.same(type(visual_keymap.callback), 'function')
     end)
+
+    it('merges opts with default_opts from config', function()
+      require('legendary.config').default_opts.keymaps = { silent = true, nowait = true }
+
+      Keymap:parse({
+        '<leader>t',
+        {
+          n = function() end,
+          v = function() end,
+        },
+        description = 'LegendaryKeymapTest',
+      }):apply()
+
+      ---@type table
+      local normal_keymap = vim.tbl_filter(function(k)
+        return k.desc == 'LegendaryKeymapTest'
+      end, vim.api.nvim_get_keymap('n'))[1]
+      assert.are.same(normal_keymap.silent, 1)
+      assert.are.same(normal_keymap.nowait, 1)
+
+      ---@type table
+      local visual_keymap = vim.tbl_filter(function(k)
+        return k.desc == 'LegendaryKeymapTest'
+      end, vim.api.nvim_get_keymap('v'))[1]
+      assert.are.same(visual_keymap.silent, 1)
+      assert.are.same(visual_keymap.nowait, 1)
+
+      -- cleanup
+      require('legendary.config').default_opts.keymaps = {}
+    end)
   end)
 
   describe('from_vimscript', function()

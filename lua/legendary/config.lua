@@ -5,8 +5,15 @@ local config = {
   commands = {},
   -- Initial augroups/autocmds to bind
   autocmds = {},
-  -- Initial functions to bidn
+  -- Initial functions to bind
   functions = {},
+  -- default opts to merge with the `opts` table
+  -- of each individual item
+  default_opts = {
+    keymaps = {},
+    commands = {},
+    autocmds = {},
+  },
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that returns a string.
   select_prompt = ' legendary.nvim ',
@@ -72,11 +79,18 @@ local config = {
 ---@field float_border string
 ---@field keep_contents boolean
 
+---@class LegendaryDefaultOptsConfig
+---@field keymaps table
+---@field commands table
+---@field autocmds table
+---@field functions table
+
 ---@class LegendaryConfig
 ---@field keymaps Keymap[]
 ---@field commands Command[]
 ---@field autocmds (Augroup|Autocmd)[]
 ---@field functions Function[]
+---@field default_opts LegendaryDefaultOptsConfig
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string
 ---@field default_item_formatter LegendaryItemFormatter

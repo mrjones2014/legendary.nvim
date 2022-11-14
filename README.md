@@ -174,6 +174,13 @@ require('legendary').setup({
   autocmds = {},
   -- Initial functions to bidn
   functions = {},
+  -- default opts to merge with the `opts` table
+  -- of each individual item
+  default_opts = {
+    keymaps = {},
+    commands = {},
+    autocmds = {},
+  },
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that returns a string.
   select_prompt = ' legendary.nvim ',

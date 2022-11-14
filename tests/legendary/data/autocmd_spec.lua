@@ -98,6 +98,31 @@ describe('Autocmd', function()
       })[1]
       assert.are.same(autocmd.callback, tbl[2])
     end)
+
+    it('merges opts with default_opts from config', function()
+      require('legendary.config').default_opts.autocmds = { pattern = '*.lua', once = true }
+
+      local group = vim.api.nvim_create_augroup('_LegendaryAutocmdTest_', { clear = true })
+      local tbl = {
+        'BufEnter',
+        function() end,
+        opts = {
+          group = group,
+        },
+      }
+      Autocmd:parse(tbl):apply()
+      local autocmd = vim.api.nvim_get_autocmds({
+        event = 'BufEnter',
+        group = group,
+        pattern = '*.lua',
+      })[1]
+
+      assert.are.same(autocmd.pattern, '*.lua')
+      assert.True(autocmd.once)
+
+      -- cleanup
+      require('legendary.config').default_opts.autocmds = {}
+    end)
   end)
 
   describe('with_group', function()

@@ -1,5 +1,6 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
+local Config = require('legendary.config')
 
 ---@class ModeKeymapOpts
 ---@field implementation string|function
@@ -87,8 +88,8 @@ end
 function Keymap:apply()
   for mode, mapping in pairs(self.mode_mappings) do
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
+    opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.keymaps or {})
     opts.desc = opts.desc or self.description
-    opts.silent = util.bool_default(opts.silent, true)
     vim.keymap.set(mode, self.keys, mapping.implementation, opts)
   end
 
