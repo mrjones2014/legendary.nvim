@@ -1,5 +1,6 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
+local Config = require('legendary.config')
 
 ---@class Command
 ---@field cmd string
@@ -41,6 +42,7 @@ function Command:apply()
   end
 
   local opts = vim.deepcopy(self.opts or {})
+  opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.commands or {})
   opts.desc = opts.desc or self.description
   -- these are valid legendary.nvim options but
   -- are only used for filtering and aren't used

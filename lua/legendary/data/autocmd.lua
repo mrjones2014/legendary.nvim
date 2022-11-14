@@ -1,5 +1,6 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
+local Config = require('legendary.config')
 
 ---@class Autocmd
 ---@field events string[]
@@ -40,6 +41,7 @@ function Autocmd:apply()
     command = type(self.implementation) == 'string' and self.implementation or nil,
     group = self.group,
   }, self.opts or {})
+  opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.autocmds or {})
   vim.api.nvim_create_autocmd(self.events, opts)
   return self
 end

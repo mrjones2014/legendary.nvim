@@ -62,5 +62,26 @@ describe('Command', function()
         assert.are.same(commands.MyCommand.name, 'MyCommand')
       end
     )
+
+    it('merges opts with default_opts from config', function()
+      require('legendary.config').default_opts.commands = { nargs = '?', bang = true }
+
+      local tbl = {
+        ':MyCommand [some arg] {another arg}<cr>',
+        function() end,
+        description = 'My command',
+      }
+      Command:parse(tbl):apply()
+      local commands = vim.api.nvim_get_commands({ builtin = false })
+      -- get the version with args, like "MyCommand [some arg] {another arg}"
+      local command = vim.tbl_filter(function(cmd)
+        return vim.startswith(cmd.name, 'MyCommand') and cmd.name ~= 'MyCommand'
+      end, commands)[1]
+      assert.are.same(command.nargs, '?')
+      assert.True(command.bang)
+
+      -- cleanup
+      require('legendary.config').default_opts.commands = {}
+    end)
   end)
 end)
