@@ -83,6 +83,7 @@ M.parse_whichkey()                                            *M.parse_whichkey*
 M.whichkey_listen()                                          *M.whichkey_listen*
 @deprecated
 
+
 M.mode({mode})                                                          *M.mode*
 Return a `LegendaryItemFilter` that filters items
 by the specified mode
@@ -121,6 +122,7 @@ Filter to only show autocmds
 
 Returns: ~
 {LegendaryItemFilter}
+
 
 M.funcs()                                                              *M.funcs*
 Filter to only show functions
