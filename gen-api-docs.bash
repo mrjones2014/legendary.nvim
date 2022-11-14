@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-lemmy-help \
+lemmy-help -fact \
   ./lua/legendary/init.lua \
   ./lua/legendary/filters.lua \
   ./lua/legendary/toolbox.lua \

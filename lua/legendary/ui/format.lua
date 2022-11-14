@@ -1,3 +1,5 @@
+---@mod legendary.ui.format
+
 local Config = require('legendary.config')
 local Toolbox = require('legendary.toolbox')
 

@@ -1,3 +1,5 @@
+---@mod legendary.filters
+
 local Toolbox = require('legendary.toolbox')
 
 local M = {}
