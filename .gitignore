@@ -1,3 +1,2 @@
 repl.lua
 vendor/*
-!vendor/bin/
