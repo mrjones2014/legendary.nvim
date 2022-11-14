@@ -58,7 +58,7 @@ With `packer.nvim`:
 
 ```lua
 -- to use a version
-use({ 'mrjones2014/legendary.nvim', tag = 'v2.0.0' })
+use({ 'mrjones2014/legendary.nvim', tag = 'v2.1.0' })
 -- or, to get rolling updates
 use({ 'mrjones2014/legendary.nvim' })
 ```
@@ -67,7 +67,7 @@ With `vim-plug`:
 
 ```VimL
 " to use a version
-Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.0.0' }
+Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.1.0' }
 " or, to get rolling updates
 Plug "mrjones2014/legendary.nvim"
 ```
