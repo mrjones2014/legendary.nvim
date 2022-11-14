@@ -44,6 +44,46 @@ Parameters: ~
 {au}  (Autocmd|Augroup)
 
 
+M.bind_keymap()                                                  *M.bind_keymap*
+@deprecated
+
+
+M.bind_keymaps()                                                *M.bind_keymaps*
+@deprecated
+
+
+M.bind_command()                                                *M.bind_command*
+@deprecated
+
+
+M.bind_commands()                                              *M.bind_commands*
+@deprecated
+
+
+M.bind_function()                                              *M.bind_function*
+@deprecated
+
+
+M.bind_functions()                                            *M.bind_functions*
+@deprecated
+
+
+M.bind_autocmds()                                              *M.bind_autocmds*
+@deprecated
+
+
+M.bind_whichkey()                                              *M.bind_whichkey*
+@deprecated
+
+
+M.parse_whichkey()                                            *M.parse_whichkey*
+@deprecated
+
+
+M.whichkey_listen()                                          *M.whichkey_listen*
+@deprecated
+
+
 M.mode({mode})                                                          *M.mode*
 Return a `LegendaryItemFilter` that filters items
 by the specified mode
@@ -52,7 +92,7 @@ Parameters: ~
 {mode}  (string)
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
 M.current_mode()                                                *M.current_mode*
@@ -60,35 +100,35 @@ Return a `LegendaryItemFilter` that filters items
 by the current mode
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
 M.keymaps()                                                          *M.keymaps*
 Filter to only show keymaps
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
 M.commands()                                                        *M.commands*
 Filter to only show commands
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
-M.autocmds()                                                        *M.autocmds-filter*
+M.autocmds()                                                        *M.autocmds*
 Filter to only show autocmds
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
 M.funcs()                                                              *M.funcs*
 Filter to only show functions
 
 Returns: ~
-{ItemFilter}
+{LegendaryItemFilter}
 
 
 M.lazy({fn})                                                            *M.lazy*
@@ -232,7 +272,19 @@ Parameters: ~
 {marks}  (Marks)  the marks to se
 
 
-ItemFormatter                                                    *ItemFormatter*
+M.table_from_vimscript({vimscript_str}, {description})
+Parse a vimscript mapping command (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`)
+and return a `legendary.nvim` keymapping table that can be used in your configuration.
+
+Parameters: ~
+{vimscript_str}  (string)
+{description}    (string)
+
+Returns: ~
+{table}
+
+
+LegendaryItemFormatter                                  *LegendaryItemFormatter*
 
 Type: ~
 fun(items:LegendaryItem[],mode:string):string[]
@@ -254,7 +306,7 @@ Format items
 Parameters: ~
 {items}      (LegendaryItem[])
 {mode}       (string)
-{formatter}  (ItemFormatter)
+{formatter}  (LegendaryItemFormatter)
 
 
 M.format_item({item}, {formatter}, {padding}, {mode})
@@ -262,7 +314,7 @@ Format a single item, meant to be used in `vim.ui.select()`
 
 Parameters: ~
 {item}       (LegendaryItem)
-{formatter}  (ItemFormatter)
+{formatter}  (LegendaryItemFormatter)
 {padding}    (integer[])
 {mode}       (string)
 
