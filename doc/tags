@@ -1,5 +1,3 @@
-LegendaryItemFormatter	legendary-api.txt	/*LegendaryItemFormatter*
-Marks	legendary-api.txt	/*Marks*
 legendary	legendary-api.txt	/*legendary*
 legendary-`is_visual_mode`-and-`get_marks`	legendary-mapping-development.txt	/*legendary-`is_visual_mode`-and-`get_marks`*
 legendary-`lazy_required_fn`	legendary-mapping-development.txt	/*legendary-`lazy_required_fn`*
@@ -52,6 +50,7 @@ legendary.keymap	legendary-api.txt	/*legendary.keymap*
 legendary.parse_whichkey	legendary-api.txt	/*legendary.parse_whichkey*
 legendary.setup	legendary-api.txt	/*legendary.setup*
 legendary.toolbox	legendary-api.txt	/*legendary.toolbox*
+legendary.toolbox.Marks	legendary-api.txt	/*legendary.toolbox.Marks*
 legendary.toolbox.get_marks	legendary-api.txt	/*legendary.toolbox.get_marks*
 legendary.toolbox.is_augroup	legendary-api.txt	/*legendary.toolbox.is_augroup*
 legendary.toolbox.is_autocmd	legendary-api.txt	/*legendary.toolbox.is_autocmd*
