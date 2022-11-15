@@ -22,11 +22,11 @@ configuration <../README.md#configuration>).
 
 
 ------------------------------------------------------------------------------
-LUA HELPERS                                            *legendary-lua-helpers*
+LUA TOOLBOX                                            *legendary-lua-toolbox*
 
 
-`legendary.nvim` provides some helper functions for defining lazily-evaluated
-keymaps.
+`legendary.nvim` provides some helper functions (a "toolbox") for defining
+lazily-evaluated keymaps.
 
 
                                                                               
