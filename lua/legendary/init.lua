@@ -1,3 +1,5 @@
+---@mod legendary
+
 local Config = require('legendary.config')
 local State = require('legendary.data.state')
 local Ui = require('legendary.ui')

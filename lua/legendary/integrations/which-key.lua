@@ -1,3 +1,5 @@
+---@mod legendary.integrations.which-key
+
 local State = require('legendary.data.state')
 local Keymap = require('legendary.data.keymap')
 

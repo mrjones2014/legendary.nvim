@@ -1,3 +1,5 @@
+---@mod legendary.toolbox
+
 local M = {}
 
 ---Return a function with statically set arguments.
