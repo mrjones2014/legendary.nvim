@@ -18,7 +18,7 @@ legendary-functions	legendary-function-tables.txt	/*legendary-functions*
 legendary-installation	legendary.txt	/*legendary-installation*
 legendary-keymaps	legendary-keymap-tables.txt	/*legendary-keymaps*
 legendary-lua-api	legendary-lua-api.txt	/*legendary-lua-api*
-legendary-lua-helpers	legendary-mapping-development.txt	/*legendary-lua-helpers*
+legendary-lua-toolbox	legendary-mapping-development.txt	/*legendary-lua-toolbox*
 legendary-mapping-development-utilities	legendary-mapping-development.txt	/*legendary-mapping-development-utilities*
 legendary-prerequisites	legendary.txt	/*legendary-prerequisites*
 legendary-quickstart	legendary.txt	/*legendary-quickstart*
