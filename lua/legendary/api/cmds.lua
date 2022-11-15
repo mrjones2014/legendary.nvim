@@ -63,12 +63,16 @@ end, {
   },
   {
     ':LegendaryScratch',
-    require('legendary.ui.scratchpad').open,
+    function()
+      require('legendary.ui.scratchpad').open()
+    end,
     description = 'Create a Lua scratchpad buffer to help develop commands and keymaps',
   },
   {
     ':LegendaryScratchToggle',
-    require('legendary.ui.scratchpad').toggle,
+    function()
+      require('legendary.ui.scratchpad').toggle()
+    end,
     description = 'Toggle the legendary.nvim Lua scratchpad buffer',
   },
   {

@@ -14,9 +14,9 @@ mapping/command/autocmd development.
 Any `return` value from evaluated Lua is displayed by your configured method (either `print`ed
 to the command area, or displayed in a float, see [configuration](../README.md#configuration)).
 
-## Lua Helpers
+## Lua Toolbox
 
-`legendary.nvim` provides some helper functions for defining lazily-evaluated
+`legendary.nvim` provides some helper functions (a "toolbox") for defining lazily-evaluated
 keymaps.
 
 ### `lazy`
