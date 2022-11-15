@@ -28,7 +28,6 @@ function ItemList:add(items)
     return
   end
 
-  ---@type LegendaryItem
   for _, item in ipairs(items) do
     if Toolbox.is_augroup(item) then
       local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '

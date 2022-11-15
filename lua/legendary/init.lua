@@ -1,15 +1,24 @@
 ---@mod legendary
 
-local Config = require('legendary.config')
-local State = require('legendary.data.state')
-local Ui = require('legendary.ui')
-local Keymap = require('legendary.data.keymap')
-local Command = require('legendary.data.command')
-local Augroup = require('legendary.data.augroup')
-local Autocmd = require('legendary.data.autocmd')
-local Function = require('legendary.data.function')
-local LegendaryWhichKey = require('legendary.integrations.which-key')
-local Deprecate = require('legendary.deprecate')
+local Lazy = require('legendary.vendor.lazy')
+
+---@type LegendaryConfig
+local Config = Lazy.require_on_index('legendary.config')
+---@type LegendaryState
+local State = Lazy.require_on_index('legendary.data.state')
+---@type LegendaryUi
+local Ui = Lazy.require_on_exported_call('legendary.ui')
+---@type Keymap
+local Keymap = Lazy.require_on_exported_call('legendary.data.keymap')
+---@type Command
+local Command = Lazy.require_on_exported_call('legendary.data.command')
+---@type Augroup
+local Augroup = Lazy.require_on_exported_call('legendary.data.augroup')
+---@type Autocmd
+local Autocmd = Lazy.require_on_exported_call('legendary.data.autocmd')
+---@type Function
+local Function = Lazy.require_on_exported_call('legendary.data.function')
+local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-key')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -28,28 +37,16 @@ end
 
 local M = {}
 
-function M.setup(cfg)
-  Config.setup(cfg)
-
-  if Config.which_key.auto_register then
-    LegendaryWhichKey.whichkey_listen()
+local lazy_loading_done = false
+local function lazy_load_stuff()
+  if lazy_loading_done then
+    return
   end
 
-  if #Config.which_key.mappings > 0 then
-    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
-  end
+  lazy_loading_done = true
 
-  M.keymaps(Config.keymaps)
-  M.commands(Config.commands)
   M.funcs(Config.functions)
-  M.autocmds(Config.autocmds)
 
-  -- apply items
-  vim.tbl_map(function(item)
-    item:apply()
-  end, State.items.items)
-
-  -- Add builtins after apply since they don't need applied
   if Config.include_builtin then
     -- inline require to avoid the cost of importing
     -- this somewhat large data file if not needed
@@ -69,10 +66,32 @@ function M.setup(cfg)
   end
 end
 
+function M.setup(cfg)
+  Config.setup(cfg)
+
+  if Config.which_key.auto_register then
+    LegendaryWhichKey.whichkey_listen()
+  end
+
+  if #Config.which_key.mappings > 0 then
+    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
+  end
+
+  M.keymaps(Config.keymaps)
+  M.commands(Config.commands)
+  M.autocmds(Config.autocmds)
+
+  -- apply items
+  vim.tbl_map(function(item)
+    item:apply()
+  end, State.items.items)
+end
+
 ---Find items using vim.ui.select()
 ---@param opts LegendaryFindOpts
 ---@overload fun()
 function M.find(opts)
+  lazy_load_stuff()
   Ui.select(opts)
 end
 
@@ -135,108 +154,6 @@ end
 ---@param au Autocmd|Augroup
 function M.autocmd(au)
   M.autocmds({ au })
-end
-
--- TODO remove deprecated methods
-
----@deprecated
-function M.bind_keymap(keymap)
-  Deprecate.write(
-    { "require('legendary').bind_keymap()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').keymap()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.keymap(keymap)
-end
-
----@deprecated
-function M.bind_keymaps(keymaps)
-  Deprecate.write(
-    { "require('legendary').bind_keymaps()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').keymaps()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.keymaps(keymaps)
-end
-
----@deprecated
-function M.bind_command(command)
-  Deprecate.write(
-    { "require('legendary').bind_command()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').command()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.command(command)
-end
-
----@deprecated
-function M.bind_commands(commands)
-  Deprecate.write(
-    { "require('legendary').bind_commands()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').commands()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.commands(commands)
-end
-
----@deprecated
-function M.bind_function(func)
-  Deprecate.write(
-    { "require('legendary').bind_function()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').func()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.func(func)
-end
-
----@deprecated
-function M.bind_functions(funcs)
-  Deprecate.write(
-    { "require('legendary').bind_functions()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').funcs()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.funcs(funcs)
-end
-
----@deprecated
-function M.bind_autocmds(funcs)
-  Deprecate.write(
-    { "require('legendary').bind_functions()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary').funcs()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  M.autocmds(funcs)
-end
-
----@deprecated
-function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
-  Deprecate.write(
-    { "require('legendary').bind_whichkey()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary.integrations.which-key').bind_whichkey()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  LegendaryWhichKey.bind_whichkey(wk_tbls, wk_opts, do_binding)
-end
-
----@deprecated
-function M.parse_whichkey(wk_tbls, wk_opts, do_binding)
-  Deprecate.write(
-    { "require('legendary').parse_whichkey()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary.integrations.which-key').parse_whichkey()", 'WarningMsg' }
-  ).flush_if_vimenter()
-  LegendaryWhichKey.parse_whichkey(wk_tbls, wk_opts, do_binding)
-end
-
----@deprecated
-function M.whichkey_listen()
-  Deprecate.write(
-    { "require('legendary').whichkey_listen()", 'WarningMsg' },
-    'has been replaced by',
-    { "require('legendary.integrations.which-key').whichkey_listen()", 'WarningMsg' }
-  ).write_if_vimenter()
-  LegendaryWhichKey.whichkey_listen()
 end
 
 return M

@@ -1,8 +1,12 @@
+---@type LegendaryConfig
 local Config = require('legendary.config')
+---@type LegendaryState
 local State = require('legendary.data.state')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 
+---@class LegendaryUi
+---@field select fun(opts:LegendaryFindOpts)
 local M = {}
 
 ---@class LegendaryFindOpts
