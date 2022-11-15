@@ -4,9 +4,6 @@ For keymaps you are mapping yourself (as opposed to mappings set by other plugin
 the first two elements are the key and the handler, respectively. The handler
 can be a command string like `:wa<CR>` or a Lua function.
 
-Keymaps with string/command implementations set `opts.silent = true` by default,
-you can set `opts.silent = false` manually to override this.
-
 Example:
 
 ```lua
