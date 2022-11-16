@@ -80,7 +80,7 @@ end
 ---@field most_recent_first boolean whether to sort the most recently selected item to the top
 ---@field user_items_first boolean whether to sort user-defined items before built-ins
 ---@field item_type_bias 'keymap'|'command'|'autocmd' Boost the sort score of the specified item type
----@field custom fun(item1:LegendaryItem,item2:LegendaryItem):boolean Custom sort fn, return `true` if `item1` is "less than" `item2`.
+---@field custom fun(item1:LegendaryItem,item2:LegendaryItem):boolean Custom sort fn, return `true` if `item1 < item2`
 
 ---Sort the list *IN PLACE*.
 --THIS MODIFIES THE LIST IN PLACE.
