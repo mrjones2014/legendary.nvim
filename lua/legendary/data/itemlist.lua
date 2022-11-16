@@ -105,14 +105,6 @@ function ItemList:sort_inplace(opts)
     end)
   end
 
-  -- if most recent is already at top, nothing to do, and attempting to sort will cause
-  -- an error since it doesn't need to be sorted
-  if opts.most_recent_first and State.most_recent_item and State.most_recent_item ~= self.items[1] then
-    table.insert(comparators, function(item)
-      return item == State.most_recent_item
-    end)
-  end
-
   -- do the sorting
 
   local function combined_comparator(item, item2)
@@ -133,6 +125,15 @@ function ItemList:sort_inplace(opts)
     vim.api.nvim_err_write(string.format('[legendary.nvim] Failed to sort items: %s\n', vim.inspect(sorted)))
   else
     items = sorted
+  end
+
+  -- sort by most recent last, and after other sorts are done
+  -- if most recent is already at top, nothing to do, and attempting to sort will cause
+  -- an error since it doesn't need to be sorted
+  if opts.most_recent_first and State.most_recent_item and State.most_recent_item ~= self.items[1] then
+    items = Sorter.mergesort(items, function(item)
+      return item == State.most_recent_item
+    end)
   end
 
   self.items = items
