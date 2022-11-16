@@ -79,6 +79,8 @@ end
 ---@class LegendarySorterOpts
 ---@field most_recent_first boolean whether to sort the most recently selected item to the top
 ---@field user_items_first boolean whether to sort user-defined items before built-ins
+---@field item_type_bias 'keymap'|'command'|'autocmd' Boost the sort score of the specified item type
+---@field custom fun(item1:LegendaryItem,item2:LegendaryItem):boolean Custom sort fn, return `true` if `item1` is "less than" `item2`.
 
 ---Sort the list *IN PLACE*.
 --THIS MODIFIES THE LIST IN PLACE.
@@ -103,6 +105,34 @@ function ItemList:sort_inplace(opts)
     table.insert(comparators, function(item, item2)
       return not item.builtin and item2.builtin
     end)
+  end
+
+  if opts.item_type_bias then
+    vim.validate({
+      item_type_bias = {
+        opts.item_type_bias,
+        function(item_type_bias)
+          return item_type_bias == 'keymap' or item_type_bias == 'command' or item_type_bias == 'autocmd'
+        end,
+      },
+    })
+    table.insert(comparators, function(item, item2)
+      if item == item2 then
+        return false
+      end
+
+      if opts.item_type_bias == 'keymap' then
+        return Toolbox.is_keymap(item) and not Toolbox.is_keymap(item2)
+      elseif opts.item_type_bias == 'command' then
+        return Toolbox.is_command(item) and not Toolbox.is_command(item2)
+      else
+        return Toolbox.is_autocmd(item) and not Toolbox.is_autocmd(item2)
+      end
+    end)
+  end
+
+  if opts.custom then
+    table.insert(comparators, opts.custom)
   end
 
   -- do the sorting
