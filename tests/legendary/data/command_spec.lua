@@ -34,6 +34,35 @@ describe('Command', function()
       assert.are.same(command.opts, { bang = true, nargs = '?' })
       assert.True(command.unfinished)
     end)
+
+    it('parses per-mode implementations into a function that handles mode-implementation lookup', function()
+      local normal_executed = false
+      local visual_executed = false
+      local tbl = {
+        ':MyCommand',
+        {
+          n = function()
+            normal_executed = true
+          end,
+          x = function()
+            visual_executed = true
+          end,
+        },
+        description = 'Per-mode implementation command',
+      }
+      local command = Command:parse(tbl):apply()
+      assert.are.same(type(command.implementation), 'function')
+
+      vim.cmd('MyCommand')
+      assert.True(normal_executed)
+
+      -- switch to visual mode
+      vim.cmd('normal v')
+      assert.are.same(vim.fn.mode(), 'v')
+      -- execute in visual mode
+      vim.cmd('MyCommand')
+      assert.True(visual_executed)
+    end)
   end)
 
   describe('apply', function()

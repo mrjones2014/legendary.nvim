@@ -1,10 +1,7 @@
 local Toolbox = require('legendary.toolbox')
+local util = require('legendary.util')
 
 local M = {}
-
-local function exec_feedkeys(keys)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 't', true)
-end
 
 ---@class LegendaryEditorContext
 ---@field buf integer
@@ -56,18 +53,18 @@ function M.exec_item(item, context)
       elseif Toolbox.is_command(item) then
         local cmd = item:vim_cmd()
         if item.unfinished == true then
-          exec_feedkeys(string.format(':%s ', cmd))
+          util.exec_feedkeys(string.format(':%s ', cmd))
         else
           vim.cmd(cmd)
         end
       elseif Toolbox.is_keymap(item) then
-        exec_feedkeys(item.keys)
+        util.exec_feedkeys(item.keys)
       elseif Toolbox.is_autocmd(item) then
         local impl = item.implementation
         if type(impl) == 'function' then
           impl()
         else
-          exec_feedkeys(impl)
+          util.exec_feedkeys(impl)
         end
       end
     end)

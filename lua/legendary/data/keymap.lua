@@ -3,7 +3,7 @@ local util = require('legendary.util')
 local Config = require('legendary.config')
 
 ---@class ModeKeymapOpts
----@field implementation string|function
+---@field implementation string|fun()
 ---@field opts table|nil
 
 ---@class ModeKeymap
