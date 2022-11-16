@@ -35,6 +35,7 @@ function M.select(opts)
 
   vim.ui.select(items, {
     prompt = prompt,
+    kind = 'legendary.nvim',
     format_item = function(item)
       return Format.format_item(item, opts.formatter or Config.default_item_formatter, padding, context.mode)
     end,
@@ -43,8 +44,9 @@ function M.select(opts)
       return
     end
 
+    State.most_recent_item = selected
     if Config.most_recent_items_at_top then
-      State.items:sort_inplace_by_recent(selected)
+      State.items:sort_inplace_by_recent()
     end
 
     Executor.exec_item(selected, context)

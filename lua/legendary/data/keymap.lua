@@ -22,13 +22,16 @@ local Config = require('legendary.config')
 ---@field mode_mappings ModeKeymap
 ---@field description string
 ---@field opts table
+---@field builtin boolean
 ---@field class Keymap
 local Keymap = class('Keymap')
 
 ---Parse a new keymap table
 ---@param tbl table
+---@param builtin boolean Whether the item is a builtin, defaults to false
+---@overload fun(tbl:table):Keymap
 ---@return Keymap
-function Keymap:parse(tbl) -- luacheck: no unused
+function Keymap:parse(tbl, builtin) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
     ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
@@ -56,6 +59,7 @@ function Keymap:parse(tbl) -- luacheck: no unused
   instance.keys = tbl[1]
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
+  instance.builtin = builtin or false
 
   instance.mode_mappings = {}
   if tbl[2] == nil then

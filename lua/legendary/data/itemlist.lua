@@ -72,17 +72,70 @@ end
 ---Sort *in place* to move the most
 ---recent item to the top.
 ---THIS MODIFIES THE LIST IN PLACE.
----@param most_recent LegendaryItem
-function ItemList:sort_inplace_by_recent(most_recent)
-  if self.items[1] == most_recent then
-    -- nothing to do, and attempting to sort will cause
-    -- an error since it doesn't need to be sorted
+function ItemList:sort_inplace_by_recent()
+  self:sort_inplace({ most_recent_first = true })
+end
+
+---@class LegendarySorterOpts
+---@field most_recent_first boolean whether to sort the most recently selected item to the top
+---@field user_items_first boolean whether to sort user-defined items before built-ins
+
+---Sort the list *IN PLACE*.
+--THIS MODIFIES THE LIST IN PLACE.
+---@param opts LegendarySorterOpts
+function ItemList:sort_inplace(opts)
+  opts = opts or {}
+  if #vim.tbl_keys(opts) == 0 then
+    -- nothing to do if no sorting requested
     return
   end
 
-  self.items = Sorter.mergesort(self.items, function(item)
-    return item == most_recent
-  end)
+  -- inline require to avoid circular dependency
+  local State = require('legendary.data.state')
+
+  local items = self.items
+
+  local comparators = {}
+
+  -- set up comparators for each opts field
+
+  if opts.user_items_first then
+    table.insert(comparators, function(item, item2)
+      return not item.builtin and item2.builtin
+    end)
+  end
+
+  -- if most recent is already at top, nothing to do, and attempting to sort will cause
+  -- an error since it doesn't need to be sorted
+  if opts.most_recent_first and State.most_recent_item and State.most_recent_item ~= self.items[1] then
+    table.insert(comparators, function(item)
+      return item == State.most_recent_item
+    end)
+  end
+
+  -- do the sorting
+
+  local function combined_comparator(item, item2)
+    if item == item2 then
+      return false
+    end
+
+    local result = false
+    for _, comparator in ipairs(comparators) do
+      result = result or comparator(item, item2)
+    end
+
+    return result
+  end
+
+  local ok, sorted = pcall(Sorter.mergesort, items, combined_comparator)
+  if not ok then
+    vim.api.nvim_err_write(string.format('[legendary.nvim] Failed to sort items: %s\n', vim.inspect(sorted)))
+  else
+    items = sorted
+  end
+
+  self.items = items
 end
 
 return ItemList
