@@ -57,4 +57,11 @@ function M.sanitize_cmd_str(cmd_str)
   return vim.trim(cmd)
 end
 
+---Execute the given keys via `vim.api.nvim_feedkeys`,
+---`keys` are escaped using `vim.api.nvim_replace_termcodes`
+---@param keys string
+function M.exec_feedkeys(keys)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 't', true)
+end
+
 return M

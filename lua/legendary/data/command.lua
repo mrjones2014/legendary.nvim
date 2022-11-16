@@ -1,15 +1,61 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 local Config = require('legendary.config')
+local Toolbox = require('legendary.toolbox')
+
+---@class ModeCommand
+---@field n string|fun()|nil
+---@field v string|fun()|nil
+---@field x string|fun()|nil
+---@field c string|fun()|nil
+---@field s string|fun()|nil
+---@field t string|fun()|nil
+---@field i string|fun()|nil
+---@field o string|fun()|nil
+---@field l string|fun()|nil
 
 ---@class Command
 ---@field cmd string
----@field implementation string|function|nil
+---@field implementation string|function|ModeCommand|nil
 ---@field description string
 ---@field opts table
 ---@field unfinished boolean
 ---@field class Command
 local Command = class('Command')
+
+local function exec(impl, args)
+  if type(impl) == 'string' then
+    if vim.startswith(impl, ':') or vim.startswith(impl:lower(), '<cmd>') then
+      vim.cmd(util.sanitize_cmd_str(impl))
+    else
+      util.exec_feedkeys(impl)
+    end
+  elseif type(impl) == 'function' then
+    impl(args)
+  end
+end
+
+local function parse_modemap(map)
+  return function(args)
+    local mode = vim.fn.mode()
+    local impl = map[mode]
+    if not impl then
+      if Toolbox.is_visual_mode(mode) then
+        impl = impl or map.v or map.x
+      elseif mode == 'i' then
+        impl = impl or map.l
+      elseif mode == 'c' then
+        impl = impl or map.l
+      elseif mode == 's' then
+        impl = impl or map.s or map.v
+      end
+    end
+
+    if impl then
+      exec(impl, args)
+    end
+  end
+end
 
 ---Parse a new command table
 ---@param tbl table
@@ -17,7 +63,7 @@ local Command = class('Command')
 function Command:parse(tbl) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
-    ['2'] = { tbl[2], { 'string', 'function' }, true },
+    ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
     opts = { tbl.opts, { 'table' }, true },
     description = { util.get_desc(tbl), { 'string' }, true },
     unfinished = { tbl.unfinished, { 'boolean' }, true },
@@ -26,10 +72,26 @@ function Command:parse(tbl) -- luacheck: no unused
   local instance = Command()
 
   instance.cmd = tbl[1]
-  instance.implementation = tbl[2]
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts
   instance.unfinished = util.bool_default(tbl.unfinished, false)
+  instance.implementation = tbl[2]
+
+  if type(instance.implementation) == 'table' then
+    vim.validate({
+      n = { tbl[2].n, { 'string', 'function' }, true },
+      v = { tbl[2].v, { 'string', 'function' }, true },
+      x = { tbl[2].x, { 'string', 'function' }, true },
+      c = { tbl[2].c, { 'string', 'function' }, true },
+      s = { tbl[2].s, { 'string', 'function' }, true },
+      t = { tbl[2].t, { 'string', 'function' }, true },
+      i = { tbl[2].i, { 'string', 'function' }, true },
+      o = { tbl[2].i, { 'string', 'function' }, true },
+      l = { tbl[2].i, { 'string', 'function' }, true },
+    })
+
+    instance.implementation = parse_modemap(instance.implementation)
+  end
 
   return instance
 end
