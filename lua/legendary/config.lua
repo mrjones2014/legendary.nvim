@@ -33,9 +33,6 @@ local config = {
   -- Include the commands that legendary.nvim creates itself
   -- in the legend by default, set to false to disable
   include_legendary_cmds = true,
-  -- Sort most recently used items to the top of the list
-  -- so they can be quickly re-triggered when opening legendary again
-  most_recent_items_at_top = true,
   -- Options for list sorting. Note that fuzzy-finders will still
   -- do their own sorting. For telescope.nvim, you can set it to use
   -- `require('telescope.sorters').fuzzy_with_index_bias({})` when
