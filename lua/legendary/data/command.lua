@@ -42,13 +42,11 @@ local function parse_modemap(map)
     local impl = map[mode]
     if not impl then
       if Toolbox.is_visual_mode(mode) then
-        impl = impl or map.v or map.x
+        impl = impl or map.v or map.x or map.s
       elseif mode == 'i' then
         impl = impl or map.l
       elseif mode == 'c' then
         impl = impl or map.l
-      elseif mode == 's' then
-        impl = impl or map.s or map.v
       end
     end
 
