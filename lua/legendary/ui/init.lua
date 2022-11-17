@@ -25,6 +25,12 @@ function M.select(opts)
 
   local context = Executor.build_pre_context()
 
+  -- Apply sorting if needed. Note, the internal
+  -- implementation of `sort_inplace` checks if
+  -- sorting is actually needed and does nothing
+  -- if it does not need to be sorted.
+  State.items:sort_inplace()
+
   -- in addition to user filters, we also need to filter by buf
   local items = vim.tbl_filter(function(item)
     local item_buf = vim.tbl_get(item, 'opts', 'buffer')
@@ -45,7 +51,6 @@ function M.select(opts)
     end
 
     State.most_recent_item = selected
-    State.items:sort_inplace()
 
     Executor.exec_item(selected, context)
   end)
