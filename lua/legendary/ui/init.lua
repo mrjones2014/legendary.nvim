@@ -45,9 +45,7 @@ function M.select(opts)
     end
 
     State.most_recent_item = selected
-    if Config.most_recent_items_at_top then
-      State.items:sort_inplace_by_recent()
-    end
+    State.items:sort_inplace()
 
     Executor.exec_item(selected, context)
   end)

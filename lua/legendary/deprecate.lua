@@ -60,30 +60,14 @@ end
 ---@return LegendaryConfig
 function M.check_config(cfg)
   ---@diagnostic disable
-  if cfg.auto_register_which_key ~= nil then
-    M.write(
-      { 'config.auto_register_which_key', 'WarningMsg' },
-      'has been moved to',
-      { 'config.which_key.auto_register', 'WarningMsg' }
-    )
-    cfg.which_key.auto_register = cfg.auto_register_which_key
-  end
 
-  if cfg.scratchpad.display_results ~= nil then
+  if cfg.most_recent_items_at_top ~= nil then
     M.write(
-      { 'config.scratchpad.display_results', 'WarningMsg' },
+      { 'config.most_recent_items_at_top', 'WarningMsg' },
       'has been moved to',
-      { 'config.scratchpad.results_view', 'WarningMsg' }
+      { 'config.sort.most_recent_first' }
     )
-    cfg.scratchpad.results_view = cfg.scratchpad.display_results
-  end
-
-  if cfg.scratchpad.cache_file ~= nil then
-    M.write(
-      { 'config.scratchpad.cache_file', 'WarningMsg' },
-      'has been replaced by',
-      { 'config.scratchpad.keep_contents and config.cache_path', 'WarningMsg' }
-    )
+    cfg.sort.most_recent_first = cfg.most_recent_items_at_top
   end
 
   ---@diagnostic enable
