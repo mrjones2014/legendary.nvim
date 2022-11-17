@@ -15,13 +15,22 @@ function M.mode(mode)
       return true
     end
 
-    local keymap = item
-    local keymap_mode = keymap.mode or { 'n' }
-    if type(keymap_mode) == 'string' then
-      keymap_mode = { keymap_mode }
+    -- map mode equivalencies
+    local filter_modes = { mode }
+    if mode == 'v' then
+      filter_modes = { 'v', 'x', 's' }
+    elseif mode == 's' then
+      filter_modes = { 'v', 's' }
+    elseif mode == 'l' then
+      filter_modes = { 'l', 'i', 'c' }
     end
 
-    return vim.tbl_contains(keymap_mode, mode)
+    -- filter where any filter_modes match any item:modes()
+    return #vim.tbl_filter(function(keymap_mode)
+      return #vim.tbl_filter(function(filter_mode)
+        return filter_mode == keymap_mode
+      end, filter_modes) > 0
+    end, item:modes()) > 0
   end
 end
 
