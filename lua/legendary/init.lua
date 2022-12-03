@@ -52,7 +52,7 @@ local function lazy_load_stuff()
 
   lazy_loading_done = true
 
-  M.funcs(Config.functions)
+  M.funcs(Config.funcs)
 
   if Config.include_builtin then
     -- inline require to avoid the cost of importing

@@ -12,7 +12,7 @@ local ItemGroup = class('ItemGroup')
 
 ---Parse an ItemGroup
 ---@param tbl table
-function ItemGroup:parse(tbl)
+function ItemGroup:parse(tbl) -- luacheck: no unused
   vim.validate({
     itemgroup = { tbl.itemgroup, { 'string' } },
     keymaps = { tbl.keymaps, { 'table' }, true },
@@ -24,15 +24,19 @@ function ItemGroup:parse(tbl)
 
   instance.name = tbl.itemgroup
   instance.items = ItemList:create()
+
   local keymaps = vim.tbl_map(function(keymap)
     return Keymap:parse(keymap)
   end, tbl.keymaps or {})
+
   local commands = vim.tbl_map(function(cmd)
     return Command:parse(cmd)
   end, tbl.commands or {})
+
   local funcs = vim.tbl_map(function(fn)
     return Function:parse(fn)
   end, tbl.funcs or {})
+
   instance.items:add(keymaps)
   instance.items:add(commands)
   instance.items:add(funcs)
