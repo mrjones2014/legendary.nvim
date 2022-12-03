@@ -20,6 +20,7 @@ local Toolbox = require('legendary.toolbox')
 ---@field description string
 ---@field opts table
 ---@field unfinished boolean
+---@field builtin boolean
 ---@field class Command
 local Command = class('Command')
 
@@ -57,8 +58,10 @@ end
 
 ---Parse a new command table
 ---@param tbl table
+---@param builtin boolean Whether the item is a builtin, defaults to false
+---@overload fun(tbl:table):Command
 ---@return Command
-function Command:parse(tbl) -- luacheck: no unused
+function Command:parse(tbl, builtin) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'string' } },
     ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
@@ -74,6 +77,7 @@ function Command:parse(tbl) -- luacheck: no unused
   instance.opts = tbl.opts
   instance.unfinished = util.bool_default(tbl.unfinished, false)
   instance.implementation = tbl[2]
+  instance.builtin = builtin or false
 
   if type(instance.implementation) == 'table' then
     vim.validate({

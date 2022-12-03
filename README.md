@@ -200,9 +200,35 @@ require('legendary').setup({
   -- Include the commands that legendary.nvim creates itself
   -- in the legend by default, set to false to disable
   include_legendary_cmds = true,
-  -- Sort most recently used items to the top of the list
-  -- so they can be quickly re-triggered when opening legendary again
-  most_recent_items_at_top = true,
+  -- Options for list sorting. Note that fuzzy-finders will still
+  -- do their own sorting. For telescope.nvim, you can set it to use
+  -- `require('telescope.sorters').fuzzy_with_index_bias({})` when
+  -- triggered via `legendary.nvim`. Example config for `dressing.nvim`:
+  --
+  -- require('dressing').setup({
+  --  select = {
+  --    get_config = function(opts)
+  --      if opts.kind == 'legendary.nvim' then
+  --        return {
+  --          telescope = {
+  --            sorter = require('telescope.sorters').fuzzy_with_index_bias({})
+  --          }
+  --        }
+  --      else
+  --        return {}
+  --      end
+  --    end
+  --  }
+  -- })
+  sort = {
+    -- sort most recently used item to the top
+    most_recent_first = true,
+    -- sort user-defined items before built-in items
+    user_items_first = true,
+    -- sort the specified item type before other item types,
+    -- value must be one of: 'keymap', 'command', 'autocmd', nil
+    item_type_bias = nil,
+  },
   which_key = {
     -- Automatically add which-key tables to legendary
     -- see ./doc/WHICH_KEY.md for more details

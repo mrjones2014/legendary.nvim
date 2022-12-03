@@ -210,7 +210,6 @@ M.builtin_keymaps = {
   { 'g<C-]>', description = 'Jump or show choices' },
   -- { 'm{c}', description = 'Set mark {c}' },
   -- { '`{c}', description = 'Jump to mark at {c}' },
-  { 'gd', description = 'Jump to definition' },
   { '<C-o>', description = 'To prev jump position' },
   { '<C-i>', description = 'To next jump position' },
   { 'gi', description = 'Go to last insertion and INSERT' },

@@ -53,11 +53,11 @@ local function lazy_load_stuff()
     local Builtins = require('legendary.data.builtins')
 
     State.items:add(vim.tbl_map(function(keymap)
-      return Keymap:parse(keymap)
+      return Keymap:parse(keymap, true)
     end, Builtins.builtin_keymaps))
 
     State.items:add(vim.tbl_map(function(command)
-      return Command:parse(command)
+      return Command:parse(command, true)
     end, Builtins.builtin_commands))
   end
 
