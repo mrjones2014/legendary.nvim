@@ -142,12 +142,28 @@ local keymaps = {
 }
 ```
 
-Finally, if you want to register keymaps with `legendary.nvim` in order to see them in the finder, but not bind
+If you want to register keymaps with `legendary.nvim` in order to see them in the finder, but not bind
 them (like for keymaps set by other plugins), you can just omit the handler element:
 
 ```lua
 local keymaps = {
   { '<C-d>', description = 'Scroll docs up' },
   { '<C-f>', description = 'Scroll docs down' },
+}
+```
+
+You can also organize keymaps, commands, and functions into groups that will show up
+in the finder UI like a folder, selecting it will then trigger another finder for items
+within the group. If groups are given the same name, they will be merged.
+
+```lua
+local keymaps = {
+  {
+    -- name, indicates that this table is an item group
+    itemgroup = 'Group of items...',
+    keymaps = {
+      -- regular keymaps here
+    },
+  },
 }
 ```

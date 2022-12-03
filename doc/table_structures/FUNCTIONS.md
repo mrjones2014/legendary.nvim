@@ -36,3 +36,19 @@ You can also pass options via the `opts` property:
 
 - `buffer` option (a buffer handle, or `0` for current buffer), which will
   make the function visible only in the specified buffer.
+
+You can also organize keymaps, commands, and functions into groups that will show up
+in the finder UI like a folder, selecting it will then trigger another finder for items
+within the group. If groups are given the same name, they will be merged.
+
+```lua
+local functions = {
+  {
+    -- name, indicates that this table is an item group
+    itemgroup = 'Group of items...',
+    funcs = {
+      -- regular legendary.nvim functions here
+    },
+  },
+}
+```

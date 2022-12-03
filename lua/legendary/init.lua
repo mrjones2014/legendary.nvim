@@ -18,11 +18,15 @@ local Augroup = Lazy.require_on_exported_call('legendary.data.augroup')
 local Autocmd = Lazy.require_on_exported_call('legendary.data.autocmd')
 ---@type Function
 local Function = Lazy.require_on_exported_call('legendary.data.function')
+---@type ItemGroup
+local ItemGroup = Lazy.require_on_exported_call('legendary.data.itemgroup')
+
 local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-key')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
 local function build_parser_func(parser)
+  ---@param items table
   return function(items)
     if not vim.tbl_islist(items) then
       error(string.format('Expected list, got ', type(items)))
@@ -30,6 +34,9 @@ local function build_parser_func(parser)
     end
 
     State.items:add(vim.tbl_map(function(item)
+      if type(item.itemgroup) == 'string' then
+        return ItemGroup:parse(item):apply()
+      end
       return parser:parse(item):apply()
     end, items))
   end
@@ -80,6 +87,7 @@ function M.setup(cfg)
   M.keymaps(Config.keymaps)
   M.commands(Config.commands)
   M.autocmds(Config.autocmds)
+  M.itemgroups(Config.itemgroups)
 
   -- apply items
   vim.tbl_map(function(item)
@@ -127,6 +135,16 @@ M.funcs = build_parser_func(Function)
 ---@param function table
 function M.func(func)
   M.funcs({ func })
+end
+
+---Bind a *list of item groups*
+---@param itemgroup table[]
+M.itemgroups = build_parser_func(ItemGroup)
+
+---Bind a *single item group*
+---@param itemgroup table
+function M.itemgroup(itemgroup)
+  M.itemgroups({ itemgroup })
 end
 
 ---@diagnostic enable: undefined-doc-param

@@ -172,8 +172,12 @@ require('legendary').setup({
   commands = {},
   -- Initial augroups/autocmds to bind
   autocmds = {},
-  -- Initial functions to bidn
+  -- Initial functions to bind
   functions = {},
+  -- Initial item groups to bind,
+  -- note that item groups can also
+  -- be under keymaps, commands, autocmds, or funcs
+  itemgroups = {},
   -- default opts to merge with the `opts` table
   -- of each individual item
   default_opts = {

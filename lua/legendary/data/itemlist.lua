@@ -4,7 +4,7 @@ local Toolbox = require('legendary.toolbox')
 local Sorter = require('legendary.vendor.sorter')
 local Config = require('legendary.config')
 
----@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function
+---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function|ItemGroup
 
 ---@class ItemList
 local ItemList = class('ItemList')
@@ -13,6 +13,7 @@ local ItemList = class('ItemList')
 function ItemList:initialize()
   self.items = {}
   self.duplicate_tracker = {}
+  self.itemgroup_refs = {}
   self.sorted = true
 end
 
@@ -35,6 +36,15 @@ function ItemList:add(items)
       local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '
         .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
       vim.notify(msg)
+    elseif Toolbox.is_itemgroup(item) then
+      local group = self.itemgroup_refs[item.name] or item --[[@as ItemGroup]]
+      if group ~= item then
+        group.items:add(item.items)
+      else
+        self.itemgroup_refs[item.name] = item
+        table.insert(self.items, item)
+      end
+      self.sorted = false
     else
       if item.description and #item.description > 0 then
         local id = item:id()

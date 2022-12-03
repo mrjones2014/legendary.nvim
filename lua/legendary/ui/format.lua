@@ -39,6 +39,12 @@ function M.default_format(item)
       '<function>',
       item.description,
     }
+  elseif Toolbox.is_itemgroup(item) then
+    return {
+      '',
+      '<expand>',
+      item.name,
+    }
   else
     -- unreachable
     return {

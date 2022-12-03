@@ -61,13 +61,16 @@ end
 function M.check_config(cfg)
   ---@diagnostic disable
 
-  if cfg.most_recent_items_at_top ~= nil then
-    M.write(
-      { 'config.most_recent_items_at_top', 'WarningMsg' },
-      'has been moved to',
-      { 'config.sort.most_recent_first' }
-    )
-    cfg.sort.most_recent_first = cfg.most_recent_items_at_top
+  if cfg.functions ~= nil then
+    M.write({ 'config.functions', 'WarningMsg' }, 'has been moved to', { 'config.funcs' })
+    cfg.funcs = cfg.functions
+  end
+
+  if cfg.default_opts.functions ~= nil then
+    if cfg.default_opts.functions ~= nil then
+      M.write({ 'config.default_opts.functions', 'WarningMsg' }, 'has been moved to', { 'config.default_opts.funcs' })
+      cfg.default_opts.funcs = cfg.default_opts.functions
+    end
   end
 
   ---@diagnostic enable

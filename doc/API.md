@@ -36,8 +36,36 @@ require('legendary').autocmds({
   -- your augroups and autocmds here
 })
 
+-- bind a single item group
+require('legendary').itemgroup(itemgroups)
+require('legendary').itemgroups({
+  {
+    itemgroup = 'Item group 1...',
+    keymaps = {
+      -- keymaps here
+    },
+    commands = {
+      -- commands here
+    },
+    funcs = {
+      -- functions here
+    },
+  },
+  {
+    itemgroup = 'Item group 2...',
+    keymaps = {},
+    commands = {},
+    funcs = {},
+  },
+})
+
 -- search keymaps, commands, functions, and autocmds
 require('legendary').find()
+
+-- the following item type filters also include ItemGroups,
+-- if an ItemGroup is selected, its items will be filtered
+-- using the same item type filter
+
 -- search keymaps
 require('legendary').find({ filters = { require('legendary.filters').keymaps() } })
 -- search commands
@@ -47,7 +75,9 @@ require('legendary').find({ filters = { require('legendary.filters').funcs() } }
 -- search autocmds
 require('legendary').find({ filters = { require('legendary.filters').autocmds() } })
 
--- filter keymaps by current mode
+-- filter keymaps by current mode;
+-- only keymaps are filtered, since other
+-- item types are not mode-specific
 require('legendary').find({
   filters = { require('legendary.filters').current_mode() },
 })
