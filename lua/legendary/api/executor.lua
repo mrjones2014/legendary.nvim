@@ -1,4 +1,5 @@
 local Toolbox = require('legendary.toolbox')
+local Log = require('legendary.log')
 local util = require('legendary.util')
 
 local M = {}
@@ -33,7 +34,7 @@ function M.restore_context(context, callback)
   elseif vim.startswith(context.mode, 'i') then
     vim.cmd('startinsert')
   else
-    vim.notify('Sorry, only normal, insert, and visual mode executions are supported by legendary.nvim.')
+    Log.info('Sorry, only normal, insert, and visual mode executions are supported by legendary.nvim.')
     return
   end
 

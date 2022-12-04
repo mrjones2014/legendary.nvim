@@ -125,6 +125,13 @@ end, {
     end,
     description = 'Show legendary.nvim deprecation warning messages, if any',
   },
+  {
+    ':LegendaryLog',
+    function()
+      require('legendary.log').open_log_file()
+    end,
+    description = 'Open the log file for legendary.nvim',
+  },
 })
 
 M.bind = function()

@@ -20,6 +20,8 @@ local Autocmd = Lazy.require_on_exported_call('legendary.data.autocmd')
 local Function = Lazy.require_on_exported_call('legendary.data.function')
 ---@type ItemGroup
 local ItemGroup = Lazy.require_on_exported_call('legendary.data.itemgroup')
+---@type LegendaryLogger
+local Log = Lazy.require_on_exported_call('legendary.log')
 
 local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-key')
 
@@ -98,6 +100,8 @@ function M.setup(cfg)
   vim.tbl_map(function(item)
     item:apply()
   end, State.items.items)
+
+  Log.trace('setup() parsed and applied all configuration.')
 end
 
 ---Find items using vim.ui.select()
@@ -158,7 +162,7 @@ end
 ---@param aus (Autocmd|Augroup)[]
 function M.autocmds(aus)
   if not vim.tbl_islist(aus) then
-    vim.notify(string.format('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus)))
+    Log.error('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus))
     return
   end
 

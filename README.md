@@ -291,6 +291,8 @@ require('legendary').setup({
   },
   -- Directory used for caches
   cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
+  -- Log level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+  log_level = 'info',
 })
 ```
 
