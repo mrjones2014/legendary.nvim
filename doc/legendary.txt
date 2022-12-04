@@ -121,10 +121,44 @@ Register keymaps through setup:
           { n = ':LinewiseCommentToggle<CR>', x = ":'<,'>BlockwiseCommentToggle<CR>" },
           description = 'Toggle comment'
         },
+        -- create item groups to create sub-menus in the finder
+        -- note that only keymaps, commands, and functions
+        -- can be added to item groups
+        {
+          -- groups with same itemgroup will be merged
+          itemgroup = 'short ID',
+          description = 'A submenu of items...',
+          icon = '',
+          keymaps = {
+            -- more keymaps here
+          },
+        },
       },
       commands = {
         -- easily create user commands
         { ':SayHello', function() print('hello world!') end, description = 'Say hello as a command' },
+        {
+          -- groups with same itemgroup will be merged
+          itemgroup = 'short ID',
+          -- don't need to copy the other group data because
+          -- it will be merged with the one from the keymaps table
+          commands = {
+            -- more commands here
+          },
+        },
+      },
+      functions = {
+        -- Make arbitrary Lua functions that can be executed via the item finder
+        { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
+        {
+          -- groups with same itemgroup will be merged
+          itemgroup = 'short ID',
+          -- don't need to copy the other group data because
+          -- it will be merged with the one from the keymaps table
+          funcs = {
+            -- more funcs here
+          },
+        },
       },
       autocmds = {
         -- Create autocmds and augroups
@@ -134,10 +168,6 @@ Register keymaps through setup:
           clear = true,
           -- autocmds here
         },
-      },
-      functions = {
-        -- Make arbitrary Lua functions that can be executed via the item finder
-        { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
       },
     })
 <
@@ -174,13 +204,12 @@ following fields (all optional):
     {
       -- pass a list of filter functions or a single filter function with
       -- the signature `function(item): boolean`
-      -- `require('legendary.filters').mode(mode)` and
-      -- `require('legendary.filters').current_mode()`
-      -- are provided for convenience
+      -- several filter functions are provided for convenience
+      -- see ./doc/FILTERS.md for a list
       filters = {},
       -- pass a function with the signature `function(item, mode): string[]`
-      -- returning a list of strings where each string is one column
-      -- use this to override the configured formatter for just one call
+      - - returning a list of strings where each string is one column
+      - - use this to override the configured formatter for just one call
       formatter = nil,
       -- pass a string, or a function that returns a string
       -- to customize the select prompt for the current call
@@ -207,8 +236,12 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
       commands = {},
       -- Initial augroups/autocmds to bind
       autocmds = {},
-      -- Initial functions to bidn
+      -- Initial functions to bind
       functions = {},
+      -- Initial item groups to bind,
+      -- note that item groups can also
+      -- be under keymaps, commands, autocmds, or funcs
+      itemgroups = {},
       -- default opts to merge with the `opts` table
       -- of each individual item
       default_opts = {
