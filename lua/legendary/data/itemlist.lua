@@ -7,6 +7,10 @@ local Config = require('legendary.config')
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function|ItemGroup
 
 ---@class ItemList
+---@field private items LegendaryItem[]
+---@field private duplicate_tracker table
+---@field private itemgroup_refs table
+---@field private sorted boolean
 local ItemList = class('ItemList')
 
 ---@private
@@ -39,7 +43,9 @@ function ItemList:add(items)
     elseif Toolbox.is_itemgroup(item) then
       local group = self.itemgroup_refs[item.name] or item --[[@as ItemGroup]]
       if group ~= item then
-        group.items:add(item.items)
+        group.items:add(item.items.items)
+        group.icon = group.icon or item.icon
+        group.description = group.description or item.description
       else
         self.itemgroup_refs[item.name] = item
         table.insert(self.items, item)

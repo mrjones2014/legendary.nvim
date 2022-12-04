@@ -28,6 +28,11 @@ local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-ke
 local function build_parser_func(parser)
   ---@param items table
   return function(items)
+    if type(items.itemgroup) == 'string' then
+      State.items:add({ ItemGroup:parse(items):apply() })
+      return
+    end
+
     if not vim.tbl_islist(items) then
       error(string.format('Expected list, got ', type(items)))
       return

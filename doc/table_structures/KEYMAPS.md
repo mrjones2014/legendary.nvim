@@ -160,7 +160,11 @@ within the group. If groups are given the same name, they will be merged.
 local keymaps = {
   {
     -- name, indicates that this table is an item group
-    itemgroup = 'Group of items...',
+    itemgroup = 'short ID',
+    -- you can also customize the icon for item groups
+    icon = '',
+    -- you can also customize the description (first text column)
+    description = 'A group of items, this can be a little longer...',
     keymaps = {
       -- regular keymaps here
     },

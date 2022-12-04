@@ -126,6 +126,7 @@ local config = {
 ---@field commands Command[]
 ---@field autocmds (Augroup|Autocmd)[]
 ---@field funcs Function[]
+---@field itemgroups ItemGroup[]
 ---@field default_opts LegendaryDefaultOptsConfig
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string

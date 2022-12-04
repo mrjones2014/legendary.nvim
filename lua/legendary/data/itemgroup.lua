@@ -7,6 +7,8 @@ local Function = require('legendary.data.function')
 ---@class ItemGroup
 ---@field name string
 ---@field items ItemList
+---@field icon string|nil
+---@field description string|nil
 ---@field class ItemGroup
 local ItemGroup = class('ItemGroup')
 
@@ -15,6 +17,8 @@ local ItemGroup = class('ItemGroup')
 function ItemGroup:parse(tbl) -- luacheck: no unused
   vim.validate({
     itemgroup = { tbl.itemgroup, { 'string' } },
+    icon = { tbl.icon, { 'string' }, true },
+    description = { tbl.description, { 'string' }, true },
     keymaps = { tbl.keymaps, { 'table' }, true },
     commands = { tbl.commands, { 'table' }, true },
     funcs = { tbl.funcs, { 'table' }, true },
@@ -23,6 +27,8 @@ function ItemGroup:parse(tbl) -- luacheck: no unused
   local instance = ItemGroup()
 
   instance.name = tbl.itemgroup
+  instance.icon = tbl.icon
+  instance.description = tbl.description
   instance.items = ItemList:create()
 
   local keymaps = vim.tbl_map(function(keymap)
