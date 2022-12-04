@@ -39,6 +39,12 @@ function M.default_format(item)
       '<function>',
       item.description,
     }
+  elseif Toolbox.is_itemgroup(item) then
+    return {
+      item.icon or '',
+      item.name,
+      item.description or 'Expand to select an item...',
+    }
   else
     -- unreachable
     return {

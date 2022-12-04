@@ -123,6 +123,11 @@ function M.is_augroup_or_autocmd(au_or_autocmd)
     or au_or_autocmd.class == require('legendary.data.autocmd')
 end
 
+function M.is_itemgroup(group)
+  -- inline require to avoid circular dependency
+  return group.class == require('legendary.data.itemgroup')
+end
+
 ---Check if an item is a Function
 ---@param func LegendaryItem
 ---@return boolean

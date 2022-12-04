@@ -2,6 +2,7 @@
 local Config = require('legendary.config')
 ---@type LegendaryState
 local State = require('legendary.data.state')
+local ItemGroup = require('legendary.data.itemgroup')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 
@@ -14,9 +15,10 @@ local M = {}
 ---@field select_prompt string|fun():string
 ---@field formatter LegendaryItemFormatter
 
----Select an item
 ---@param opts LegendaryFindOpts
-function M.select(opts)
+---@param itemlist ItemList
+---@overload fun(opts:LegendaryFindOpts)
+local function select_inner(opts, itemlist)
   opts = opts or {}
   local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
@@ -35,7 +37,7 @@ function M.select(opts)
   local items = vim.tbl_filter(function(item)
     local item_buf = vim.tbl_get(item, 'opts', 'buffer')
     return item_buf == nil or item_buf == context.buf
-  end, State.items:filter(opts.filters or {}))
+  end, (itemlist or State.items):filter(opts.filters or {}))
 
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
@@ -51,9 +53,18 @@ function M.select(opts)
     end
 
     State.most_recent_item = selected
+    if selected.class == ItemGroup then
+      return select_inner(opts, selected.items)
+    end
 
     Executor.exec_item(selected, context)
   end)
+end
+
+---Select an item
+---@param opts LegendaryFindOpts
+function M.select(opts)
+  select_inner(opts)
 end
 
 return M

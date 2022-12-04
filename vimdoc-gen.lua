@@ -2,6 +2,7 @@ local DOC_FILES = {
   ['./README.md'] = './doc/legendary.txt',
   ['./doc/API.md'] = './doc/legendary-lua-api.txt',
   ['./doc/MAPPING_DEVELOPMENT.md'] = './doc/legendary-mapping-development.txt',
+  ['./doc/FILTERS.md'] = './doc/legendary-filters.txt',
   ['./doc/USAGE_EXAMPLES.md'] = './doc/legendary-usage-examples.txt',
   ['./doc/WHICH_KEY.md'] = './doc/legendary-which-key.txt',
   ['./doc/table_structures/README.md'] = './doc/legendary-tables.txt',

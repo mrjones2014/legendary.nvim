@@ -6,13 +6,18 @@ local config = {
   -- Initial augroups/autocmds to bind
   autocmds = {},
   -- Initial functions to bind
-  functions = {},
+  funcs = {},
+  -- Initial item groups to bind,
+  -- note that item groups can also
+  -- be under keymaps, commands, autocmds, or funcs
+  itemgroups = {},
   -- default opts to merge with the `opts` table
   -- of each individual item
   default_opts = {
     keymaps = {},
     commands = {},
     autocmds = {},
+    funcs = {},
   },
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that returns a string.
@@ -109,7 +114,7 @@ local config = {
 ---@field keymaps table
 ---@field commands table
 ---@field autocmds table
----@field functions table
+---@field funcs table
 
 ---@class LegendarySortOpts
 ---@field most_recent_first boolean
@@ -120,7 +125,8 @@ local config = {
 ---@field keymaps Keymap[]
 ---@field commands Command[]
 ---@field autocmds (Augroup|Autocmd)[]
----@field functions Function[]
+---@field funcs Function[]
+---@field itemgroups ItemGroup[]
 ---@field default_opts LegendaryDefaultOptsConfig
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string

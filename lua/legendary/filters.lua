@@ -34,35 +34,67 @@ function M.mode(mode)
   end
 end
 
+---Logical AND the given LegendaryItemFilters
+---@param ... LegendaryItemFilter
+---@return LegendaryItemFilter
+function M.AND(...)
+  local filters = { ... }
+  return function(item)
+    for _, filter in ipairs(filters) do
+      if not filter(item) then
+        return false
+      end
+    end
+
+    return true
+  end
+end
+
+---Logical OR the given LegendaryItemFilters
+---@param ... LegendaryItemFilter
+---@return LegendaryItemFilter
+function M.OR(...)
+  local filters = { ... }
+  return function(item)
+    for _, filter in ipairs(filters) do
+      if filter(item) then
+        return true
+      end
+    end
+
+    return false
+  end
+end
+
 --- Return a `LegendaryItemFilter` that filters items
 --- by the current mode
 ---@return LegendaryItemFilter
 function M.current_mode()
-  return M.mode((vim.fn.mode() or 'n'))
+  return M.mode(vim.api.nvim_get_mode().mode or 'n')
 end
 
 ---Filter to only show keymaps
 ---@return LegendaryItemFilter
 function M.keymaps()
-  return Toolbox.is_keymap
+  return M.OR(Toolbox.is_keymap, Toolbox.is_itemgroup)
 end
 
 ---Filter to only show commands
 ---@return LegendaryItemFilter
 function M.commands()
-  return Toolbox.is_command
+  return M.OR(Toolbox.is_command, Toolbox.is_itemgroup)
 end
 
 ---Filter to only show autocmds
 ---@return LegendaryItemFilter
 function M.autocmds()
-  return Toolbox.is_autocmd
+  return M.OR(Toolbox.is_autocmd, Toolbox.is_itemgroup)
 end
 
 ---Filter to only show functions
 ---@return LegendaryItemFilter
 function M.funcs()
-  return Toolbox.is_function
+  return M.OR(Toolbox.is_function, Toolbox.is_itemgroup)
 end
 
 return M
