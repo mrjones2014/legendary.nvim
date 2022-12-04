@@ -173,13 +173,12 @@ The `require('legend').find()` function takes an `opts` table with the following
 {
   -- pass a list of filter functions or a single filter function with
   -- the signature `function(item): boolean`
-  -- `require('legendary.filters').mode(mode)` and
-  -- `require('legendary.filters').current_mode()`
-  -- are provided for convenience
+  -- several filter functions are provided for convenience
+  -- see ./doc/FILTERS.md for a list
   filters = {},
   -- pass a function with the signature `function(item, mode): string[]`
-  -- returning a list of strings where each string is one column
-  -- use this to override the configured formatter for just one call
+  - - returning a list of strings where each string is one column
+  - - use this to override the configured formatter for just one call
   formatter = nil,
   -- pass a string, or a function that returns a string
   -- to customize the select prompt for the current call

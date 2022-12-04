@@ -70,7 +70,7 @@ end
 --- by the current mode
 ---@return LegendaryItemFilter
 function M.current_mode()
-  return M.mode((vim.fn.mode() or 'n'))
+  return M.mode(vim.api.nvim_get_mode().mode or 'n')
 end
 
 ---Filter to only show keymaps
