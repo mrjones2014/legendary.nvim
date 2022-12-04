@@ -177,8 +177,8 @@ The `require('legend').find()` function takes an `opts` table with the following
   -- see ./doc/FILTERS.md for a list
   filters = {},
   -- pass a function with the signature `function(item, mode): string[]`
-  - - returning a list of strings where each string is one column
-  - - use this to override the configured formatter for just one call
+  -- returning a list of strings where each string is one column
+  -- use this to override the configured formatter for just one call
   formatter = nil,
   -- pass a string, or a function that returns a string
   -- to customize the select prompt for the current call
