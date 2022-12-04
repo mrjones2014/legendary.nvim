@@ -117,7 +117,7 @@ require('legendary').setup({
       },
     },
   },
-  functions = {
+  funcs = {
     -- Make arbitrary Lua functions that can be executed via the item finder
     { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
     {
@@ -202,7 +202,7 @@ require('legendary').setup({
   -- Initial augroups/autocmds to bind
   autocmds = {},
   -- Initial functions to bind
-  functions = {},
+  funcs = {},
   -- Initial item groups to bind,
   -- note that item groups can also
   -- be under keymaps, commands, autocmds, or funcs
