@@ -7,6 +7,7 @@ legendary-`split_then`	legendary-mapping-development.txt	/*legendary-`split_then
 legendary-`vsplit_then`	legendary-mapping-development.txt	/*legendary-`vsplit_then`*
 legendary-`which-key.nvim`-integration	legendary-which-key.txt	/*legendary-`which-key.nvim`-integration*
 legendary-augroups-and-autocmds	legendary-autocmd-tables.txt	/*legendary-augroups-and-autocmds*
+legendary-built-in-filters	legendary-filters.txt	/*legendary-built-in-filters*
 legendary-commands	legendary-command-tables.txt	/*legendary-commands*
 legendary-composition	legendary-mapping-development.txt	/*legendary-composition*
 legendary-configuration	legendary.txt	/*legendary-configuration*
