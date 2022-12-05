@@ -326,6 +326,8 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
       },
       -- Directory used for caches
       cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
+      -- Log level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+      log_level = 'info',
     })
 <
 Additional documentation can be found under doc/ <./doc/>.
