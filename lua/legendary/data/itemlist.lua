@@ -3,6 +3,7 @@ local util = require('legendary.util')
 local Toolbox = require('legendary.toolbox')
 local Sorter = require('legendary.vendor.sorter')
 local Config = require('legendary.config')
+local Log = require('legendary.log')
 
 ---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function|ItemGroup
 
@@ -39,7 +40,7 @@ function ItemList:add(items)
     if Toolbox.is_augroup(item) then
       local msg = '[legendary.nvim] Augroups should not be added to ItemList used for UI -- this most likely indicates '
         .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
-      vim.notify(msg)
+      Log.debug(msg)
     elseif Toolbox.is_itemgroup(item) then
       local group = self.itemgroup_refs[item.name] or item --[[@as ItemGroup]]
       if group ~= item then

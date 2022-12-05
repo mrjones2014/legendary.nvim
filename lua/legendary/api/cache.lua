@@ -29,13 +29,27 @@ function Cache:write(contents)
   local filepath = self:filepath()
   local file = io.open(filepath, 'w+')
   if not file then
-    vim.notify(string.format('[legendary.nvim] Failed to write cache file %s', filepath))
+    vim.api.nvim_err_writeln(string.format('Failed to write file %s', filepath))
     return
   end
 
   local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
   local contents_str = type(contents) == 'table' and table.concat(contents, line_ending) or contents
   file:write(contents_str --[[@as string]])
+  file:close()
+end
+
+---Append a single line to a file
+---@param line string
+function Cache:append(line)
+  create_cache_dir()
+  local filepath = self:filepath()
+  local file = io.open(filepath, 'a')
+  if file == nil then
+    vim.api.nvim_err_writeln(string.format('Failed to write file %s', filepath))
+    return
+  end
+  file:write(string.format('%s\n', line))
   file:close()
 end
 

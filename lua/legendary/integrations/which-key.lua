@@ -2,6 +2,7 @@
 
 local State = require('legendary.data.state')
 local Keymap = require('legendary.data.keymap')
+local Log = require('legendary.log')
 
 local M = {}
 
@@ -77,13 +78,15 @@ function M.whichkey_listen()
     local wk = which_key
     local original = wk.register
     local listener = function(whichkey_tbls, whichkey_opts)
+      Log.trace('Preparing to register items from which-key.nvim automatically')
       M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
       original(whichkey_tbls, whichkey_opts)
+      Log.trace('Successfully registered items from which-key.nvim')
     end
     wk.register = listener
     return true
   else
-    vim.notify(
+    Log.warn(
       'which-key.nvim not available. If you are lazy-loading, be sure that which-key.nvim is added to runtime path '
         .. 'before running legendary.nvim config.'
     )

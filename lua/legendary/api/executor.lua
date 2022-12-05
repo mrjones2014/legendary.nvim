@@ -1,4 +1,5 @@
 local Toolbox = require('legendary.toolbox')
+local Log = require('legendary.log')
 local util = require('legendary.util')
 
 local M = {}
@@ -33,7 +34,7 @@ function M.restore_context(context, callback)
   elseif vim.startswith(context.mode, 'i') then
     vim.cmd('startinsert')
   else
-    vim.notify('Sorry, only normal, insert, and visual mode executions are supported by legendary.nvim.')
+    Log.info('Sorry, only normal, insert, and visual mode executions are supported by legendary.nvim.')
     return
   end
 
@@ -64,8 +65,10 @@ function M.exec_item(item, context)
         if type(impl) == 'function' then
           impl()
         else
-          util.exec_feedkeys(impl)
+          util.exec_feedkeys(impl --[[@as string]])
         end
+      else
+        Log.debug('Unsupported item type selected from finder UI: %s', item)
       end
     end)
   end)

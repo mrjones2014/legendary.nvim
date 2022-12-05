@@ -1,5 +1,7 @@
 ---@mod legendary.toolbox
 
+local Log = require('legendary.log')
+
 local M = {}
 
 ---Return a function with statically set arguments.
@@ -43,12 +45,12 @@ function M.lazy_required_fn(module_name, fn_name, ...)
       for _, key in ipairs(vim.split(fn_name, '%.', { trimempty = true })) do
         fn = (fn)[key]
         if fn == nil then
-          vim.notify('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
+          Log.error('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
           return
         end
       end
       if not is_function(fn) then
-        vim.notify('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
+        Log.error('[legendary.nvim]: invalid lazy_required_fn usage: no such function path')
         return
       end
       local final_fn = fn

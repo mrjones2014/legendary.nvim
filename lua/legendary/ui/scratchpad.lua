@@ -1,6 +1,7 @@
 local Config = require('legendary.config')
 local LuaTools = require('legendary.api.luatools')
 local Cache = require('legendary.api.cache')
+local Log = require('legendary.log')
 
 local M = {}
 
@@ -81,7 +82,7 @@ local function results_win(result, err)
   end
 
   if not lines then
-    vim.notify('[legendary.nvim] No return value from Lua evaluation.')
+    Log.warn('[legendary.nvim] No return value from Lua evaluation.')
     return
   end
 

@@ -96,6 +96,8 @@ local config = {
   },
   -- Directory used for caches
   cache_path = string.format('%s/legendary/', vim.fn.stdpath('cache')),
+  -- Log level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+  log_level = 'info',
 }
 
 ---@class LegendaryWhichkeyConfig
@@ -137,6 +139,7 @@ local config = {
 ---@field which_key LegendaryWhichkeyConfig
 ---@field scratchpad LegendaryScratchpadConfig
 ---@field cache_path string
+---@field log_level string
 local M = setmetatable({}, {
   __index = function(_, key)
     return config[key]
