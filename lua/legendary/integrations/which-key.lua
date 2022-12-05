@@ -78,8 +78,10 @@ function M.whichkey_listen()
     local wk = which_key
     local original = wk.register
     local listener = function(whichkey_tbls, whichkey_opts)
+      Log.trace('Preparing to register items from which-key.nvim automatically')
       M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
       original(whichkey_tbls, whichkey_opts)
+      Log.trace('Successfully registered items from which-key.nvim')
     end
     wk.register = listener
     return true

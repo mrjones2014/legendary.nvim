@@ -5,6 +5,7 @@ local State = require('legendary.data.state')
 local ItemGroup = require('legendary.data.itemgroup')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
+local Log = require('legendary.log')
 
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
@@ -19,6 +20,12 @@ local M = {}
 ---@param itemlist ItemList
 ---@overload fun(opts:LegendaryFindOpts)
 local function select_inner(opts, itemlist)
+  if itemlist then
+    Log.trace('Relaunching select UI for an item group')
+  else
+    Log.trace('Launching select UI')
+  end
+
   opts = opts or {}
   local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
@@ -57,6 +64,7 @@ local function select_inner(opts, itemlist)
       return select_inner(opts, selected.items)
     end
 
+    Log.trace('Preparing to execute selected item')
     Executor.exec_item(selected, context)
   end)
 end

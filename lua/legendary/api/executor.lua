@@ -65,8 +65,10 @@ function M.exec_item(item, context)
         if type(impl) == 'function' then
           impl()
         else
-          util.exec_feedkeys(impl)
+          util.exec_feedkeys(impl --[[@as string]])
         end
+      else
+        Log.debug('Unsupported item type selected from finder UI: %s', item)
       end
     end)
   end)

@@ -107,6 +107,7 @@ function M.open_log_file()
   vim.cmd(string.format('e %s', logfile:filepath()))
   local buf = vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold' }, { buffer = buf, command = 'checktime' })
 end
 
 return M
