@@ -140,6 +140,8 @@ function ItemList:sort_inplace()
         return Toolbox.is_keymap(item1) and not Toolbox.is_keymap(item2)
       elseif opts.item_type_bias == 'command' then
         return Toolbox.is_command(item1) and not Toolbox.is_command(item2)
+      elseif opts.item_type_bias == 'group' then
+        return Toolbox.is_itemgroup(item1) and not Toolbox.is_itemgroup(item2)
       else
         return Toolbox.is_autocmd(item1) and not Toolbox.is_autocmd(item2)
       end
