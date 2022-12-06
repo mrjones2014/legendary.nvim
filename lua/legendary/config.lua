@@ -68,10 +68,10 @@ local config = {
     item_type_bias = nil,
     -- settings for frecency sorting.
     -- https://en.wikipedia.org/wiki/Frecency
+    -- Set `frecency = false` to disable.
     -- this feature requires sqlite.lua (https://github.com/tami5/sqlite.lua)
     -- and will be automatically disabled if sqlite is not available.
     -- NOTE: THIS TAKES PRECEDENCE OVER OTHER SORT OPTIONS!
-    -- Set `frecency = false` to disable.
     frecency = {
       -- the directory to store the database in
       db_root = string.format('%s/legendary/', vim.fn.stdpath('data')),

@@ -3,7 +3,6 @@
 
 local DbWrapper = require('legendary.api.db.wrapper')
 local Config = require('legendary.config')
-local Log = require('legendary.log')
 
 -- modifier used as a weight in the recency_score calculation:
 local recency_modifier = {
