@@ -272,7 +272,7 @@ require('legendary').setup({
     -- sort user-defined items before built-in items
     user_items_first = true,
     -- sort the specified item type before other item types,
-    -- value must be one of: 'keymap', 'command', 'autocmd', nil
+    -- value must be one of: 'keymap', 'command', 'autocmd', 'group', nil
     item_type_bias = nil,
     -- settings for frecency sorting.
     -- https://en.wikipedia.org/wiki/Frecency
