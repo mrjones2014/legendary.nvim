@@ -7,6 +7,18 @@ local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
 
+local function update_item_frecency_score(item)
+  if Config.sort.frecency ~= false then
+    local has_sqlite, _ = pcall(require, 'sqlite')
+    if has_sqlite then
+      local DbClient = require('legendary.api.db.client').init()
+      DbClient.update_item_score(item)
+    else
+      Log.debug('Config.sort.frecency is enabled, but sqlite is not availabe, so frecency is automatically disabled.')
+    end
+  end
+end
+
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
 local M = {}
@@ -57,6 +69,11 @@ local function select_inner(opts, itemlist)
   }, function(selected)
     if not selected then
       return
+    end
+
+    local ok, err = pcall(update_item_frecency_score, selected)
+    if not ok then
+      Log.error('Failed to update frecency score: %s', err)
     end
 
     State.most_recent_item = selected

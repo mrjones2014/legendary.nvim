@@ -66,6 +66,19 @@ local config = {
     -- sort the specified item type before other item types,
     -- value must be one of: 'keymap', 'command', 'autocmd', nil
     item_type_bias = nil,
+    -- settings for frecency sorting.
+    -- https://en.wikipedia.org/wiki/Frecency
+    -- this feature requires sqlite.lua (https://github.com/tami5/sqlite.lua)
+    -- and will be automatically disabled if sqlite is not available.
+    -- NOTE: THIS TAKES PRECEDENCE OVER OTHER SORT OPTIONS!
+    -- Set `frecency = false` to disable.
+    frecency = {
+      -- the directory to store the database in
+      db_root = string.format('%s/legendary/', vim.fn.stdpath('data')),
+      -- the maximum number of timestamps for a single item
+      -- to store in the database
+      max_timestamps = 10,
+    },
   },
   which_key = {
     -- Automatically add which-key tables to legendary
@@ -118,10 +131,15 @@ local config = {
 ---@field autocmds table
 ---@field funcs table
 
+---@class LegendaryFrecencyConfig
+---@field db_root string
+---@field max_timestamps number
+
 ---@class LegendarySortOpts
 ---@field most_recent_first boolean
 ---@field user_items_first boolean
 ---@field item_type_bias 'keymap'|'command'|'autocmd'|nil
+---@field frecency LegendaryFrecencyConfig|false
 
 ---@class LegendaryConfig
 ---@field keymaps Keymap[]
