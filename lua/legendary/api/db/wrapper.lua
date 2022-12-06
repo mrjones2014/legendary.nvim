@@ -39,6 +39,13 @@ function M:new()
   return wrapper
 end
 
+function M.delete_db()
+  local db_path = string.format('%s%s', Config.sort.frecency.db_root, db_name)
+  if vim.fn.filereadable(db_path) == 1 then
+    vim.fn.delete(db_path)
+  end
+end
+
 function M:bootstrap()
   if self.db then
     return
