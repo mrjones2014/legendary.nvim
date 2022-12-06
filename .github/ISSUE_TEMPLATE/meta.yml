@@ -1,5 +1,6 @@
 name: 🤖 Meta
 description: File an issue related to repository configuration, documentation, CI/CD, organization, etc.
+title: "[Meta]: "
 labels: ["meta"]
 assignees:
   - mrjones2014
