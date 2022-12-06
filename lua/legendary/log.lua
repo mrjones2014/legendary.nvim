@@ -1,5 +1,7 @@
 local Cache = require('legendary.api.cache')
 
+local MAX_LOG_LINES = 1000
+
 local logfile = Cache:new('legendary.log')
 
 local levels = {
@@ -82,7 +84,10 @@ for _, level in ipairs(levels) do
       return
     end
 
-    logfile:append(string.format('[%s]%s%s', os.date(), prefix, msg))
+    local lines = logfile:read()
+    table.insert(lines, 1, string.format('[%s]%s%s', os.date(), prefix, msg))
+    lines = vim.list_slice(lines, 1, math.min(#lines, MAX_LOG_LINES))
+    logfile:write(lines)
 
     if not should_log(level) then
       return
