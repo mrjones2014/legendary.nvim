@@ -1,0 +1,12 @@
+name: 🤖 Meta
+description: File an issue related to repository configuration, documentation, CI/CD, organization, etc.
+labels: ["meta"]
+assignees:
+  - mrjones2014
+body:
+  - type: textarea
+    id: desc
+    attributes:
+      label: Description
+    validations:
+      required: true
