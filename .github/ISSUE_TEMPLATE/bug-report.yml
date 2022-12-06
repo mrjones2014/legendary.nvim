@@ -43,8 +43,8 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Output from `:LegendaryLog`
-      description: Please paste the log output between the code fences (triple back ticks) below.
+      label: Output from :LegendaryLog
+      description: Please run `:LegendaryLog` and paste the log output between the code fences (triple back ticks) below.
       value: |
         <details>
         <summary><code>:LegendaryLog</code> output (click to expand)</summary>
