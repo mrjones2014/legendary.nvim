@@ -2,7 +2,7 @@
 local Config = require('legendary.config')
 ---@type LegendaryState
 local State = require('legendary.data.state')
-local ItemGroup = require('legendary.data.itemgroup')
+local Toolbox = require('legendary.toolbox')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
@@ -39,7 +39,9 @@ local function select_inner(opts, itemlist)
     Log.trace('Launching select UI')
   end
 
+  itemlist = itemlist or State.items
   opts = opts or {}
+
   local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
     prompt = prompt()
@@ -51,13 +53,13 @@ local function select_inner(opts, itemlist)
   -- implementation of `sort_inplace` checks if
   -- sorting is actually needed and does nothing
   -- if it does not need to be sorted.
-  State.items:sort_inplace()
+  itemlist:sort_inplace()
 
   -- in addition to user filters, we also need to filter by buf
   local items = vim.tbl_filter(function(item)
     local item_buf = vim.tbl_get(item, 'opts', 'buffer')
     return item_buf == nil or item_buf == context.buf
-  end, (itemlist or State.items):filter(opts.filters or {}))
+  end, itemlist:filter(opts.filters or {}))
 
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
@@ -78,7 +80,7 @@ local function select_inner(opts, itemlist)
     end
 
     State.most_recent_item = selected
-    if selected.class == ItemGroup then
+    if Toolbox.is_itemgroup(selected) then
       return select_inner(opts, selected.items)
     end
 
