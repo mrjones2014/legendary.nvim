@@ -11,6 +11,7 @@ local function update_item_frecency_score(item)
   if Config.sort.frecency ~= false then
     local has_sqlite, _ = pcall(require, 'sqlite')
     if has_sqlite then
+      Log.trace('Updating scoring data for selected item.')
       local DbClient = require('legendary.api.db.client').init()
       DbClient.update_item_score(item)
     else

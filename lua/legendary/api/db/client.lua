@@ -80,4 +80,8 @@ function M.update_item_score(item)
   M.db_wrapper:update(item)
 end
 
+function M.sql_escape(str)
+  return M.db_wrapper.sql_escape(str)
+end
+
 return M
