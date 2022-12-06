@@ -49,7 +49,8 @@ function Cache:append(line)
     vim.api.nvim_err_writeln(string.format('Failed to write file %s', filepath))
     return
   end
-  file:write(string.format('%s\n', line))
+  local line_ending = vim.fn.has('win32') == 1 and '\r\n' or '\n'
+  file:write(string.format('%s%s', line, line_ending))
   file:close()
 end
 
