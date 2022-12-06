@@ -52,7 +52,7 @@ body:
         ```
 
         ```
-        <details>
+        </details>
   - type: textarea
     id: details
     attributes:
