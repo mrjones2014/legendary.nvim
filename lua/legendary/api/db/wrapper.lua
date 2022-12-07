@@ -44,6 +44,8 @@ function M.delete_db()
   if vim.fn.filereadable(db_path) == 1 then
     vim.fn.delete(db_path)
   end
+
+  M:new():bootstrap()
 end
 
 function M:bootstrap()
