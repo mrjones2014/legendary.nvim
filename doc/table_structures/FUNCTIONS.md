@@ -2,8 +2,6 @@
 
 Functions follow a similar structure as anonymous [commands](./COMMANDS.md), but description is **required**.
 
-If called in visual mode, the function will be given a table containing the visual selection range (the marks will also be set) of the form `{ cline, ccol, vline, vcol }`, where `c` corresponds to the cursor position, and `v` the visual selection (see `:h line()` and `:h col()`).
-
 ```lua
 local functions = {
   {
@@ -18,9 +16,9 @@ local functions = {
     description = "Auto Fix...",
   },
   {
-    function(visual_selection)
-      if visual_selection then
-        local cline, _, vline, _ = unpack(visual_selection)
+    function()
+      if require('legendary.toolbox').is_visual_mode() then
+        local cline, _, vline, _ = unpack(require('legendary.toolbox').get_marks())
         require("gitsigns").reset_hunk({ cline, vline })
       else
         require("gitsigns").reset_hunk()
