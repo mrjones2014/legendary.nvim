@@ -59,7 +59,7 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
   local instance = Keymap()
 
   instance.keys = tbl[1]
-  instance.hide = tbl.hide or false
+  instance.hide = util.bool_default(tbl.hide, false)
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
   instance.builtin = builtin or false
