@@ -5,6 +5,17 @@ labels: ["meta"]
 assignees:
   - mrjones2014
 body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - CI
+        - Issue/PR templates
+        - Repository configuration
+        - Testing
+        - Tooling
+        - Other
   - type: textarea
     id: desc
     attributes:
