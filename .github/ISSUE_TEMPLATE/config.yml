@@ -3,7 +3,7 @@ contact_links:
   - name: 🏗️ Missing Built-In
     url: https://github.com/mrjones2014/legendary.nvim/discussions/89
     about: Please comment on this GitHub Discussion for missing bult-ins
-  - name: 🛠️ New `legendary..toolbox` Function
+  - name: 🛠️ New `legendary.toolbox` Function
     url: https://github.com/mrjones2014/legendary.nvim/discussions/90
     about: Please comment on this GitHub Discussion for `legendary.toolbox` module changes
   - name: ❓️ Question
