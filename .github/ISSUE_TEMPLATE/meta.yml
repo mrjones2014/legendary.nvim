@@ -16,6 +16,8 @@ body:
         - Testing
         - Tooling
         - Other
+    validations:
+      required: true
   - type: textarea
     id: desc
     attributes:
