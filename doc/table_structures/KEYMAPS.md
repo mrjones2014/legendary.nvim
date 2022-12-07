@@ -23,6 +23,20 @@ local keymaps = {
 }
 ```
 
+If you want to include a description, but do _not_ want the item to appear in the finder:
+
+```lua
+local keymaps = {
+  {
+    '<leader>s',
+    description = 'Write all buffers',
+    opts = {},
+    -- hide from finder
+    hide = true,
+  },
+}
+```
+
 If you need to pass parameters to the Lua function or call a function dynamically from a plugin,
 you can use the following helper functions:
 

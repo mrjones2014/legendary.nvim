@@ -68,6 +68,7 @@ function Command:parse(tbl, builtin) -- luacheck: no unused
     opts = { tbl.opts, { 'table' }, true },
     description = { util.get_desc(tbl), { 'string' }, true },
     unfinished = { tbl.unfinished, { 'boolean' }, true },
+    hide = { tbl.hide, { 'boolean' }, true },
   })
 
   local instance = Command()
@@ -78,6 +79,7 @@ function Command:parse(tbl, builtin) -- luacheck: no unused
   instance.unfinished = util.bool_default(tbl.unfinished, false)
   instance.implementation = tbl[2]
   instance.builtin = builtin or false
+  instance.hide = util.bool_default(tbl.hide, false)
 
   if type(instance.implementation) == 'table' then
     vim.validate({
