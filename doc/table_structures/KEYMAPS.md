@@ -119,16 +119,15 @@ local keymaps = {
 
 If you want a keymap to apply to both normal and insert mode, use a Lua function.
 
-If called in visual mode, the function will be given a table containing the visual
-selection range (the marks will also be set) of the form `{ cline, ccol, vline, vcol }`,
-where `c` corresponds to the cursor position, and `v` the visual selection (see `:h line()` and `:h col()`). This allows you to create mappings like:
+The `legendary.toolbox` module has utilities for determining visual mode and getting marks. This allows you to create
+mappings like:
 
 ```lua
 local keymaps = {
   {
     '<leader>c',
-    function(visual_selection)
-      if visual_selection then
+    function()
+      if require('legendary.toolbox').is_visual_mode() then
         -- comment a visual block
         vim.cmd(":'<,'>CommentToggle")
       else
