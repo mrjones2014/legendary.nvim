@@ -53,7 +53,7 @@ function ItemList:add(items)
       end
       self.sorted = false
     else
-      if item.description and #item.description > 0 then
+      if item.description and #item.description > 0 and not item.hide then
         local id = item:id()
         if not self.duplicate_tracker[id] then
           self.duplicate_tracker[id] = true

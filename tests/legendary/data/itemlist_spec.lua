@@ -27,6 +27,13 @@ describe('ItemList', function()
       assert.are.same(keymap, list.items[1])
       assert.are.same(#list.items, 1)
     end)
+
+    it('excludes items that are hidden', function()
+      local keymap = Keymap:parse({ '<leader><leader>', function() end, hide = true, description = 'test' })
+      local list = ItemList:create()
+      list:add({ keymap })
+      assert.are.same(#list.items, 0)
+    end)
   end)
 
   describe('filter', function()

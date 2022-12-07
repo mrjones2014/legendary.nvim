@@ -21,6 +21,7 @@ local Config = require('legendary.config')
 ---@field keys string
 ---@field mode_mappings ModeKeymap
 ---@field description string
+---@field hide boolean
 ---@field opts table
 ---@field builtin boolean
 ---@field class Keymap
@@ -37,6 +38,7 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
     ['2'] = { tbl[2], { 'string', 'function', 'table' }, true },
     mode = { tbl.mode, { 'string', 'table' }, true },
     opts = { tbl.opts, { 'table' }, true },
+    hide = { tbl.hide, { 'boolean' }, true },
     description = { util.get_desc(tbl), { 'string' }, true },
   })
 
@@ -57,6 +59,7 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
   local instance = Keymap()
 
   instance.keys = tbl[1]
+  instance.hide = util.bool_default(tbl.hide, false)
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
   instance.builtin = builtin or false
