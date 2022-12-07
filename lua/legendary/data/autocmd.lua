@@ -21,6 +21,7 @@ function Autocmd:parse(tbl) -- luacheck: no unused
     description = { util.get_desc(tbl), { 'string' }, true },
     opts = { tbl.opts, { 'table' }, true },
     group = { tbl.group, { 'string', 'number' }, true },
+    hide = { tbl.hide, { 'boolean' }, true },
   })
 
   local instance = Autocmd()
@@ -31,6 +32,7 @@ function Autocmd:parse(tbl) -- luacheck: no unused
   instance.opts = tbl.opts
   instance.description = util.get_desc(tbl)
   instance.group = tbl.group
+  instance.hide = util.bool_default(tbl.hide, false)
 
   return instance
 end

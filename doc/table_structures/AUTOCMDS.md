@@ -41,6 +41,15 @@ local autocmds = {
     -- like a command on-demand from the finder
     description = 'Format on write with LSP',
   },
+  {
+    'BufWritePre',
+    vim.lsp.buf.format_document,
+    -- or, if you want to include a description
+    description = 'Format on write with LSP',
+    -- but still not have it in the finder,
+    -- set
+    hide = true,
+  },
 }
 ```
 

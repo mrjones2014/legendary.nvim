@@ -12,6 +12,20 @@ local commands = {
 }
 ```
 
+If you want to include a description but not hide it from the finder UI, you can set `hide = true`:
+
+```lua
+local commands = {
+  {
+    ':DoSomething',
+    ':echo "Something"',
+    description = 'Do something!',
+    -- hide from finder UI
+    hide = true,
+  }
+}
+```
+
 You can also create per-mode implementations, like per-mode keymappings, but since they are all bound
 to the same command, per-mode implementations for commands may only be a `function` or a `string` (not a `table`),
 since they cannot have separate `opts`.
