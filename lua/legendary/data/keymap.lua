@@ -104,7 +104,7 @@ function Keymap:apply()
 end
 
 function Keymap:id()
-  return string.format('%s %s %s', self.keys, self:modes(), self.description)
+  return string.format('%s %s %s', self.keys, table.concat(self:modes(), ','), self.description)
 end
 
 function Keymap:modes()

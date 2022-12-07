@@ -42,7 +42,7 @@ function ItemList:add(items)
         .. 'a programming error, please submit an issue at https://github.com/mrjones2014/legendary.nvim'
       Log.debug(msg)
     elseif Toolbox.is_itemgroup(item) then
-      local group = self.itemgroup_refs[item.name] or item --[[@as ItemGroup]]
+      local group = self.itemgroup_refs[item:id()] or item --[[@as ItemGroup]]
       if group ~= item then
         group.items:add(item.items.items)
         group.icon = group.icon or item.icon
@@ -89,13 +89,6 @@ function ItemList:filter(filters)
   end, self.items)
 end
 
----Sort *in place* to move the most
----recent item to the top.
----THIS MODIFIES THE LIST IN PLACE.
-function ItemList:sort_inplace_by_recent()
-  self:sort_inplace({ most_recent_first = true })
-end
-
 ---Sort the list *IN PLACE* according to config.
 --THIS MODIFIES THE LIST IN PLACE.
 function ItemList:sort_inplace()
@@ -115,6 +108,41 @@ function ItemList:sort_inplace()
   end
 
   local items = self.items
+
+  if Config.sort.frecency ~= false then
+    local has_sqlite, _ = pcall(require, 'sqlite')
+    if has_sqlite then
+      -- inline require because this module requires sqlite and is a bit heavier
+      local DbClient = require('legendary.api.db.client').init()
+      local frecency_scores = DbClient.get_item_scores()
+      Log.debug('Computed item scores: %s', vim.inspect(frecency_scores))
+
+      local ok, sorted = pcall(
+        Sorter.mergesort,
+        items,
+        ---@param item1 LegendaryItem
+        ---@param item2 LegendaryItem
+        function(item1, item2)
+          local item1_id = DbClient.sql_escape(item1:id())
+          local item2_id = DbClient.sql_escape(item2:id())
+          local item1_score = frecency_scores[item1_id] or 0
+          local item2_score = frecency_scores[item2_id] or 0
+          return item1_score > item2_score
+        end
+      )
+
+      if not ok then
+        Log.error('Failed to sort items: %s', vim.inspect(sorted))
+      else
+        items = sorted
+      end
+
+      self.items = items
+      return
+    else
+      Log.debug('Config.sort.frecency is enabled, but sqlite is not availabe, so frecency is automatically disabled.')
+    end
+  end
 
   ---@param item1 LegendaryItem
   ---@param item2 LegendaryItem
@@ -150,7 +178,7 @@ function ItemList:sort_inplace()
 
   local ok, sorted = pcall(Sorter.mergesort, items, comparator)
   if not ok then
-    vim.api.nvim_err_write(string.format('[legendary.nvim] Failed to sort items: %s\n', vim.inspect(sorted)))
+    Log.error('Failed to sort items: %s', vim.inspect(sorted))
   else
     items = sorted
   end

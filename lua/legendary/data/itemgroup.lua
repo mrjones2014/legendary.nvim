@@ -58,4 +58,9 @@ function ItemGroup:apply()
   return self
 end
 
+---Get a unique ID for the item group
+function ItemGroup:id()
+  return self.name
+end
+
 return ItemGroup

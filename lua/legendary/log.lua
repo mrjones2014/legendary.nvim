@@ -75,6 +75,8 @@ end
 ---@field fatal fun(...)
 local M = {}
 
+M.levels = levels
+
 for _, level in ipairs(levels) do
   M[level] = function(...)
     local msg = format(...)

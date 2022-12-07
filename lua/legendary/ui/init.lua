@@ -2,10 +2,23 @@
 local Config = require('legendary.config')
 ---@type LegendaryState
 local State = require('legendary.data.state')
-local ItemGroup = require('legendary.data.itemgroup')
+local Toolbox = require('legendary.toolbox')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
+
+local function update_item_frecency_score(item)
+  if Config.sort.frecency ~= false then
+    local has_sqlite, _ = pcall(require, 'sqlite')
+    if has_sqlite then
+      Log.trace('Updating scoring data for selected item.')
+      local DbClient = require('legendary.api.db.client').init()
+      DbClient.update_item_score(item)
+    else
+      Log.debug('Config.sort.frecency is enabled, but sqlite is not availabe, so frecency is automatically disabled.')
+    end
+  end
+end
 
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
@@ -26,7 +39,9 @@ local function select_inner(opts, itemlist)
     Log.trace('Launching select UI')
   end
 
+  itemlist = itemlist or State.items
   opts = opts or {}
+
   local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
     prompt = prompt()
@@ -38,13 +53,13 @@ local function select_inner(opts, itemlist)
   -- implementation of `sort_inplace` checks if
   -- sorting is actually needed and does nothing
   -- if it does not need to be sorted.
-  State.items:sort_inplace()
+  itemlist:sort_inplace()
 
   -- in addition to user filters, we also need to filter by buf
   local items = vim.tbl_filter(function(item)
     local item_buf = vim.tbl_get(item, 'opts', 'buffer')
     return item_buf == nil or item_buf == context.buf
-  end, (itemlist or State.items):filter(opts.filters or {}))
+  end, itemlist:filter(opts.filters or {}))
 
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
@@ -59,8 +74,13 @@ local function select_inner(opts, itemlist)
       return
     end
 
+    local ok, err = pcall(update_item_frecency_score, selected)
+    if not ok then
+      Log.error('Failed to update frecency score: %s', err)
+    end
+
     State.most_recent_item = selected
-    if selected.class == ItemGroup then
+    if Toolbox.is_itemgroup(selected) then
       return select_inner(opts, selected.items)
     end
 

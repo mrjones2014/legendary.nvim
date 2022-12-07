@@ -41,6 +41,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Help execute commands that take arguments by prefilling the command line instead of executing immediately
 - Search built-in keymaps and commands along with your user-defined keymaps and commands (may be disabled in config). Notice some missing? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR!
 - A `legendary.toolbox` module to help create lazily-evaluated keymaps and commands, and item filter. Have an idea for a new helper? Comment on [this discussion](https://github.com/mrjones2014/legendary.nvim/discussions/90) or submit a PR!
+- Sort by [frecency](https://en.wikipedia.org/wiki/Frecency)
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
 - Anonymous mappings; show mappings/commands in the finder without having `legendary.nvim` handle creating them
 
@@ -58,14 +59,26 @@ With `packer.nvim`:
 
 ```lua
 -- to use a version
-use({ 'mrjones2014/legendary.nvim', tag = 'v2.1.0' })
+use({
+  'mrjones2014/legendary.nvim',
+  tag = 'v2.1.0',
+  -- sqlite is only needed if you want to use frecency sorting
+  -- requires = 'kkharji/sqlite.lua'
+})
 -- or, to get rolling updates
-use({ 'mrjones2014/legendary.nvim' })
+use({
+  'mrjones2014/legendary.nvim'
+  -- sqlite is only needed if you want to use frecency sorting
+  -- requires = 'kkharji/sqlite.lua'
+})
 ```
 
 With `vim-plug`:
 
 ```VimL
+" if you want to use frecency sorting, sqlite is also needed
+Plug "kkharji/sqlite.lua"
+
 " to use a version
 Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.1.0' }
 " or, to get rolling updates
@@ -261,6 +274,19 @@ require('legendary').setup({
     -- sort the specified item type before other item types,
     -- value must be one of: 'keymap', 'command', 'autocmd', 'group', nil
     item_type_bias = nil,
+    -- settings for frecency sorting.
+    -- https://en.wikipedia.org/wiki/Frecency
+    -- Set `frecency = false` to disable.
+    -- this feature requires sqlite.lua (https://github.com/tami5/sqlite.lua)
+    -- and will be automatically disabled if sqlite is not available.
+    -- NOTE: THIS TAKES PRECEDENCE OVER OTHER SORT OPTIONS!
+    frecency = {
+      -- the directory to store the database in
+      db_root = string.format('%s/legendary/', vim.fn.stdpath('data')),
+      -- the maximum number of timestamps for a single item
+      -- to store in the database
+      max_timestamps = 10,
+    },
   },
   which_key = {
     -- Automatically add which-key tables to legendary

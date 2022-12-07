@@ -132,6 +132,26 @@ end, {
     end,
     description = 'Open the log file for legendary.nvim',
   },
+  {
+    ':LegendaryFrecencyReset',
+    function()
+      require('legendary.api.db.wrapper').delete_db()
+    end,
+    description = 'Reset the frecency database',
+  },
+  {
+    ':LegendaryLogLevel',
+    function(args)
+      local log_level = vim.tbl_get(args, 'fargs', 1)
+      if not vim.tbl_contains(require('legendary.log').levels, log_level) then
+        error(string.format('Invalid log level %s', log_level))
+        return
+      end
+      require('legendary.config').log_level = log_level
+    end,
+    description = 'Convenience command to set log level',
+    opts = { nargs = 1 },
+  },
 })
 
 M.bind = function()
