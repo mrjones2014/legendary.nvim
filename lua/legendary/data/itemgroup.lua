@@ -52,9 +52,9 @@ end
 ---Apply the items in the ItemGroup
 ---@return ItemGroup
 function ItemGroup:apply()
-  vim.tbl_map(function(item)
+  self.items:iter(function(item)
     item:apply()
-  end, self.items.items)
+  end)
   return self
 end
 

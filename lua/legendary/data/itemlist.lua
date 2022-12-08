@@ -90,7 +90,7 @@ function ItemList:filter(filters)
 end
 
 ---Sort the list *IN PLACE* according to config.
---THIS MODIFIES THE LIST IN PLACE.
+---THIS MODIFIES THE LIST IN PLACE.
 function ItemList:sort_inplace()
   -- inline require to avoid circular dependency
   local State = require('legendary.data.state')
@@ -193,6 +193,12 @@ function ItemList:sort_inplace()
   end
 
   self.items = items
+end
+
+---Call `callback` on each item
+---@param callback fun(item:LegendaryItem)
+function ItemList:iter(callback)
+  vim.tbl_map(callback, self.items)
 end
 
 return ItemList
