@@ -59,7 +59,9 @@ FEATURES                                                  *legendary-features*
   commands, and item filter. Have an idea for a new helper? Comment on this
   discussion <https://github.com/mrjones2014/legendary.nvim/discussions/90> or
   submit a PR!
-- Sort by frecency <https://en.wikipedia.org/wiki/Frecency>
+- Sort by frecency <https://en.wikipedia.org/wiki/Frecency>, a combined
+  measure of how frequently and how recently you've used an item from the
+  picker
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent>
   <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see
   Converting Keymaps From Vimscript
