@@ -97,9 +97,9 @@ function M.setup(cfg)
   M.itemgroups(Config.itemgroups)
 
   -- apply items
-  vim.tbl_map(function(item)
+  State.items:iter(function(item)
     item:apply()
-  end, State.items.items)
+  end)
 
   Log.trace('setup() parsed and applied all configuration.')
 end
