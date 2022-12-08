@@ -124,7 +124,7 @@ function Command:id()
 end
 
 function Command:frecency_id()
-  return Command:id()
+  return self:id()
 end
 
 ---Return self.cmd with leading : or <cmd> and trailing <cr> removed
