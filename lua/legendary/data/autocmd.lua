@@ -52,6 +52,10 @@ function Autocmd:id()
   return string.format('%s %s', table.concat(self.events, ','), self.description)
 end
 
+function Autocmd:frecency_id()
+  return self.description
+end
+
 function Autocmd:with_group(group)
   self.group = group
   return self

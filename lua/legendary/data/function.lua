@@ -34,4 +34,8 @@ function Function:id()
   return string.format('<function> %s %s', self.description, vim.inspect(self.opts or {}))
 end
 
+function Function:frecency_id()
+  return string.format('<function> %s', self.description)
+end
+
 return Function
