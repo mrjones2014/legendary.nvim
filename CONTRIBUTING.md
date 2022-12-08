@@ -7,6 +7,10 @@ If you have [Stylua](https://github.com/johnnymorganz/stylua) and [Luacheck](htt
 installed, you can run the checks locally by running `make check`. This will run the linter, the style checker,
 and all unit tests. Make sure to follow the code style found in the existing code.
 
+## PRs
+
+PR titles are now used to generate changelogs for GitHub Releases. Please try your best to title PRs according to [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#summary).
+
 ## Issues vs. Discussions
 
 - Missing built-in commands or keymaps? Comment on [this GitHub Discussion](https://github.com/mrjones2014/legendary.nvim/discussions/89) or submit a PR
