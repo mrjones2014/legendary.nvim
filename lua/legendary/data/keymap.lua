@@ -104,13 +104,7 @@ function Keymap:apply()
 end
 
 function Keymap:id()
-  return string.format(
-    '%s %s %s %s',
-    self.keys,
-    table.concat(self:modes(), ','),
-    vim.inspect(self.opts or {}),
-    self.description
-  )
+  return string.format('%s %s %s', self.keys, table.concat(self:modes(), ','), self.description)
 end
 
 function Keymap:frecency_id()
