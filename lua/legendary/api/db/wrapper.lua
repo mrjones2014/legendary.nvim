@@ -161,7 +161,7 @@ end
 ---Update the stored data for an item
 ---@param item LegendaryItem
 function M:update(item)
-  local item_id = M.sql_escape(item:id())
+  local item_id = M.sql_escape(item:frecency_id())
   Log.trace('Updating item with ID "%s"', item_id)
   local entry_id = row_id(self:transaction(self.queries.item_get_entries, { where = { item_id = item_id } }))
   if not entry_id then

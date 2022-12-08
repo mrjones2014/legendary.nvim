@@ -63,4 +63,8 @@ function ItemGroup:id()
   return self.name
 end
 
+function ItemGroup:frecency_id()
+  return self.name
+end
+
 return ItemGroup

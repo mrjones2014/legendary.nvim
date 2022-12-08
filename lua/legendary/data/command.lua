@@ -123,6 +123,10 @@ function Command:id()
   return string.format('%s %s', self.cmd, self.description)
 end
 
+function Command:frecency_id()
+  return Command:id()
+end
+
 ---Return self.cmd with leading : or <cmd> and trailing <cr> removed
 function Command:vim_cmd()
   -- replace any argument placeholders for display purposes wrapped in {} or []
