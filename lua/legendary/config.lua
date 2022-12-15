@@ -80,6 +80,16 @@ local config = {
       max_timestamps = 10,
     },
   },
+  ui = {
+    -- Which UI provider to use. If telescope.nvim is detected,
+    -- defaults to 'telescope', otherwise defaults to 'select'
+    -- options are one of 'select' for vim.ui.select() or 'telescope'
+    -- for a custom telescope picker with some additional features
+    provider = 'select',
+    -- Extra configuration options to pass down to the UI provider;
+    -- Not applicable for 'select', but will be passed into telescope.nvim picker
+    config = {},
+  },
   which_key = {
     -- Automatically add which-key tables to legendary
     -- see ./doc/WHICH_KEY.md for more details
@@ -141,6 +151,10 @@ local config = {
 ---@field item_type_bias 'keymap'|'command'|'autocmd'|nil
 ---@field frecency LegendaryFrecencyConfig|false
 
+---@class LegendaryUiConfig
+---@field provider 'select'|'telescope'
+---@field config table
+
 ---@class LegendaryConfig
 ---@field keymaps Keymap[]
 ---@field commands Command[]
@@ -154,6 +168,7 @@ local config = {
 ---@field include_builtin boolean
 ---@field include_legendary_cmds boolean
 ---@field sort LegendarySortOpts
+---@field ui LegendaryUiConfig
 ---@field which_key LegendaryWhichkeyConfig
 ---@field scratchpad LegendaryScratchpadConfig
 ---@field cache_path string

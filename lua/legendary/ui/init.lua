@@ -7,6 +7,15 @@ local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
 
+-- basically, same opts as vim.ui.select()
+---@class LegendaryUiProviderConfig
+---@field prompt string|nil
+---@field format_item nil|fun(item:LegendaryItem):string
+---@field kind nil|string
+
+---@class LegendaryUiProvider
+---@field select fun(items: LegendaryItem[], config: LegendaryUiProviderConfig, callback: fun(item:LegendaryItem|nil))
+
 local function update_item_frecency_score(item)
   if Config.sort.frecency ~= false then
     local has_sqlite, _ = pcall(require, 'sqlite')
@@ -63,7 +72,10 @@ local function select_inner(opts, itemlist)
 
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
-  vim.ui.select(items, {
+  local has_telescope, _ = pcall(require, 'telescope')
+  local ui_provider = has_telescope and require('legendary.ui.providers.telescope')
+    or require('legendary.ui.providers.select')
+  ui_provider.select(items, {
     prompt = prompt,
     kind = 'legendary.nvim',
     format_item = function(item)
