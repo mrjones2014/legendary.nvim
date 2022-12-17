@@ -23,9 +23,9 @@ require('legendary').commands({
 })
 
 -- bind a single function table
-require('legendary').bind_function(fn_tbl)
+require('legendary').func(fn_tbl)
 -- bind a list of functions
-require('legendary').bind_functions({
+require('legendary').funcs({
   -- your function tables here
 })
 
