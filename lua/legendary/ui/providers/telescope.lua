@@ -6,7 +6,7 @@ local PickerState = require('telescope.actions.state')
 
 local M = {}
 
-M.default_config = {}
+local picker
 
 local function default_format(item)
   return tostring(item)
@@ -31,12 +31,28 @@ local function default_config(items, opts, callback)
       prompt_position = 'top',
     },
     sorter = require('telescope.sorters').fuzzy_with_index_bias({}),
-    attach_mappings = function(prompt_bufnr)
+    attach_mappings = function(prompt_bufnr, map)
       Actions.select_default:replace(function()
         local selected = vim.tbl_get(PickerState.get_selected_entry() or {}, 'value')
         Actions.close(prompt_bufnr)
         callback(selected)
       end)
+
+      for idx, key in ipairs({ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' }) do
+        map('i', key, function()
+          if not picker then
+            return
+          end
+
+          local entry = picker.manager:get_entry(picker:get_index(idx - 1))
+          if not entry then
+            return
+          end
+
+          Actions.close(prompt_bufnr)
+          callback(entry.value)
+        end)
+      end
 
       return true
     end,
@@ -46,7 +62,9 @@ end
 
 function M.select(items, opts, callback)
   local config = vim.tbl_deep_extend('force', default_config(items, opts, callback), Config.ui.config)
-  Picker.new(config, {}):find()
+  picker = Picker.new(config, {})
+  picker:find()
+  picker = nil
 end
 
 return M
