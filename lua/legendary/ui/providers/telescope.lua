@@ -12,9 +12,10 @@ local function default_format(item)
   return tostring(item)
 end
 
-function M.select(items, opts, callback)
-  local config = vim.tbl_deep_extend('force', {
-    prompt_title = opts.prompt or 'legendary.nvim',
+local function default_config(items, opts, callback)
+  local theme = require('telescope.themes').get_dropdown()
+  return vim.tbl_deep_extend('force', theme, {
+    prompt_title = opts.prompt or ' legendary.nvim ',
     finder = Finder.new_table({
       results = items,
       entry_maker = function(item)
@@ -26,6 +27,9 @@ function M.select(items, opts, callback)
         }
       end,
     }),
+    layout_config = {
+      prompt_position = 'top',
+    },
     sorter = require('telescope.sorters').fuzzy_with_index_bias({}),
     attach_mappings = function(prompt_bufnr)
       Actions.select_default:replace(function()
@@ -36,7 +40,12 @@ function M.select(items, opts, callback)
 
       return true
     end,
-  }, Config.ui.config)
+    previewer = false,
+  })
+end
+
+function M.select(items, opts, callback)
+  local config = vim.tbl_deep_extend('force', default_config(items, opts, callback), Config.ui.config)
   Picker.new(config, {}):find()
 end
 
