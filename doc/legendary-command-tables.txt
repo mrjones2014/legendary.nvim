@@ -24,7 +24,7 @@ can set `hide = true`:
         description = 'Do something!',
         -- hide from finder UI
         hide = true,
-      }
+      },
     }
 <
 You can also create per-mode implementations, like per-mode keymappings, but
@@ -97,6 +97,7 @@ filling the command line.
         end,
         description = 'Command with argument handling',
         unfinished = true,
+        opts = { nargs = '?' },
       },
     }
 <

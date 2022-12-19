@@ -22,7 +22,7 @@ local commands = {
     description = 'Do something!',
     -- hide from finder UI
     hide = true,
-  }
+  },
 }
 ```
 
@@ -94,6 +94,7 @@ local commands = {
     end,
     description = 'Command with argument handling',
     unfinished = true,
+    opts = { nargs = '?' },
   },
 }
 ```
