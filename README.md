@@ -229,7 +229,7 @@ require('legendary').setup({
   },
   -- Customize the prompt that appears on your vim.ui.select() handler
   -- Can be a string or a function that returns a string.
-  select_prompt = ' legendary.nvim ',
+  select_prompt = ' legendary.nvim ',
   -- Character to use to separate columns in the UI
   col_separator_char = '│',
   -- Optionally pass a custom formatter function. This function
