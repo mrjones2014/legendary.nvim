@@ -15,7 +15,7 @@ end
 local function default_config(items, opts, callback)
   local theme = require('telescope.themes').get_dropdown()
   return vim.tbl_deep_extend('force', theme, {
-    prompt_title = opts.prompt or ' legendary.nvim ',
+    prompt_title = opts.prompt or ' legendary.nvim ',
     finder = Finder.new_table({
       results = items,
       entry_maker = function(item)
