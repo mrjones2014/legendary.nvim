@@ -105,7 +105,7 @@ end
 function Keymap:apply()
   if vim.tbl_islist(self.mode_mappings) then
     -- description-only keymap
-    return
+    return self
   end
 
   for mode, mapping in pairs(self.mode_mappings) do
