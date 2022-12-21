@@ -103,6 +103,11 @@ end
 ---Bind the keymap in Neovim
 ---@return Keymap
 function Keymap:apply()
+  if vim.tbl_islist(self.mode_mappings) then
+    -- description-only keymap
+    return
+  end
+
   for mode, mapping in pairs(self.mode_mappings) do
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
     opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.keymaps or {})
