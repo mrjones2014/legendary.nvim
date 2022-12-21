@@ -47,6 +47,14 @@ describe('Keymap', function()
         { n = { implementation = ':NormalMode' }, v = { implementation = ':VisualMode' } }
       )
     end)
+
+    it('for description-only keymaps, mode_mappings is assigned to a list of the modes', function()
+      local tbl = { '<leader>f', description = 'test', mode = { 'n', 'v' } }
+      local keymap = Keymap:parse(tbl)
+      assert.are.same(keymap.keys, tbl[1])
+      assert.are.same(keymap.description, tbl.description)
+      assert.are.same(keymap.mode_mappings, tbl.mode)
+    end)
   end)
 
   describe('apply', function()
