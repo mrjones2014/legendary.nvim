@@ -66,6 +66,16 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
 
   instance.mode_mappings = {}
   if tbl[2] == nil then
+    -- for description-only keymaps, just set mode_mappings to the list of modes
+    instance.mode_mappings = tbl.mode or { 'n' }
+    if type(instance.mode_mappings) == 'string' then
+      instance.mode_mappings = { instance.mode_mappings }
+    end
+
+    if #instance.mode_mappings == 0 then
+      instance.mode_mappings = { 'n' }
+    end
+
     return instance
   end
 
@@ -93,6 +103,11 @@ end
 ---Bind the keymap in Neovim
 ---@return Keymap
 function Keymap:apply()
+  if vim.tbl_islist(self.mode_mappings) then
+    -- description-only keymap
+    return self
+  end
+
   for mode, mapping in pairs(self.mode_mappings) do
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
     opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.keymaps or {})
@@ -112,6 +127,10 @@ function Keymap:frecency_id()
 end
 
 function Keymap:modes()
+  if vim.tbl_islist(self.mode_mappings) then
+    return self.mode_mappings
+  end
+
   local modes = {}
   for mode, mapping in pairs(self.mode_mappings) do
     if mapping then
