@@ -90,6 +90,11 @@ local function results_win(result, err)
     lines = vim.inspect(lines)
   end
 
+  if Config.scratchpad.results_view == 'print' then
+    print(lines)
+    return
+  end
+
   lines = vim.split(lines, '\n', { trimempty = false })
 
   if results_buf_id then
