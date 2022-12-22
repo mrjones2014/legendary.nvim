@@ -10,7 +10,13 @@ mapping/command/autocmd development.
 UTILITY COMMANDS                                  *legendary-utility-commands*
 
 
-- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in
+- `:LegendaryScratch` - create a scratchpad buffer to test Lua snippets in -
+  Accepts an argument to override the value of `config.scratchpad.view`, you
+  may pass one of `current`, `float`, `split`, or `vsplit`, for example
+  `:LegendaryScratch vsplit`
+- `:LegendaryScratchToggle` - utility command to toggle the scratchpad open
+  and closed with a single command - Accepts arguments in the same way that
+  `:LegendaryScratch` does
 - `:LegendaryEvalLine` - evaluate the current line as a Lua expression
 - `:LegendaryEvalLines` - evaluate the line range selected in visual mode as a
   Lua snippet
