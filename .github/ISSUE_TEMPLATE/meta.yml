@@ -11,6 +11,7 @@ body:
       label: Category
       options:
         - CI
+        - Docs
         - Issue/PR templates
         - Repository configuration
         - Testing
