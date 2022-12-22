@@ -97,7 +97,8 @@ local config = {
   scratchpad = {
     -- How to open the scratchpad buffer,
     -- 'current' for current window, 'float'
-    -- for floating window
+    -- for floating window, 'split' for split window,
+    -- 'vsplit' for a vertical split window
     view = 'float',
     -- How to show the results of evaluated Lua code.
     -- 'print' for `print(result)`, 'float' for a floating window.
