@@ -93,6 +93,7 @@ end, {
         vim.api.nvim_err_write("Filetype must be 'lua' to eval lua code")
         return
       end
+
       require('legendary.ui.scratchpad').lua_eval_range(range.line1, range.line2)
     end,
     description = 'Eval lines selected in visual mode as Lua',

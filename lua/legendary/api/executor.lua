@@ -56,6 +56,10 @@ function M.exec_item(item, context)
         if item.unfinished == true then
           util.exec_feedkeys(string.format(':%s ', cmd))
         else
+          -- if in visual mode, add marks
+          if Toolbox.is_visual_mode(context.mode) and not vim.startswith(cmd, "'<,'>") then
+            cmd = string.format("'<,'>%s", cmd)
+          end
           vim.cmd(cmd)
         end
       elseif Toolbox.is_keymap(item) then
