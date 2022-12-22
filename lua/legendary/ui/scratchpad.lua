@@ -130,12 +130,15 @@ local function results_win(result, err)
   float(results_buf_id, { width = width, height = height }, true)
 end
 
-function M.open()
+---Open the scratchpad buffer
+---@param method 'current'|'split'|'vsplit'|'float'|nil
+function M.open(method)
+  method = method or Config.scratchpad.view
   if scratchpad_buf_id ~= nil then
     pcall(vim.api.nvim_buf_delete, scratchpad_buf_id, { force = true })
   end
 
-  scratchpad_buf_id = vim.api.nvim_create_buf(Config.scratchpad.view == 'current', true)
+  scratchpad_buf_id = vim.api.nvim_create_buf(method ~= 'float', true)
   vim.api.nvim_buf_set_option(scratchpad_buf_id, 'filetype', 'lua')
   vim.api.nvim_buf_set_option(scratchpad_buf_id, 'buftype', 'acwrite')
   vim.api.nvim_buf_set_name(scratchpad_buf_id, 'Legendary Scratchpad')
@@ -158,26 +161,42 @@ function M.open()
     write_cache_autocmd(scratchpad_buf_id)
   end
 
-  if Config.scratchpad.view == 'current' then
+  if method == 'current' then
+    vim.api.nvim_win_set_buf(0, scratchpad_buf_id)
+  elseif method == 'split' or method == 'vsplit' then
+    vim.cmd(method)
     vim.api.nvim_win_set_buf(0, scratchpad_buf_id)
   else
     float(scratchpad_buf_id, { width = math.floor(vim.o.columns * 0.85), height = math.floor(vim.o.lines * 0.85) })
   end
 end
 
-function M.close()
-  if Config.scratchpad.view == 'float' then
+---Close the scratchpad buffer
+---@param method 'current'|'split'|'vsplit'|'float'|nil
+function M.close(method)
+  method = method or Config.scratchpad.view
+  if method == 'float' then
     pcall(vim.api.nvim_win_close, vim.api.nvim_get_current_win(), true)
   else
+    if method == 'split' or method == 'vsplit' then
+      local buf_win = vim.tbl_filter(function(win)
+        return vim.api.nvim_win_get_buf(win) == scratchpad_buf_id
+      end, vim.api.nvim_list_wins())[1]
+      if buf_win then
+        pcall(vim.api.nvim_win_close, buf_win, false)
+      end
+    end
     pcall(vim.api.nvim_buf_delete, scratchpad_buf_id, true)
   end
 end
 
-function M.toggle()
+---Toggle the scratchpad buffer
+---@param method 'current'|'split'|'vsplit'|'float'|nil
+function M.toggle(method)
   if vim.api.nvim_get_current_buf() == scratchpad_buf_id then
-    M.close()
+    M.close(method)
   else
-    M.open()
+    M.open(method)
   end
 end
 

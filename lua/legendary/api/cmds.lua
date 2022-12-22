@@ -63,17 +63,27 @@ end, {
   },
   {
     ':LegendaryScratch',
-    function()
-      require('legendary.ui.scratchpad').open()
+    function(args)
+      local method = vim.tbl_get(args, 'fargs', 1)
+      if method ~= 'current' and method ~= 'split' and method ~= 'vsplit' and method ~= 'float' then
+        method = nil
+      end
+      require('legendary.ui.scratchpad').open(method)
     end,
     description = 'Create a Lua scratchpad buffer to help develop commands and keymaps',
+    opts = { nargs = '?' },
   },
   {
     ':LegendaryScratchToggle',
-    function()
-      require('legendary.ui.scratchpad').toggle()
+    function(args)
+      local method = vim.tbl_get(args, 'fargs', 1)
+      if method ~= 'current' and method ~= 'split' and method ~= 'vsplit' and method ~= 'float' then
+        method = nil
+      end
+      require('legendary.ui.scratchpad').toggle(method)
     end,
     description = 'Toggle the legendary.nvim Lua scratchpad buffer',
+    opts = { nargs = '?' },
   },
   {
     ':LegendaryEvalLine',
