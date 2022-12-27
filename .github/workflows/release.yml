@@ -8,7 +8,8 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Create GitHub Release
+      - id: step1
+        name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
@@ -16,3 +17,10 @@ jobs:
           prerelease: ${{ contains(github.ref, '-') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Post GitHub Release to Matrix Channel
+        uses: s3krit/matrix-message-action@v0.0.3
+        with:
+          room_id: ${{ secrets.MATRIX_ROOM_ID }}
+          access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          message: ${{ steps.step1.outputs.url }}
+          server: "matrix.org"
