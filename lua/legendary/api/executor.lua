@@ -56,6 +56,14 @@ function M.exec_item(item, context)
         if item.unfinished == true then
           util.exec_feedkeys(string.format(':%s ', cmd))
         else
+          -- if in visual mode and the command supports range, add marks
+          if
+            vim.tbl_get(item, 'opts', 'range') == true
+            and Toolbox.is_visual_mode(context.mode)
+            and not vim.startswith(cmd, "'<,'>")
+          then
+            cmd = string.format("'<,'>%s", cmd)
+          end
           vim.cmd(cmd)
         end
       elseif Toolbox.is_keymap(item) then

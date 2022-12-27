@@ -63,17 +63,27 @@ end, {
   },
   {
     ':LegendaryScratch',
-    function()
-      require('legendary.ui.scratchpad').open()
+    function(args)
+      local method = vim.tbl_get(args, 'fargs', 1)
+      if method ~= 'current' and method ~= 'split' and method ~= 'vsplit' and method ~= 'float' then
+        method = nil
+      end
+      require('legendary.ui.scratchpad').open(method)
     end,
     description = 'Create a Lua scratchpad buffer to help develop commands and keymaps',
+    opts = { nargs = '?' },
   },
   {
     ':LegendaryScratchToggle',
-    function()
-      require('legendary.ui.scratchpad').toggle()
+    function(args)
+      local method = vim.tbl_get(args, 'fargs', 1)
+      if method ~= 'current' and method ~= 'split' and method ~= 'vsplit' and method ~= 'float' then
+        method = nil
+      end
+      require('legendary.ui.scratchpad').toggle(method)
     end,
     description = 'Toggle the legendary.nvim Lua scratchpad buffer',
+    opts = { nargs = '?' },
   },
   {
     ':LegendaryEvalLine',
@@ -93,6 +103,7 @@ end, {
         vim.api.nvim_err_write("Filetype must be 'lua' to eval lua code")
         return
       end
+
       require('legendary.ui.scratchpad').lua_eval_range(range.line1, range.line2)
     end,
     description = 'Eval lines selected in visual mode as Lua',
@@ -151,6 +162,27 @@ end, {
     end,
     description = 'Convenience command to set log level',
     opts = { nargs = 1 },
+  },
+  {
+    ':LegendaryMatrix',
+    function()
+      local url = 'https://matrix.to/#/%23legendary.nvim:matrix.org'
+      local cmd
+      if vim.fn.has('mac') == 1 then
+        cmd = 'open'
+      elseif vim.fn.has('unix') == 1 then
+        cmd = 'xdg-open'
+      elseif vim.fn.has('win32') == 1 then
+        cmd = 'start'
+      end
+
+      if cmd then
+        vim.fn.jobstart(string.format('%s %s', cmd, url))
+      else
+        vim.notify(string.format('Join the legendary.nvim Matrix channel: %s', url))
+      end
+    end,
+    description = 'Join the legendary.nvim Matrix channel',
   },
 })
 

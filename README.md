@@ -4,6 +4,8 @@
 
 [Features](#features) | [Prerequisites](#prerequisites) | [Installation](#installation) | [Quickstart](#quickstart) | [Configuration](#configuration)
 
+[![matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/%23legendary.nvim:matrix.org)
+
 </div>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time (like VS Code's Command Palette).
@@ -67,7 +69,7 @@ use({
 })
 -- or, to get rolling updates
 use({
-  'mrjones2014/legendary.nvim'
+  'mrjones2014/legendary.nvim',
   -- sqlite is only needed if you want to use frecency sorting
   -- requires = 'kkharji/sqlite.lua'
 })
@@ -95,14 +97,20 @@ require('legendary').setup({
     -- map keys to a command
     { '<leader>ff', ':Telescope find_files', description = 'Find files' },
     -- map keys to a function
-    { '<leader>h', function() print('hello world!') end, description = 'Say hello' },
+    {
+      '<leader>h',
+      function()
+        print('hello world!')
+      end,
+      description = 'Say hello',
+    },
     -- keymaps have opts.silent = true by default, but you can override it
     { '<leader>s', ':SomeCommand<CR>', description = 'Non-silent keymap', opts = { silent = false } },
     -- create keymaps with different implementations per-mode
     {
       '<leader>c',
       { n = ':LinewiseCommentToggle<CR>', x = ":'<,'>BlockwiseCommentToggle<CR>" },
-      description = 'Toggle comment'
+      description = 'Toggle comment',
     },
     -- create item groups to create sub-menus in the finder
     -- note that only keymaps, commands, and functions
@@ -119,7 +127,13 @@ require('legendary').setup({
   },
   commands = {
     -- easily create user commands
-    { ':SayHello', function() print('hello world!') end, description = 'Say hello as a command' },
+    {
+      ':SayHello',
+      function()
+        print('hello world!')
+      end,
+      description = 'Say hello as a command',
+    },
     {
       -- groups with same itemgroup will be merged
       itemgroup = 'short ID',
@@ -132,7 +146,12 @@ require('legendary').setup({
   },
   funcs = {
     -- Make arbitrary Lua functions that can be executed via the item finder
-    { function() doSomeStuff() end, description = 'Do some stuff with a Lua function!' },
+    {
+      function()
+        doSomeStuff()
+      end,
+      description = 'Do some stuff with a Lua function!',
+    },
     {
       -- groups with same itemgroup will be merged
       itemgroup = 'short ID',

@@ -96,11 +96,6 @@ function M.setup(cfg)
   M.autocmds(Config.autocmds)
   M.itemgroups(Config.itemgroups)
 
-  -- apply items
-  State.items:iter(function(item)
-    item:apply()
-  end)
-
   Log.trace('setup() parsed and applied all configuration.')
 end
 
