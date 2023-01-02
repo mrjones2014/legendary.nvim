@@ -37,6 +37,15 @@ local keymaps = {
 }
 ```
 
+Often useful for plugin keymaps, you can also specify a `filetype` or `buftype` to automatically filter
+out keymaps based on `filetype` and `buftype` respectively.
+
+```lua
+local keymaps = {
+  { '<C-v>', filetype = 'NvimTree', description = 'NvimTree: Open file in vertical split' },
+}
+```
+
 If you need to pass parameters to the Lua function or call a function dynamically from a plugin,
 you can use the following helper functions:
 
@@ -55,7 +64,7 @@ the `mode` property:
 
 ```lua
 local keymaps = {
-  { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
+  { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } },
 }
 ```
 
@@ -64,7 +73,7 @@ element as a table, where the table keys are the modes:
 
 ```lua
 local keymaps = {
-  { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' }
+  { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' },
 }
 ```
 
@@ -126,7 +135,7 @@ local keymaps = {
     '<leader>fm',
     vim.lsp.buf.formatting_sync,
     description = 'Format buffer with LSP',
-    opts = { silent = true, noremap = true }
+    opts = { silent = true, noremap = true },
   },
 }
 ```
@@ -151,7 +160,7 @@ local keymaps = {
     end,
     description = 'Toggle comment',
     mode = { 'n', 'v' },
-  }
+  },
 }
 ```
 

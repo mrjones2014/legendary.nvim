@@ -22,6 +22,8 @@ local Config = require('legendary.config')
 ---@field mode_mappings ModeKeymap
 ---@field description string
 ---@field hide boolean
+---@field filetype string
+---@field buftype string
 ---@field opts table
 ---@field builtin boolean
 ---@field class Keymap
@@ -39,6 +41,8 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
     mode = { tbl.mode, { 'string', 'table' }, true },
     opts = { tbl.opts, { 'table' }, true },
     hide = { tbl.hide, { 'boolean' }, true },
+    filetype = { tbl.filetype, { 'string' }, true },
+    buftype = { tbl.buftype, { 'string' }, true },
     description = { util.get_desc(tbl), { 'string' }, true },
   })
 
@@ -63,6 +67,8 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
   instance.builtin = builtin or false
+  instance.filetype = tbl.filetype
+  instance.buftype = tbl.buftype
 
   instance.mode_mappings = {}
   if tbl[2] == nil then

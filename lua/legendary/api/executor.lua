@@ -5,18 +5,23 @@ local util = require('legendary.util')
 local M = {}
 
 ---@class LegendaryEditorContext
----@field buf integer
----@field mode string
+---@field buf integer Buffer ID
+---@field ft string Buffer's filetype
+---@field bt string Buffer's buftype
+---@field mode string Current mode
 ---@field cursor_pos integer[] { row, col }
 ---@field marks integer[]|nil
 
 ---Build a context object containing information about the editor
 ---state *before* triggering the finder so that it can be
 ---restored before executing the item.
----@return table
+---@return LegendaryEditorContext
 function M.build_pre_context()
+  local buf = vim.api.nvim_get_current_buf()
   return {
-    buf = vim.api.nvim_get_current_buf(),
+    buf = buf,
+    ft = vim.api.nvim_buf_get_option(buf, 'filetype'),
+    bt = vim.api.nvim_buf_get_option(buf, 'buftype'),
     mode = vim.fn.mode(),
     cursor_pos = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win()),
     marks = Toolbox.get_marks(),

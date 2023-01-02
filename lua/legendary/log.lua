@@ -22,14 +22,19 @@ local level_hls = {
   fatal = 'ErrorMsg',
 }
 
-local prefix = '[legendary.nvim] '
 local prefix_hl = 'Comment'
 
-local function log_with_hl(msg, hl)
+local function get_prefix(level)
+  return string.format('[%s][legendary.nvim][%s]', os.date(), string.upper(level))
+end
+
+local function log_with_hl(msg, level)
+  local prefix = get_prefix(level)
+  local hl = level_hls[level]
   vim.cmd(string.format('echohl %s', prefix_hl))
   vim.cmd(string.format('echom "%s"', vim.fn.escape(prefix, '"')))
   vim.cmd(string.format('echohl %s', hl or 'NONE'))
-  vim.cmd(string.format('echom "%s"', vim.fn.escape(msg, '"')))
+  vim.cmd(string.format('echom "%s"', string.gsub(vim.fn.escape(msg, '"'), '\n', '\\n')))
   vim.cmd('echohl NONE')
 end
 
@@ -85,14 +90,14 @@ for _, level in ipairs(levels) do
     end
 
     local lines = logfile:read()
-    table.insert(lines, 1, string.format('[%s]%s%s', os.date(), prefix, msg))
+    table.insert(lines, 1, string.format('%s %s', get_prefix(level), msg))
     lines = vim.list_slice(lines, 1, math.min(#lines, MAX_LOG_LINES))
     logfile:write(lines)
 
     if not should_log(level) then
       return
     end
-    log_with_hl(msg, level_hls[level])
+    log_with_hl(msg, level)
   end
 end
 

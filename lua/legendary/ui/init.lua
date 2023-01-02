@@ -20,6 +20,76 @@ local function update_item_frecency_score(item)
   end
 end
 
+---@param items ItemList
+---@param context LegendaryEditorContext
+---@param filters LegendaryItemFilter|LegendaryItemFilter[]
+---@return LegendaryItem[]
+local function resolve_items(items, context, filters)
+  local start_time = vim.loop.hrtime()
+
+  filters = filters or {}
+  if type(filters) ~= 'table' then
+    filters = { filters }
+  end
+
+  -- filter out keymaps and process those separately
+  table.insert(filters, function(item)
+    return not Toolbox.is_keymap(item)
+  end)
+
+  local keymaps = items:filter({
+    Toolbox.is_keymap,
+    function(item)
+      local item_buf = vim.tbl_get(item, 'opts', 'buffer')
+      local item_ft = vim.tbl_get(item, 'filetype')
+      local item_bt = vim.tbl_get(item, 'buftype')
+      local matches_buf = item_buf == nil or item_buf == context.buf
+      local matches_ft = item_ft == nil or item_ft == context.ft
+      local matches_bt = item_bt == nil or item_bt == context.bt
+      return matches_buf and matches_ft and matches_bt
+    end,
+  }) --[[ @as Keymap[] ]]
+  local specificity_map = {}
+  for _, keymap in ipairs(keymaps) do
+    if not specificity_map[keymap.keys] then
+      specificity_map[keymap.keys] = keymap
+    else
+      local existing = specificity_map[keymap.keys] --[[ @as Keymap ]]
+      if keymap.keys == '<leader>qq' then
+        print(vim.tbl_islist(keymap))
+      end
+      -- check buf, filetype, buftype, and builtin
+      if
+        vim.tbl_get(existing, 'opts', 'buffer') ~= context.buf
+        and vim.tbl_get(keymap, 'opts', 'buffer') == context.buf
+      then
+        specificity_map[keymap.keys] = keymap
+      elseif
+        vim.tbl_get(existing, 'filetype') ~= context.ft
+        and #context.ft > 0
+        and vim.tbl_get(keymap, 'filetype') == context.ft
+      then
+        specificity_map[keymap.keys] = keymap
+      elseif
+        vim.tbl_get(existing, 'buftype') ~= context.bt
+        and #context.bt > 0
+        and vim.tbl_get(keymap, 'buftype') == context.bt
+      then
+        specificity_map[keymap.keys] = keymap
+      elseif existing.builtin and not keymap.builtin then
+        specificity_map[keymap.keys] = keymap
+      end
+    end
+  end
+
+  local other_items = items:filter(filters)
+  local keymap_items = vim.tbl_values(specificity_map)
+  local resolved = vim.list_extend(other_items, keymap_items, 1, #keymap_items)
+  local duration = vim.loop.hrtime() - start_time
+  Log.debug('Took %s ms to resolve %s items in context.', duration / 1000000, #resolved)
+  return resolved
+end
+
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
 local M = {}
@@ -49,18 +119,12 @@ local function select_inner(opts, itemlist)
 
   local context = Executor.build_pre_context()
 
+  local items = resolve_items(itemlist, context, opts.filters)
   -- Apply sorting if needed. Note, the internal
   -- implementation of `sort_inplace` checks if
   -- sorting is actually needed and does nothing
   -- if it does not need to be sorted.
   itemlist:sort_inplace()
-
-  -- in addition to user filters, we also need to filter by buf
-  local items = vim.tbl_filter(function(item)
-    local item_buf = vim.tbl_get(item, 'opts', 'buffer')
-    return item_buf == nil or item_buf == context.buf
-  end, itemlist:filter(opts.filters or {}))
-
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
   vim.ui.select(items, {
