@@ -95,7 +95,7 @@ end
 local M = {}
 
 ---@class LegendaryFindOpts
----@field filters LegendaryItemFilter[]
+---@field filters LegendaryItemFilter|LegendaryItemFilter[]
 ---@field select_prompt string|fun():string
 ---@field formatter LegendaryItemFormatter
 
