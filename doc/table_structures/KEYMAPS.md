@@ -37,12 +37,12 @@ local keymaps = {
 }
 ```
 
-Often useful for plugin keymaps, you can also specify a `filetype` or `buftype` to automatically filter
+Often useful for plugin keymaps, you can also specify `opts.filetype` or `opts.buftype` to automatically filter
 out keymaps based on `filetype` and `buftype` respectively.
 
 ```lua
 local keymaps = {
-  { '<C-v>', filetype = 'NvimTree', description = 'NvimTree: Open file in vertical split' },
+  { '<C-v>', opts = { filetype = 'NvimTree' }, description = 'NvimTree: Open file in vertical split' },
 }
 ```
 

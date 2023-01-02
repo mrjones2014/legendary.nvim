@@ -67,8 +67,6 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
   instance.builtin = builtin or false
-  instance.filetype = tbl.filetype
-  instance.buftype = tbl.buftype
 
   instance.mode_mappings = {}
   if tbl[2] == nil then
@@ -118,6 +116,9 @@ function Keymap:apply()
     local opts = vim.tbl_deep_extend('keep', mapping.opts or {}, self.opts or {})
     opts = vim.tbl_deep_extend('keep', opts, Config.default_opts.keymaps or {})
     opts.desc = opts.desc or self.description
+    -- these opts are used by legendary.nvim but not by the Neovim API
+    opts.filetype = nil
+    opts.buftype = nil
     vim.keymap.set(mode, self.keys, mapping.implementation, opts)
   end
 

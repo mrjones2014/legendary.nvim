@@ -41,8 +41,8 @@ local function resolve_items(items, context, filters)
     Toolbox.is_keymap,
     function(item)
       local item_buf = vim.tbl_get(item, 'opts', 'buffer')
-      local item_ft = vim.tbl_get(item, 'filetype')
-      local item_bt = vim.tbl_get(item, 'buftype')
+      local item_ft = vim.tbl_get(item, 'opts', 'filetype')
+      local item_bt = vim.tbl_get(item, 'opts', 'buftype')
       local matches_buf = item_buf == nil or item_buf == context.buf
       local matches_ft = item_ft == nil or item_ft == context.ft
       local matches_bt = item_bt == nil or item_bt == context.bt
@@ -55,9 +55,7 @@ local function resolve_items(items, context, filters)
       specificity_map[keymap.keys] = keymap
     else
       local existing = specificity_map[keymap.keys] --[[ @as Keymap ]]
-      if keymap.keys == '<leader>qq' then
-        print(vim.tbl_islist(keymap))
-      end
+
       -- check buf, filetype, buftype, and builtin
       if
         vim.tbl_get(existing, 'opts', 'buffer') ~= context.buf
@@ -65,15 +63,15 @@ local function resolve_items(items, context, filters)
       then
         specificity_map[keymap.keys] = keymap
       elseif
-        vim.tbl_get(existing, 'filetype') ~= context.ft
-        and #context.ft > 0
-        and vim.tbl_get(keymap, 'filetype') == context.ft
+        #context.ft > 0
+        and vim.tbl_get(existing, 'opts', 'filetype') ~= context.ft
+        and vim.tbl_get(keymap, 'opts', 'filetype') == context.ft
       then
         specificity_map[keymap.keys] = keymap
       elseif
-        vim.tbl_get(existing, 'buftype') ~= context.bt
-        and #context.bt > 0
-        and vim.tbl_get(keymap, 'buftype') == context.bt
+        #context.bt > 0
+        and vim.tbl_get(existing, 'opts', 'buftype') ~= context.bt
+        and vim.tbl_get(keymap, 'opts', 'buftype') == context.bt
       then
         specificity_map[keymap.keys] = keymap
       elseif existing.builtin and not keymap.builtin then
