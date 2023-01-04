@@ -1,3 +1,5 @@
+*legendary-function-tables.txt*                   Last change: 2023 January 04
+
 ==============================================================================
 FUNCTIONS                                                *legendary-functions*
 
@@ -5,7 +7,7 @@ FUNCTIONS                                                *legendary-functions*
 Functions follow a similar structure as anonymous commands <./COMMANDS.md>,
 but description is **required**.
 
->
+>lua
     local functions = {
       {
         function()
@@ -41,7 +43,7 @@ show up in the finder UI like a folder, selecting it will then trigger another
 finder for items within the group. If groups are given the same name, they
 will be merged.
 
->
+>lua
     local functions = {
       {
       -- name, indicates that this table is an item group

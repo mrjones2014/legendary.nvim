@@ -1,3 +1,14 @@
+*legendary.txt*                                   Last change: 2023 January 04
+
+==============================================================================
+Table of Contents                                *legendary-table-of-contents*
+
+Features ................................................ |legendary-features|
+Prerequisites ...................................... |legendary-prerequisites|
+Installation ........................................ |legendary-installation|
+Quickstart ............................................ |legendary-quickstart|
+Configuration ...................................... |legendary-configuration|
+
 ==============================================================================
 `LEGENDARY.NVIM`                                  *legendary-`legendary.nvim`*
 
@@ -91,7 +102,7 @@ This project uses git tags to adhere to Semantic Versioning
 
 With `packer.nvim`:
 
->
+>lua
     -- to use a version
     use({
       'mrjones2014/legendary.nvim',
@@ -108,7 +119,7 @@ With `packer.nvim`:
 <
 With `vim-plug`:
 
->
+>VimL
     " if you want to use frecency sorting, sqlite is also needed
     Plug "kkharji/sqlite.lua"
     
@@ -124,7 +135,7 @@ QUICKSTART                                              *legendary-quickstart*
 
 Register keymaps through setup:
 
->
+>lua
     require('legendary').setup({
       keymaps = {
         -- map keys to a command
@@ -214,7 +225,7 @@ To trigger the finder for your configured keymaps, commands,
 
 Commands:
 
->
+>VimL
     " search keymaps, commands, and autocmds
     :Legendary
     
@@ -235,7 +246,7 @@ Lua API:
 The `require('legend').find()` function takes an `opts` table with the
 following fields (all optional):
 
->
+>lua
     {
       -- pass a list of filter functions or a single filter function with
       -- the signature `function(item): boolean`
@@ -263,7 +274,7 @@ Default configuration is shown below. For a detailed explanation of the
 structure for keymap, command, and `augroup`/`autocmd` tables, see
 doc/table_structures/README.md <./doc/table_structures/README.md>.
 
->
+>lua
     require('legendary').setup({
       -- Initial keymaps to bind
       keymaps = {},
