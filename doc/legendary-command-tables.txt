@@ -1,3 +1,5 @@
+*legendary-command-tables.txt*                    Last change: 2023 January 04
+
 ==============================================================================
 COMMANDS                                                  *legendary-commands*
 
@@ -5,7 +7,7 @@ COMMANDS                                                  *legendary-commands*
 Command tables follow the exact same structure as keymaps <./KEYMAPS.md>, but
 specify a command name instead of a key sequence.
 
->
+>lua
     local commands = {
       { ':DoSomething', ':echo "something"', description = 'Do something!' },
       { ':DoSomethingWithLua', require('some-module').some_method, description = 'Do something with Lua!' },
@@ -16,7 +18,7 @@ specify a command name instead of a key sequence.
 If you want to include a description but not hide it from the finder UI, you
 can set `hide = true`:
 
->
+>lua
     local commands = {
       {
         ':DoSomething',
@@ -32,7 +34,7 @@ since they are all bound to the same command, per-mode implementations for
 commands may only be a `function` or a `string` (not a `table`), since they
 cannot have separate `opts`.
 
->
+>lua
     local commands = {
       {
         -- example command for toggling comment with Comment.nvim
@@ -68,7 +70,7 @@ For "anonymous" commands (commands you want to appear in the finder but don't
 need `legendary.nvim` to handle creating), just omit the second entry (the
 "implementation"):
 
->
+>lua
     local commands = {
       {
         ':LspRestart',
@@ -81,7 +83,7 @@ pre-fill the command line instead of executing the command on selected. You
 can put an argument name/hint in `[]` or `{}` that will be stripped when
 filling the command line.
 
->
+>lua
     local commands = {
       { ':MyCommand {some_argument}<CR>', description = 'Command with argument', unfinished = true },
       -- or
@@ -106,7 +108,7 @@ show up in the finder UI like a folder, selecting it will then trigger another
 finder for items within the group. If groups are given the same name, they
 will be merged.
 
->
+>lua
     local commands = {
       {
         -- name, indicates that this table is an item group

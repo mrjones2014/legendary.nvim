@@ -1,3 +1,5 @@
+*legendary-filters.txt*                           Last change: 2023 January 04
+
 ==============================================================================
 BUILT-IN FILTERS                                  *legendary-built-in-filters*
 
@@ -5,7 +7,7 @@ BUILT-IN FILTERS                                  *legendary-built-in-filters*
 The `require('legendary.filters')` module provides the following filters for
 convenience:
 
->
+>lua
     local f = require('legendary.filters')
     
     -- take two or more other filter functions

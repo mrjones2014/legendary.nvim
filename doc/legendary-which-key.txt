@@ -1,3 +1,5 @@
+*legendary-which-key.txt*                         Last change: 2023 January 04
+
 ==============================================================================
 `WHICH-KEY.NVIM` INTEGRATION          *legendary-`which-key.nvim`-integration*
 
@@ -7,7 +9,7 @@ with `legendary.nvim`!
 
 There's a couple ways you can choose to do it:
 
->
+>lua
     -- automatically register which-key.nvim tables with legendary.nvim
     -- when you register them with which-key.nvim.
     -- `setup()` must be called before `require('which-key).register()`

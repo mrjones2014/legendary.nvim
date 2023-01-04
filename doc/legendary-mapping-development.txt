@@ -1,3 +1,16 @@
+*legendary-mapping-development.txt*               Last change: 2023 January 04
+
+==============================================================================
+Table of Contents                                *legendary-table-of-contents*
+
+Utility Commands ................................ |legendary-utility-commands|
+Lua Toolbox .......................................... |legendary-lua-toolbox|
+`lazy` .................................................... |legendary-`lazy`|
+`lazy_required_fn` ............................ |legendary-`lazy_required_fn`|
+`split_then` ........................................ |legendary-`split_then`|
+`vsplit_then` ...................................... |legendary-`vsplit_then`|
+`is_visual_mode` and `get_marks`  |legendary-`is_visual_mode`-and-`get_marks`|
+
 ==============================================================================
 MAPPING DEVELOPMENT UTILITIES        *legendary-mapping-development-utilities*
 
@@ -43,7 +56,7 @@ passed.
 
 **Usage:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.lazy(my_function, 'arg1', 'arg2')
     -- returns a *new function* equivalent to:
@@ -61,7 +74,7 @@ dot-notation. This helper can also handle passing static arguments.
 
 **Basic usage:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.lazy_required_fn('telescope.builtin', 'find_files')
     -- returns a *new function* equivalent to:
@@ -71,7 +84,7 @@ dot-notation. This helper can also handle passing static arguments.
 <
 **Passing static arguments:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.lazy_required_fn('telescope.builtin', 'find_files', { cwd_only = true })
     -- returns a *new function* equivalent to:
@@ -81,7 +94,7 @@ dot-notation. This helper can also handle passing static arguments.
 <
 **Referencing functions nested within a module table:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.lazy_required_fn('neotest', 'run.run')
     -- returns a *new function* equivalent to:
@@ -91,7 +104,7 @@ dot-notation. This helper can also handle passing static arguments.
 <
 **Passing multiple arguments:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.lazy_required_fn('myplugin', 'somefunction', 'arg1', 'arg2', 'arg3')
     -- returns a *new function* equivalent to:
@@ -107,7 +120,7 @@ Returns a function that creates a new split, then calls the passed function.
 
 **Usage:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.split_then(my_function)
     -- returns a *new function* equivalent to:
@@ -125,7 +138,7 @@ function.
 
 **Usage:**
 
->
+>lua
     local h = require('legendary.toolbox')
     h.vsplit_then(my_function)
     -- returns a *new function* equivalent to:
@@ -142,7 +155,7 @@ function.
 of visual mode, and `get_marks` can be used to get the marks denoting the
 visual selection.
 
->
+>lua
     {
       '<leader>t',
       function()
@@ -166,7 +179,7 @@ keymaps.
 
 **Example:**
 
->
+>lua
     local h = require('legendary.toolbox')
     -- lazily create a vertical split, then use Telescope.nvim to
     -- find a file and open it in the new split

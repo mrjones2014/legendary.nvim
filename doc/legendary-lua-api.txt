@@ -1,3 +1,11 @@
+*legendary-lua-api.txt*                           Last change: 2023 January 04
+
+==============================================================================
+Table of Contents                                *legendary-table-of-contents*
+
+Binding Keymaps, Commands, Autocmds, and Functions  |legendary-binding-keymaps,-commands,-autocmds,-and-functions|
+Converting Keymaps From Vimscript  |legendary-converting-keymaps-from-vimscript|
+
 ==============================================================================
 LUA API                                                    *legendary-lua-api*
 
@@ -14,7 +22,7 @@ The main API functions are described below. To see full API documentation, run
 BINDING KEYMAPS, COMMANDS, AUTOCMDS, AND FUNCTIONS*legendary-binding-keymaps,-commands,-autocmds,-and-functions*
 
 
->
+>lua
     -- bind a single keymap
     require('legendary').keymap(keymap)
     -- bind a list of keymaps
@@ -118,7 +126,7 @@ CONVERTING KEYMAPS FROM VIMSCRIPT*legendary-converting-keymaps-from-vimscript*
 Keymaps can be parsed from Vimscript commands (e.g. `vnoremap <silent>
 <leader>f :SomeCommand<CR>`).
 
->
+>lua
     -- Function signature
     require('legendary.toolbox').table_from_vimscript(vimscript_str, description)
     -- For example
