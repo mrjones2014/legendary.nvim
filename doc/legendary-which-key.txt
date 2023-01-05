@@ -1,7 +1,7 @@
-*legendary-which-key.txt*                         Last change: 2023 January 04
+*legendary-which-key.txt*                         Last change: 2023 January 05
 
 ==============================================================================
-`WHICH-KEY.NVIM` INTEGRATION          *legendary-`which-key.nvim`-integration*
+`WHICH-KEY.NVIM` INTEGRATION*legendary-which-key-`which-key.nvim`-integration*
 
 
 Already a `which-key.nvim` user? Use your existing `which-key.nvim` tables

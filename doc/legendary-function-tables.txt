@@ -1,7 +1,7 @@
-*legendary-function-tables.txt*                   Last change: 2023 January 04
+*legendary-function-tables.txt*                   Last change: 2023 January 05
 
 ==============================================================================
-FUNCTIONS                                                *legendary-functions*
+FUNCTIONS                                *legendary-function-tables-functions*
 
 
 Functions follow a similar structure as anonymous commands <./COMMANDS.md>,

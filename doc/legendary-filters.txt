@@ -1,7 +1,7 @@
-*legendary-filters.txt*                           Last change: 2023 January 04
+*legendary-filters.txt*                           Last change: 2023 January 05
 
 ==============================================================================
-BUILT-IN FILTERS                                  *legendary-built-in-filters*
+BUILT-IN FILTERS                          *legendary-filters-built-in-filters*
 
 
 The `require('legendary.filters')` module provides the following filters for
