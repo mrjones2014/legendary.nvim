@@ -1,4 +1,4 @@
-*legendary-filters.txt*                           Last change: 2023 January 04
+*legendary-filters.txt*                           Last change: 2023 January 05
 
 ==============================================================================
 BUILT-IN FILTERS                                  *legendary-built-in-filters*

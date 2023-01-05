@@ -1,4 +1,4 @@
-*legendary-lua-api.txt*                           Last change: 2023 January 04
+*legendary-lua-api.txt*                           Last change: 2023 January 05
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*

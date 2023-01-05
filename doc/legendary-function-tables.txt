@@ -1,4 +1,4 @@
-*legendary-function-tables.txt*                   Last change: 2023 January 04
+*legendary-function-tables.txt*                   Last change: 2023 January 05
 
 ==============================================================================
 FUNCTIONS                                                *legendary-functions*

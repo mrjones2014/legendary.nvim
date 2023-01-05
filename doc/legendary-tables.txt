@@ -1,4 +1,4 @@
-*legendary-tables.txt*                            Last change: 2023 January 04
+*legendary-tables.txt*                            Last change: 2023 January 05
 
 ==============================================================================
 TABLE STRUCTURES                                  *legendary-table-structures*
