@@ -1,7 +1,7 @@
-*legendary-autocmd-tables.txt*                    Last change: 2023 January 04
+*legendary-autocmd-tables.txt*                    Last change: 2023 January 05
 
 ==============================================================================
-AUGROUPS AND AUTOCMDS                        *legendary-augroups-and-autocmds*
+AUGROUPS AND AUTOCMDS         *legendary-autocmd-tables-augroups-and-autocmds*
 
 
 `augroup` tables are very simple. They have a `name` property, and a `clear`

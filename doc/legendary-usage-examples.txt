@@ -1,22 +1,22 @@
-*legendary-usage-examples.txt*                    Last change: 2023 January 04
+*legendary-usage-examples.txt*                    Last change: 2023 January 05
 
 ==============================================================================
-Table of Contents                                *legendary-table-of-contents*
+Table of Contents                 *legendary-usage-examples-table-of-contents*
 
-Filter items by current mode ........ |legendary-filter-items-by-current-mode|
-Filter items by normal mode .......... |legendary-filter-items-by-normal-mode|
-Filter to only keymaps and by current mode  |legendary-filter-to-only-keymaps-and-by-current-mode|
-Customize select prompt title ...... |legendary-customize-select-prompt-title|
-Filter keymaps by normal mode and that start with `<leader>`  |legendary-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`|
-Filter keymaps by current mode, and only display current mode in first column  |legendary-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column|
+Filter items by current mode  |legendary-usage-examples-filter-items-by-current-mode|
+Filter items by normal mode  |legendary-usage-examples-filter-items-by-normal-mode|
+Filter to only keymaps and by current mode  |legendary-usage-examples-filter-to-only-keymaps-and-by-current-mode|
+Customize select prompt title  |legendary-usage-examples-customize-select-prompt-title|
+Filter keymaps by normal mode and that start with `<leader>`  |legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`|
+Filter keymaps by current mode, and only display current mode in first column  |legendary-usage-examples-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column|
 
 ==============================================================================
-USAGE EXAMPLES                                      *legendary-usage-examples*
+USAGE EXAMPLES                       *legendary-usage-examples-usage-examples*
 
 
 
 ------------------------------------------------------------------------------
-FILTER ITEMS BY CURRENT MODE          *legendary-filter-items-by-current-mode*
+FILTER ITEMS BY CURRENT MODE*legendary-usage-examples-filter-items-by-current-mode*
 
 
 >lua
@@ -24,7 +24,7 @@ FILTER ITEMS BY CURRENT MODE          *legendary-filter-items-by-current-mode*
 <
 
 ------------------------------------------------------------------------------
-FILTER ITEMS BY NORMAL MODE            *legendary-filter-items-by-normal-mode*
+FILTER ITEMS BY NORMAL MODE*legendary-usage-examples-filter-items-by-normal-mode*
 
 
 >lua
@@ -32,7 +32,7 @@ FILTER ITEMS BY NORMAL MODE            *legendary-filter-items-by-normal-mode*
 <
 
 ------------------------------------------------------------------------------
-FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary-filter-to-only-keymaps-and-by-current-mode*
+FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary-usage-examples-filter-to-only-keymaps-and-by-current-mode*
 
 
 >lua
@@ -45,7 +45,7 @@ FILTER TO ONLY KEYMAPS AND BY CURRENT MODE*legendary-filter-to-only-keymaps-and-
 <
 
 ------------------------------------------------------------------------------
-CUSTOMIZE SELECT PROMPT TITLE        *legendary-customize-select-prompt-title*
+CUSTOMIZE SELECT PROMPT TITLE*legendary-usage-examples-customize-select-prompt-title*
 
 
 >lua
@@ -60,7 +60,7 @@ CUSTOMIZE SELECT PROMPT TITLE        *legendary-customize-select-prompt-title*
 <
 
 ------------------------------------------------------------------------------
-FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
+FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
 
 
 >lua
@@ -75,7 +75,7 @@ FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-filter-ke
 <
 
 ------------------------------------------------------------------------------
-FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*legendary-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column*
+FILTER KEYMAPS BY CURRENT MODE, AND ONLY DISPLAY CURRENT MODE IN FIRST COLUMN*legendary-usage-examples-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column*
 
 
 >lua

@@ -1,7 +1,7 @@
-*legendary-command-tables.txt*                    Last change: 2023 January 04
+*legendary-command-tables.txt*                    Last change: 2023 January 05
 
 ==============================================================================
-COMMANDS                                                  *legendary-commands*
+COMMANDS                                   *legendary-command-tables-commands*
 
 
 Command tables follow the exact same structure as keymaps <./KEYMAPS.md>, but

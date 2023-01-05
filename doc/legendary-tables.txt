@@ -1,7 +1,7 @@
-*legendary-tables.txt*                            Last change: 2023 January 04
+*legendary-tables.txt*                            Last change: 2023 January 05
 
 ==============================================================================
-TABLE STRUCTURES                                  *legendary-table-structures*
+TABLE STRUCTURES                           *legendary-tables-table-structures*
 
 
 The tables for keymaps, commands, and `augroup`/`autocmd`s are all similar.

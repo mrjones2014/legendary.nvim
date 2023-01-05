@@ -1,13 +1,13 @@
-*legendary-lua-api.txt*                           Last change: 2023 January 04
+*legendary-lua-api.txt*                           Last change: 2023 January 05
 
 ==============================================================================
-Table of Contents                                *legendary-table-of-contents*
+Table of Contents                        *legendary-lua-api-table-of-contents*
 
-Binding Keymaps, Commands, Autocmds, and Functions  |legendary-binding-keymaps,-commands,-autocmds,-and-functions|
-Converting Keymaps From Vimscript  |legendary-converting-keymaps-from-vimscript|
+Binding Keymaps, Commands, Autocmds, and Functions  |legendary-lua-api-binding-keymaps,-commands,-autocmds,-and-functions|
+Converting Keymaps From Vimscript  |legendary-lua-api-converting-keymaps-from-vimscript|
 
 ==============================================================================
-LUA API                                                    *legendary-lua-api*
+LUA API                                            *legendary-lua-api-lua-api*
 
 
 You can also manually bind new items after you've already called
@@ -19,7 +19,7 @@ The main API functions are described below. To see full API documentation, run
 
 
 ------------------------------------------------------------------------------
-BINDING KEYMAPS, COMMANDS, AUTOCMDS, AND FUNCTIONS*legendary-binding-keymaps,-commands,-autocmds,-and-functions*
+BINDING KEYMAPS, COMMANDS, AUTOCMDS, AND FUNCTIONS*legendary-lua-api-binding-keymaps,-commands,-autocmds,-and-functions*
 
 
 >lua
@@ -120,7 +120,7 @@ BINDING KEYMAPS, COMMANDS, AUTOCMDS, AND FUNCTIONS*legendary-binding-keymaps,-co
 <
 
 ------------------------------------------------------------------------------
-CONVERTING KEYMAPS FROM VIMSCRIPT*legendary-converting-keymaps-from-vimscript*
+CONVERTING KEYMAPS FROM VIMSCRIPT*legendary-lua-api-converting-keymaps-from-vimscript*
 
 
 Keymaps can be parsed from Vimscript commands (e.g. `vnoremap <silent>
