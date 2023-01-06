@@ -1,5 +1,4 @@
 legendary	legendary-api.txt	/*legendary*
-legendary-`legendary.nvim`	legendary.txt	/*legendary-`legendary.nvim`*
 legendary-autocmd-tables-augroups-and-autocmds	legendary-autocmd-tables.txt	/*legendary-autocmd-tables-augroups-and-autocmds*
 legendary-autocmd-tables.txt	legendary-autocmd-tables.txt	/*legendary-autocmd-tables.txt*
 legendary-command-tables-commands	legendary-command-tables.txt	/*legendary-command-tables-commands*
@@ -13,17 +12,18 @@ legendary-function-tables.txt	legendary-function-tables.txt	/*legendary-function
 legendary-installation	legendary.txt	/*legendary-installation*
 legendary-keymap-tables-keymaps	legendary-keymap-tables.txt	/*legendary-keymap-tables-keymaps*
 legendary-keymap-tables.txt	legendary-keymap-tables.txt	/*legendary-keymap-tables.txt*
+legendary-legendary.nvim	legendary.txt	/*legendary-legendary.nvim*
 legendary-lua-api-lua-api	legendary-lua-api.txt	/*legendary-lua-api-lua-api*
 legendary-lua-api-table-of-contents	legendary-lua-api.txt	/*legendary-lua-api-table-of-contents*
 legendary-lua-api.txt	legendary-lua-api.txt	/*legendary-lua-api.txt*
-legendary-mapping-development-`lazy_required_fn`	legendary-mapping-development.txt	/*legendary-mapping-development-`lazy_required_fn`*
-legendary-mapping-development-`lazy`	legendary-mapping-development.txt	/*legendary-mapping-development-`lazy`*
-legendary-mapping-development-`split_then`	legendary-mapping-development.txt	/*legendary-mapping-development-`split_then`*
-legendary-mapping-development-`vsplit_then`	legendary-mapping-development.txt	/*legendary-mapping-development-`vsplit_then`*
 legendary-mapping-development-composition	legendary-mapping-development.txt	/*legendary-mapping-development-composition*
+legendary-mapping-development-lazy	legendary-mapping-development.txt	/*legendary-mapping-development-lazy*
+legendary-mapping-development-lazy_required_fn	legendary-mapping-development.txt	/*legendary-mapping-development-lazy_required_fn*
 legendary-mapping-development-lua-toolbox	legendary-mapping-development.txt	/*legendary-mapping-development-lua-toolbox*
+legendary-mapping-development-split_then	legendary-mapping-development.txt	/*legendary-mapping-development-split_then*
 legendary-mapping-development-table-of-contents	legendary-mapping-development.txt	/*legendary-mapping-development-table-of-contents*
 legendary-mapping-development-utility-commands	legendary-mapping-development.txt	/*legendary-mapping-development-utility-commands*
+legendary-mapping-development-vsplit_then	legendary-mapping-development.txt	/*legendary-mapping-development-vsplit_then*
 legendary-mapping-development.txt	legendary-mapping-development.txt	/*legendary-mapping-development.txt*
 legendary-prerequisites	legendary.txt	/*legendary-prerequisites*
 legendary-quickstart	legendary.txt	/*legendary-quickstart*
@@ -33,6 +33,7 @@ legendary-tables.txt	legendary-tables.txt	/*legendary-tables.txt*
 legendary-usage-examples-table-of-contents	legendary-usage-examples.txt	/*legendary-usage-examples-table-of-contents*
 legendary-usage-examples-usage-examples	legendary-usage-examples.txt	/*legendary-usage-examples-usage-examples*
 legendary-usage-examples.txt	legendary-usage-examples.txt	/*legendary-usage-examples.txt*
+legendary-which-key-which-key.nvim`-integration	legendary-which-key.txt	/*legendary-which-key-which-key.nvim`-integration*
 legendary-which-key.txt	legendary-which-key.txt	/*legendary-which-key.txt*
 legendary.autocmd	legendary-api.txt	/*legendary.autocmd*
 legendary.autocmds	legendary-api.txt	/*legendary.autocmds*

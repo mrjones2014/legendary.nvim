@@ -1,4 +1,4 @@
-*legendary-command-tables.txt*                    Last change: 2023 January 05
+*legendary-command-tables.txt*                   Last change: 2022 December 19
 
 ==============================================================================
 COMMANDS                                   *legendary-command-tables-commands*
