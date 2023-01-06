@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup 'lua'
       uses: leafo/gh-actions-lua@v8
       with:
@@ -33,12 +33,12 @@ jobs:
         neovim: true
         version: nightly
     - name: Checkout Plenary
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: nvim-lua/plenary.nvim
         path: vendor/plenary.nvim
     - name: Checkout Luassert
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: Olivine-Labs/luassert
         path: vendor/luassert
