@@ -1,15 +1,15 @@
-*legendary-mapping-development.txt*               Last change: 2023 January 05
+*legendary-mapping-development.txt*               Last change: 2023 January 06
 
 ==============================================================================
 Table of Contents            *legendary-mapping-development-table-of-contents*
 
 Utility Commands ............ |legendary-mapping-development-utility-commands|
 Lua Toolbox ...................... |legendary-mapping-development-lua-toolbox|
-`lazy` ................................ |legendary-mapping-development-`lazy`|
-`lazy_required_fn` ........ |legendary-mapping-development-`lazy_required_fn`|
-`split_then` .................... |legendary-mapping-development-`split_then`|
-`vsplit_then` .................. |legendary-mapping-development-`vsplit_then`|
-`is_visual_mode` and `get_marks`  |legendary-mapping-development-`is_visual_mode`-and-`get_marks`|
+`lazy` .................................. |legendary-mapping-development-lazy|
+`lazy_required_fn` .......... |legendary-mapping-development-lazy_required_fn|
+`split_then` ...................... |legendary-mapping-development-split_then|
+`vsplit_then` .................... |legendary-mapping-development-vsplit_then|
+`is_visual_mode` and `get_marks`  |legendary-mapping-development-is_visual_mode`-and-`get_marks|
 
 ==============================================================================
 MAPPING DEVELOPMENT UTILITIES*legendary-mapping-development-mapping-development-utilities*
@@ -49,7 +49,7 @@ lazily-evaluated keymaps.
 
 
                                                                               
-`LAZY`                                  *legendary-mapping-development-`lazy`*
+`LAZY`                                    *legendary-mapping-development-lazy*
 
 Returns a function that references another function with static arguments
 passed.
@@ -66,7 +66,7 @@ passed.
 <
 
                                                                               
-`LAZY_REQUIRED_FN`          *legendary-mapping-development-`lazy_required_fn`*
+`LAZY_REQUIRED_FN`            *legendary-mapping-development-lazy_required_fn*
 
 Returns a function that lazily references a function in another plugin or Lua
 module. It is able to access functions nested in the module table using
@@ -114,7 +114,7 @@ dot-notation. This helper can also handle passing static arguments.
 <
 
                                                                               
-`SPLIT_THEN`                      *legendary-mapping-development-`split_then`*
+`SPLIT_THEN`                        *legendary-mapping-development-split_then*
 
 Returns a function that creates a new split, then calls the passed function.
 
@@ -131,7 +131,7 @@ Returns a function that creates a new split, then calls the passed function.
 <
 
                                                                               
-`VSPLIT_THEN`                    *legendary-mapping-development-`vsplit_then`*
+`VSPLIT_THEN`                      *legendary-mapping-development-vsplit_then*
 
 Returns a function that creates a new vertical split, then calls the passed
 function.
@@ -149,7 +149,7 @@ function.
 <
 
                                                                               
-`IS_VISUAL_MODE` AND `GET_MARKS`*legendary-mapping-development-`is_visual_mode`-and-`get_marks`*
+`IS_VISUAL_MODE` AND `GET_MARKS`*legendary-mapping-development-is_visual_mode`-and-`get_marks*
 
 `is_visual_mode` can determine if the current mode is visual or any sub-mode
 of visual mode, and `get_marks` can be used to get the marks denoting the

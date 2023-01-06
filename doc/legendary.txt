@@ -1,4 +1,4 @@
-*legendary.txt*                                   Last change: 2023 January 05
+*legendary.txt*                                  Last change: 2022 December 22
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -10,7 +10,7 @@ Quickstart ............................................ |legendary-quickstart|
 Configuration ...................................... |legendary-configuration|
 
 ==============================================================================
-`LEGENDARY.NVIM`                                  *legendary-`legendary.nvim`*
+`LEGENDARY.NVIM`                                    *legendary-legendary.nvim*
 
 
 Features <#features> | Prerequisites <#prerequisites> | Installation

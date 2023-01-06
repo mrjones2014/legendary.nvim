@@ -1,4 +1,4 @@
-*legendary-keymap-tables.txt*                     Last change: 2023 January 05
+*legendary-keymap-tables.txt*                     Last change: 2023 January 06
 
 ==============================================================================
 KEYMAPS                                      *legendary-keymap-tables-keymaps*

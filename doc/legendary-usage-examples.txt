@@ -1,4 +1,4 @@
-*legendary-usage-examples.txt*                    Last change: 2023 January 05
+*legendary-usage-examples.txt*                    Last change: 2023 January 06
 
 ==============================================================================
 Table of Contents                 *legendary-usage-examples-table-of-contents*
@@ -7,7 +7,7 @@ Filter items by current mode  |legendary-usage-examples-filter-items-by-current-
 Filter items by normal mode  |legendary-usage-examples-filter-items-by-normal-mode|
 Filter to only keymaps and by current mode  |legendary-usage-examples-filter-to-only-keymaps-and-by-current-mode|
 Customize select prompt title  |legendary-usage-examples-customize-select-prompt-title|
-Filter keymaps by normal mode and that start with `<leader>`  |legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`|
+Filter keymaps by normal mode and that start with `<leader>`  |legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>|
 Filter keymaps by current mode, and only display current mode in first column  |legendary-usage-examples-filter-keymaps-by-current-mode,-and-only-display-current-mode-in-first-column|
 
 ==============================================================================
@@ -60,7 +60,7 @@ CUSTOMIZE SELECT PROMPT TITLE*legendary-usage-examples-customize-select-prompt-t
 <
 
 ------------------------------------------------------------------------------
-FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>`*
+FILTER KEYMAPS BY NORMAL MODE AND THAT START WITH `<LEADER>`*legendary-usage-examples-filter-keymaps-by-normal-mode-and-that-start-with-`<leader>*
 
 
 >lua
