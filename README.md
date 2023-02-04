@@ -63,7 +63,7 @@ With `packer.nvim`:
 -- to use a version
 use({
   'mrjones2014/legendary.nvim',
-  tag = 'v2.1.0',
+  tag = 'v2.6.0',
   -- sqlite is only needed if you want to use frecency sorting
   -- requires = 'kkharji/sqlite.lua'
 })
@@ -82,7 +82,7 @@ With `vim-plug`:
 Plug "kkharji/sqlite.lua"
 
 " to use a version
-Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.1.0' }
+Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.6.0' }
 " or, to get rolling updates
 Plug "mrjones2014/legendary.nvim"
 ```
