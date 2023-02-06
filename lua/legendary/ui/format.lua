@@ -17,13 +17,13 @@ end
 function M.default_format(item)
   if Toolbox.is_keymap(item) then
     return {
-      table.concat(item:modes(), ', '),
+      Config.icons.keymap or table.concat(item:modes(), ', '),
       item.keys,
       item.description,
     }
   elseif Toolbox.is_command(item) then
     return {
-      '',
+      Config.icons.command,
       item.cmd,
       item.description,
     }
@@ -35,13 +35,13 @@ function M.default_format(item)
     }
   elseif Toolbox.is_function(item) then
     return {
-      '',
+      Config.icons.fn,
       '<function>',
       item.description,
     }
   elseif Toolbox.is_itemgroup(item) then
     return {
-      item.icon or '',
+      item.icon or Config.icons.itemgroup,
       item.name,
       item.description or 'Expand to select an item...',
     }

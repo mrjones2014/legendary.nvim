@@ -33,6 +33,13 @@ local config = {
   -- See function `default_format(item)` in
   -- `lua/legendary/ui/format.lua` to see default implementation.
   default_item_formatter = nil,
+  -- Icons that by defualt are shown when using the default formatter
+  icons = {
+    keymap = nil,
+    command = '',
+    fn = '',
+    itemgroup = '',
+  },
   -- Include builtins by default, set to false to disable
   include_builtin = true,
   -- Include the commands that legendary.nvim creates itself
