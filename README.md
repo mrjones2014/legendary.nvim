@@ -260,6 +260,16 @@ require('legendary').setup({
   -- See function `default_format(item)` in
   -- `lua/legendary/ui/format.lua` to see default implementation.
   default_item_formatter = nil,
+  -- Customize icons used by the default item formatter
+  icons = {
+    -- keymap items list the modes in which the keymap applies
+    -- by default, you can show an icon instead by setting this to
+    -- a non-nil icon
+    keymap = nil,
+    command = '',
+    fn = '',
+    itemgroup = '',
+  },
   -- Include builtins by default, set to false to disable
   include_builtin = true,
   -- Include the commands that legendary.nvim creates itself
