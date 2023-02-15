@@ -82,7 +82,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
   local wk_groups = {}
   vim.tbl_map(function(maybe_group)
     if maybe_group.group == true and maybe_group.name then
-      wk_groups[maybe_group.prefix] = { maybe_group.name, maybe_group.label }
+      wk_groups[maybe_group.prefix or maybe_group.name] = { maybe_group.name, maybe_group.label }
     end
   end, wk_parsed)
   vim.tbl_map(function(wk)
