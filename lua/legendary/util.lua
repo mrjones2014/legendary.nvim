@@ -64,4 +64,34 @@ function M.exec_feedkeys(keys)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 't', true)
 end
 
+---Run the given function, timing it's duration and logging the performance
+---in milliseconds with the given message. The format string may contain a single `%`
+---character, which will be replaced with the duration in milliseconds.
+---@generic T
+---@param fn function the function to measure performance for
+---@param message string the format string to log the performance duration with
+---@returns T the result of the given function
+function M.log_performance(fn, message)
+  local now = vim.loop.hrtime()
+  local result = fn()
+  require('legendary.log').debug(message, (vim.loop.hrtime() - now) / 1000000)
+  return result
+end
+
+function M.eq_or_list_contains(needle, haystack)
+  if type(needle) == type(haystack) then
+    return needle == haystack
+  end
+
+  if type(haystack) == 'table' then
+    for _, value in ipairs(haystack) do
+      if value == needle then
+        return true
+      end
+    end
+  end
+
+  return false
+end
+
 return M

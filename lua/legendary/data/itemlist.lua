@@ -66,27 +66,31 @@ function ItemList:add(items)
   end
 end
 
----@alias LegendaryItemFilter fun(item:LegendaryItem):boolean
+---@alias LegendaryItemFilter fun(item:LegendaryItem, context: LegendaryEditorContext):boolean
 
 ---Filter the ItemList. Returns a *new* ItemList,
 ---self remains immutable.
 ---@param filters LegendaryItemFilter|LegendaryItemFilter[]
+---@param context LegendaryEditorContext
 ---@return LegendaryItem[]
-function ItemList:filter(filters)
+function ItemList:filter(filters, context)
   -- wrap in list to make following code more succinct
   if type(filters) ~= 'table' then
     filters = { filters }
   end
 
-  if #filters == 0 then
-    return self.items
-  end
+  return util.log_performance(function()
+    return vim.tbl_filter(function(item)
+      local all_filters = filters
+      if item.filters then
+        all_filters = vim.list_extend(all_filters, item.filters)
+      end
 
-  return vim.tbl_filter(function(item)
-    return util.tbl_all(filters, function(filter)
-      return filter(item)
-    end)
-  end, self.items)
+      return util.tbl_all(all_filters, function(filter)
+        return filter(item, context)
+      end)
+    end, self.items)
+  end, 'Took %s ms to filter items in context.')
 end
 
 ---Sort the list *IN PLACE* according to config.

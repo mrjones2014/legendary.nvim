@@ -39,9 +39,9 @@ end
 ---@return LegendaryItemFilter
 function M.AND(...)
   local filters = { ... }
-  return function(item)
+  return function(item, context)
     for _, filter in ipairs(filters) do
-      if not filter(item) then
+      if not filter(item, context) then
         return false
       end
     end
@@ -55,9 +55,9 @@ end
 ---@return LegendaryItemFilter
 function M.OR(...)
   local filters = { ... }
-  return function(item)
+  return function(item, context)
     for _, filter in ipairs(filters) do
-      if filter(item) then
+      if filter(item, context) then
         return true
       end
     end
