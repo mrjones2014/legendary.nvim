@@ -1,4 +1,4 @@
-*legendary-autocmd-tables.txt*                   Last change: 2022 December 07
+*legendary-autocmd-tables.txt*                      Last change: 2023 March 10
 
 ==============================================================================
 AUGROUPS AND AUTOCMDS         *legendary-autocmd-tables-augroups-and-autocmds*
@@ -15,7 +15,7 @@ automatically be defined in the `augroup`.
         name = 'MyAugroupName',
         clear = true,
         -- you autocmd tables here
-      }
+      },
     }
 <
 `autocmd` tables have an event or list of events, and a handler as the first
@@ -82,7 +82,7 @@ An example putting both together:
           group = 'filetypedetect',
           pattern = { '*.jsonc', 'tsconfig*.json' },
         },
-      }
+      },
     }
 <
 
