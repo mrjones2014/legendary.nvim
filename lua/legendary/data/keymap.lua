@@ -24,8 +24,65 @@ local Config = require('legendary.config')
 ---@field hide boolean
 ---@field opts table
 ---@field builtin boolean
+---@field filters table|nil
 ---@field class Keymap
 local Keymap = class('Keymap')
+
+local function buftype_filter(value)
+  return function(_, context)
+    print('!!!!!!', vim.inspect(context))
+    if type(value) == 'string' then
+      return context.buftype == value
+    else
+      for _, value_inner in ipairs(value) do
+        if context.buftype ~= value_inner then
+          return false
+        end
+      end
+      return true
+    end
+  end
+end
+
+local function filetype_filter(value)
+  return function(_, context)
+    if type(value) == 'string' then
+      return context.filetype == value
+    else
+      for _, value_inner in ipairs(value) do
+        if context.filetype ~= value_inner then
+          return false
+        end
+      end
+      return true
+    end
+  end
+end
+
+local function parse_filters(filters)
+  if not filters then
+    return nil
+  end
+
+  local result = {}
+
+  for key, value in pairs(filters) do
+    -- check special keys
+    if key == 'buftype' then
+      table.insert(result, buftype_filter(value))
+    end
+    if key == 'filetype' then
+      table.insert(result, filetype_filter(value))
+    end
+
+    -- then list items
+    if type(key) == 'number' and type(value) == 'function' then
+      table.insert(result, value)
+    end
+  end
+
+  return result
+end
 
 ---Parse a new keymap table
 ---@param tbl table
@@ -40,6 +97,7 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
     opts = { tbl.opts, { 'table' }, true },
     hide = { tbl.hide, { 'boolean' }, true },
     description = { util.get_desc(tbl), { 'string' }, true },
+    filters = { tbl.filters, { 'table' }, true },
   })
 
   if type(tbl[2]) == 'table' then
@@ -63,6 +121,7 @@ function Keymap:parse(tbl, builtin) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
   instance.builtin = builtin or false
+  instance.filters = parse_filters(tbl.filters)
 
   instance.mode_mappings = {}
   if tbl[2] == nil then

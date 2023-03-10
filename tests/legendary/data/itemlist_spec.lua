@@ -3,6 +3,7 @@ local Toolbox = require('legendary.toolbox')
 local ItemList = require('legendary.data.itemlist')
 local Keymap = require('legendary.data.keymap')
 local Command = require('legendary.data.command')
+local Executor = require('legendary.api.executor')
 
 describe('ItemList', function()
   describe('add', function()
@@ -42,7 +43,7 @@ describe('ItemList', function()
       local command = Command:parse({ ':MyCommand', function() end, description = 'test cmd' })
       local list = ItemList:create()
       list:add({ keymap, command })
-      local filtered = list:filter(Toolbox.is_keymap)
+      local filtered = list:filter(Toolbox.is_keymap, {})
       assert.are.same(#filtered, 1)
       assert.are.same(filtered[1], keymap)
     end)
@@ -58,7 +59,83 @@ describe('ItemList', function()
         function(item)
           return item.description == keymap.description
         end,
+      }, {})
+      assert.are.same(#filtered, 1)
+      assert.are.same(filtered[1], keymap)
+    end)
+
+    it('filters by filetype with a context', function()
+      local buf = vim.api.nvim_list_bufs()[1]
+      local keymap = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test',
+        filters = { filetype = vim.api.nvim_buf_get_option(buf, 'filetype') },
       })
+      local keymap2 = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test 2',
+        filters = { filetype = { 'test2', 'test3' } },
+      })
+      local list = ItemList:create()
+      list:add({ keymap, keymap2 })
+      local context = Executor.build_context(buf)
+      local filtered = list:filter({}, context)
+      assert.are.same(#filtered, 1)
+      assert.are.same(filtered[1], keymap)
+    end)
+
+    it('filters by buftype with a context', function()
+      local buf = vim.api.nvim_list_bufs()[1]
+      vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
+      local keymap = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test',
+        filters = { buftype = 'nofile' },
+      })
+      print('!!!!!!!!!!', vim.api.nvim_buf_get_option(buf, 'buftype'))
+      local keymap2 = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test 2',
+        filters = { buftype = { 'test', 'test2' } },
+      })
+      local list = ItemList:create()
+      list:add({ keymap, keymap2 })
+      local context = Executor.build_context(buf)
+      local filtered = list:filter({}, context)
+      assert.are.same(#filtered, 1)
+      assert.are.same(filtered[1], keymap)
+    end)
+
+    it('filters with custom functions with a context', function()
+      local buf = vim.api.nvim_list_bufs()[1]
+      local keymap = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test',
+        filters = {
+          function(_, context)
+            return context.buf == buf
+          end,
+        },
+      })
+      local keymap2 = Keymap:parse({
+        '<leader><leader>',
+        function() end,
+        description = 'test 2',
+        filters = {
+          function(_, _)
+            return false
+          end,
+        },
+      })
+      local list = ItemList:create()
+      list:add({ keymap, keymap2 })
+      local context = Executor.build_context(buf)
+      local filtered = list:filter({}, context)
       assert.are.same(#filtered, 1)
       assert.are.same(filtered[1], keymap)
     end)

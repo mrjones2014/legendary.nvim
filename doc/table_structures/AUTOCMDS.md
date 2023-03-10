@@ -10,7 +10,7 @@ local augroups = {
     name = 'MyAugroupName',
     clear = true,
     -- you autocmd tables here
-  }
+  },
 }
 ```
 
@@ -78,6 +78,6 @@ local augroups = {
       group = 'filetypedetect',
       pattern = { '*.jsonc', 'tsconfig*.json' },
     },
-  }
+  },
 }
 ```

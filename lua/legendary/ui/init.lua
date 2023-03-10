@@ -31,8 +31,9 @@ local M = {}
 
 ---@param opts LegendaryFindOpts
 ---@param itemlist ItemList
----@overload fun(opts:LegendaryFindOpts)
-local function select_inner(opts, itemlist)
+---@param context LegendaryEditorContext
+---@overload fun(opts:LegendaryFindOpts,context:LegendaryEditorContext)
+local function select_inner(opts, context, itemlist)
   if itemlist then
     Log.trace('Relaunching select UI for an item group')
   else
@@ -47,20 +48,25 @@ local function select_inner(opts, itemlist)
     prompt = prompt()
   end
 
-  local context = Executor.build_pre_context()
-
   -- Apply sorting if needed. Note, the internal
   -- implementation of `sort_inplace` checks if
   -- sorting is actually needed and does nothing
   -- if it does not need to be sorted.
   itemlist:sort_inplace()
 
-  -- in addition to user filters, we also need to filter by buf
-  local items = vim.tbl_filter(function(item)
-    local item_buf = vim.tbl_get(item, 'opts', 'buffer')
-    return item_buf == nil or item_buf == context.buf
-  end, itemlist:filter(opts.filters or {}))
+  local filters = opts.filters or {}
+  if type(filters) ~= 'table' then
+    ---@diagnostic disable-next-line
+    filters = { filters }
+  end
 
+  -- in addition to user filters, we also need to filter by buf
+  table.insert(filters, 1, function(item, local_context)
+    local item_buf = vim.tbl_get(item, 'opts', 'buffer')
+    return item_buf == nil or item_buf == local_context.buf
+  end)
+
+  local items = itemlist:filter(filters, context)
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 
   vim.ui.select(items, {
@@ -81,7 +87,7 @@ local function select_inner(opts, itemlist)
 
     State.most_recent_item = selected
     if Toolbox.is_itemgroup(selected) then
-      return select_inner(opts, selected.items)
+      return select_inner(opts, context, selected.items)
     end
 
     Log.trace('Preparing to execute selected item')
@@ -92,7 +98,8 @@ end
 ---Select an item
 ---@param opts LegendaryFindOpts
 function M.select(opts)
-  select_inner(opts)
+  local context = Executor.build_context()
+  select_inner(opts, context)
 end
 
 return M

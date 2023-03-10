@@ -1,5 +1,7 @@
 # Commands
 
+## Basic commands
+
 Command tables follow the exact same structure as [keymaps](./KEYMAPS.md), but specify
 a command name instead of a key sequence.
 
@@ -11,6 +13,8 @@ local commands = {
   { ':CommentToggle', description = 'Toggle comment' },
 }
 ```
+
+## Hiding commands from the UI
 
 If you want to include a description but not hide it from the finder UI, you can set `hide = true`:
 
@@ -25,6 +29,8 @@ local commands = {
   },
 }
 ```
+
+## Per-mode command implementations
 
 You can also create per-mode implementations, like per-mode keymappings, but since they are all bound
 to the same command, per-mode implementations for commands may only be a `function` or a `string` (not a `table`),
@@ -57,6 +63,8 @@ local commands = {
 }
 ```
 
+## Specifying command options
+
 You can also pass options to the command via the `opts` property, see `:h nvim_create_user_command` to
 see available options. In addition to those options, `legendary.nvim` adds handling for an additional
 `buffer` option (a buffer handle, or `0` for current buffer), which will cause the command to be bound
@@ -73,6 +81,8 @@ local commands = {
   },
 }
 ```
+
+## Incomplete commands
 
 If you need a command to take an argument, specify `unfinished = true` to pre-fill the command line instead
 of executing the command on selected. You can put an argument name/hint in `[]` or `{}` that will be stripped
@@ -98,6 +108,8 @@ local commands = {
   },
 }
 ```
+
+## Item groups
 
 You can also organize keymaps, commands, and functions into groups that will show up
 in the finder UI like a folder, selecting it will then trigger another finder for items
