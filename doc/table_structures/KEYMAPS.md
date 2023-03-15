@@ -167,7 +167,7 @@ local keymaps = {
 }
 ```
 
-## Special filters
+## In-place special filters
 
 Sometimes, you need to add special filters to keymaps. One example where this is useful is when other plugins create
 keymaps that are only active in buffers managed by that plugin (e.g. `nvim-tree.lua` keymaps are only active in the
