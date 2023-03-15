@@ -204,7 +204,8 @@ The `require('legend').find()` function takes an `opts` table with the following
 ```lua
 {
   -- pass a list of filter functions or a single filter function with
-  -- the signature `function(item): boolean`
+  -- the signature `function(item, context): boolean`
+  -- (see below for `context` definition)
   -- several filter functions are provided for convenience
   -- see ./doc/FILTERS.md for a list
   filters = {},
@@ -215,6 +216,19 @@ The `require('legend').find()` function takes an `opts` table with the following
   -- pass a string, or a function that returns a string
   -- to customize the select prompt for the current call
   select_prompt = nil,
+}
+```
+
+The `context` table passed to filters contains the following properties:
+
+```lua
+{
+  buf = number, -- buffer ID
+  buftype = string,
+  filetype = string,
+  mode = string, -- the mode that the UI was triggered from
+  cursor_pos = table, -- { row, col }
+  marks = table, -- visual mode marks, if applicable; { line, col, line, col }
 }
 ```
 

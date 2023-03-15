@@ -6,6 +6,8 @@ local M = {}
 
 ---@class LegendaryEditorContext
 ---@field buf integer
+---@field buftype string
+---@field filetype string
 ---@field mode string
 ---@field cursor_pos integer[] { row, col }
 ---@field marks integer[]|nil
@@ -13,10 +15,15 @@ local M = {}
 ---Build a context object containing information about the editor
 ---state *before* triggering the finder so that it can be
 ---restored before executing the item.
+---@param buf number buffer ID to build context for, used only for testing
+---@overload fun():LegendaryEditorContext
 ---@return table
-function M.build_pre_context()
+function M.build_context(buf)
+  buf = buf or vim.api.nvim_get_current_buf()
   return {
-    buf = vim.api.nvim_get_current_buf(),
+    buf = buf,
+    buftype = vim.api.nvim_buf_get_option(buf, 'buftype') or '',
+    filetype = vim.api.nvim_buf_get_option(buf, 'filetype') or '',
     mode = vim.fn.mode(),
     cursor_pos = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win()),
     marks = Toolbox.get_marks(),
