@@ -1,7 +1,22 @@
-*legendary-command-tables.txt*                   Last change: 2022 December 19
+*legendary-command-tables.txt*                      Last change: 2023 March 10
+
+==============================================================================
+Table of Contents                 *legendary-command-tables-table-of-contents*
+
+Basic commands ..................... |legendary-command-tables-basic-commands|
+Hiding commands from the UI  |legendary-command-tables-hiding-commands-from-the-ui|
+Per-mode command implementations  |legendary-command-tables-per-mode-command-implementations|
+Specifying command options  |legendary-command-tables-specifying-command-options|
+Incomplete commands ........... |legendary-command-tables-incomplete-commands|
+Item groups ........................... |legendary-command-tables-item-groups|
 
 ==============================================================================
 COMMANDS                                   *legendary-command-tables-commands*
+
+
+
+------------------------------------------------------------------------------
+BASIC COMMANDS                       *legendary-command-tables-basic-commands*
 
 
 Command tables follow the exact same structure as keymaps <./KEYMAPS.md>, but
@@ -15,6 +30,11 @@ specify a command name instead of a key sequence.
       { ':CommentToggle', description = 'Toggle comment' },
     }
 <
+
+------------------------------------------------------------------------------
+HIDING COMMANDS FROM THE UI*legendary-command-tables-hiding-commands-from-the-ui*
+
+
 If you want to include a description but not hide it from the finder UI, you
 can set `hide = true`:
 
@@ -29,6 +49,11 @@ can set `hide = true`:
       },
     }
 <
+
+------------------------------------------------------------------------------
+PER-MODE COMMAND IMPLEMENTATIONS*legendary-command-tables-per-mode-command-implementations*
+
+
 You can also create per-mode implementations, like per-mode keymappings, but
 since they are all bound to the same command, per-mode implementations for
 commands may only be a `function` or a `string` (not a `table`), since they
@@ -60,6 +85,11 @@ cannot have separate `opts`.
       },
     }
 <
+
+------------------------------------------------------------------------------
+SPECIFYING COMMAND OPTIONS*legendary-command-tables-specifying-command-options*
+
+
 You can also pass options to the command via the `opts` property, see `:h
 nvim_create_user_command` to see available options. In addition to those
 options, `legendary.nvim` adds handling for an additional `buffer` option (a
@@ -78,6 +108,11 @@ need `legendary.nvim` to handle creating), just omit the second entry (the
       },
     }
 <
+
+------------------------------------------------------------------------------
+INCOMPLETE COMMANDS             *legendary-command-tables-incomplete-commands*
+
+
 If you need a command to take an argument, specify `unfinished = true` to
 pre-fill the command line instead of executing the command on selected. You
 can put an argument name/hint in `[]` or `{}` that will be stripped when
@@ -103,6 +138,11 @@ filling the command line.
       },
     }
 <
+
+------------------------------------------------------------------------------
+ITEM GROUPS                             *legendary-command-tables-item-groups*
+
+
 You can also organize keymaps, commands, and functions into groups that will
 show up in the finder UI like a folder, selecting it will then trigger another
 finder for items within the group. If groups are given the same name, they

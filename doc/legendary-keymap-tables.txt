@@ -1,7 +1,24 @@
-*legendary-keymap-tables.txt*                    Last change: 2022 December 07
+*legendary-keymap-tables.txt*                       Last change: 2023 March 15
+
+==============================================================================
+Table of Contents                  *legendary-keymap-tables-table-of-contents*
+
+Basic Keymaps ........................ |legendary-keymap-tables-basic-keymaps|
+Adding keymaps to UI without the implementation  |legendary-keymap-tables-adding-keymaps-to-ui-without-the-implementation|
+Hiding keymaps from the UI  |legendary-keymap-tables-hiding-keymaps-from-the-ui|
+Helper functions .................. |legendary-keymap-tables-helper-functions|
+Specifying mode .................... |legendary-keymap-tables-specifying-mode|
+Specifying keymap options  |legendary-keymap-tables-specifying-keymap-options|
+In-place special filters .. |legendary-keymap-tables-in-place-special-filters|
+Item groups ............................ |legendary-keymap-tables-item-groups|
 
 ==============================================================================
 KEYMAPS                                      *legendary-keymap-tables-keymaps*
+
+
+
+------------------------------------------------------------------------------
+BASIC KEYMAPS                          *legendary-keymap-tables-basic-keymaps*
 
 
 For keymaps you are mapping yourself (as opposed to mappings set by other
@@ -16,6 +33,11 @@ Example:
       { '<leader>fm', vim.lsp.buf.formatting_sync, description = 'Format buffer with LSP' },
     }
 <
+
+------------------------------------------------------------------------------
+ADDING KEYMAPS TO UI WITHOUT THE IMPLEMENTATION*legendary-keymap-tables-adding-keymaps-to-ui-without-the-implementation*
+
+
 For "anonymous" mappings (you want them to appear in the finder but don't want
 `legendary.nvim` to handle creating them, e.g. for plugin keymappings), just
 omit the second entry (the "implementation"):
@@ -26,6 +48,11 @@ omit the second entry (the "implementation"):
       { '<leader>fm', description = 'Format buffer with LSP' },
     }
 <
+
+------------------------------------------------------------------------------
+HIDING KEYMAPS FROM THE UI*legendary-keymap-tables-hiding-keymaps-from-the-ui*
+
+
 If you want to include a description, but do _not_ want the item to appear in
 the finder:
 
@@ -40,6 +67,11 @@ the finder:
       },
     }
 <
+
+------------------------------------------------------------------------------
+HELPER FUNCTIONS                    *legendary-keymap-tables-helper-functions*
+
+
 If you need to pass parameters to the Lua function or call a function
 dynamically from a plugin, you can use the following helper functions:
 
@@ -52,12 +84,17 @@ dynamically from a plugin, you can use the following helper functions:
       { '<leader>tt', toolbox.lazy_required_fn('neotest', 'run.run') },
     }
 <
+
+------------------------------------------------------------------------------
+SPECIFYING MODE                      *legendary-keymap-tables-specifying-mode*
+
+
 The keymap's mode defaults to normal (`n`), but you can set a different mode,
 or list of modes, via the `mode` property:
 
 >lua
     local keymaps = {
-      { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } }
+      { '<leader>c', ':CommentToggle<CR>', description = 'Toggle comment', mode = { 'n', 'v' } },
     }
 <
 Alternatively, you can map separate implementations for each mode by passing
@@ -65,7 +102,7 @@ the second element as a table, where the table keys are the modes:
 
 >lua
     local keymaps = {
-      { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' }
+      { '<leader>c', { n = ':CommentToggle<CR>', v = ':VisualCommentToggle<CR>' }, description = 'Toggle comment' },
     }
 <
 If you need to pass separate opts per-mode, you can do that too:
@@ -115,6 +152,11 @@ specify a separate description per-mode:
       }
     }
 <
+
+------------------------------------------------------------------------------
+SPECIFYING KEYMAP OPTIONS  *legendary-keymap-tables-specifying-keymap-options*
+
+
 You can also pass options to the keymap via the `opts` property, see `:h
 vim.keymap.set` to see available options.
 
@@ -124,7 +166,7 @@ vim.keymap.set` to see available options.
         '<leader>fm',
         vim.lsp.buf.formatting_sync,
         description = 'Format buffer with LSP',
-        opts = { silent = true, noremap = true }
+        opts = { silent = true, noremap = true },
       },
     }
 <
@@ -149,19 +191,42 @@ getting marks. This allows you to create mappings like:
         end,
         description = 'Toggle comment',
         mode = { 'n', 'v' },
-      }
+      },
     }
 <
-If you want to register keymaps with `legendary.nvim` in order to see them in
-the finder, but not bind them (like for keymaps set by other plugins), you can
-just omit the handler element:
+
+------------------------------------------------------------------------------
+IN-PLACE SPECIAL FILTERS    *legendary-keymap-tables-in-place-special-filters*
+
+
+Sometimes, you need to add special filters to keymaps. One example where this
+is useful is when other plugins create keymaps that are only active in buffers
+managed by that plugin (e.g. `nvim-tree.lua` keymaps are only active in the
+`nvimtree` buffer). There are two special filters, `buftype` and `filetype`
+that may be specified directly, and you can also pass custom functions under
+the `filters` property. Functions receive the item and the editor context as
+parameters.
 
 >lua
     local keymaps = {
-      { '<C-d>', description = 'Scroll docs up' },
-      { '<C-f>', description = 'Scroll docs down' },
+      {
+        '<C-v>',
+        description = 'Open file in new vertical split',
+        filters = {
+          filetype = 'NvimTree', -- can also be a list of filetypes, { 'NvimTree', 'NeoTree' }
+          buftype = 'nofile', -- can also be a list of buftypes, { 'nofile', 'acwrite' }
+          function(item, context) -- custom function filter
+            return context.mode == 'n'
+          end,
+        },
+      },
     }
 <
+
+------------------------------------------------------------------------------
+ITEM GROUPS                              *legendary-keymap-tables-item-groups*
+
+
 You can also organize keymaps, commands, and functions into groups that will
 show up in the finder UI like a folder, selecting it will then trigger another
 finder for items within the group. If groups are given the same name, they
