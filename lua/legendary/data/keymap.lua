@@ -30,7 +30,6 @@ local Keymap = class('Keymap')
 
 local function buftype_filter(value)
   return function(_, context)
-    print('!!!!!!', vim.inspect(context))
     if type(value) == 'string' then
       return context.buftype == value
     else
