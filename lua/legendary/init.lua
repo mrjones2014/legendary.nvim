@@ -98,7 +98,7 @@ function M.setup(cfg)
   M.itemgroups(Config.itemgroups)
 
   if #vim.tbl_keys(Config.extensions) > 0 then
-    Extensions.load_all(Config.extensions)
+    Extensions.load_all()
   end
 
   Log.trace('setup() parsed and applied all configuration.')
