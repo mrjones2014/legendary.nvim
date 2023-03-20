@@ -23,6 +23,7 @@ local ItemGroup = Lazy.require_on_exported_call('legendary.data.itemgroup')
 ---@type LegendaryLogger
 local Log = Lazy.require_on_exported_call('legendary.log')
 
+local Extensions = Lazy.require_on_exported_call('legendary.extensions')
 local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-key')
 
 ---@param parser LegendaryItem
@@ -95,6 +96,10 @@ function M.setup(cfg)
   M.commands(Config.commands)
   M.autocmds(Config.autocmds)
   M.itemgroups(Config.itemgroups)
+
+  if #vim.tbl_keys(Config.extensions) > 0 then
+    Extensions.load_all(Config.extensions)
+  end
 
   Log.trace('setup() parsed and applied all configuration.')
 end
