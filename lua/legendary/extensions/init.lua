@@ -25,20 +25,22 @@ function M.load_extension(extension_name, config)
     extension_config = require('legendary.config').extensions[extension_name]
   end
 
-  if extension_config ~= false then
-    local load_status, module_or_error = pcall(require, string.format('legendary.extensions.%s', extension_name))
-    if not load_status then
-      Log.error('Error loading extensions %q: %s', vim.inspect(module_or_error))
+  if extension_config == false then
+    return
+  end
+
+  local load_status, module_or_error = pcall(require, string.format('legendary.extensions.%s', extension_name))
+  if not load_status then
+    Log.error('Error loading extensions %q: %s', extension_name, vim.inspect(module_or_error))
+  else
+    local module = module_or_error -- now known to not be an error
+    if type(module) ~= 'function' then
+      Log.error('Extension %q does not return a function.', extension_name)
     else
-      local module = module_or_error -- now known to not be an error
-      if type(module) ~= 'function' then
-        Log.error('Extension %q does not return a function.', extension_name)
-      else
-        -- module is a function
-        local ok, error = pcall(module, extension_config)
-        if not ok then
-          Log.error('Extension %q failed to initialize: %s', vim.inspect(error))
-        end
+      -- module is a function
+      local ok, error = pcall(module, extension_config)
+      if not ok then
+        Log.error('Extension %q failed to initialize: %s', extension_name, vim.inspect(error))
       end
     end
   end
