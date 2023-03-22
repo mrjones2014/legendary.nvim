@@ -9,6 +9,13 @@ local function init()
     }
   end, keymaps)
   require('legendary').keymaps(legendary_keymaps)
+  require('legendary').commands({
+    { 'NvimTreeOpen', description = 'nvim-tree: Open file tree' },
+    { 'NvimTreeClose', description = 'nvim-tree: Close file tree' },
+    { 'NvimTreeToggle', description = 'nvim-tree: Toggle file tree' },
+    { 'NvimTreeFocus', description = 'nvim-tree: Focus window' },
+    { 'NvimTreeRefresh', description = 'nvim-tree: Refresh file tree' },
+  })
 end
 
 return function()

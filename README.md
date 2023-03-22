@@ -24,6 +24,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
 - [Lua API](./doc/API.md)
+- [Extensions](./doc/EXTENSIONS.md)
 - [Table Structures](./doc/table_structures/README.md)
   - [Keymaps](./doc/table_structures/KEYMAPS.md)
   - [Commands](./doc/table_structures/COMMANDS.md)
@@ -46,6 +47,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Sort by [frecency](https://en.wikipedia.org/wiki/Frecency), a combined measure of how frequently and how recently you've used an item from the picker
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
 - Anonymous mappings; show mappings/commands in the finder without having `legendary.nvim` handle creating them
+- Extensions to automatically load keymaps and commands from other plugins
 
 ## Prerequisites
 
@@ -171,6 +173,10 @@ require('legendary').setup({
       -- autocmds here
     },
   },
+  extensions = {
+    -- automatically load keymaps and commands from nvim-tree.lua
+    nvim_tree = true,
+  }
 })
 ```
 
