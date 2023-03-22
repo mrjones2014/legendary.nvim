@@ -7,6 +7,11 @@
 
 <!--toc:end-->
 
+> **Note**
+> The internal extension API is considered unstable, as it will likely need to evolve as we add
+> extensions for additional plugins with different setups. This mostly affects plugin developers,
+> not users.
+
 `legendary.nvim` extensions can automatically load keymaps and commands from other plugins with
 very little configuration.
 
