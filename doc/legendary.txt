@@ -412,6 +412,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
       extensions = {
         nvim_tree = false,
         smart_splits = false,
+        op_nvim = false,
       },
       scratchpad = {
         -- How to open the scratchpad buffer,

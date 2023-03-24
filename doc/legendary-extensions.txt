@@ -5,12 +5,14 @@ Table of Contents                     *legendary-extensions-table-of-contents*
 
 `nvim-tree.lua` ......................... |legendary-extensions-nvim-tree.lua|
 `smart-splits.nvim` ................. |legendary-extensions-smart-splits.nvim|
+`op.nvim` ..................................... |legendary-extensions-op.nvim|
 
 ==============================================================================
 EXTENSIONS                                   *legendary-extensions-extensions*
 
 
-- Extensions <#extensions> - `nvim-tree.lua` <#nvim-treelua>
+- Extensions <#extensions> - `nvim-tree.lua` <#nvim-treelua> -
+  `smart-splits.nvim` <#smart-splitsnvim> - `op.nvim` <#opnvim>
   **Note** The internal extension API is considered unstable, as it will likely
   need to evolve as we add extensions for additional plugins with different
   setups. This mostly affects plugin developers, not users.
@@ -61,6 +63,20 @@ Automatically load commands from `smart-splits.nvim`.
     require('legendary').setup({
       extensions = {
         smart_splits = true,
+      },
+    })
+<
+
+------------------------------------------------------------------------------
+`OP.NVIM`                                       *legendary-extensions-op.nvim*
+
+
+Automatically load commands from `op.nvim`.
+
+>lua
+    require('legendary').setup({
+      extensions = {
+        op_nvim = true,
       },
     })
 <
