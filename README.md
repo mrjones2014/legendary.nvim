@@ -361,6 +361,7 @@ require('legendary').setup({
   -- initializing the extension.
   extensions = {
     nvim_tree = false,
+    smart_splits = false,
   },
   scratchpad = {
     -- How to open the scratchpad buffer,
