@@ -28,3 +28,5 @@ jobs:
             itemgroups
             api
             frecency
+            which-key
+            extension

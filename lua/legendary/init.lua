@@ -88,7 +88,7 @@ function M.setup(cfg)
     LegendaryWhichKey.whichkey_listen()
   end
 
-  if #Config.which_key.mappings > 0 then
+  if #vim.tbl_keys(Config.which_key.mappings) > 0 then
     LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
   end
 
