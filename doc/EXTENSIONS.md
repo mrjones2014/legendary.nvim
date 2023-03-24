@@ -4,6 +4,8 @@
 
 - [Extensions](#extensions)
   - [`nvim-tree.lua`](#nvim-treelua)
+  - [`smart-splits.nvim`](#smart-splitsnvim)
+  - [`op.nvim`](#opnvim)
 
 <!--toc:end-->
 
@@ -52,6 +54,18 @@ Automatically load commands from `smart-splits.nvim`.
 require('legendary').setup({
   extensions = {
     smart_splits = true,
+  },
+})
+```
+
+## `op.nvim`
+
+Automatically load commands from `op.nvim`.
+
+```lua
+require('legendary').setup({
+  extensions = {
+    op_nvim = true,
   },
 })
 ```
