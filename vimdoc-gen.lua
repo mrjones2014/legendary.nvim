@@ -10,6 +10,7 @@ local DOC_FILES = {
   ['./doc/table_structures/COMMANDS.md'] = './doc/legendary-command-tables.txt',
   ['./doc/table_structures/FUNCTIONS.md'] = './doc/legendary-function-tables.txt',
   ['./doc/table_structures/AUTOCMDS.md'] = './doc/legendary-autocmd-tables.txt',
+  ['./doc/EXTENSIONS.md'] = './doc/legendary-extensions.txt',
 }
 
 for input, output in pairs(DOC_FILES) do
