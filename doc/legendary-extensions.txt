@@ -1,9 +1,10 @@
-*legendary-extensions.txt*                          Last change: 2023 March 22
+*legendary-extensions.txt*                          Last change: 2023 March 24
 
 ==============================================================================
 Table of Contents                     *legendary-extensions-table-of-contents*
 
 `nvim-tree.lua` ......................... |legendary-extensions-nvim-tree.lua|
+`smart-splits.nvim` ................. |legendary-extensions-smart-splits.nvim|
 
 ==============================================================================
 EXTENSIONS                                   *legendary-extensions-extensions*
@@ -46,6 +47,20 @@ Automatically load keymaps and commands for the `NvimTree` buffer into
     require('legendary').setup({
       extensions = {
         nvim_tree = true,
+      },
+    })
+<
+
+------------------------------------------------------------------------------
+`SMART-SPLITS.NVIM`                   *legendary-extensions-smart-splits.nvim*
+
+
+Automatically load commands from `smart-splits.nvim`.
+
+>lua
+    require('legendary').setup({
+      extensions = {
+        smart_splits = true,
       },
     })
 <
