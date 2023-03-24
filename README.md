@@ -174,9 +174,14 @@ require('legendary').setup({
       -- autocmds here
     },
   },
+  -- load extensions
   extensions = {
-    -- automatically load keymaps and commands from nvim-tree.lua
+    -- load keymaps and commands from nvim-tree.lua
     nvim_tree = true,
+    -- load commands from smart-splits.nvim
+    smart_splits = true,
+    -- load commands from op.nvim
+    op_nvim = true,
   },
 })
 ```
