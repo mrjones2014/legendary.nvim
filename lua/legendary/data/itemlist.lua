@@ -81,7 +81,9 @@ function ItemList:filter(filters, context)
 
   return util.log_performance(function()
     return vim.tbl_filter(function(item)
-      local all_filters = filters
+      -- NOTE: The creation of a new list via vim.list_extend is important here,
+      -- otherwise the list gets added to for every item we filter
+      local all_filters = vim.list_extend({}, filters)
       if item.filters then
         all_filters = vim.list_extend(all_filters, item.filters)
       end

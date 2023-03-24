@@ -24,6 +24,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
 - [Lua API](./doc/API.md)
+- [Extensions](./doc/EXTENSIONS.md)
 - [Table Structures](./doc/table_structures/README.md)
   - [Keymaps](./doc/table_structures/KEYMAPS.md)
   - [Commands](./doc/table_structures/COMMANDS.md)
@@ -46,6 +47,8 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - Sort by [frecency](https://en.wikipedia.org/wiki/Frecency), a combined measure of how frequently and how recently you've used an item from the picker
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
 - Anonymous mappings; show mappings/commands in the finder without having `legendary.nvim` handle creating them
+- Extensions to automatically load keymaps and commands from other plugins
+  - The internal extension API is considered unstable, as it will likely need to evolve as we add extensions for additional plugins with different setups. This mostly affects plugin developers, not users.
 
 ## Prerequisites
 
@@ -170,6 +173,10 @@ require('legendary').setup({
       clear = true,
       -- autocmds here
     },
+  },
+  extensions = {
+    -- automatically load keymaps and commands from nvim-tree.lua
+    nvim_tree = true,
   },
 })
 ```
@@ -344,6 +351,16 @@ require('legendary').setup({
     -- or if you want to let which-key.nvim handle the bindings.
     -- if not passed, true by default
     do_binding = true,
+  },
+  -- Which extensions to load; no extensions are loaded by default.
+  -- Setting the plugin name to `false` disables loading the extension.
+  -- Setting it to any other value will attempt to load the extension,
+  -- and pass the value as an argument to the extension, which should
+  -- be a single function. Extensions are modules under `legendary.extensions.*`
+  -- which return a single function, which is responsible for loading and
+  -- initializing the extension.
+  extensions = {
+    nvim_tree = false,
   },
   scratchpad = {
     -- How to open the scratchpad buffer,

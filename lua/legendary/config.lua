@@ -101,6 +101,16 @@ local config = {
     -- if not passed, true by default
     do_binding = true,
   },
+  -- Which extensions to load; no extensions are loaded by default.
+  -- Setting the plugin name to `false` disables loading the extension.
+  -- Setting it to any other value will attempt to load the extension,
+  -- and pass the value as an argument to the extension, which should
+  -- be a single function. Extensions are modules under `legendary.extensions.*`
+  -- which return a single function, which is responsible for loading and
+  -- initializing the extension.
+  extensions = {
+    nvim_tree = false,
+  },
   scratchpad = {
     -- How to open the scratchpad buffer,
     -- 'current' for current window, 'float'
@@ -163,6 +173,7 @@ local config = {
 ---@field include_legendary_cmds boolean
 ---@field sort LegendarySortOpts
 ---@field which_key LegendaryWhichkeyConfig
+---@field extensions table<string, any>
 ---@field scratchpad LegendaryScratchpadConfig
 ---@field cache_path string
 ---@field log_level string
