@@ -98,6 +98,7 @@ end
 ---Select an item
 ---@param opts LegendaryFindOpts
 function M.select(opts)
+  vim.cmd('doautocmd User LegendaryUiPre')
   local context = Executor.build_context()
   select_inner(opts, context)
 end
