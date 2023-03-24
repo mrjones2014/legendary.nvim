@@ -108,9 +108,7 @@ local config = {
   -- be a single function. Extensions are modules under `legendary.extensions.*`
   -- which return a single function, which is responsible for loading and
   -- initializing the extension.
-  extensions = {
-    nvim_tree = false,
-  },
+  extensions = {},
   scratchpad = {
     -- How to open the scratchpad buffer,
     -- 'current' for current window, 'float'

@@ -43,3 +43,15 @@ require('legendary').setup({
   },
 })
 ```
+
+## `smart-splits.nvim`
+
+Automatically load commands from `smart-splits.nvim`.
+
+```lua
+require('legendary').setup({
+  extensions = {
+    smart_splits = true,
+  },
+})
+```
