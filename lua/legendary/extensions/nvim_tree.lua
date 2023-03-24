@@ -9,6 +9,7 @@ local function init()
     }
   end, keymaps)
   require('legendary').keymaps(legendary_keymaps)
+  -- TODO update once this is resolved: https://github.com/nvim-tree/nvim-tree.lua/issues/2076
   require('legendary').commands({
     { 'NvimTreeOpen', description = 'nvim-tree: Open file tree' },
     { 'NvimTreeClose', description = 'nvim-tree: Close file tree' },
