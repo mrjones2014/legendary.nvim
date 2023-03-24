@@ -1,4 +1,4 @@
-*legendary.txt*                                     Last change: 2023 March 22
+*legendary.txt*                                     Last change: 2023 March 24
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -411,6 +411,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
       -- initializing the extension.
       extensions = {
         nvim_tree = false,
+        smart_splits = false,
       },
       scratchpad = {
         -- How to open the scratchpad buffer,
