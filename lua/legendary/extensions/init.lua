@@ -46,4 +46,17 @@ function M.load_extension(extension_name, config)
   end
 end
 
+function M.pre_ui_hook(callback)
+  local autocmd_id
+  autocmd_id = vim.api.nvim_create_autocmd('User', {
+    pattern = 'LegendaryUiPre',
+    callback = function()
+      local result = callback()
+      if result then
+        vim.api.nvim_del_autocmd(autocmd_id)
+      end
+    end,
+  })
+end
+
 return M
