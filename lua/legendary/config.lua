@@ -166,6 +166,7 @@ local config = {
 ---@field default_opts LegendaryDefaultOptsConfig
 ---@field select_prompt string|fun():string
 ---@field col_separator_char string
+---@field icons table<string, string>
 ---@field default_item_formatter LegendaryItemFormatter
 ---@field include_builtin boolean
 ---@field include_legendary_cmds boolean

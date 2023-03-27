@@ -17,7 +17,7 @@ end
 function M.default_format(item)
   if Toolbox.is_keymap(item) then
     return {
-      Config.icons.keymap or table.concat(item:modes(), ', '),
+      Config.icons.keymap or table.concat(item--[[@as Keymap]]:modes(), ', '),
       item.keys,
       item.description,
     }
@@ -28,9 +28,13 @@ function M.default_format(item)
       item.description,
     }
   elseif Toolbox.is_autocmd(item) then
+    local pattern = vim.tbl_get(item, 'opts', 'pattern') or { '*' }
+    if type(pattern) == 'string' then
+      pattern = { pattern }
+    end
     return {
       table.concat(item.events, ', '),
-      table.concat(vim.tbl_get(item, 'opts', 'pattern') or { '*' }, ', '),
+      table.concat(pattern, ', '),
       item.description,
     }
   elseif Toolbox.is_function(item) then
