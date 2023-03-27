@@ -343,7 +343,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
         -- a non-nil icon
         keymap = nil,
         command = '',
-        fn = '',
+        fn = '󰡱',
         itemgroup = '',
       },
       -- Include builtins by default, set to false to disable

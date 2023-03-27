@@ -37,7 +37,7 @@ local config = {
   icons = {
     keymap = nil,
     command = '',
-    fn = '',
+    fn = '󰡱',
     itemgroup = '',
   },
   -- Include builtins by default, set to false to disable

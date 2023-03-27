@@ -293,7 +293,7 @@ require('legendary').setup({
     -- a non-nil icon
     keymap = nil,
     command = '',
-    fn = '',
+    fn = '󰡱',
     itemgroup = '',
   },
   -- Include builtins by default, set to false to disable
