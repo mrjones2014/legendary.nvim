@@ -1,4 +1,4 @@
-*legendary.txt*                                     Last change: 2023 March 24
+*legendary.txt*                                     Last change: 2023 March 31
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -228,6 +228,8 @@ Register keymaps through setup:
         smart_splits = true,
         -- load commands from op.nvim
         op_nvim = true,
+        -- load keymaps from diffview.nvim
+        diffview = true,
       },
     })
 <
@@ -418,6 +420,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
         nvim_tree = false,
         smart_splits = false,
         op_nvim = false,
+        diffview = false,
       },
       scratchpad = {
         -- How to open the scratchpad buffer,
