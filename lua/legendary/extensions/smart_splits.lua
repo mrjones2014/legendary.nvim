@@ -2,7 +2,7 @@ return function()
   require('legendary.extensions').pre_ui_hook(function()
     local ok, cmds = pcall(require, 'smart-splits.commands')
     if not ok then
-      return
+      return false
     end
 
     local legendary_commands = vim.tbl_map(function(cmd)

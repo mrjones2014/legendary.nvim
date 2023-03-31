@@ -182,6 +182,8 @@ require('legendary').setup({
     smart_splits = true,
     -- load commands from op.nvim
     op_nvim = true,
+    -- load keymaps from diffview.nvim
+    diffview = true,
   },
 })
 ```
@@ -368,6 +370,7 @@ require('legendary').setup({
     nvim_tree = false,
     smart_splits = false,
     op_nvim = false,
+    diffview = false,
   },
   scratchpad = {
     -- How to open the scratchpad buffer,
