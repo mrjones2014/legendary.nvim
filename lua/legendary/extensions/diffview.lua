@@ -41,16 +41,14 @@ return function()
     local keymaps = diffview_cfg.get_config().keymaps
     local legendary_keymaps = {}
     for key, mappings in pairs(keymaps) do
-      if key == 'option_panel' or key == 'help_panel' or key == 'disable_defaults' then
-        -- no op
-      elseif key == 'view' then -- these apply to all diffview view types
+      if key == 'view' then -- these apply to all diffview view types
         legendary_keymaps = vim.list_extend(legendary_keymaps, parse_keymaps(mappings, { diffview_is_open }))
       elseif key == 'file_panel' then
         legendary_keymaps = vim.list_extend(legendary_keymaps, parse_keymaps(mappings, { filetype = 'DiffviewFiles' }))
       elseif key == 'file_history_panel' then
         legendary_keymaps =
           vim.list_extend(legendary_keymaps, parse_keymaps(mappings, { filetype = 'DiffviewFileHistory' }))
-      else
+      elseif key ~= 'option_panel' and key ~= 'help_panel' and key ~= 'disable_defaults' then
         -- e.g. the layout name will be "diff2_horizontal"
         legendary_keymaps = vim.list_extend(legendary_keymaps, parse_keymaps(mappings, { diffview_type_matches(key) }))
       end
