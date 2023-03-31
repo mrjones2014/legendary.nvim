@@ -56,6 +56,13 @@ return function()
       end
     end
     require('legendary').keymaps(legendary_keymaps)
+    require('legendary').commands({
+      { ':DiffviewOpen', description = 'Open diffview.nvim view' },
+      { ':DiffviewClose', description = 'Close diffview.nvim view' },
+      { ':DiffviewToggleFiles', description = 'Toggle the files panel of diffview.nvim view' },
+      { ':DiffviewFocusFiles', description = 'Move cursor to diffview.nvim files buffer' },
+      { ':DiffviewRefresh', description = 'Refresh diffview.nvim view' },
+    })
     return true
   end)
 end
