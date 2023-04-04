@@ -1,4 +1,4 @@
-*legendary-extensions.txt*                          Last change: 2023 March 27
+*legendary-extensions.txt*                          Last change: 2023 April 04
 
 ==============================================================================
 Table of Contents                     *legendary-extensions-table-of-contents*
@@ -8,6 +8,7 @@ Built-in Extensions ............... |legendary-extensions-built-in-extensions|
 `nvim-tree.lua` ......................... |legendary-extensions-nvim-tree.lua|
 `smart-splits.nvim` ................. |legendary-extensions-smart-splits.nvim|
 `op.nvim` ..................................... |legendary-extensions-op.nvim|
+`diffview.nvim` ......................... |legendary-extensions-diffview.nvim|
 
 ==============================================================================
 EXTENSIONS                                   *legendary-extensions-extensions*
@@ -15,7 +16,8 @@ EXTENSIONS                                   *legendary-extensions-extensions*
 
 - Extensions <#extensions> - Extension API <#extension-api> - Built-in
   Extensions <#built-in-extensions> - `nvim-tree.lua` <#nvim-treelua> -
-  `smart-splits.nvim` <#smart-splitsnvim> - `op.nvim` <#opnvim>
+  `smart-splits.nvim` <#smart-splitsnvim> - `op.nvim` <#opnvim> -
+  `diffview.nvim` <#diffviewnvim>
   **Note** The internal extension API is considered unstable, as it will likely
   need to evolve as we add extensions for additional plugins with different
   setups. This mostly affects plugin developers, not users.
@@ -114,6 +116,21 @@ Automatically load commands from `op.nvim`.
     require('legendary').setup({
       extensions = {
         op_nvim = true,
+      },
+    })
+<
+
+                                                                              
+`DIFFVIEW.NVIM`                           *legendary-extensions-diffview.nvim*
+
+Automatically load commands and keymaps from `diffview.nvim`. The keymaps will
+only appear in the `legendary.nvim` UI for the currently active
+`diffview.nvim` view to which they apply.
+
+>lua
+    require('legendary').setup({
+      extensions = {
+        diffview = true,
       },
     })
 <

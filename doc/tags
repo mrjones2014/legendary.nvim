@@ -9,6 +9,7 @@ legendary-command-tables-table-of-contents	legendary-command-tables.txt	/*legend
 legendary-command-tables.txt	legendary-command-tables.txt	/*legendary-command-tables.txt*
 legendary-configuration	legendary.txt	/*legendary-configuration*
 legendary-extensions-built-in-extensions	legendary-extensions.txt	/*legendary-extensions-built-in-extensions*
+legendary-extensions-diffview.nvim	legendary-extensions.txt	/*legendary-extensions-diffview.nvim*
 legendary-extensions-extension-api	legendary-extensions.txt	/*legendary-extensions-extension-api*
 legendary-extensions-extensions	legendary-extensions.txt	/*legendary-extensions-extensions*
 legendary-extensions-nvim-tree.lua	legendary-extensions.txt	/*legendary-extensions-nvim-tree.lua*
