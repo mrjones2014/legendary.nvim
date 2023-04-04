@@ -8,6 +8,7 @@
     - [`nvim-tree.lua`](#nvim-treelua)
     - [`smart-splits.nvim`](#smart-splitsnvim)
     - [`op.nvim`](#opnvim)
+    - [`diffview.nvim`](#diffviewnvim)
 
 <!--toc:end-->
 
@@ -92,6 +93,19 @@ Automatically load commands from `op.nvim`.
 require('legendary').setup({
   extensions = {
     op_nvim = true,
+  },
+})
+```
+
+### `diffview.nvim`
+
+Automatically load commands and keymaps from `diffview.nvim`. The keymaps will only appear in the `legendary.nvim`
+UI for the currently active `diffview.nvim` view to which they apply.
+
+```lua
+require('legendary').setup({
+  extensions = {
+    diffview = true,
   },
 })
 ```
