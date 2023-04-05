@@ -1,4 +1,4 @@
-*legendary.txt*                                     Last change: 2023 March 31
+*legendary.txt*                                     Last change: 2023 April 05
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
