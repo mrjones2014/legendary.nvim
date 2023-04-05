@@ -213,7 +213,7 @@ Commands:
 
 Lua API:
 
-The `require('legend').find()` function takes an `opts` table with the following fields (all optional):
+The `require('legendary').find()` function takes an `opts` table with the following fields (all optional):
 
 ```lua
 {
