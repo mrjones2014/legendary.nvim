@@ -167,30 +167,6 @@ local keymaps = {
 }
 ```
 
-## In-place special filters
-
-Sometimes, you need to add special filters to keymaps. One example where this is useful is when other plugins create
-keymaps that are only active in buffers managed by that plugin (e.g. `nvim-tree.lua` keymaps are only active in the
-`nvimtree` buffer). There are two special filters, `buftype` and `filetype` that may be specified directly, and you
-can also pass custom functions under the `filters` property. Functions receive the item and the editor context
-as parameters.
-
-```lua
-local keymaps = {
-  {
-    '<C-v>',
-    description = 'Open file in new vertical split',
-    filters = {
-      filetype = 'NvimTree', -- can also be a list of filetypes, { 'NvimTree', 'NeoTree' }
-      buftype = 'nofile', -- can also be a list of buftypes, { 'nofile', 'acwrite' }
-      function(item, context) -- custom function filter
-        return context.mode == 'n'
-      end,
-    },
-  },
-}
-```
-
 ## Item groups
 
 You can also organize keymaps, commands, and functions into groups that will show up

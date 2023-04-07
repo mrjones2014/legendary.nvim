@@ -1,12 +1,15 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
+local Filters = require('legendary.data.filters')
 
 ---@class Function
 ---@field implementation function
 ---@field description string
 ---@field opts table
+---@field filters (function[])|nil
 ---@field class Function
 local Function = class('Function')
+Function:include(Filters) ---@diagnostic disable-line
 
 function Function:parse(tbl) -- luacheck: no unused
   vim.validate({
@@ -20,6 +23,7 @@ function Function:parse(tbl) -- luacheck: no unused
   instance.implementation = tbl[1]
   instance.description = util.get_desc(tbl)
   instance.opts = tbl.opts or {}
+  instance:parse_filters(tbl.filters)
 
   return instance
 end

@@ -127,6 +127,8 @@ require('legendary').setup({
         -- more keymaps here
       },
     },
+    -- in-place filters, see :h legendary-tables or ./doc/table_structures/README.md
+    { '<leader>m', description = 'Preview markdown', filters = { ft = 'markdown' } },
   },
   commands = {
     -- easily create user commands
@@ -146,6 +148,8 @@ require('legendary').setup({
         -- more commands here
       },
     },
+    -- in-place filters, see :h legendary-tables or ./doc/table_structures/README.md
+    { ':Glow', description = 'Preview markdown', filters = { ft = 'markdown' } },
   },
   funcs = {
     -- Make arbitrary Lua functions that can be executed via the item finder
