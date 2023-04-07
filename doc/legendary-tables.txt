@@ -1,4 +1,10 @@
-*legendary-tables.txt*                            Last change: 2022 October 30
+*legendary-tables.txt*                              Last change: 2023 April 07
+
+==============================================================================
+Table of Contents                         *legendary-tables-table-of-contents*
+
+In-Place Item Filters ............... |legendary-tables-in-place-item-filters|
+Filter Context ............................. |legendary-tables-filter-context|
 
 ==============================================================================
 TABLE STRUCTURES                           *legendary-tables-table-structures*
@@ -24,5 +30,63 @@ the full API documentation on accepted types.
 - Commands <./COMMANDS.md>
 - Functions <./FUNCTIONS.md>
 - `augroup`/`autocmd`s <./AUTOCMDS.md>
+
+------------------------------------------------------------------------------
+IN-PLACE ITEM FILTERS                 *legendary-tables-in-place-item-filters*
+
+
+All items also support a special in-place filtering syntax, so the item can
+define its own filter. The `filters` property should be a table defining one
+or more filters. The table supports special properties `bt = value` or
+`buftype = value` to automatically filter by buffer type, and `ft = value` or
+`filetype = value` to automatically filter by file type. You may also include
+custom filter functions in the `filters` table as a list. For example:
+
+>lua
+    local keymaps = {
+      { '<C-v>', description = 'Open in vertical split', filters = { ft = 'NvimTree' } },
+      {
+        '<leader>qt',
+        description = 'Do something',
+        filters = {
+          ft = 'Markdown',
+          function(item, context)
+            -- here, item is the parsed item itself,
+            -- context is a context object, see "Filter Context" below
+            return myCustomLogic(context)
+          end,
+        },
+      },
+    }
+    
+    local commands = {
+      { ':Glow', description = 'Preview Markdown with Glow', filters = { ft = 'markdown' } },
+      {
+        ':Something',
+        description = 'Do something',
+        filters = {
+          function(item, context)
+            -- same function signature as keymaps
+          end,
+        },
+      },
+    }
+<
+
+                                                                              
+FILTER CONTEXT                               *legendary-tables-filter-context*
+
+The `context` table passed to filters contains the following properties:
+
+>lua
+    {
+      buf = number, -- buffer ID
+      buftype = string,
+      filetype = string,
+      mode = string, -- the mode that the UI was triggered from
+      cursor_pos = table, -- { row, col }
+      marks = table, -- visual mode marks, if applicable; { line, col, line, col }
+    }
+<
 
 vim:tw=78:ts=8:ft=help:norl:
