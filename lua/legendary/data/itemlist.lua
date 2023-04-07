@@ -83,9 +83,9 @@ function ItemList:filter(filters, context)
     return vim.tbl_filter(function(item)
       -- NOTE: The creation of a new list via vim.list_extend is important here,
       -- otherwise the list gets added to for every item we filter
-      local all_filters = vim.list_extend({}, filters)
+      local all_filters = vim.list_extend({}, filters, 1, #filters)
       if item.filters then
-        all_filters = vim.list_extend(all_filters, item.filters)
+        all_filters = vim.list_extend(all_filters, item.filters, 1, #item.filters)
       end
 
       return util.tbl_all(all_filters, function(filter)

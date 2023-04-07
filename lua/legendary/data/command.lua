@@ -1,6 +1,7 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 local Config = require('legendary.config')
+local Filters = require('legendary.data.filters')
 local Toolbox = require('legendary.toolbox')
 
 ---@class ModeCommand
@@ -20,9 +21,11 @@ local Toolbox = require('legendary.toolbox')
 ---@field description string
 ---@field opts table
 ---@field unfinished boolean
+---@field filters (function[])|nil
 ---@field builtin boolean
 ---@field class Command
 local Command = class('Command')
+Command:include(Filters) ---@diagnostic disable-line
 
 local function exec(impl, args)
   if type(impl) == 'string' then
@@ -96,6 +99,7 @@ function Command:parse(tbl, builtin) -- luacheck: no unused
 
     instance.implementation = parse_modemap(instance.implementation)
   end
+  instance:parse_filters(tbl.filters)
 
   return instance
 end

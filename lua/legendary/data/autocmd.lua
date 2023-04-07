@@ -1,6 +1,7 @@
 local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 local Config = require('legendary.config')
+local Filters = require('legendary.data.filters')
 
 ---@class Autocmd
 ---@field events string[]
@@ -10,6 +11,7 @@ local Config = require('legendary.config')
 ---@field group string|integer|nil
 ---@field class Autocmd
 local Autocmd = class('Autocmd')
+Autocmd:include(Filters) ---@diagnostic disable-line
 
 ---Parse a new autocmd table
 ---@param tbl table
@@ -33,6 +35,7 @@ function Autocmd:parse(tbl) -- luacheck: no unused
   instance.description = util.get_desc(tbl)
   instance.group = tbl.group
   instance.hide = util.bool_default(tbl.hide, false)
+  instance:parse_filters(tbl.filters)
 
   return instance
 end

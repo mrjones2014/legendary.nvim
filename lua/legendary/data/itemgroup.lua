@@ -3,14 +3,17 @@ local ItemList = require('legendary.data.itemlist')
 local Keymap = require('legendary.data.keymap')
 local Command = require('legendary.data.command')
 local Function = require('legendary.data.function')
+local Filters = require('legendary.data.filters')
 
 ---@class ItemGroup
 ---@field name string
 ---@field items ItemList
 ---@field icon string|nil
 ---@field description string|nil
+---@field filters (function[])|nil
 ---@field class ItemGroup
 local ItemGroup = class('ItemGroup')
+ItemGroup:include(Filters) ---@diagnostic disable-line
 
 ---Parse an ItemGroup
 ---@param tbl table
@@ -30,6 +33,7 @@ function ItemGroup:parse(tbl) -- luacheck: no unused
   instance.icon = tbl.icon
   instance.description = tbl.description
   instance.items = ItemList:create()
+  instance:parse_filters(tbl.filters)
 
   local keymaps = vim.tbl_map(function(keymap)
     return Keymap:parse(keymap)
