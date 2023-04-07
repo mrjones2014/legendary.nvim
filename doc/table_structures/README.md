@@ -34,7 +34,8 @@ local keymaps = {
     '<leader>qt',
     description = 'Do something',
     filters = {
-      ft = 'Markdown',
+      ft = 'CustomType', -- can also be a list { 'Markdown', 'CustomType' }
+      bt = 'nofile', -- can also be a list { 'nofile', 'acwrite' }
       function(item, context)
         -- here, item is the parsed item itself,
         -- context is a context object, see "Filter Context" below
