@@ -29,7 +29,6 @@ legendary-function-tables.txt	legendary-function-tables.txt	/*legendary-function
 legendary-installation	legendary.txt	/*legendary-installation*
 legendary-keymap-tables-basic-keymaps	legendary-keymap-tables.txt	/*legendary-keymap-tables-basic-keymaps*
 legendary-keymap-tables-helper-functions	legendary-keymap-tables.txt	/*legendary-keymap-tables-helper-functions*
-legendary-keymap-tables-in-place-special-filters	legendary-keymap-tables.txt	/*legendary-keymap-tables-in-place-special-filters*
 legendary-keymap-tables-item-groups	legendary-keymap-tables.txt	/*legendary-keymap-tables-item-groups*
 legendary-keymap-tables-keymaps	legendary-keymap-tables.txt	/*legendary-keymap-tables-keymaps*
 legendary-keymap-tables-specifying-keymap-options	legendary-keymap-tables.txt	/*legendary-keymap-tables-specifying-keymap-options*
@@ -52,6 +51,9 @@ legendary-mapping-development.txt	legendary-mapping-development.txt	/*legendary-
 legendary-prerequisites	legendary.txt	/*legendary-prerequisites*
 legendary-quickstart	legendary.txt	/*legendary-quickstart*
 legendary-table-of-contents	legendary.txt	/*legendary-table-of-contents*
+legendary-tables-filter-context	legendary-tables.txt	/*legendary-tables-filter-context*
+legendary-tables-in-place-item-filters	legendary-tables.txt	/*legendary-tables-in-place-item-filters*
+legendary-tables-table-of-contents	legendary-tables.txt	/*legendary-tables-table-of-contents*
 legendary-tables-table-structures	legendary-tables.txt	/*legendary-tables-table-structures*
 legendary-tables.txt	legendary-tables.txt	/*legendary-tables.txt*
 legendary-usage-examples-table-of-contents	legendary-usage-examples.txt	/*legendary-usage-examples-table-of-contents*
