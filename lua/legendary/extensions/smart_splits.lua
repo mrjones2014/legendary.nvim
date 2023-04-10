@@ -52,7 +52,8 @@ return function(opts)
     return
   end
 
-  opts.directions = opts.directions or { 'h', 'j', 'k', 'l' }
+  opts = vim.tbl_deep_extend('force', default_opts, opts)
+
   if #opts.directions ~= 4 then
     require('legendary.log').error(
       "Invalid config for Legendary extension 'smart_splits': "
@@ -61,8 +62,6 @@ return function(opts)
     )
     return
   end
-
-  opts = vim.tbl_deep_extend('force', default_opts, opts)
 
   local t = require('legendary.toolbox')
   local keymaps = {}
