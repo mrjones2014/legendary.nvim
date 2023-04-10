@@ -75,12 +75,43 @@ require('legendary').setup({
 
 ### `smart-splits.nvim`
 
-Automatically load commands from `smart-splits.nvim`.
+Automatically load commands from `smart-splits.nvim`. This extension can also create the keymaps for you automatically
+by passing an `opts` table to the extension.
 
 ```lua
 require('legendary').setup({
   extensions = {
-    smart_splits = true,
+    smart_splits = true, -- do not create keymaps
+    -- or, default settings shown below
+    smart_splits = {
+      directions = { 'h', 'j', 'k', 'l' },
+      mods = {
+        -- for moving cursor between windows
+        move = '<C>',
+        -- for resizing windows
+        resize = '<M>',
+        -- for swapping window buffers
+        swap = false, -- false disables creating a binding
+      },
+    },
+    -- or, customize
+    smart_splits = {
+      directions = { 'h', 'j', 'k', 'l' },
+      mods = {
+        move = '<C>',
+        resize = '<M>',
+        -- any of these can also be a table of the following form
+        swap = {
+          -- this will create the mapping like
+          -- <leader><C-h>
+          -- <leader><C-j>
+          -- <leader><C-k>
+          -- <leader><C-l>
+          mod = '<C>',
+          prefix = '<leader>',
+        },
+      },
+    },
   },
 })
 ```

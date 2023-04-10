@@ -183,7 +183,14 @@ require('legendary').setup({
     -- load keymaps and commands from nvim-tree.lua
     nvim_tree = true,
     -- load commands from smart-splits.nvim
-    smart_splits = true,
+    -- and create keymaps, see :h legendary-extensions-smart-splits.nvim
+    smart_splits = {
+      directions = { 'h', 'j', 'k', 'l' },
+      mods = {
+        move = '<C>',
+        resize = '<M>',
+      },
+    },
     -- load commands from op.nvim
     op_nvim = true,
     -- load keymaps from diffview.nvim
