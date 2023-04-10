@@ -16,7 +16,7 @@ describe('legendary.filters', function()
         end,
       }
       local anded = filters.AND(unpack(input))
-      assert.False(anded({}))
+      assert.False(anded({}, {}))
     end)
 
     it('should return true when ALL items return true', function()
@@ -32,7 +32,7 @@ describe('legendary.filters', function()
         end,
       }
       local anded = filters.AND(unpack(input))
-      assert.True(anded({}))
+      assert.True(anded({}, {}))
     end)
   end)
 
@@ -50,7 +50,7 @@ describe('legendary.filters', function()
         end,
       }
       local ored = filters.OR(unpack(input))
-      assert.True(ored({}))
+      assert.True(ored({}, {}))
     end)
 
     it('should return false when ALL items return false', function()
@@ -66,7 +66,7 @@ describe('legendary.filters', function()
         end,
       }
       local ored = filters.OR(unpack(input))
-      assert.False(ored({}))
+      assert.False(ored({}, {}))
     end)
   end)
 end)

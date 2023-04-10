@@ -11,29 +11,29 @@ describe('ItemList', function()
       local keymap = Keymap:parse({ '<leader><leader>', function() end, description = 'test' })
       local list = ItemList:create()
       list:add({ keymap })
-      assert.are.same(keymap, list.items[1])
+      assert.are.same(keymap, list.items[1]) ---@diagnostic disable-line
     end)
 
     it('excludes items without descriptions', function()
       local keymap = Keymap:parse({ '<leader><leader>', function() end })
       local list = ItemList:create()
       list:add({ keymap })
-      assert.are.same(#list.items, 0)
+      assert.are.same(#list.items, 0) ---@diagnostic disable-line
     end)
 
     it('excludes items already contained in the list', function()
       local keymap = Keymap:parse({ '<leader><leader>', function() end, description = 'test' })
       local list = ItemList:create()
       list:add({ keymap })
-      assert.are.same(keymap, list.items[1])
-      assert.are.same(#list.items, 1)
+      assert.are.same(keymap, list.items[1]) ---@diagnostic disable-line
+      assert.are.same(#list.items, 1) ---@diagnostic disable-line
     end)
 
     it('excludes items that are hidden', function()
       local keymap = Keymap:parse({ '<leader><leader>', function() end, hide = true, description = 'test' })
       local list = ItemList:create()
       list:add({ keymap })
-      assert.are.same(#list.items, 0)
+      assert.are.same(#list.items, 0) ---@diagnostic disable-line
     end)
   end)
 

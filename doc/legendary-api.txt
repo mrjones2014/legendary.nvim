@@ -1,4 +1,4 @@
-================================================================================
+==============================================================================
 *legendary*
 
 M.setup()                                                      *legendary.setup*
@@ -32,6 +32,13 @@ Parameters: ~
 {function}  (table)
 
 
+M.itemgroup({itemgroup})                                   *legendary.itemgroup*
+Bind a *single item group*
+
+Parameters: ~
+{itemgroup}  (table)
+
+
 M.autocmds({aus})                                           *legendary.autocmds*
 @diagnostic enable: undefined-doc-param
 Bind a *list of* autocmds and/or augroups
@@ -47,47 +54,7 @@ Parameters: ~
 {au}  (Autocmd|Augroup)
 
 
-M.bind_keymap()                                          *legendary.bind_keymap*
-@deprecated
-
-
-M.bind_keymaps()                                        *legendary.bind_keymaps*
-@deprecated
-
-
-M.bind_command()                                        *legendary.bind_command*
-@deprecated
-
-
-M.bind_commands()                                      *legendary.bind_commands*
-@deprecated
-
-
-M.bind_function()                                      *legendary.bind_function*
-@deprecated
-
-
-M.bind_functions()                                    *legendary.bind_functions*
-@deprecated
-
-
-M.bind_autocmds()                                      *legendary.bind_autocmds*
-@deprecated
-
-
-M.bind_whichkey()                                      *legendary.bind_whichkey*
-@deprecated
-
-
-M.parse_whichkey()                                    *legendary.parse_whichkey*
-@deprecated
-
-
-M.whichkey_listen()                                  *legendary.whichkey_listen*
-@deprecated
-
-
-================================================================================
+==============================================================================
 *legendary.filters*
 
 M.mode({mode})                                          *legendary.filters.mode*
@@ -98,7 +65,27 @@ Parameters: ~
 {mode}  (string)
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
+
+
+M.AND({...})                                             *legendary.filters.AND*
+Logical AND the given LegendaryItemFilters
+
+Parameters: ~
+{...}  (LegendaryItemFilter)
+
+Returns: ~
+(LegendaryItemFilter)
+
+
+M.OR({...})                                               *legendary.filters.OR*
+Logical OR the given LegendaryItemFilters
+
+Parameters: ~
+{...}  (LegendaryItemFilter)
+
+Returns: ~
+(LegendaryItemFilter)
 
 
 M.current_mode()                                *legendary.filters.current_mode*
@@ -106,52 +93,53 @@ Return a `LegendaryItemFilter` that filters items
 by the current mode
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
 
 
 M.keymaps()                                          *legendary.filters.keymaps*
 Filter to only show keymaps
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
 
 
 M.commands()                                        *legendary.filters.commands*
 Filter to only show commands
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
 
 
 M.autocmds()                                        *legendary.filters.autocmds*
 Filter to only show autocmds
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
 
 
 M.funcs()                                              *legendary.filters.funcs*
 Filter to only show functions
 
 Returns: ~
-{LegendaryItemFilter}
+(LegendaryItemFilter)
 
 
-================================================================================
+==============================================================================
 *legendary.toolbox*
 
-M.lazy({fn})                                            *legendary.toolbox.lazy*
+M.lazy({fn}, {...})                                     *legendary.toolbox.lazy*
 Return a function with statically set arguments.
 
 Parameters: ~
-{fn}  (function)  The function to execute lazily
-@param ... any The arguments to pass to `fn` when called
+{fn}   (function)  The function to execute lazily
+{...}  (any)       The arguments to pass to `fn` when called
 
 Returns: ~
-{function}
+(function)
 
 
-M.lazy_required_fn({module_name}, {fn_name})
+*legendary.toolbox.lazy_required_fn*
+M.lazy_required_fn({module_name}, {fn_name}, {...})
 Return a function which lazily `require`s a module and
 calls a function from it. Functions nested within tables
 may be accessed using dot-notation, i.e.
@@ -160,10 +148,10 @@ may be accessed using dot-notation, i.e.
 Parameters: ~
 {module_name}  (string)  The module to `require`
 {fn_name}      (string)  The table path to the function
-@param ... any The arguments to pass to the function
+{...}          (any)     The arguments to pass to the function
 
 Returns: ~
-{function}
+(function)
 
 
 M.split_then({fn})                                *legendary.toolbox.split_then*
@@ -171,10 +159,10 @@ Return a function that creates a new horizontal
 split, then calls the given function.
 
 Parameters: ~
-{fn}  (function)  The function to call after creating a split
+{fn}  (function)  The function to call after creating a spli
 
 Returns: ~
-{function}
+(function)
 
 
 M.vsplit_then({fn})                              *legendary.toolbox.vsplit_then*
@@ -182,10 +170,10 @@ Return a function that creates a new vertical
 split, then calls the given function.
 
 Parameters: ~
-{fn}  (function)  The function to call after creating a split
+{fn}  (function)  The function to call after creating a spli
 
 Returns: ~
-{function}
+(function)
 
 
 M.is_keymap({keymap})                              *legendary.toolbox.is_keymap*
@@ -195,7 +183,7 @@ Parameters: ~
 {keymap}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
 
 
 M.is_command({cmd})                               *legendary.toolbox.is_command*
@@ -205,7 +193,7 @@ Parameters: ~
 {cmd}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
 
 
 M.is_augroup({au})                                *legendary.toolbox.is_augroup*
@@ -215,7 +203,7 @@ Parameters: ~
 {au}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
 
 
 M.is_autocmd({autocmd})                           *legendary.toolbox.is_autocmd*
@@ -225,7 +213,7 @@ Parameters: ~
 {autocmd}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
 
 
 M.is_augroup_or_autocmd({au_or_autocmd})*legendary.toolbox.is_augroup_or_autocmd*
@@ -235,7 +223,10 @@ Parameters: ~
 {au_or_autocmd}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
+
+
+M.is_itemgroup()                                *legendary.toolbox.is_itemgroup*
 
 
 M.is_function({func})                            *legendary.toolbox.is_function*
@@ -245,7 +236,7 @@ Parameters: ~
 {func}  (LegendaryItem)
 
 Returns: ~
-{boolean}
+(boolean)
 
 
 M.is_visual_mode({mode_str})                  *legendary.toolbox.is_visual_mode*
@@ -256,7 +247,7 @@ Parameters: ~
 {mode_str}  (string|nil)
 
 Returns: ~
-{boolean}  @overload fun()
+(boolean)  @overload fun()
 
 
 Marks                                                  *legendary.toolbox.Marks*
@@ -270,17 +261,18 @@ M.get_marks()                                      *legendary.toolbox.get_marks*
 Get visual marks in format {start_line, start_col, end_line, end_col}
 
 Returns: ~
-{Marks}
+(Marks)
 
 
 M.set_marks({marks})                               *legendary.toolbox.set_marks*
-Set visual marks from a table in the format
+Set visual marks from a table in the forma
 {start_line, start_col, end_line, end_col}
 
 Parameters: ~
-{marks}  (Marks)  the marks to set
+{marks}  (Marks)  the marks to se
 
 
+*legendary.toolbox.table_from_vimscript*
 M.table_from_vimscript({vimscript_str}, {description})
 Parse a vimscript mapping command (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`)
 and return a `legendary.nvim` keymapping table that can be used in your configuration.
@@ -290,12 +282,13 @@ Parameters: ~
 {description}    (string)
 
 Returns: ~
-{table}
+(table)
 
 
-================================================================================
+==============================================================================
 *legendary.ui.format*
 
+*legendary.ui.format.LegendaryItemFormatter*
 LegendaryItemFormatter
 
 Type: ~
@@ -303,15 +296,16 @@ fun(items:LegendaryItem[],mode:string):string[]
 
 
 M.default_format({item})                    *legendary.ui.format.default_format*
-Default format
+Default forma
 
 Parameters: ~
 {item}  (LegendaryItem)
 
 Returns: ~
-{string[]}
+(string[])
 
 
+*legendary.ui.format.compute_padding*
 M.compute_padding({items}, {mode}, {formatter})
 Format items
 
@@ -321,6 +315,7 @@ Parameters: ~
 {formatter}  (LegendaryItemFormatter)
 
 
+*legendary.ui.format.format_item*
 M.format_item({item}, {formatter}, {padding}, {mode})
 Format a single item, meant to be used in `vim.ui.select()`
 
@@ -331,12 +326,13 @@ Parameters: ~
 {mode}       (string)
 
 Returns: ~
-{string}
+(string)
 
 
-================================================================================
+==============================================================================
 *legendary.integrations.which-key*
 
+*legendary.integrations.which-key.parse_whichkey*
 M.parse_whichkey({which_key_tbls}, {which_key_opts}, {do_binding})
 Take which-key.nvim tables
 and parse them into legendary.nvim tables
@@ -344,21 +340,23 @@ and parse them into legendary.nvim tables
 Parameters: ~
 {which_key_tbls}  (table[])
 {which_key_opts}  (table)
-{do_binding}      (boolean)  whether to bind the keymaps or let which-key handle it
+{do_binding}      (boolean)  whether to bind the keymaps or let which-key handle i
 
 Returns: ~
-{LegendaryItem[]}
+(LegendaryItem[])
 
 
+*legendary.integrations.which-key.bind_whichkey*
 M.bind_whichkey({wk_tbls}, {wk_opts}, {do_binding})
 Bind a which-key.nvim table with legendary.nvim
 
 Parameters: ~
 {wk_tbls}     (table)
 {wk_opts}     (table)
-{do_binding}  (boolean)  whether to bind the keymaps or let which-key handle it
+{do_binding}  (boolean)  whether to bind the keymaps or let which-key handle i
 
 
+*legendary.integrations.which-key.whichkey_listen*
 M.whichkey_listen()
 Enable auto-registering of which-key.nvim tables
 with legendary.nvim

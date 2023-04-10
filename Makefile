@@ -1,3 +1,15 @@
+# Download lua-language-server addon for luassert and busted
+.PHONY: lua-lsp-addon
+lsp-addon:
+	@mkdir -p vendor/addons/
+	@if test ! -d ./vendor/luassert-addon; then git clone git@github.com:LuaCATS/luassert.git ./vendor/addons/luassert-addon/; fi
+	@if test ! -d ./vendor/busted-addon; then git clone git@github.com:LuaCATS/busted.git ./vendor/addons/busted-addon/; fi
+
+.PHONY: update-lsp-addon
+update-lsp-addon:
+	@cd ./vendor/addons/luassert-addon && git pull && cd ../..
+	@cd ./vendor/addons/busted-addon && git pull && cd ../..
+
 .PHONY: ensure-test-deps
 ensure-test-deps:
 	@mkdir -p vendor
