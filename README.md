@@ -107,8 +107,8 @@ require('legendary').setup({
       end,
       description = 'Say hello',
     },
-    -- keymaps have opts.silent = true by default, but you can override it
-    { '<leader>s', ':SomeCommand<CR>', description = 'Non-silent keymap', opts = { silent = false } },
+    -- Set options used during keymap creation
+    { '<leader>s', ':SomeCommand<CR>', description = 'Non-silent keymap', opts = { silent = true } },
     -- create keymaps with different implementations per-mode
     {
       '<leader>c',
@@ -274,8 +274,11 @@ require('legendary').setup({
   -- default opts to merge with the `opts` table
   -- of each individual item
   default_opts = {
+    -- for example, { silent = true, remap = false }
     keymaps = {},
+    -- for example, { args = '?', bang = true }
     commands = {},
+    -- for example, { buf = 0, once = true }
     autocmds = {},
   },
   -- Customize the prompt that appears on your vim.ui.select() handler
