@@ -22,6 +22,15 @@ body:
     validations:
       required: true
   - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce
+      value: |
+        1. Open finder
+        2. Select an item
+        3. ...
+        4. Profit?
+  - type: textarea
     id: expected
     attributes:
       label: Expected Behavior
