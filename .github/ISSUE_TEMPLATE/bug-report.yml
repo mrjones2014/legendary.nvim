@@ -23,6 +23,8 @@ body:
       required: true
   - type: textarea
     id: reproduction-steps
+    validations:
+      required: true
     attributes:
       label: Steps to Reproduce
       value: |
