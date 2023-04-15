@@ -95,7 +95,6 @@ describe('ItemList', function()
         description = 'test',
         filters = { buftype = 'nofile' },
       })
-      print('!!!!!!!!!!', vim.api.nvim_buf_get_option(buf, 'buftype'))
       local keymap2 = Keymap:parse({
         '<leader><leader>',
         function() end,

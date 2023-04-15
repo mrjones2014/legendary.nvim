@@ -20,10 +20,9 @@ local function item_score(frequency, timestamps)
     for _, rank in ipairs(recency_modifier) do
       if ts.age <= rank.age then
         recency_score = recency_score + rank.value
-        goto continue
+        break
       end
     end
-    ::continue::
   end
 
   return frequency * recency_score / Config.sort.frecency.max_timestamps
