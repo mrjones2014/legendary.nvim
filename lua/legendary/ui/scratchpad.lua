@@ -169,6 +169,13 @@ function M.open(method)
   else
     float(scratchpad_buf_id, { width = math.floor(vim.o.columns * 0.85), height = math.floor(vim.o.lines * 0.85) })
   end
+
+  vim.schedule_wrap(function()
+    -- if using lspconfig, start lua_lsp
+    if vim.fn.exists(':LspStart') ~= 0 then
+      vim.cmd(':LspStart lua_ls')
+    end
+  end)
 end
 
 ---Close the scratchpad buffer
