@@ -109,22 +109,22 @@ This project uses git tags to adhere to Semantic Versioning
 <https://semver.org/>. To check the latest version, see the git tag list
 <https://github.com/mrjones2014/legendary.nvim/tags>.
 
-With `packer.nvim`:
+With `lazy.nvim`:
 
 >lua
     -- to use a version
-    use({
+    {
       'mrjones2014/legendary.nvim',
-      tag = 'v2.1.0',
+      version = 'v2.1.0',
       -- sqlite is only needed if you want to use frecency sorting
-      -- requires = 'kkharji/sqlite.lua'
-    })
+      -- dependencies = { 'kkharji/sqlite.lua' }
+    }
     -- or, to get rolling updates
-    use({
+    {
       'mrjones2014/legendary.nvim',
       -- sqlite is only needed if you want to use frecency sorting
-      -- requires = 'kkharji/sqlite.lua'
-    })
+      -- dependencies = { 'kkharji/sqlite.lua' }
+    }
 <
 With `vim-plug`:
 
@@ -402,7 +402,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
         -- settings for frecency sorting.
         -- https://en.wikipedia.org/wiki/Frecency
         -- Set `frecency = false` to disable.
-        -- this feature requires sqlite.lua (https://github.com/tami5/sqlite.lua)
+        -- this feature requires sqlite.lua (https://github.com/kkharji/sqlite.lua)
         -- and will be automatically disabled if sqlite is not available.
         -- NOTE: THIS TAKES PRECEDENCE OVER OTHER SORT OPTIONS!
         frecency = {
