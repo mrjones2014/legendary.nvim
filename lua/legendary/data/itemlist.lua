@@ -116,10 +116,17 @@ function ItemList:sort_inplace()
   local items = self.items
 
   if Config.sort.frecency ~= false then
-    local has_sqlite, _ = pcall(require, 'sqlite')
-    if has_sqlite then
+    if require('legendary.api.db').is_supported() then
       -- inline require because this module requires sqlite and is a bit heavier
       local DbClient = require('legendary.api.db.client').init()
+      -- if bootstrapping fails, bail
+      if not require('legendary.api.db').is_supported() then
+        Log.debug(
+          'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+            .. 'frecency is automatically disabled.'
+        )
+        return
+      end
       local frecency_scores = DbClient.get_item_scores()
       Log.debug('Computed item scores: %s', vim.inspect(frecency_scores))
 
@@ -146,7 +153,10 @@ function ItemList:sort_inplace()
       self.items = items
       return
     else
-      Log.debug('Config.sort.frecency is enabled, but sqlite is not availabe, so frecency is automatically disabled.')
+      Log.debug(
+        'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+          .. 'frecency is automatically disabled.'
+      )
     end
   end
 

@@ -3,7 +3,7 @@
 
 local ok, sqlite = pcall(require, 'sqlite')
 if not ok then
-  error('Frecency sorting requires sqlite.lua (https://github.com/tami5/sqlite.lua) ' .. tostring(sqlite))
+  error('Frecency sorting requires sqlite.lua (https://github.com/kkharji/sqlite.lua) ' .. tostring(sqlite))
   return
 end
 
@@ -64,7 +64,8 @@ function M:bootstrap()
     return sqlite:open(db_path)
   end)
   if not db_ok then
-    Log.error('Failed to open database at %s: %s', db_path, db_opened)
+    Log.error('Disabling frecency sort, failed to open database at %s: %s', db_path, db_opened)
+    require('legendary.api.db').disabled_due_to_error = true
     return
   else
     self.db = db_opened
