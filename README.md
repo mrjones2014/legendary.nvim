@@ -14,13 +14,15 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 <sup>Theme used in recording is [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
 <details>
-<summary>Documentation Table of Contents (click to expand)</summary>
+
+**Table of Contents**
 
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
 - [Configuration](#configuration)
+  - [Troubleshooting Frecency Sort](#troubleshooting-frecency-sort)
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
 - [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
 - [Lua API](./doc/API.md)
@@ -404,6 +406,32 @@ require('legendary').setup({
   -- Log level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
   log_level = 'info',
 })
+```
+
+### Troubleshooting Frecency Sort
+
+If you get an error along the lines of the following, and frecency sorting does not work:
+
+```
+Failed to open database at /Users/mat/.local/share/nvim/legendary/legendary_frecency.sqlite3: ...at/.local/share/nvim/lazy/sqlite.lua/lua/sqlite/defs.lua:56: dlopen(lib.dylib, 0x0005): tried: 'lib.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlib.dylib' (no such file), '/nix/store/092zx4zf4fmj0jyk32jl1ihix6q4bmw4-apple-framework-CoreFoundation-11.0.0/Library/Frameworks/lib.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/nix/store/092zx4zf4fmj0jyk32jl1ihix6q4bmw4-apple-framework-CoreFoundation-11.0.0/Library/Frameworks/lib.dylib' (no such file), '/nix/store/092zx4zf4fmj0jyk32jl1ihix6q4bmw4-apple-framework-CoreFoundation-11.0.0/Library/Frameworks/lib.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/nix/store/092zx4zf4fmj0jyk32jl1ihix6q4bmw4-apple-framework-CoreFoundation-11.0.0/Library/Frameworks/lib.dylib' (no such file), '/usr/lib/lib.dylib' (no such file, not in dyld cache), 'lib.dylib' (no such file), '/usr/local/lib/lib.dylib' (no such file), '/usr/lib/lib.dylib' (no such file, not in dyld cache)
+```
+
+This means that the `sqlite.lua` Lua library was unable to find the `libsqlite3.dylib` shared library file. This could be the case
+for a few reasons. To fix this, you can either set `vim.g.sqlite_clib_path` in your Neovim config, or the `LIBSQLITE` environment variable
+to the full path to `libsqlite3.dylib`. If you are using Nix with `home-manager`, this can be done like so:
+
+```nix
+{
+  home.sessionVariables = {
+    LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
+  };
+}
+```
+
+If you are _not_ using Nix, you can locate the `libsqlite3.dylib` on macOS by running:
+
+```shell
+otool -L $(which sqlite3) | grep "sqlite3.dylib"
 ```
 
 ---
