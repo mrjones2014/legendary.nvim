@@ -5,12 +5,6 @@ local ok, sqlite = pcall(require, 'sqlite')
 if not ok then
   error('Frecency sorting requires sqlite.lua (https://github.com/tami5/sqlite.lua) ' .. tostring(sqlite))
   return
-else
-  -- make it work in more scenarios
-  local path = vim.fn.system('which sqlite3')
-  if vim.v.shell_error == 0 then
-    vim.g.sqlite_clib_path = vim.trim(path)
-  end
 end
 
 local Config = require('legendary.config')
