@@ -13,8 +13,6 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 ![demo gif](https://user-images.githubusercontent.com/8648891/200827633-7009f5f3-e126-491c-88bd-73a0287978c4.gif) \
 <sup>Theme used in recording is [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim). The finder UI is handled by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) via [dressing.nvim](https://github.com/stevearc/dressing.nvim). See [Prerequisites](#prerequisites) for details.</sup>
 
-<details>
-
 **Table of Contents**
 
 - [Features](#features)
@@ -32,8 +30,6 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
   - [Commands](./doc/table_structures/COMMANDS.md)
   - [Functions](./doc/table_structures/FUNCTIONS.md)
   - [`augroup`/`autocmd`s](./doc/table_structures/AUTOCMDS.md)
-
-</details>
 
 ## Features
 
