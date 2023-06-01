@@ -3,6 +3,7 @@
 local State = require('legendary.data.state')
 local Keymap = require('legendary.data.keymap')
 local Log = require('legendary.log')
+local Config = require('legendary.config')
 
 local Lazy = require('legendary.vendor.lazy')
 ---@type ItemGroup
@@ -33,11 +34,11 @@ local function wk_to_legendary(wk, wk_opts, wk_groups)
   if wk_opts and wk_opts.mode then
     legendary.mode = wk_opts.mode
   end
-  if wk.group == true and #wk.name > 0 then
+  if wk.group == true and #wk.name > 0 and Config.which_key.use_groups then
     legendary.itemgroup = wk.name
   end
-  local group = longest_matching_group(wk, wk_groups)
-  if group then
+  local group = Config.which_key.use_groups and longest_matching_group(wk, wk_groups) or nil
+  if group and Config.which_key.use_groups then
     legendary.itemgroup = group
   end
   legendary.description = wk.label or vim.tbl_get(wk, 'opts', 'desc')
