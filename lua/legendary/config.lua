@@ -100,6 +100,10 @@ local config = {
     -- or if you want to let which-key.nvim handle the bindings.
     -- if not passed, true by default
     do_binding = true,
+    -- controls whether to use legendary.nvim item groups
+    -- matching your which-key.nvim groups; if false, all keymaps
+    -- are added at toplevel instead of in a group.
+    use_groups = true,
   },
   -- Which extensions to load; no extensions are loaded by default.
   -- Setting the plugin name to `false` disables loading the extension.
@@ -134,6 +138,7 @@ local config = {
 ---@field mappings table[]
 ---@field opts table
 ---@field do_binding boolean
+---@field use_groups boolean
 
 ---@class LegendaryScratchpadConfig
 ---@field view 'float'|'current'
