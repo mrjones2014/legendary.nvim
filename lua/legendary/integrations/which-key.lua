@@ -88,7 +88,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
     end
   end, wk_parsed)
   vim.tbl_map(function(wk)
-    if vim.tbl_get(wk, 'opts', 'desc') and not wk.group == true then
+    if vim.tbl_get(wk, 'opts', 'desc') and wk.group ~= true then
       table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts, wk_groups))
     end
   end, wk_parsed)
