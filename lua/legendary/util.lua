@@ -60,8 +60,12 @@ end
 ---Execute the given keys via `vim.api.nvim_feedkeys`,
 ---`keys` are escaped using `vim.api.nvim_replace_termcodes`
 ---@param keys string
-function M.exec_feedkeys(keys)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 't', true)
+function M.exec_feedkeys(keys, noremap)
+  local mode = 't'
+  if noremap then
+    mode = mode .. 'n'
+  end
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), mode, true)
 end
 
 ---Run the given function, timing it's duration and logging the performance
