@@ -74,7 +74,7 @@ function M.exec_item(item, context)
           vim.cmd(cmd)
         end
       elseif Toolbox.is_keymap(item) then
-        util.exec_feedkeys(item.keys)
+        util.exec_feedkeys(item.keys, item.builtin)
       elseif Toolbox.is_autocmd(item) then
         local impl = item.implementation
         if type(impl) == 'function' then
