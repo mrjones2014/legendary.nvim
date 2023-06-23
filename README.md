@@ -105,7 +105,7 @@ keymaps where you define the plugin, and `legendary.nvim` automatically detects 
 
 ```lua
 -- in a plugin spec:
-return {
+{
   'folke/flash.nvim',
   keys = {
     {
