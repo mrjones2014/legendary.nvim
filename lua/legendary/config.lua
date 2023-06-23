@@ -87,6 +87,11 @@ local config = {
       max_timestamps = 10,
     },
   },
+  lazy_nvim = {
+    -- Automatically register keymaps that are defined on lazy.nvim plugin specs
+    -- using the `keys = {}` property.
+    auto_register = false,
+  },
   which_key = {
     -- Automatically add which-key tables to legendary
     -- see ./doc/WHICH_KEY.md for more details
@@ -133,6 +138,9 @@ local config = {
   log_level = 'info',
 }
 
+---@class LegendaryLazyNvimConfig
+---@field auto_register boolean
+
 ---@class LegendaryWhichkeyConfig
 ---@field auto_register boolean
 ---@field mappings table[]
@@ -176,6 +184,7 @@ local config = {
 ---@field include_builtin boolean
 ---@field include_legendary_cmds boolean
 ---@field sort LegendarySortOpts
+---@field lazy_nvim LegendaryLazyNvimConfig
 ---@field which_key LegendaryWhichkeyConfig
 ---@field extensions table<string, any>
 ---@field scratchpad LegendaryScratchpadConfig

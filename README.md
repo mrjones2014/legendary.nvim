@@ -35,6 +35,7 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 
 - Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions to run on the fly, as simple Lua tables, then bind them with `legendary.nvim`
 - Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
+- Integration with [lazy.nvim](https://github.com/folke/lazy.nvim), automatically load keymaps defined via `lazy.nvim`'s `keys` property on plugin specs
 - Execute normal, insert, and visual mode keymaps, commands, autocommands, and Lua functions when you select them
 - Show your most recently executed items at the top when triggered via `legendary.nvim` (can be disabled via config)
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface
@@ -65,12 +66,20 @@ With `lazy.nvim`:
 {
   'mrjones2014/legendary.nvim',
   version = 'v2.1.0',
+  -- since legendary.nvim handles all your keymaps/commands,
+  -- its recommended to load legendary.nvim before other plugins
+  priority = 10000,
+  lazy = false,
   -- sqlite is only needed if you want to use frecency sorting
   -- dependencies = { 'kkharji/sqlite.lua' }
 }
 -- or, to get rolling updates
 {
   'mrjones2014/legendary.nvim',
+  -- since legendary.nvim handles all your keymaps/commands,
+  -- its recommended to load legendary.nvim before other plugins
+  priority = 10000,
+  lazy = false,
   -- sqlite is only needed if you want to use frecency sorting
   -- dependencies = { 'kkharji/sqlite.lua' }
 }
@@ -90,7 +99,41 @@ Plug "mrjones2014/legendary.nvim"
 
 ## Quickstart
 
-Register keymaps through setup:
+If you use [lazy.nvim](https://github.com/folke/lazy.nvim) for your plugin manager, `legendary.nvim` can automatically
+register keymaps defined via the `keys` property of `lazy.nvim` plugin specs. This lets you keep your plugin-specific
+keymaps where you define the plugin, and `legendary.nvim` automatically detects them. For example:
+
+```lua
+-- in a plugin spec:
+return {
+  'folke/flash.nvim',
+  keys = {
+    {
+      's',
+      function()
+        require('flash').jump()
+      end,
+      mode = { 'n', 'x', 'o' },
+      desc = 'Jump forwards',
+    },
+    {
+      'S',
+      function()
+        require('flash').jump({ search = { forward = false } })
+      end,
+      mode = { 'n', 'x', 'o' },
+      desc = 'Jump backwards',
+    },
+  },
+}
+
+-- where you set up legendary.nvim
+-- now the keymaps from the `flash.nvim` plugin spec will be automatically loaded
+require('legendary').setup({ lazy_nvim = { auto_register = true } })
+```
+
+Otherwise, register keymaps, commands, autocmds, and functions through setup, including
+opting into _extensions_ which can automatically load keymaps and commands from other plugins:
 
 ```lua
 require('legendary').setup({
@@ -356,6 +399,11 @@ require('legendary').setup({
       -- to store in the database
       max_timestamps = 10,
     },
+  },
+  lazy_nvim = {
+    -- Automatically register keymaps that are defined on lazy.nvim plugin specs
+    -- using the `keys = {}` property.
+    auto_register = false,
   },
   which_key = {
     -- Automatically add which-key tables to legendary
