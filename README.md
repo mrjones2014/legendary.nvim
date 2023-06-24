@@ -261,6 +261,9 @@ Commands:
 
 " search autocmds
 :Legendary autocmds
+
+" repeat the last item executed via legendary.nvim's finder
+:LegendaryRepeat
 ```
 
 Lua API:

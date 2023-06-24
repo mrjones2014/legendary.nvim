@@ -109,6 +109,10 @@ function M.setup(cfg)
   Log.trace('setup() parsed and applied all configuration.')
 end
 
+function M.repeat_previous()
+  require('legendary.api.executor').repeat_previous()
+end
+
 ---Find items using vim.ui.select()
 ---@param opts LegendaryFindOpts
 ---@overload fun()

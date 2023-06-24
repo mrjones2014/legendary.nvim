@@ -1,6 +1,30 @@
 local Toolbox = require('legendary.toolbox')
 local Log = require('legendary.log')
+local Config = require('legendary.config')
 local util = require('legendary.util')
+
+local function update_item_frecency_score(item)
+  if Config.sort.frecency ~= false then
+    if require('legendary.api.db').is_supported() then
+      Log.trace('Updating scoring data for selected item.')
+      local DbClient = require('legendary.api.db.client').get_client()
+      -- if bootstrapping fails, bail
+      if not require('legendary.api.db').is_supported() then
+        Log.debug(
+          'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+            .. 'frecency is automatically disabled.'
+        )
+        return
+      end
+      DbClient.update_item_score(item)
+    else
+      Log.debug(
+        'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+          .. 'frecency is automatically disabled.'
+      )
+    end
+  end
+end
 
 local M = {}
 
@@ -56,10 +80,11 @@ end
 function M.exec_item(item, context)
   vim.schedule(function()
     M.restore_context(context, function()
+      update_item_frecency_score(item)
       if Toolbox.is_function(item) then
         item.implementation()
       elseif Toolbox.is_command(item) then
-        local cmd = item:vim_cmd()
+        local cmd = (item--[[@as Command]]):vim_cmd()
         if item.unfinished == true then
           util.exec_feedkeys(string.format(':%s ', cmd))
         else
@@ -87,6 +112,15 @@ function M.exec_item(item, context)
       end
     end)
   end)
+  return 'g@'
+end
+
+function M.repeat_previous()
+  local State = require('legendary.data.state')
+  if State.most_recent_item then
+    local context = M.build_context()
+    M.exec_item(State.most_recent_item, context)
+  end
 end
 
 return M

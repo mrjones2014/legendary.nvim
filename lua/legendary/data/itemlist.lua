@@ -118,7 +118,7 @@ function ItemList:sort_inplace()
   if Config.sort.frecency ~= false then
     if require('legendary.api.db').is_supported() then
       -- inline require because this module requires sqlite and is a bit heavier
-      local DbClient = require('legendary.api.db.client').init()
+      local DbClient = require('legendary.api.db.client').get_client()
       -- if bootstrapping fails, bail
       if not require('legendary.api.db').is_supported() then
         Log.debug(

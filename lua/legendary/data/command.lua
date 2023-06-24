@@ -22,6 +22,7 @@ local Toolbox = require('legendary.toolbox')
 ---@field opts table
 ---@field unfinished boolean
 ---@field filters (function[])|nil
+---@field frecency_id fun(self):string
 ---@field builtin boolean
 ---@field class Command
 local Command = class('Command')

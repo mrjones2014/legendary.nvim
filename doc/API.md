@@ -91,7 +91,7 @@ require('legendary').find({
 })
 -- filter keymaps by normal mode
 require('legendary').find({
-  filters = require('legendary.filters').mode('n')
+  filters = require('legendary.filters').mode('n'),
 })
 -- filter keymaps by normal mode and that start with <leader>
 require('legendary').find({
@@ -99,9 +99,17 @@ require('legendary').find({
     require('legendary.filters').mode('n'),
     function(item)
       return require('legendary.toolbox').is_keymap(item) and vim.startswith(item[1], '<leader>')
-    end
-  }
+    end,
+  },
 })
+```
+
+## Repeat Last Item
+
+You can repeat the previous item selected from `legendary.nvim`'s finder like so:
+
+```lua
+require('legendary').repeat_previous()
 ```
 
 ## Converting Keymaps From Vimscript
@@ -112,20 +120,18 @@ Keymaps can be parsed from Vimscript commands (e.g. `vnoremap <silent> <leader>f
 -- Function signature
 require('legendary.toolbox').table_from_vimscript(vimscript_str, description)
 -- For example
-require('legendary.toolbox').table_from_vimscript(
-  ':vnoremap <silent> <expr> <leader>f :SomeCommand<CR>',
-  'Description of my keymap'
-)
--- Returns the following table
-{
-  '<leader>f',
-  ':SomeCommand<CR>',
-  description = 'Description of my keymap',
-  mode = 'v',
-  opts = {
-    silent = true,
-    expr = true,
-    remap = false,
-  },
-}
+require('legendary.toolbox')
+  .table_from_vimscript(':vnoremap <silent> <expr> <leader>f :SomeCommand<CR>', 'Description of my keymap')
+  -- Returns the following table
+  ({
+    '<leader>f',
+    ':SomeCommand<CR>',
+    description = 'Description of my keymap',
+    mode = 'v',
+    opts = {
+      silent = true,
+      expr = true,
+      remap = false,
+    },
+  })
 ```
