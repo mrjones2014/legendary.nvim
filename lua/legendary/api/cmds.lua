@@ -62,6 +62,14 @@ end, {
     },
   },
   {
+    ':LegendaryRepeat',
+    function(opts)
+      require('legendary').repeat_previous(opts.bang)
+    end,
+    description = "Repeat the last item executed via legendary.nvim's finder",
+    opts = { bang = true },
+  },
+  {
     ':LegendaryScratch',
     function(args)
       local method = vim.tbl_get(args, 'fargs', 1)

@@ -26,6 +26,7 @@ local Filters = require('legendary.data.filters')
 ---@field opts table
 ---@field builtin boolean
 ---@field filters (function[])|nil
+---@field frecency_id fun(self):string
 ---@field class Keymap
 local Keymap = class('Keymap')
 Keymap:include(Filters) ---@diagnostic disable-line

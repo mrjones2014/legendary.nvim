@@ -7,6 +7,7 @@ local Filters = require('legendary.data.filters')
 ---@field description string
 ---@field opts table
 ---@field filters (function[])|nil
+---@field frecency_id fun(self):string
 ---@field class Function
 local Function = class('Function')
 Function:include(Filters) ---@diagnostic disable-line

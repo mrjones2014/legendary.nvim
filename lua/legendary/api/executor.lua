@@ -1,6 +1,30 @@
 local Toolbox = require('legendary.toolbox')
 local Log = require('legendary.log')
+local Config = require('legendary.config')
 local util = require('legendary.util')
+
+local function update_item_frecency_score(item)
+  if Config.sort.frecency ~= false then
+    if require('legendary.api.db').is_supported() then
+      Log.trace('Updating scoring data for selected item.')
+      local DbClient = require('legendary.api.db.client').get_client()
+      -- if bootstrapping fails, bail
+      if not require('legendary.api.db').is_supported() then
+        Log.debug(
+          'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+            .. 'frecency is automatically disabled.'
+        )
+        return
+      end
+      DbClient.update_item_score(item)
+    else
+      Log.debug(
+        'Config.sort.frecency is enabled, but sqlite is not available or database could not be opened, '
+          .. 'frecency is automatically disabled.'
+      )
+    end
+  end
+end
 
 local M = {}
 
@@ -56,10 +80,11 @@ end
 function M.exec_item(item, context)
   vim.schedule(function()
     M.restore_context(context, function()
+      update_item_frecency_score(item)
       if Toolbox.is_function(item) then
         item.implementation()
       elseif Toolbox.is_command(item) then
-        local cmd = item:vim_cmd()
+        local cmd = (item--[[@as Command]]):vim_cmd()
         if item.unfinished == true then
           util.exec_feedkeys(string.format(':%s ', cmd))
         else
@@ -87,6 +112,31 @@ function M.exec_item(item, context)
       end
     end)
   end)
+  return 'g@'
+end
+
+---Repeat execution of the previously selected item. By default, only executes if the previously used filters
+---still return true.
+---@param ignore_filters boolean|nil whether to ignore the filters used when selecting the item, default false
+function M.repeat_previous(ignore_filters)
+  local State = require('legendary.data.state')
+  if State.most_recent_item then
+    if not ignore_filters and State.most_recent_filters then
+      for _, filter in ipairs(State.most_recent_filters) do
+        -- if any filter does not match, abort executions
+        local err, matches = pcall(filter, State.most_recent_item)
+        if not err and not matches then
+          Log.warn(
+            'Previously executed item no longer matches previously used filters, use `:LegendaryRepeat!`'
+              .. " or `require('legendary').repeat_previous(true)` to execute anyway."
+          )
+          return
+        end
+      end
+    end
+    local context = M.build_context()
+    M.exec_item(State.most_recent_item, context)
+  end
 end
 
 return M

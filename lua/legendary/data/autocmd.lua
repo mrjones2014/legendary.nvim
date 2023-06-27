@@ -9,6 +9,7 @@ local Filters = require('legendary.data.filters')
 ---@field opts table
 ---@field description string
 ---@field group string|integer|nil
+---@field frecency_id fun(self):string
 ---@field class Autocmd
 local Autocmd = class('Autocmd')
 Autocmd:include(Filters) ---@diagnostic disable-line

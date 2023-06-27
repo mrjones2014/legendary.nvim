@@ -4,6 +4,8 @@
 local DbWrapper = require('legendary.api.db.wrapper')
 local Config = require('legendary.config')
 
+local shared_client = nil
+
 -- modifier used as a weight in the recency_score calculation:
 local recency_modifier = {
   [1] = { age = 240, value = 100 }, -- past 4 hours
@@ -81,6 +83,14 @@ end
 
 function M.sql_escape(str)
   return M.db_wrapper.sql_escape(str)
+end
+
+function M.get_client()
+  if not shared_client then
+    shared_client = M.init()
+  end
+
+  return shared_client
 end
 
 return M
