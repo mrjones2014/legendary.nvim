@@ -115,9 +115,25 @@ function M.exec_item(item, context)
   return 'g@'
 end
 
-function M.repeat_previous()
+---Repeat execution of the previously selected item. By default, only executes if the previously used filters
+---still return true.
+---@param ignore_filters boolean|nil whether to ignore the filters used when selecting the item, default false
+function M.repeat_previous(ignore_filters)
   local State = require('legendary.data.state')
   if State.most_recent_item then
+    if not ignore_filters and State.most_recent_filters then
+      for _, filter in ipairs(State.most_recent_filters) do
+        -- if any filter does not match, abort executions
+        local err, matches = pcall(filter, State.most_recent_item)
+        if not err and not matches then
+          Log.warn(
+            'Previously executed item no longer matches previously used filters, use `:LegendaryRepeat!`'
+              .. " or `require('legendary').repeat_previous(true)` to execute anyway."
+          )
+          return
+        end
+      end
+    end
     local context = M.build_context()
     M.exec_item(State.most_recent_item, context)
   end

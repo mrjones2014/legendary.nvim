@@ -106,10 +106,13 @@ require('legendary').find({
 
 ## Repeat Last Item
 
-You can repeat the previous item selected from `legendary.nvim`'s finder like so:
+You can repeat the previous item selected from `legendary.nvim`'s finder. By default, it only executes the item
+if the previous set of item filters used to select the item still returns `true`. You can ignore this with a
+parameter.
 
 ```lua
 require('legendary').repeat_previous()
+require('legendary').repeat_previous(--[[ ignore_filters: ]] true)
 ```
 
 ## Converting Keymaps From Vimscript

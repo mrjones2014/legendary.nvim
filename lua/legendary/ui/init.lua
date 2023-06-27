@@ -53,6 +53,8 @@ local function select_inner(opts, context, itemlist)
     return item_buf == nil or item_buf == local_context.buf
   end)
 
+  State.most_recent_filters = filters
+
   local items = itemlist:filter(filters, context)
   local padding = Format.compute_padding(items, opts.formatter or Config.default_item_formatter, context.mode)
 

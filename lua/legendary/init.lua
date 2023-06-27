@@ -109,8 +109,11 @@ function M.setup(cfg)
   Log.trace('setup() parsed and applied all configuration.')
 end
 
-function M.repeat_previous()
-  require('legendary.api.executor').repeat_previous()
+---Repeat execution of the previously selected item. By default, only executes if the previously used filters
+---still return true.
+---@param ignore_filters boolean|nil whether to ignore the filters used when selecting the item, default false
+function M.repeat_previous(ignore_filters)
+  require('legendary.api.executor').repeat_previous(ignore_filters)
 end
 
 ---Find items using vim.ui.select()

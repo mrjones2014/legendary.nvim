@@ -262,8 +262,12 @@ Commands:
 " search autocmds
 :Legendary autocmds
 
-" repeat the last item executed via legendary.nvim's finder
+" repeat the last item executed via legendary.nvim's finder;
+" by default, only executes if the last set of item filters used still returns `true`
 :LegendaryRepeat
+
+" repeat the last item executed via legendary.nvim's finder, ignoring the filters used
+:LegendaryRepeat!
 ```
 
 Lua API:

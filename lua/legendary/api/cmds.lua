@@ -63,10 +63,11 @@ end, {
   },
   {
     ':LegendaryRepeat',
-    function()
-      require('legendary').repeat_previous()
+    function(opts)
+      require('legendary').repeat_previous(opts.bang)
     end,
     description = "Repeat the last item executed via legendary.nvim's finder",
+    opts = { bang = true },
   },
   {
     ':LegendaryScratch',
