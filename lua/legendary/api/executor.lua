@@ -61,6 +61,9 @@ function M.restore_context(context, callback)
   if vim.startswith(context.mode, 'n') then
     vim.cmd('stopinsert')
   elseif Toolbox.is_visual_mode(context.mode) then
+    -- we can't just use `gv` since vim.ui.select aborts visual mode without any trace
+    vim.cmd(string.format('normal! %s%s', context.mode, vim.api.nvim_replace_termcodes('<esc>', true, false, true)))
+    Toolbox.set_marks(context.marks)
     vim.cmd('normal! gv')
   elseif vim.startswith(context.mode, 'i') then
     vim.cmd('startinsert')
