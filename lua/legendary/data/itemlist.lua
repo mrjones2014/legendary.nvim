@@ -48,7 +48,7 @@ function ItemList:add(items)
         group.icon = group.icon or item.icon
         group.description = group.description or item.description
       else
-        self.itemgroup_refs[item.name] = item
+        self.itemgroup_refs[item:id()] = item
         table.insert(self.items, item)
       end
       self.sorted = false
@@ -64,6 +64,17 @@ function ItemList:add(items)
       end
     end
   end
+end
+
+---Get an ItemGroup by ID/name.
+---@param id string
+---@return ItemGroup|nil
+function ItemList:get_item_group(id)
+  if not id or type(id) ~= 'string' or #id == 0 then
+    return nil
+  end
+
+  return self.itemgroup_refs[id]
 end
 
 ---@alias LegendaryItemFilter fun(item:LegendaryItem, context: LegendaryEditorContext):boolean

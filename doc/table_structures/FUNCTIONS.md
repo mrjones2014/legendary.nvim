@@ -39,7 +39,7 @@ You can also pass options via the `opts` property:
 - `buffer` option (a buffer handle, or `0` for current buffer), which will
   make the function visible only in the specified buffer.
 
-## Item groups
+## Item Groups
 
 You can also organize keymaps, commands, and functions into groups that will show up
 in the finder UI like a folder, selecting it will then trigger another finder for items
