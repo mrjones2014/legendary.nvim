@@ -202,6 +202,17 @@ local M = setmetatable({}, {
 function M.setup(cfg)
   config = vim.tbl_deep_extend('force', config, cfg or {})
   config = require('legendary.deprecate').check_config(config)
+
+  for _, key in ipairs({ 'keymaps', 'commands', 'autocmds', 'funcs', 'itemgroups' }) do
+    if type(config[key]) == 'function' then
+      local ok, result = pcall(config[key])
+      if ok then
+        config[key] = result
+      else
+        require('legendary.log').error('Failed to evaluate %s function: %s', key, result)
+      end
+    end
+  end
 end
 
 return M
