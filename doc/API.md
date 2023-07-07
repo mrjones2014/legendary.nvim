@@ -4,12 +4,12 @@
 
 The `require('legendary').find()` function also takes a table of options. The accepted options are:
 
-| Table Key | Type (see below for type definitions) | Description |
-| --------- | ---- | ----------- |
-| `itemgroup` | `string` | Find items only within the specified `ItemGroup` |
-| `filters`   | `LegendaryItemFilter[]` | Filter functions used to filter items |
-| `select_prompt` | `string` | Override the prompt title from your config for this instance |
-| `formatter` | `LegendaryItemFormatter` | Override the item formatter from your config for this instance |
+| Table Key       | Type (see below for type definitions) | Description                                                    |
+| --------------- | ------------------------------------- | -------------------------------------------------------------- |
+| `itemgroup`     | `string`                              | Find items only within the specified `ItemGroup`               |
+| `filters`       | `LegendaryItemFilter[]`               | Filter functions used to filter items                          |
+| `select_prompt` | `string`                              | Override the prompt title from your config for this instance   |
+| `formatter`     | `LegendaryItemFormatter`              | Override the item formatter from your config for this instance |
 
 ### Types
 
