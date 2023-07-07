@@ -314,17 +314,18 @@ keymap, command, and `augroup`/`autocmd` tables, see [doc/table_structures/READM
 
 ```lua
 require('legendary').setup({
-  -- Initial keymaps to bind
+  -- Initial keymaps to bind, can also be a function that returns the list
   keymaps = {},
-  -- Initial commands to bind
+  -- Initial commands to bind, can also be a function that returns the list
   commands = {},
-  -- Initial augroups/autocmds to bind
+  -- Initial augroups/autocmds to bind, can also be a function that returns the list
   autocmds = {},
-  -- Initial functions to bind
+  -- Initial functions to bind, can also be a function that returns the list
   funcs = {},
   -- Initial item groups to bind,
   -- note that item groups can also
-  -- be under keymaps, commands, autocmds, or funcs
+  -- be under keymaps, commands, autocmds, or funcs;
+  -- can also be a function that returns the list
   itemgroups = {},
   -- default opts to merge with the `opts` table
   -- of each individual item
