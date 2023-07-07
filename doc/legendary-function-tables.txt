@@ -1,11 +1,11 @@
-*legendary-function-tables.txt*                     Last change: 2023 March 10
+*legendary-function-tables.txt*                      Last change: 2023 July 06
 
 ==============================================================================
 Table of Contents                *legendary-function-tables-table-of-contents*
 
 Basic functions .................. |legendary-function-tables-basic-functions|
 Options .................................. |legendary-function-tables-options|
-Item groups .......................... |legendary-function-tables-item-groups|
+Item Groups .......................... |legendary-function-tables-item-groups|
 
 ==============================================================================
 FUNCTIONS                                *legendary-function-tables-functions*

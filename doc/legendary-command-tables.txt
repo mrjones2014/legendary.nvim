@@ -1,4 +1,4 @@
-*legendary-command-tables.txt*                      Last change: 2023 March 10
+*legendary-command-tables.txt*                       Last change: 2023 July 06
 
 ==============================================================================
 Table of Contents                 *legendary-command-tables-table-of-contents*
@@ -8,7 +8,7 @@ Hiding commands from the UI  |legendary-command-tables-hiding-commands-from-the-
 Per-mode command implementations  |legendary-command-tables-per-mode-command-implementations|
 Specifying command options  |legendary-command-tables-specifying-command-options|
 Incomplete commands ........... |legendary-command-tables-incomplete-commands|
-Item groups ........................... |legendary-command-tables-item-groups|
+Item Groups ........................... |legendary-command-tables-item-groups|
 
 ==============================================================================
 COMMANDS                                   *legendary-command-tables-commands*

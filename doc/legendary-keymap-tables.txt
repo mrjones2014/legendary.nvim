@@ -1,4 +1,4 @@
-*legendary-keymap-tables.txt*                       Last change: 2023 April 07
+*legendary-keymap-tables.txt*                        Last change: 2023 July 06
 
 ==============================================================================
 Table of Contents                  *legendary-keymap-tables-table-of-contents*
@@ -9,7 +9,7 @@ Hiding keymaps from the UI  |legendary-keymap-tables-hiding-keymaps-from-the-ui|
 Helper functions .................. |legendary-keymap-tables-helper-functions|
 Specifying mode .................... |legendary-keymap-tables-specifying-mode|
 Specifying keymap options  |legendary-keymap-tables-specifying-keymap-options|
-Item groups ............................ |legendary-keymap-tables-item-groups|
+Item Groups ............................ |legendary-keymap-tables-item-groups|
 
 ==============================================================================
 KEYMAPS                                      *legendary-keymap-tables-keymaps*
