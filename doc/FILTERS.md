@@ -1,6 +1,7 @@
 # Built-in Filters
 
-The `require('legendary.filters')` module provides the following filters
+A filter is just a function with the signature `fun(item): bool`, but the
+`require('legendary.filters')` module provides the following built-in filters
 for convenience:
 
 ```lua

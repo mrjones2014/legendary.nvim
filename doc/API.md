@@ -1,5 +1,34 @@
 # Lua API
 
+## Options for Finding Items
+
+The `require('legendary').find()` function also takes a table of options. The accepted options are:
+
+| Table Key | Type (see below for type definitions) | Description |
+| --------- | ---- | ----------- |
+| `itemgroup` | `string` | Find items only within the specified `ItemGroup` |
+| `filters`   | `LegendaryItemFilter[]` | Filter functions used to filter items |
+| `select_prompt` | `string` | Override the prompt title from your config for this instance |
+| `formatter` | `LegendaryItemFormatter` | Override the item formatter from your config for this instance |
+
+### Types
+
+```lua
+---@alias LegendaryItemFilter fun(item:LegendaryItem, context: LegendaryEditorContext):boolean
+
+---@alias LegendaryItemFormatter fun(items:LegendaryItem[],mode:string):string[]
+
+---@alias LegendaryItem Keymap|Command|Augroup|Autocmd|Function|ItemGroup
+
+---@class LegendaryEditorContext
+---@field buf integer
+---@field buftype string
+---@field filetype string
+---@field mode string
+---@field cursor_pos integer[] { row, col }
+---@field marks integer[]|nil
+```
+
 You can also manually bind new items after you've already called `require('legendary').setup()`.
 This can be useful for things like binding language-specific keyaps in the LSP `on_attach` function.
 
@@ -102,6 +131,16 @@ require('legendary').find({
     end,
   },
 })
+```
+
+## Find Items From a Specific Item Group
+
+To search `legendary.nvim` items only from a specific [item group](./table_structures/KEYMAPS.md#item-groups),
+you can pass the group's name via the `itemgroup` option:
+
+```lua
+-- find only LSP-related items
+require('legendary').find({ itemgroup = 'LSP' })
 ```
 
 ## Repeat Last Item

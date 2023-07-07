@@ -12,6 +12,7 @@ local Log = require('legendary.log')
 local M = {}
 
 ---@class LegendaryFindOpts
+---@field itemgroup string Find items in this item group only
 ---@field filters LegendaryItemFilter[]
 ---@field select_prompt string|fun():string
 ---@field formatter LegendaryItemFormatter
@@ -27,6 +28,16 @@ local function select_inner(opts, context, itemlist)
     Log.trace('Launching select UI')
   end
 
+  -- if no itemlist passed
+  if itemlist == nil then
+    -- if an item group is specified, use that
+    local itemgroup = State.items:get_item_group(opts.itemgroup)
+    if itemgroup then
+      itemlist = itemgroup.items
+    end
+  end
+
+  -- finally, use full item list if no other lists are specified
   itemlist = itemlist or State.items
   opts = opts or {}
 
