@@ -22,6 +22,7 @@ local M = {}
 ---@param context LegendaryEditorContext
 ---@overload fun(opts:LegendaryFindOpts,context:LegendaryEditorContext)
 local function select_inner(opts, context, itemlist)
+  opts = opts or {}
   if itemlist then
     Log.trace('Relaunching select UI for an item group')
   else
