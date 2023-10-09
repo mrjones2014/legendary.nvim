@@ -13,14 +13,16 @@ function M.load_lazy_nvim_keys()
   local Handler = require('lazy.core.handler')
   for _, plugin in pairs(LazyNvimConfig.plugins) do
     local keys = Handler.handlers.keys:values(plugin)
-    for _, keymap in pairs(keys) do
+    for lhs, keymap in pairs(keys) do
+      print(vim.inspect({ lhs, keymap }))
       if keymap.desc and #keymap.desc > 0 then
         -- we don't need the implementation, since
         -- lazy.nvim will have already bound it. We
         -- just need the description-only item to appear
         -- in the legendary.nvim finder.
         local legendary_keymap = {
-          keymap[1], -- lhs
+          -- for backwards compatibility, if keymap.lhs is missing, using an old lazy.nvim so it will be keymap[1]
+          keymap.lhs or keymap[1],
           description = keymap.desc,
           mode = keymap.mode, ---@type string|string[]|nil
         }
