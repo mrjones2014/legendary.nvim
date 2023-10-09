@@ -13,8 +13,7 @@ function M.load_lazy_nvim_keys()
   local Handler = require('lazy.core.handler')
   for _, plugin in pairs(LazyNvimConfig.plugins) do
     local keys = Handler.handlers.keys:values(plugin)
-    for lhs, keymap in pairs(keys) do
-      print(vim.inspect({ lhs, keymap }))
+    for _, keymap in pairs(keys) do
       if keymap.desc and #keymap.desc > 0 then
         -- we don't need the implementation, since
         -- lazy.nvim will have already bound it. We
