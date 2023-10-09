@@ -20,7 +20,8 @@ function M.load_lazy_nvim_keys()
         -- just need the description-only item to appear
         -- in the legendary.nvim finder.
         local legendary_keymap = {
-          keymap[1], -- lhs
+          -- for backwards compatibility, if keymap.lhs is missing, using an old lazy.nvim so it will be keymap[1]
+          keymap.lhs or keymap[1],
           description = keymap.desc,
           mode = keymap.mode, ---@type string|string[]|nil
         }
