@@ -61,18 +61,6 @@ end
 function M.check_config(cfg)
   ---@diagnostic disable
 
-  if cfg.functions ~= nil then
-    M.write({ 'config.functions', 'WarningMsg' }, 'has been moved to', { 'config.funcs' })
-    cfg.funcs = cfg.functions
-  end
-
-  if cfg.default_opts.functions ~= nil then
-    if cfg.default_opts.functions ~= nil then
-      M.write({ 'config.default_opts.functions', 'WarningMsg' }, 'has been moved to', { 'config.default_opts.funcs' })
-      cfg.default_opts.funcs = cfg.default_opts.functions
-    end
-  end
-
   if cfg.which_key ~= nil then
     M.write({ 'config.which_key', 'WarningMsg' }, 'has been moved to', { 'config.extensions.which_key' })
     cfg.extensions = cfg.extensions or {}
