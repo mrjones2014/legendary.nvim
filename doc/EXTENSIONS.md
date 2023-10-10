@@ -70,7 +70,9 @@ into `legendary.nvim`.
 
 ```lua
 require('legendary').setup({
-  lazy_nvim = true,
+  extensions = {
+    lazy_nvim = true,
+  }
 })
 ```
 
