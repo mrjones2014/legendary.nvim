@@ -91,7 +91,9 @@ Automatically load key mappings defined in lazy.nvim
 
 >lua
     require('legendary').setup({
-      lazy_nvim = true,
+      extensions = {
+        lazy_nvim = true,
+      }
     })
 <
 
