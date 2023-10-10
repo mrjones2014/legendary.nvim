@@ -12,10 +12,12 @@ legendary-extensions-built-in-extensions	legendary-extensions.txt	/*legendary-ex
 legendary-extensions-diffview.nvim	legendary-extensions.txt	/*legendary-extensions-diffview.nvim*
 legendary-extensions-extension-api	legendary-extensions.txt	/*legendary-extensions-extension-api*
 legendary-extensions-extensions	legendary-extensions.txt	/*legendary-extensions-extensions*
+legendary-extensions-lazy.nvim	legendary-extensions.txt	/*legendary-extensions-lazy.nvim*
 legendary-extensions-nvim-tree.lua	legendary-extensions.txt	/*legendary-extensions-nvim-tree.lua*
 legendary-extensions-op.nvim	legendary-extensions.txt	/*legendary-extensions-op.nvim*
 legendary-extensions-smart-splits.nvim	legendary-extensions.txt	/*legendary-extensions-smart-splits.nvim*
 legendary-extensions-table-of-contents	legendary-extensions.txt	/*legendary-extensions-table-of-contents*
+legendary-extensions-which-key.nvim	legendary-extensions.txt	/*legendary-extensions-which-key.nvim*
 legendary-extensions.txt	legendary-extensions.txt	/*legendary-extensions.txt*
 legendary-features	legendary.txt	/*legendary-features*
 legendary-filters-built-in-filters	legendary-filters.txt	/*legendary-filters-built-in-filters*

@@ -1,4 +1,4 @@
-*legendary.txt*                                      Last change: 2023 July 07
+*legendary.txt*                                   Last change: 2023 October 10
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -90,10 +90,7 @@ FEATURES                                                  *legendary-features*
   <./doc/API.md#converting-keymaps-from-vimscript>)
 - Anonymous mappings; show mappings/commands in the finder without having
   `legendary.nvim` handle creating them
-- Extensions to automatically load keymaps and commands from other plugins -
-  The internal extension API is considered unstable, as it will likely need to
-  evolve as we add extensions for additional plugins with different setups.
-  This mostly affects plugin developers, not users.
+- Extensions to automatically load keymaps and commands from other plugins
 
 ------------------------------------------------------------------------------
 PREREQUISITES                                        *legendary-prerequisites*

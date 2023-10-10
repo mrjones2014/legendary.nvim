@@ -1,4 +1,4 @@
-*legendary-which-key.txt*                        Last change: 2022 November 03
+*legendary-which-key.txt*                         Last change: 2023 October 10
 
 ==============================================================================
 `WHICH-KEY.NVIM` INTEGRATION *legendary-which-key-which-key.nvim`-integration*
@@ -32,7 +32,7 @@ There's a couple ways you can choose to do it:
     
     -- or, if you'd prefer to manually register with legendary.nvim
     require('which-key').register(your_which_key_tables, your_which_key_opts)
-    require('legendary.integrations.which-key').bind_whichkey(
+    require('legendary.util.which-key').bind_whichkey(
       your_which_key_tables,
       your_which_key_opts,
       -- false if which-key.nvim handles binding them,
