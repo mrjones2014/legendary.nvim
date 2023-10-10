@@ -73,6 +73,12 @@ function M.check_config(cfg)
     end
   end
 
+  if cfg.which_key ~= nil then
+    M.write({ 'config.which_key', 'WarningMsg' }, 'has been moved to', { 'config.extensions.which_key' })
+    cfg.extensions = cfg.extensions or {}
+    cfg.extensions.which_key = cfg.extensions.which_key or cfg.which_key or {}
+  end
+
   ---@diagnostic enable
 
   return cfg

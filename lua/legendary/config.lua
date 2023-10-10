@@ -92,24 +92,6 @@ local config = {
     -- using the `keys = {}` property.
     auto_register = false,
   },
-  which_key = {
-    -- Automatically add which-key tables to legendary
-    -- see ./doc/WHICH_KEY.md for more details
-    auto_register = false,
-    -- you can put which-key.nvim tables here,
-    -- or alternatively have them auto-register,
-    -- see ./doc/WHICH_KEY.md
-    mappings = {},
-    opts = {},
-    -- controls whether legendary.nvim actually binds they keymaps,
-    -- or if you want to let which-key.nvim handle the bindings.
-    -- if not passed, true by default
-    do_binding = true,
-    -- controls whether to use legendary.nvim item groups
-    -- matching your which-key.nvim groups; if false, all keymaps
-    -- are added at toplevel instead of in a group.
-    use_groups = true,
-  },
   -- Which extensions to load; no extensions are loaded by default.
   -- Setting the plugin name to `false` disables loading the extension.
   -- Setting it to any other value will attempt to load the extension,
@@ -140,13 +122,6 @@ local config = {
 
 ---@class LegendaryLazyNvimConfig
 ---@field auto_register boolean
-
----@class LegendaryWhichkeyConfig
----@field auto_register boolean
----@field mappings table[]
----@field opts table
----@field do_binding boolean
----@field use_groups boolean
 
 ---@class LegendaryScratchpadConfig
 ---@field view 'float'|'current'
@@ -185,7 +160,6 @@ local config = {
 ---@field include_legendary_cmds boolean
 ---@field sort LegendarySortOpts
 ---@field lazy_nvim LegendaryLazyNvimConfig
----@field which_key LegendaryWhichkeyConfig
 ---@field extensions table<string, any>
 ---@field scratchpad LegendaryScratchpadConfig
 ---@field cache_path string

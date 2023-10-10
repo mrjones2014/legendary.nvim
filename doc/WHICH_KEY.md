@@ -27,7 +27,7 @@ require('legendary').setup({
 
 -- or, if you'd prefer to manually register with legendary.nvim
 require('which-key').register(your_which_key_tables, your_which_key_opts)
-require('legendary.integrations.which-key').bind_whichkey(
+require('legendary.util.which-key').bind_whichkey(
   your_which_key_tables,
   your_which_key_opts,
   -- false if which-key.nvim handles binding them,

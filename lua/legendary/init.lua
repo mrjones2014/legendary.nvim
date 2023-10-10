@@ -25,7 +25,6 @@ local Log = Lazy.require_on_exported_call('legendary.log')
 
 local Extensions = Lazy.require_on_exported_call('legendary.extensions')
 local LegendaryLazyNvim = Lazy.require_on_index('legendary.integrations.lazy-nvim')
-local LegendaryWhichKey = Lazy.require_on_index('legendary.integrations.which-key')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -87,14 +86,6 @@ function M.setup(cfg)
 
   if Config.lazy_nvim.auto_register then
     LegendaryLazyNvim.load_lazy_nvim_keys()
-  end
-
-  if Config.which_key.auto_register then
-    LegendaryWhichKey.whichkey_listen()
-  end
-
-  if #vim.tbl_keys(Config.which_key.mappings) > 0 then
-    LegendaryWhichKey.bind_whichkey(Config.which_key.mappings, Config.which_key.opts, Config.which_key.do_binding)
   end
 
   M.keymaps(Config.keymaps)
