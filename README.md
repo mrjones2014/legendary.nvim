@@ -47,7 +47,6 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - A parser to convert Vimscript keymap commands (e.g. `vnoremap <silent> <leader>f :SomeCommand<CR>`) to `legendary.nvim` keymap tables (see [Converting Keymaps From Vimscript](./doc/API.md#converting-keymaps-from-vimscript))
 - Anonymous mappings; show mappings/commands in the finder without having `legendary.nvim` handle creating them
 - Extensions to automatically load keymaps and commands from other plugins
-  - The internal extension API is considered unstable, as it will likely need to evolve as we add extensions for additional plugins with different setups. This mostly affects plugin developers, not users.
 
 ## Prerequisites
 
