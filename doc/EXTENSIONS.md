@@ -5,6 +5,8 @@
 - [Extensions](#extensions)
   - [Extension API](#extension-api)
   - [Built-in Extensions](#built-in-extensions)
+    - [`Lazy.nvim`](#lazynvim)
+    - [`Which-Key.nvim`](#which-keynvim)
     - [`nvim-tree.lua`](#nvim-treelua)
     - [`smart-splits.nvim`](#smart-splitsnvim)
     - [`op.nvim`](#opnvim)
@@ -61,7 +63,7 @@ Loading keymaps/commands/etc. from an extension can use the same APIs a user wou
 
 ## Built-in Extensions
 
-## Lazy.nvim
+### `Lazy.nvim`
 
 Automatically load key mappings defined in [lazy.nvim](https://github.com/folke/lazy.nvim) plugin specs
 into `legendary.nvim`.
@@ -72,7 +74,7 @@ require('legendary').setup({
 })
 ```
 
-### Which-Key.nvim
+### `Which-Key.nvim`
 
 Automatically load key mappings defined by [which-key.nvim](https://github.com/folke/which-key.nvim) into `legendary.nvim`.
 
