@@ -1,8 +1,5 @@
----@mod legendary.integrations.which-key
-
 local State = require('legendary.data.state')
 local Keymap = require('legendary.data.keymap')
-local Log = require('legendary.log')
 local Config = require('legendary.config')
 
 local Lazy = require('legendary.vendor.lazy')
@@ -122,30 +119,6 @@ function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
     end
     return parsed
   end, legendary_tbls))
-end
-
---- Enable auto-registering of which-key.nvim tables
---- with legendary.nvim
-function M.whichkey_listen()
-  local loaded, which_key = pcall(require, 'which-key')
-
-  if loaded then
-    local wk = which_key
-    local original = wk.register
-    local listener = function(whichkey_tbls, whichkey_opts)
-      Log.trace('Preparing to register items from which-key.nvim automatically')
-      M.bind_whichkey(whichkey_tbls, whichkey_opts, false)
-      original(whichkey_tbls, whichkey_opts)
-      Log.trace('Successfully registered items from which-key.nvim')
-    end
-    wk.register = listener
-    return true
-  else
-    Log.warn(
-      'which-key.nvim not available. If you are lazy-loading, be sure that which-key.nvim is added to runtime path '
-        .. 'before running legendary.nvim config.'
-    )
-  end
 end
 
 return M

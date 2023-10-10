@@ -5,6 +5,8 @@
 - [Extensions](#extensions)
   - [Extension API](#extension-api)
   - [Built-in Extensions](#built-in-extensions)
+    - [`Lazy.nvim`](#lazynvim)
+    - [`Which-Key.nvim`](#which-keynvim)
     - [`nvim-tree.lua`](#nvim-treelua)
     - [`smart-splits.nvim`](#smart-splitsnvim)
     - [`op.nvim`](#opnvim)
@@ -60,6 +62,46 @@ Loading keymaps/commands/etc. from an extension can use the same APIs a user wou
 `require('legendary').keymaps(my_keymaps)`.
 
 ## Built-in Extensions
+
+### `Lazy.nvim`
+
+Automatically load key mappings defined in [lazy.nvim](https://github.com/folke/lazy.nvim) plugin specs
+into `legendary.nvim`.
+
+```lua
+require('legendary').setup({
+  lazy_nvim = true,
+})
+```
+
+### `Which-Key.nvim`
+
+Automatically load key mappings defined by [which-key.nvim](https://github.com/folke/which-key.nvim) into `legendary.nvim`.
+
+```lua
+require('legendary').setup({
+  extensions = {
+    which_key = {
+      -- Automatically add which-key tables to legendary
+      -- see WHICH_KEY.md for more details
+      auto_register = false,
+      -- you can put which-key.nvim tables here,
+      -- or alternatively have them auto-register,
+      -- see WHICH_KEY.md
+      mappings = {},
+      opts = {},
+      -- controls whether legendary.nvim actually binds they keymaps,
+      -- or if you want to let which-key.nvim handle the bindings.
+      -- if not passed, true by default
+      do_binding = true,
+      -- controls whether to use legendary.nvim item groups
+      -- matching your which-key.nvim groups; if false, all keymaps
+      -- are added at toplevel instead of in a group.
+      use_groups = true,
+    },
+  },
+})
+```
 
 ### `nvim-tree.lua`
 

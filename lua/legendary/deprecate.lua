@@ -61,16 +61,18 @@ end
 function M.check_config(cfg)
   ---@diagnostic disable
 
-  if cfg.functions ~= nil then
-    M.write({ 'config.functions', 'WarningMsg' }, 'has been moved to', { 'config.funcs' })
-    cfg.funcs = cfg.functions
+  if cfg.which_key ~= nil then
+    M.write({ 'config.which_key', 'WarningMsg' }, 'has been moved to', { 'config.extensions.which_key', 'WarningMsg' })
+    cfg.extensions = cfg.extensions or {}
+    cfg.extensions.which_key = cfg.extensions.which_key or cfg.which_key or {}
   end
 
-  if cfg.default_opts.functions ~= nil then
-    if cfg.default_opts.functions ~= nil then
-      M.write({ 'config.default_opts.functions', 'WarningMsg' }, 'has been moved to', { 'config.default_opts.funcs' })
-      cfg.default_opts.funcs = cfg.default_opts.functions
-    end
+  if cfg.lazy_nvim and cfg.lazy_nvim.auto_register then
+    M.write(
+      { 'config.lazy_nvim', 'WarningMsg' },
+      'has been moved to',
+      { 'config.extensions.lazy_nvim = true', 'WarningMsg' }
+    )
   end
 
   ---@diagnostic enable

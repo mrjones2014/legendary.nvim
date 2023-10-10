@@ -1,8 +1,6 @@
 local Log = require('legendary.log')
 
-local M = {}
-
-function M.load_lazy_nvim_keys()
+return function()
   local has_lazy, _ = pcall(require, 'lazy')
   if not has_lazy then
     Log.warn("lazy.nvim integration is enabled, but cannot `require('lazy')`, aborting.")
@@ -30,5 +28,3 @@ function M.load_lazy_nvim_keys()
     end
   end
 end
-
-return M
