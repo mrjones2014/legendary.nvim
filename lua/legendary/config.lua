@@ -87,11 +87,6 @@ local config = {
       max_timestamps = 10,
     },
   },
-  lazy_nvim = {
-    -- Automatically register keymaps that are defined on lazy.nvim plugin specs
-    -- using the `keys = {}` property.
-    auto_register = false,
-  },
   -- Which extensions to load; no extensions are loaded by default.
   -- Setting the plugin name to `false` disables loading the extension.
   -- Setting it to any other value will attempt to load the extension,
@@ -119,9 +114,6 @@ local config = {
   -- Log level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
   log_level = 'info',
 }
-
----@class LegendaryLazyNvimConfig
----@field auto_register boolean
 
 ---@class LegendaryScratchpadConfig
 ---@field view 'float'|'current'
@@ -159,7 +151,6 @@ local config = {
 ---@field include_builtin boolean
 ---@field include_legendary_cmds boolean
 ---@field sort LegendarySortOpts
----@field lazy_nvim LegendaryLazyNvimConfig
 ---@field extensions table<string, any>
 ---@field scratchpad LegendaryScratchpadConfig
 ---@field cache_path string

@@ -62,9 +62,17 @@ function M.check_config(cfg)
   ---@diagnostic disable
 
   if cfg.which_key ~= nil then
-    M.write({ 'config.which_key', 'WarningMsg' }, 'has been moved to', { 'config.extensions.which_key' })
+    M.write({ 'config.which_key', 'WarningMsg' }, 'has been moved to', { 'config.extensions.which_key', 'WarningMsg' })
     cfg.extensions = cfg.extensions or {}
     cfg.extensions.which_key = cfg.extensions.which_key or cfg.which_key or {}
+  end
+
+  if cfg.lazy_nvim and cfg.lazy_nvim.auto_register then
+    M.write(
+      { 'config.lazy_nvim', 'WarningMsg' },
+      'has been moved to',
+      { 'config.extensions.lazy_nvim = true', 'WarningMsg' }
+    )
   end
 
   ---@diagnostic enable

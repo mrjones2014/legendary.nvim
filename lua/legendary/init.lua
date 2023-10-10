@@ -24,7 +24,6 @@ local ItemGroup = Lazy.require_on_exported_call('legendary.data.itemgroup')
 local Log = Lazy.require_on_exported_call('legendary.log')
 
 local Extensions = Lazy.require_on_exported_call('legendary.extensions')
-local LegendaryLazyNvim = Lazy.require_on_index('legendary.integrations.lazy-nvim')
 
 ---@param parser LegendaryItem
 ---@return fun(items:table[])
@@ -83,10 +82,6 @@ end
 
 function M.setup(cfg)
   Config.setup(cfg)
-
-  if Config.lazy_nvim.auto_register then
-    LegendaryLazyNvim.load_lazy_nvim_keys()
-  end
 
   M.keymaps(Config.keymaps)
   M.commands(Config.commands)
