@@ -20,15 +20,19 @@ return function(opts)
         opts.do_binding = false
       end
 
+      if opts.use_groups == nil then
+        opts.use_groups = true
+      end
+
       if #vim.tbl_keys(opts.mappings or {}) > 0 then
-        util.bind_whichkey(opts.mappings, opts.opts, opts.do_binding)
+        util.bind_whichkey(opts.mappings, opts.opts, opts.do_binding, opts.use_groups)
       end
     end
 
     local original = wk.register
     local listener = function(whichkey_tbls, whichkey_opts)
       Log.trace('Preparing to register items from which-key.nvim automatically')
-      util.bind_whichkey(whichkey_tbls, whichkey_opts, false)
+      util.bind_whichkey(whichkey_tbls, whichkey_opts, false, opts.use_groups)
       original(whichkey_tbls, whichkey_opts)
       Log.trace('Successfully registered items from which-key.nvim')
     end

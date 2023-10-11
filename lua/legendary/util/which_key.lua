@@ -1,6 +1,5 @@
 local State = require('legendary.data.state')
 local Keymap = require('legendary.data.keymap')
-local Config = require('legendary.config')
 
 local Lazy = require('legendary.vendor.lazy')
 ---@type ItemGroup
@@ -21,8 +20,13 @@ end
 
 ---@param wk table
 ---@param wk_opts table
+---@param use_groups boolean
 ---@return table
-local function wk_to_legendary(wk, wk_opts, wk_groups)
+local function wk_to_legendary(wk, wk_opts, wk_groups, use_groups)
+  if use_groups == nil then
+    use_groups = true
+  end
+
   local legendary = {}
   legendary[1] = wk.prefix
   if wk.cmd then
@@ -31,11 +35,11 @@ local function wk_to_legendary(wk, wk_opts, wk_groups)
   if wk_opts and wk_opts.mode then
     legendary.mode = wk_opts.mode
   end
-  if wk.group == true and #wk.name > 0 and Config.which_key.use_groups then
+  if wk.group == true and #wk.name > 0 and use_groups then
     legendary.itemgroup = wk.name
   end
-  local group = Config.which_key.use_groups and longest_matching_group(wk, wk_groups) or nil
-  if group and Config.which_key.use_groups then
+  local group = use_groups and longest_matching_group(wk, wk_groups) or nil
+  if group and use_groups then
     legendary.itemgroup = group
   end
   legendary.description = wk.label or vim.tbl_get(wk, 'opts', 'desc')
@@ -69,12 +73,17 @@ end
 --- and parse them into legendary.nvim tables
 ---@param which_key_tbls table[]
 ---@param which_key_opts table
----@param do_binding boolean whether to bind the keymaps or let which-key handle it
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it; default true
+---@param use_groups boolean whether to use item groups; default true
 ---@return LegendaryItem[]
-function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
+function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding, use_groups)
   if do_binding == nil then
     do_binding = true
   end
+  if use_groups == nil then
+    use_groups = true
+  end
+
   local wk_parsed = require('which-key.mappings').parse(which_key_tbls, which_key_opts)
   local legendary_tbls = {}
   local wk_groups = {}
@@ -86,7 +95,7 @@ function M.parse_whichkey(which_key_tbls, which_key_opts, do_binding)
   end, wk_parsed)
   vim.tbl_map(function(wk)
     if vim.tbl_get(wk, 'opts', 'desc') and wk.group ~= true then
-      table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts, wk_groups))
+      table.insert(legendary_tbls, wk_to_legendary(wk, which_key_opts, wk_groups, use_groups))
     end
   end, wk_parsed)
 
@@ -103,9 +112,17 @@ end
 --- Bind a which-key.nvim table with legendary.nvim
 ---@param wk_tbls table
 ---@param wk_opts table
----@param do_binding boolean whether to bind the keymaps or let which-key handle it
-function M.bind_whichkey(wk_tbls, wk_opts, do_binding)
-  local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts, do_binding)
+---@param do_binding boolean whether to bind the keymaps or let which-key handle it; default true
+---@param use_groups boolean whether to use item groups; default true
+function M.bind_whichkey(wk_tbls, wk_opts, do_binding, use_groups)
+  if do_binding == nil then
+    do_binding = true
+  end
+  if use_groups == nil then
+    use_groups = true
+  end
+
+  local legendary_tbls = M.parse_whichkey(wk_tbls, wk_opts, do_binding, use_groups)
   State.items:add(vim.tbl_map(function(keymap)
     local parsed
     if keymap.itemgroup and keymap.keymaps then

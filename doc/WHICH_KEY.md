@@ -32,7 +32,11 @@ require('legendary.util.which-key').bind_whichkey(
   your_which_key_opts,
   -- false if which-key.nvim handles binding them,
   -- set to true if you want legendary.nvim to handle binding
-  -- the mappings; if not passed, true by default
+  -- the mappings; if not passed, true by default.
   false,
+  -- true if you want to use item groups,
+  -- false if you want to add the items to the toplevel list
+  -- in legendary.nvim; defaults to true if omitted.
+  true,
 )
 ```
