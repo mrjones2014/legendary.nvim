@@ -10,7 +10,7 @@ local M = {}
 local function longest_matching_group(wk, wk_groups)
   local matching_group = {}
   for prefix, group_data in pairs(wk_groups) do
-    if vim.startswith(wk.prefix, prefix) and #prefix > #(matching_group[1] or '') then
+    if prefix == '' or vim.startswith(wk.prefix, prefix) and #prefix > #(matching_group[1] or '') then
       matching_group = { prefix, group_data }
     end
   end

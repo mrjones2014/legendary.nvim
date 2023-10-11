@@ -32,7 +32,7 @@ return function(opts)
     local original = wk.register
     local listener = function(whichkey_tbls, whichkey_opts)
       Log.trace('Preparing to register items from which-key.nvim automatically')
-      util.bind_whichkey(whichkey_tbls, whichkey_opts, false, opts.use_groups)
+      util.bind_whichkey(whichkey_tbls, whichkey_opts, opts.do_binding, opts.use_groups)
       original(whichkey_tbls, whichkey_opts)
       Log.trace('Successfully registered items from which-key.nvim')
     end
