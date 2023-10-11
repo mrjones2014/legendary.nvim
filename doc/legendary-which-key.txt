@@ -1,4 +1,4 @@
-*legendary-which-key.txt*                         Last change: 2023 October 10
+*legendary-which-key.txt*                         Last change: 2023 October 11
 
 ==============================================================================
 `WHICH-KEY.NVIM` INTEGRATION *legendary-which-key-which-key.nvim`-integration*
@@ -37,8 +37,12 @@ There's a couple ways you can choose to do it:
       your_which_key_opts,
       -- false if which-key.nvim handles binding them,
       -- set to true if you want legendary.nvim to handle binding
-      -- the mappings; if not passed, true by default
+      -- the mappings; if not passed, true by default.
       false,
+      -- true if you want to use item groups,
+      -- false if you want to add the items to the toplevel list
+      -- in legendary.nvim; defaults to true if omitted.
+      true,
     )
 <
 
