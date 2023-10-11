@@ -22,7 +22,6 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 - [Configuration](#configuration)
   - [Troubleshooting Frecency Sort](#troubleshooting-frecency-sort)
 - [Keymap Development Utilities](./doc/MAPPING_DEVELOPMENT.md)
-- [`which-key.nvim` Integration](./doc/WHICH_KEY.md)
 - [Lua API](./doc/API.md)
 - [Extensions](./doc/EXTENSIONS.md)
 - [Table Structures](./doc/table_structures/README.md)
@@ -34,8 +33,8 @@ Define your keymaps, commands, and autocommands as simple Lua tables, building a
 ## Features
 
 - Define your keymaps, commands, `augroup`/`autocmd`s, and even arbitrary Lua functions to run on the fly, as simple Lua tables, then bind them with `legendary.nvim`
-- Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim`
-- Integration with [lazy.nvim](https://github.com/folke/lazy.nvim), automatically load keymaps defined via `lazy.nvim`'s `keys` property on plugin specs
+- Integration with [which-key.nvim](https://github.com/folke/which-key.nvim), use your existing `which-key.nvim` tables with `legendary.nvim` (see [extensions](./doc/EXTENSIONS.md#which-keynvim))
+- Integration with [lazy.nvim](https://github.com/folke/lazy.nvim), automatically load keymaps defined via `lazy.nvim`'s `keys` property on plugin specs (see [extensions](./doc/EXTENSIONS.md#lazynvim))
 - Execute normal, insert, and visual mode keymaps, commands, autocommands, and Lua functions when you select them
 - Show your most recently executed items at the top when triggered via `legendary.nvim` (can be disabled via config)
 - Uses `vim.ui.select()` so it can be hooked up to a fuzzy finder using something like [dressing.nvim](https://github.com/stevearc/dressing.nvim) for a VS Code command palette like interface

@@ -72,13 +72,16 @@ into `legendary.nvim`.
 require('legendary').setup({
   extensions = {
     lazy_nvim = true,
-  }
+  },
 })
 ```
 
 ### `Which-Key.nvim`
 
 Automatically load key mappings defined by [which-key.nvim](https://github.com/folke/which-key.nvim) into `legendary.nvim`.
+For `auto_register` to work, `which-key.nvim` must be loaded on `runtimepath` before `legendary.nvim` initializes,
+but `legendary.nvim` must initialize the extension before `require('which-key').register()` is called. Alternatively,
+you can just pass your `which-key` tables to `legendary` directly.
 
 ```lua
 require('legendary').setup({
