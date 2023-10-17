@@ -9,7 +9,7 @@ return function()
 
   local LazyNvimConfig = require('lazy.core.config')
   for _, plugin in pairs(LazyNvimConfig.plugins) do
-    local keys = plugin._.handlers.keys or {}
+    local keys = vim.tbl_get(plugin or {}, '_', 'handlers', 'keys') or {}
     for _, keymap in pairs(keys) do
       if keymap.desc and #keymap.desc > 0 then
         -- we don't need the implementation, since
