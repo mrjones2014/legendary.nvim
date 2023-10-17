@@ -8,10 +8,8 @@ return function()
   end
 
   local LazyNvimConfig = require('lazy.core.config')
-  local Handler = require('lazy.core.handler')
-  local Plugin = require('lazy.core.plugin')
   for _, plugin in pairs(LazyNvimConfig.plugins) do
-    local keys = Handler.handlers.keys:_values(Plugin.values(plugin, 'keys', true), plugin)
+    local keys = plugin._.handlers.keys or {}
     for _, keymap in pairs(keys) do
       if keymap.desc and #keymap.desc > 0 then
         -- we don't need the implementation, since
