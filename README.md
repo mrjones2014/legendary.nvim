@@ -385,7 +385,8 @@ require('legendary').setup({
   --  }
   -- })
   sort = {
-    -- sort most recently used item to the top
+    -- put most recently selected item first, this works
+    -- both within global and item group lists
     most_recent_first = true,
     -- sort user-defined items before built-in items
     user_items_first = true,

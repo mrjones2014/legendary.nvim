@@ -106,12 +106,21 @@ function ItemList:filter(filters, context)
   end, 'Took %s ms to filter items in context.')
 end
 
+---@class ItemListSortInplaceOpts
+---@field itemgroup string
+
 ---Sort the list *IN PLACE* according to config.
 ---THIS MODIFIES THE LIST IN PLACE.
-function ItemList:sort_inplace()
+--- @param opts ItemListSortInplaceOpts
+function ItemList:sort_inplace(opts)
   -- inline require to avoid circular dependency
   local State = require('legendary.data.state')
-  local opts = Config.sort
+  vim.validate({
+    itemgroup = { opts.itemgroup, 'string', true },
+  })
+
+  -- Merge Config into local opts
+  opts = vim.tbl_extend('keep', opts, Config.sort)
 
   -- if no items have been added, and the most recent item has not changed,
   -- we're already sorted
@@ -179,8 +188,10 @@ function ItemList:sort_inplace()
     end
 
     if opts.most_recent_first then
-      if item1 == State.most_recent_item then
-        return true
+      if opts.itemgroup then
+        return item1 == State.itemgroup_history[opts.itemgroup]
+      else
+        return item1 == State.most_recent_item
       end
     end
 
