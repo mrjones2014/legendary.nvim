@@ -87,4 +87,19 @@ function Function:frecency_id()
   return string.format('<function> %s', self.description)
 end
 
+--- Intended to be used by UI filters
+function Function:modeSwitched()
+  return self._mode_switched
+end
+
+function Function:modes()
+  if self:modeSwitched() then
+    return self.mode_mappings
+  else
+    -- Just use all modes for UI filtering
+    -- it's half-assed because UI filtering is ugly ¯\_(ツ)_/¯
+    return { 'n', 'V', 'v', 'x', 's', 'o', '' }
+  end
+end
+
 return Function
