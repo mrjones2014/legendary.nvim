@@ -19,6 +19,7 @@ end
 
 ---@class Function
 ---@field implementation function
+---@field mode_mappings string[]
 ---@field description string
 ---@field opts table
 ---@field filters (function[])|nil
@@ -46,6 +47,29 @@ function Function:parse(tbl) -- luacheck: no unused
   instance.opts = tbl.opts or {}
   instance:parse_filters(tbl.filters)
 
+  -- By default, function can be run in all modes, so mode_mapping is empty
+  instance.mode_mappings = vim.tbl_islist(tbl.mode) and tbl.mode or {}
+
+  -- If tbl = { fn, mode = "n" }
+  if type(tbl.mode) == 'string' then
+    table.insert(instance.mode_mappings, tbl.mode)
+  end
+  -- only tbl = { fn, mode = { 'n' } }
+  -- Reassing implementation with a current-mode hanlder
+  if not vim.tbl_isempty(instance.mode_mappings) then
+    local impl = instance.implementation
+    instance.implementation = function()
+      local modeCurrent = vim.fn.mode()
+      for _, modeInstance in ipairs(instance.mode_mappings) do
+        if modeCurrent == modeInstance then
+          impl()
+        end
+      end
+    end
+  end
+  -- mode_mapping is going to remain static during legendary runtime
+  -- so we can cache current mapping state
+  instance._mode_switched = vim.tbl_islist(instance.mode_mappings) and not vim.tbl_isempty(instance.mode_mappings)
   return instance
 end
 
