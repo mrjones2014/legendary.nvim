@@ -1,6 +1,7 @@
 local Toolbox = require('legendary.toolbox')
 local Log = require('legendary.log')
 local Config = require('legendary.config')
+local State = require('legendary.data.state')
 local util = require('legendary.util')
 
 local function update_item_frecency_score(item)
@@ -83,6 +84,7 @@ end
 function M.exec_item(item, context)
   vim.schedule(function()
     M.restore_context(context, function()
+      State.last_executed_item = item
       update_item_frecency_score(item)
       if Toolbox.is_function(item) then
         item.implementation()
@@ -122,12 +124,11 @@ end
 ---still return true.
 ---@param ignore_filters boolean|nil whether to ignore the filters used when selecting the item, default false
 function M.repeat_previous(ignore_filters)
-  local State = require('legendary.data.state')
-  if State.most_recent_item then
+  if State.last_executed_item then
     if not ignore_filters and State.most_recent_filters then
       for _, filter in ipairs(State.most_recent_filters) do
         -- if any filter does not match, abort executions
-        local err, matches = pcall(filter, State.most_recent_item)
+        local err, matches = pcall(filter, State.last_executed_item)
         if not err and not matches then
           Log.warn(
             'Previously executed item no longer matches previously used filters, use `:LegendaryRepeat!`'
@@ -138,7 +139,7 @@ function M.repeat_previous(ignore_filters)
       end
     end
     local context = M.build_context()
-    M.exec_item(State.most_recent_item, context)
+    M.exec_item(State.last_executed_item, context)
   end
 end
 

@@ -14,6 +14,8 @@ local Log = require('legendary.log')
 ---@field private sorted boolean
 local ItemList = class('ItemList')
 
+ItemList.TOPLEVEL_LIST_ID = 'toplevel'
+
 ---@private
 function ItemList:initialize()
   self.items = {}
@@ -106,16 +108,31 @@ function ItemList:filter(filters, context)
   end, 'Took %s ms to filter items in context.')
 end
 
+---@class ItemListSortInplaceOpts
+---@field itemgroup string
+
 ---Sort the list *IN PLACE* according to config.
 ---THIS MODIFIES THE LIST IN PLACE.
-function ItemList:sort_inplace()
+--- @param opts ItemListSortInplaceOpts
+function ItemList:sort_inplace(opts)
   -- inline require to avoid circular dependency
   local State = require('legendary.data.state')
-  local opts = Config.sort
+  vim.validate({
+    itemgroup = { opts.itemgroup, 'string', true },
+  })
+
+  -- Merge Config into local opts
+  opts = vim.tbl_extend('keep', opts, Config.sort)
 
   -- if no items have been added, and the most recent item has not changed,
   -- we're already sorted
-  if self.sorted and (not opts.most_recent_first or (self.items[1] == State.most_recent_item)) then
+  if
+    self.sorted
+    and (
+      not opts.most_recent_first
+      or (self.items[1] == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID])
+    )
+  then
     return
   end
 
@@ -179,7 +196,7 @@ function ItemList:sort_inplace()
     end
 
     if opts.most_recent_first then
-      if item1 == State.most_recent_item then
+      if item1 == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] then
         return true
       end
     end
@@ -213,9 +230,11 @@ function ItemList:sort_inplace()
   -- sort by most recent last, and after other sorts are done
   -- if most recent is already at top, nothing to do, and attempting to sort will cause
   -- an error since it doesn't need to be sorted
-  if opts.most_recent_first and State.most_recent_item and State.most_recent_item ~= self.items[1] then
+  if
+    opts.most_recent_first and State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] ~= self.items[1]
+  then
     items = Sorter.mergesort(items, function(item)
-      return item == State.most_recent_item
+      return item == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID]
     end)
   end
 

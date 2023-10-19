@@ -6,12 +6,13 @@ local Toolbox = require('legendary.toolbox')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
+local ItemList = require('legendary.data.itemlist')
 
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
 local M = {}
 
----@class LegendaryFindOpts
+---@class LegendaryFindOpts : ItemListSortInplaceOpts
 ---@field itemgroup string Find items in this item group only
 ---@field filters LegendaryItemFilter[]
 ---@field select_prompt string|fun():string
@@ -23,24 +24,25 @@ local M = {}
 ---@overload fun(opts:LegendaryFindOpts,context:LegendaryEditorContext)
 local function select_inner(opts, context, itemlist)
   opts = opts or {}
-  if itemlist then
-    Log.trace('Relaunching select UI for an item group')
-  else
-    Log.trace('Launching select UI')
-  end
 
-  -- if no itemlist passed
-  if itemlist == nil then
-    -- if an item group is specified, use that
+  vim.validate({
+    itemgroup = { opts.itemgroup, 'string', true },
+    select_prompt = { opts.select_prompt, 'function', true },
+  })
+
+  if itemlist then
+    Log.trace('Launching select UI')
+  else
+    Log.trace('Relaunching select UI for an item group')
+    -- if no itemlist passed, try to use itemgroup
+    -- if an item group id is specified, use that
     local itemgroup = State.items:get_item_group(opts.itemgroup)
     if itemgroup then
       itemlist = itemgroup.items
+    else
+      Log.error('Expected itemlist, got %s.\n    %s', type(itemlist), vim.inspect(itemlist))
     end
   end
-
-  -- finally, use full item list if no other lists are specified
-  itemlist = itemlist or State.items
-  opts = opts or {}
 
   local prompt = opts.select_prompt or Config.select_prompt
   if type(prompt) == 'function' then
@@ -51,7 +53,7 @@ local function select_inner(opts, context, itemlist)
   -- implementation of `sort_inplace` checks if
   -- sorting is actually needed and does nothing
   -- if it does not need to be sorted.
-  itemlist:sort_inplace()
+  itemlist:sort_inplace(opts)
 
   local filters = opts.filters or {}
   if type(filters) ~= 'table' then
@@ -81,12 +83,19 @@ local function select_inner(opts, context, itemlist)
       return
     end
 
+    State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] = selected
+
     if Toolbox.is_itemgroup(selected) then
-      return select_inner(opts, context, selected.items)
+      local item_group_id = selected:id()
+
+      local opts_next = vim.tbl_extend('force', opts, {
+        itemgroup = item_group_id,
+      })
+
+      return select_inner(opts_next, context)
     end
 
     Log.trace('Preparing to execute selected item')
-    State.most_recent_item = selected
     Executor.exec_item(selected, context)
   end)
 end
@@ -96,7 +105,7 @@ end
 function M.select(opts)
   vim.cmd('doautocmd User LegendaryUiPre')
   local context = Executor.build_context()
-  select_inner(opts, context)
+  select_inner(opts, context, State.items)
 end
 
 return M
