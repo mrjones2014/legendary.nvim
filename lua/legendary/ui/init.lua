@@ -6,12 +6,13 @@ local Toolbox = require('legendary.toolbox')
 local Format = require('legendary.ui.format')
 local Executor = require('legendary.api.executor')
 local Log = require('legendary.log')
+local ItemList = require('legendary.data.itemlist')
 
 ---@class LegendaryUi
 ---@field select fun(opts:LegendaryFindOpts)
 local M = {}
 
----@class LegendaryFindOpts
+---@class LegendaryFindOpts : ItemListSortInplaceOpts
 ---@field itemgroup string Find items in this item group only
 ---@field filters LegendaryItemFilter[]
 ---@field select_prompt string|fun():string
@@ -82,11 +83,7 @@ local function select_inner(opts, context, itemlist)
       return
     end
 
-    if opts.itemgroup then
-      State.itemgroup_history[opts.itemgroup] = selected
-    else
-      State.most_recent_item = selected
-    end
+    State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] = selected
 
     if Toolbox.is_itemgroup(selected) then
       local item_group_id = selected:id()

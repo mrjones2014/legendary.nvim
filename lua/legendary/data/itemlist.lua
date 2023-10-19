@@ -14,6 +14,8 @@ local Log = require('legendary.log')
 ---@field private sorted boolean
 local ItemList = class('ItemList')
 
+ItemList.TOPLEVEL_LIST_ID = 'toplevel'
+
 ---@private
 function ItemList:initialize()
   self.items = {}
@@ -124,7 +126,13 @@ function ItemList:sort_inplace(opts)
 
   -- if no items have been added, and the most recent item has not changed,
   -- we're already sorted
-  if self.sorted and (not opts.most_recent_first or (self.items[1] == State.most_recent_item)) then
+  if
+    self.sorted
+    and (
+      not opts.most_recent_first
+      or (self.items[1] == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID])
+    )
+  then
     return
   end
 
@@ -188,10 +196,8 @@ function ItemList:sort_inplace(opts)
     end
 
     if opts.most_recent_first then
-      if opts.itemgroup then
-        return item1 == State.itemgroup_history[opts.itemgroup]
-      else
-        return item1 == State.most_recent_item
+      if item1 == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] then
+        return true
       end
     end
 
@@ -224,9 +230,11 @@ function ItemList:sort_inplace(opts)
   -- sort by most recent last, and after other sorts are done
   -- if most recent is already at top, nothing to do, and attempting to sort will cause
   -- an error since it doesn't need to be sorted
-  if opts.most_recent_first and State.most_recent_item and State.most_recent_item ~= self.items[1] then
+  if
+    opts.most_recent_first and State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID] ~= self.items[1]
+  then
     items = Sorter.mergesort(items, function(item)
-      return item == State.most_recent_item
+      return item == State.itemgroup_history[opts.itemgroup or ItemList.TOPLEVEL_LIST_ID]
     end)
   end
 
