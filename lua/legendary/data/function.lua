@@ -2,6 +2,21 @@ local class = require('legendary.vendor.middleclass')
 local util = require('legendary.util')
 local Filters = require('legendary.data.filters')
 
+---Check if modes is an array of strings or itself a string
+---@param modes table
+---@return boolean
+local is_list_of_strings_or_string = function(modes)
+  if modes == nil or type(modes) == 'string' then
+    return true
+  end
+  for _, mode in ipairs(modes) do
+    if type(mode) ~= 'string' then
+      return false
+    end
+  end
+  return true
+end
+
 ---@class Function
 ---@field implementation function
 ---@field description string
@@ -15,6 +30,11 @@ Function:include(Filters) ---@diagnostic disable-line
 function Function:parse(tbl) -- luacheck: no unused
   vim.validate({
     ['1'] = { tbl[1], { 'function' } },
+    mode = {
+      tbl.mode,
+      is_list_of_strings_or_string,
+      'item.mode should contain only strings of modes: n, i, v etc.',
+    },
     description = { util.get_desc(tbl), { 'string' } },
     opts = { tbl.opts, { 'table' }, true },
   })
