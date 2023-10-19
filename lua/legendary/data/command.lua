@@ -40,26 +40,6 @@ local function exec(impl, args)
   end
 end
 
-local function parse_modemap(map)
-  return function(args)
-    local mode = vim.fn.mode()
-    local impl = map[mode]
-    if not impl then
-      if Toolbox.is_visual_mode(mode) then
-        impl = impl or map.v or map.x or map.s
-      elseif mode == 'i' then
-        impl = impl or map.l
-      elseif mode == 'c' then
-        impl = impl or map.l
-      end
-    end
-
-    if impl then
-      exec(impl, args)
-    end
-  end
-end
-
 ---Parse a new command table
 ---@param tbl table
 ---@param builtin boolean Whether the item is a builtin, defaults to false
@@ -98,7 +78,7 @@ function Command:parse(tbl, builtin) -- luacheck: no unused
       l = { tbl[2].i, { 'string', 'function' }, true },
     })
 
-    instance.implementation = parse_modemap(instance.implementation)
+    instance.implementation = Toolbox.map_cur_mode_into_impl(instance.implementation, exec)
   end
   instance:parse_filters(tbl.filters)
 

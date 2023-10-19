@@ -185,4 +185,29 @@ function M.table_from_vimscript(vimscript_str, description)
   return input
 end
 
+--- Takes instance specific mode implementation and executes callback
+--- with a instance implementation per current nvim mode
+--- @param instanceModeMap table
+--- @param callback function
+--- @return function
+function M.map_cur_mode_into_impl(instanceModeMap, callback)
+  return function(args)
+    local mode = vim.fn.mode()
+    local impl = instanceModeMap[mode]
+    if not impl then
+      if Toolbox.is_visual_mode(mode) then
+        impl = impl or instanceModeMap.v or instanceModeMap.x or instanceModeMap.s
+      elseif mode == 'i' then
+        impl = impl or instanceModeMap.l
+      elseif mode == 'c' then
+        impl = impl or instanceModeMap.l
+      end
+    end
+
+    if impl then
+      callback(impl, args)
+    end
+  end
+end
+
 return M
