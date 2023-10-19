@@ -38,11 +38,15 @@ function M.default_format(item)
       item.description,
     }
   elseif Toolbox.is_function(item) then
+    -- stylua: ignore start
     return {
-      Config.icons.fn,
+      item--[[@as keymap ]]:modeSwitched()
+        and table.concat(item--[[@as Keymap]]:modes(), ', ')
+        or Config.icons.fn,
       '<function>',
       item.description,
     }
+    -- stylua: ignore end
   elseif Toolbox.is_itemgroup(item) then
     return {
       item.icon or Config.icons.itemgroup,
