@@ -10,8 +10,9 @@ local M = {}
 ---@return LegendaryItemFilter
 function M.mode(mode)
   return function(item)
-    -- include everything that isn't a keymap since they aren't tied to a mode
-    if not Toolbox.is_keymap(item) then
+    -- allow only keymaps and functions
+    -- TODO: include commands
+    if not (Toolbox.is_keymap(item) or Toolbox.is_function(item)) then
       return true
     end
 
@@ -26,9 +27,9 @@ function M.mode(mode)
     end
 
     -- filter where any filter_modes match any item:modes()
-    return #vim.tbl_filter(function(keymap_mode)
+    return #vim.tbl_filter(function(item_mode)
       return #vim.tbl_filter(function(filter_mode)
-        return filter_mode == keymap_mode
+        return filter_mode == item_mode
       end, filter_modes) > 0
     end, item:modes()) > 0
   end
