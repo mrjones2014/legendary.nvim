@@ -32,6 +32,27 @@ local functions = {
 }
 ```
 
+## Specifying mode
+
+By default, the funciton is shown and run in `*` (all) modes.
+You can use `mode` property to narrow function's scope, so it always run in specified mode:
+
+```lua
+local functions = {
+  {
+    mode = 'x', description = 'My function',
+    function() print('only runs in charwise-visual and selection mode!') end
+  },
+  {
+    description = 'Buffer: git: stage selected hunk'
+    mode = { 'x', 'V', 'v' },
+    function()
+      gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+    end
+  }
+}
+```
+
 ## Options
 
 You can also pass options via the `opts` property:
