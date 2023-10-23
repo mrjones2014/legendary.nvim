@@ -1,4 +1,4 @@
-*legendary.txt*                                   Last change: 2023 October 10
+*legendary.txt*                                   Last change: 2023 October 19
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -40,7 +40,6 @@ dressing.nvim <https://github.com/stevearc/dressing.nvim>. See Prerequisites
 - Configuration <#configuration> - Troubleshooting Frecency Sort
   <#troubleshooting-frecency-sort>
 - Keymap Development Utilities <./doc/MAPPING_DEVELOPMENT.md>
-- `which-key.nvim` Integration <./doc/WHICH_KEY.md>
 - Lua API <./doc/API.md>
 - Extensions <./doc/EXTENSIONS.md>
 - Table Structures <./doc/table_structures/README.md> - Keymaps
@@ -57,10 +56,11 @@ FEATURES                                                  *legendary-features*
   functions to run on the fly, as simple Lua tables, then bind them with
   `legendary.nvim`
 - Integration with which-key.nvim <https://github.com/folke/which-key.nvim>,
-  use your existing `which-key.nvim` tables with `legendary.nvim`
+  use your existing `which-key.nvim` tables with `legendary.nvim` (see
+  extensions <./doc/EXTENSIONS.md#which-keynvim>)
 - Integration with lazy.nvim <https://github.com/folke/lazy.nvim>,
   automatically load keymaps defined via `lazy.nvim`'s `keys` property on
-  plugin specs
+  plugin specs (see extensions <./doc/EXTENSIONS.md#lazynvim>)
 - Execute normal, insert, and visual mode keymaps, commands, autocommands, and
   Lua functions when you select them
 - Show your most recently executed items at the top when triggered via
@@ -444,7 +444,8 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
       --  }
       -- })
       sort = {
-        -- sort most recently used item to the top
+        -- put most recently selected item first, this works
+        -- both within global and item group lists
         most_recent_first = true,
         -- sort user-defined items before built-in items
         user_items_first = true,
