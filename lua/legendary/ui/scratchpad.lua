@@ -75,13 +75,13 @@ end
 
 local function results_win(result, err)
   local lines = nil
-  if err then
+  if err ~= nil then
     lines = err
-  elseif result then
+  elseif result ~= nil then
     lines = result
   end
 
-  if not lines then
+  if lines == nil then
     Log.warn('[legendary.nvim] No return value from Lua evaluation.')
     return
   end
