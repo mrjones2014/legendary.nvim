@@ -29,14 +29,16 @@ return function(opts)
       end
     end
 
-    local original = wk.register
-    local listener = function(whichkey_tbls, whichkey_opts)
-      Log.trace('Preparing to register items from which-key.nvim automatically')
-      util.bind_whichkey(whichkey_tbls, whichkey_opts, opts.do_binding, opts.use_groups)
-      original(whichkey_tbls, whichkey_opts)
-      Log.trace('Successfully registered items from which-key.nvim')
+    if opts.auto_register then
+      local original = wk.register
+      local listener = function(whichkey_tbls, whichkey_opts)
+        Log.trace('Preparing to register items from which-key.nvim automatically')
+        util.bind_whichkey(whichkey_tbls, whichkey_opts, opts.do_binding, opts.use_groups)
+        original(whichkey_tbls, whichkey_opts)
+        Log.trace('Successfully registered items from which-key.nvim')
+      end
+      wk.register = listener
     end
-    wk.register = listener
   else
     Log.warn(
       'which-key.nvim not available. If you are lazy-loading, be sure that which-key.nvim is added to runtime path '
