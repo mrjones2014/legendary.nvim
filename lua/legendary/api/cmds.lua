@@ -171,27 +171,6 @@ end, {
     description = 'Convenience command to set log level',
     opts = { nargs = 1 },
   },
-  {
-    ':LegendaryMatrix',
-    function()
-      local url = 'https://matrix.to/#/%23legendary.nvim:matrix.org'
-      local cmd
-      if vim.fn.has('mac') == 1 then
-        cmd = 'open'
-      elseif vim.fn.has('unix') == 1 then
-        cmd = 'xdg-open'
-      elseif vim.fn.has('win32') == 1 then
-        cmd = 'start'
-      end
-
-      if cmd then
-        vim.fn.jobstart(string.format('%s %s', cmd, url))
-      else
-        vim.notify(string.format('Join the legendary.nvim Matrix channel: %s', url))
-      end
-    end,
-    description = 'Join the legendary.nvim Matrix channel',
-  },
 })
 
 M.bind = function()

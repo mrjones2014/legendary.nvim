@@ -4,8 +4,6 @@
 
 [Features](#features) | [Prerequisites](#prerequisites) | [Installation](#installation) | [Quickstart](#quickstart) | [Configuration](#configuration)
 
-[![matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/%23legendary.nvim:matrix.org)
-
 </div>
 
 Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time (like VS Code's Command Palette).
