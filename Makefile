@@ -54,7 +54,7 @@ check-luacheck:
 
 .PHONY: check-stylua # stylua gets run through a separate GitHub Action in CI
 check-stylua:
-	@if test -z "$$CI"; then echo "Running \`stylua\`..." && stylua tests/ && echo "No stylua errors found.\n"; fi
+	@if test -z "$$CI"; then echo "Running \`stylua\`..." && stylua lua/ && stylua tests/ && echo "No stylua errors found."; fi
 
 .PHONY: check
 check: check-luacheck check-stylua
