@@ -6,6 +6,10 @@ For `lua-language-server` to pick up the testing libraries in use, you'll need t
 `lua-language-server`. This can be done automatically for you by running `make lsp-addons`. They can be updated by using
 `make update-lsp-addons`.
 
+You will also need `stylua` and `luacheck` installed to run formatting and linting. If you are a Nix + `direnv` user,
+you can simply run `direnv allow` and have the `flake.nix` set up your environment for you (or run `nix develop` if you
+prefer not to use `direnv`).
+
 ## Code Style
 
 When contributing to `legendary.nvim`, please make sure your code passes all checks.
