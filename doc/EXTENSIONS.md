@@ -132,6 +132,8 @@ require('legendary').setup({
     -- or, default settings shown below
     smart_splits = {
       directions = { 'h', 'j', 'k', 'l' },
+      -- key to use to jump to previous window
+      prev_win = '<C-\\>',
       mods = {
         -- for moving cursor between windows
         move = '<C>',

@@ -9,6 +9,7 @@
 
 ---@class LegendarySmartSplitsExtensionOpts
 ---@field directions string[] Directional keys to use, in order of left/down/up/right (defaults to h/j/k/l).
+---@field prev_win string Key to use for "previous window"
 ---@field mods LegendarySmartSplitsMods modifiers to use, defaults to ctrl for move, alt for resize.
 ---@field mode string[] List of modes to map keys in, defaults to just normal mode
 
@@ -20,6 +21,7 @@ local direction_map = {
 }
 
 local default_opts = {
+  prev_win = '<C-\\>',
   directions = { 'h', 'j', 'k', 'l' },
   mods = {
     move = '<C>',
@@ -64,7 +66,14 @@ return function(opts)
   end
 
   local t = require('legendary.toolbox')
-  local keymaps = {}
+  local keymaps = {
+    {
+      opts.prev_win,
+      t.lazy_required_fn('smart-splits', 'move_cursor_previous_win'),
+      description = 'smart-splits: Previous window',
+    },
+  }
+
   for action, mod in pairs(opts.mods) do
     if mod then
       local mod_stripped
