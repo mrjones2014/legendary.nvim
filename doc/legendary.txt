@@ -1,4 +1,4 @@
-*legendary.txt*                                   Last change: 2023 October 19
+*legendary.txt*                                  Last change: 2024 February 02
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -136,7 +136,7 @@ With `vim-plug`:
 >VimL
     " if you want to use frecency sorting, sqlite is also needed
     Plug "kkharji/sqlite.lua"
-
+    
     " to use a version
     Plug "mrjones2014/legendary.nvim", { 'tag': 'v2.1.0' }
     " or, to get rolling updates
@@ -176,7 +176,7 @@ automatically detects them. For example:
         },
       },
     }
-
+    
     -- where you set up legendary.nvim
     -- now the keymaps from the `flash.nvim` plugin spec will be automatically loaded
     require('legendary').setup({ lazy_nvim = { auto_register = true } })
@@ -300,23 +300,23 @@ Commands:
 >VimL
     " search keymaps, commands, and autocmds
     :Legendary
-
+    
     " search keymaps
     :Legendary keymaps
-
+    
     " search commands
     :Legendary commands
-
+    
     " search functions
     :Legendary functions
-
+    
     " search autocmds
     :Legendary autocmds
-
+    
     " repeat the last item executed via legendary.nvim's finder;
     " by default, only executes if the last set of item filters used still returns `true`
     :LegendaryRepeat
-
+    
     " repeat the last item executed via legendary.nvim's finder, ignoring the filters used
     :LegendaryRepeat!
 <
@@ -519,7 +519,7 @@ doc/table_structures/README.md <./doc/table_structures/README.md>.
     })
 <
 
-
+                                                                              
 TROUBLESHOOTING FRECENCY SORT        *legendary-troubleshooting-frecency-sort*
 
 If you get an error along the lines of the following, and frecency sorting
