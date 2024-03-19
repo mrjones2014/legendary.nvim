@@ -1,4 +1,4 @@
-*legendary-extensions.txt*                        Last change: 2023 October 11
+*legendary-extensions.txt*                          Last change: 2024 March 04
 
 ==============================================================================
 Table of Contents                     *legendary-extensions-table-of-contents*
@@ -160,6 +160,8 @@ extension.
         -- or, default settings shown below
         smart_splits = {
           directions = { 'h', 'j', 'k', 'l' },
+          -- key to use to jump to previous window
+          prev_win = '<C-\\>',
           mods = {
             -- for moving cursor between windows
             move = '<C>',
