@@ -32,7 +32,7 @@ local function select_inner(opts, context, itemlist)
 
   if itemlist then
     Log.trace('Launching select UI')
-  else
+  elseif opts.itemgroup then
     Log.trace('Relaunching select UI for an item group')
     -- if no itemlist passed, try to use itemgroup
     -- if an item group id is specified, use that
@@ -42,6 +42,8 @@ local function select_inner(opts, context, itemlist)
     else
       Log.error('Expected itemlist, got %s.\n    %s', type(itemlist), vim.inspect(itemlist))
     end
+  else
+    itemlist = State.items
   end
 
   local prompt = opts.select_prompt or Config.select_prompt
@@ -105,7 +107,7 @@ end
 function M.select(opts)
   vim.cmd('doautocmd User LegendaryUiPre')
   local context = Executor.build_context()
-  select_inner(opts, context, State.items)
+  select_inner(opts, context)
 end
 
 return M
