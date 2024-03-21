@@ -84,32 +84,36 @@ function M.vsplit_then(fn)
   end
 end
 
+local function check_class(item, class)
+  return vim.tbl_get(item or {}, 'class', 'name') == class
+end
+
 ---Check if an item is a Keymap
 ---@param keymap LegendaryItem
 ---@return boolean
 function M.is_keymap(keymap)
-  return keymap.class.name == 'Keymap'
+  return check_class(keymap, 'Keymap')
 end
 
 ---Check if an item is a Command
 ---@param cmd LegendaryItem
 ---@return boolean
 function M.is_command(cmd)
-  return cmd.class.name == 'Command'
+  return check_class(cmd, 'Command')
 end
 
 ---Check if an item is an Augroup
 ---@param au LegendaryItem
 ---@return boolean
 function M.is_augroup(au)
-  return au.class.name == 'Augroup'
+  return check_class(au, 'Augroup')
 end
 
 ---Check if an item is an Autocmd
 ---@param autocmd LegendaryItem
 ---@return boolean
 function M.is_autocmd(autocmd)
-  return autocmd.class.name == 'Autocmd'
+  return check_class(autocmd, 'Autocmd')
 end
 
 ---Check if an item is an Augroup or Autocmd
@@ -120,14 +124,14 @@ function M.is_augroup_or_autocmd(au_or_autocmd)
 end
 
 function M.is_itemgroup(group)
-  return group.class.name == 'ItemGroup'
+  return check_class(group, 'ItemGroup')
 end
 
 ---Check if an item is a Function
 ---@param func LegendaryItem
 ---@return boolean
 function M.is_function(func)
-  return func.class.name == 'Function'
+  return check_class(func, 'Function')
 end
 
 ---Check if the given mode string indicates a visual mode or a sub-mode of visual mode.
