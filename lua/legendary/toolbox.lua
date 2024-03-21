@@ -88,54 +88,46 @@ end
 ---@param keymap LegendaryItem
 ---@return boolean
 function M.is_keymap(keymap)
-  -- inline require to avoid circular dependency
-  return keymap.class == require('legendary.data.keymap')
+  return keymap.class.name == 'Keymap'
 end
 
 ---Check if an item is a Command
 ---@param cmd LegendaryItem
 ---@return boolean
 function M.is_command(cmd)
-  -- inline require to avoid circular dependency
-  return cmd.class == require('legendary.data.command')
+  return cmd.class.name == 'Command'
 end
 
 ---Check if an item is an Augroup
 ---@param au LegendaryItem
 ---@return boolean
 function M.is_augroup(au)
-  -- inline require to avoid circular dependency
-  return au.class == require('legendary.data.augroup')
+  return au.class.name == 'Augroup'
 end
 
 ---Check if an item is an Autocmd
 ---@param autocmd LegendaryItem
 ---@return boolean
 function M.is_autocmd(autocmd)
-  -- inline require to avoid circular dependency
-  return autocmd.class == require('legendary.data.autocmd')
+  return autocmd.class.name == 'Autocmd'
 end
 
 ---Check if an item is an Augroup or Autocmd
 ---@param au_or_autocmd LegendaryItem
 ---@return boolean
 function M.is_augroup_or_autocmd(au_or_autocmd)
-  -- inline require to avoid circular dependency
-  return au_or_autocmd.class == require('legendary.data.augroup')
-    or au_or_autocmd.class == require('legendary.data.autocmd')
+  return M.is_autocmd(au_or_autocmd) or M.is_augroup(au_or_autocmd)
 end
 
 function M.is_itemgroup(group)
-  -- inline require to avoid circular dependency
-  return group.class == require('legendary.data.itemgroup')
+  return group.class.name == 'ItemGroup'
 end
 
 ---Check if an item is a Function
 ---@param func LegendaryItem
 ---@return boolean
 function M.is_function(func)
-  -- inline require to avoid circular dependency
-  return func.class == require('legendary.data.function')
+  return func.class.name == 'Function'
 end
 
 ---Check if the given mode string indicates a visual mode or a sub-mode of visual mode.
