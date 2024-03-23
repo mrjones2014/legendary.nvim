@@ -27,7 +27,7 @@ local function select_inner(opts, context, itemlist)
 
   vim.validate({
     itemgroup = { opts.itemgroup, 'string', true },
-    select_prompt = { opts.select_prompt, 'function', true },
+    select_prompt = { opts.select_prompt, { 'string', 'function' }, true },
   })
 
   if itemlist then
