@@ -61,7 +61,7 @@ With `lazy.nvim`:
 -- to use a version
 {
   'mrjones2014/legendary.nvim',
-  version = 'v2.1.0',
+  version = 'v2.13.9',
   -- since legendary.nvim handles all your keymaps/commands,
   -- its recommended to load legendary.nvim before other plugins
   priority = 10000,
