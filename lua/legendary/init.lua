@@ -157,7 +157,7 @@ end
 ---@diagnostic enable: undefined-doc-param
 
 ---Bind a *list of* autocmds and/or augroups
----@param aus (Autocmd|Augroup)[]
+---@param aus table
 function M.autocmds(aus)
   if not vim.tbl_islist(aus) then
     Log.error('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus))
@@ -176,7 +176,7 @@ function M.autocmds(aus)
 end
 
 ---Bind a *single autocmd/augroup*
----@param au Autocmd|Augroup
+---@param au table
 function M.autocmd(au)
   M.autocmds({ au })
 end
