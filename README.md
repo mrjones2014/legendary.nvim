@@ -125,7 +125,7 @@ keymaps where you define the plugin, and `legendary.nvim` automatically detects 
 
 -- where you set up legendary.nvim
 -- now the keymaps from the `flash.nvim` plugin spec will be automatically loaded
-require('legendary').setup({ lazy_nvim = { auto_register = true } })
+require('legendary').setup({ extensions = { lazy_nvim = true } })
 ```
 
 Otherwise, register keymaps, commands, autocmds, and functions through setup, including
@@ -217,6 +217,8 @@ require('legendary').setup({
   },
   -- load extensions
   extensions = {
+    -- automatically load keymaps from lazy.nvim's `keys` option
+    lazy_nvim = true,
     -- load keymaps and commands from nvim-tree.lua
     nvim_tree = true,
     -- load commands from smart-splits.nvim
