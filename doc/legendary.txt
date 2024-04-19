@@ -1,4 +1,4 @@
-*legendary.txt*                                  Last change: 2024 February 02
+*legendary.txt*                                     Last change: 2024 April 12
 
 ==============================================================================
 Table of Contents                                *legendary-table-of-contents*
@@ -112,7 +112,7 @@ With `lazy.nvim`:
     -- to use a version
     {
       'mrjones2014/legendary.nvim',
-      version = 'v2.1.0',
+      version = 'v2.13.9',
       -- since legendary.nvim handles all your keymaps/commands,
       -- its recommended to load legendary.nvim before other plugins
       priority = 10000,
@@ -179,7 +179,7 @@ automatically detects them. For example:
     
     -- where you set up legendary.nvim
     -- now the keymaps from the `flash.nvim` plugin spec will be automatically loaded
-    require('legendary').setup({ lazy_nvim = { auto_register = true } })
+    require('legendary').setup({ extensions = { lazy_nvim = true } })
 <
 Otherwise, register keymaps, commands, autocmds, and functions through setup,
 including opting into _extensions_ which can automatically load keymaps and
@@ -271,6 +271,8 @@ commands from other plugins:
       },
       -- load extensions
       extensions = {
+        -- automatically load keymaps from lazy.nvim's `keys` option
+        lazy_nvim = true,
         -- load keymaps and commands from nvim-tree.lua
         nvim_tree = true,
         -- load commands from smart-splits.nvim
