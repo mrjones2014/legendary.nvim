@@ -109,7 +109,8 @@ end
 ---Bind the keymap in Neovim
 ---@return Keymap
 function Keymap:apply()
-  if vim.tbl_islist(self.mode_mappings) then
+  local islist = vim.islist or vim.tbl_islist
+  if islist(self.mode_mappings) then
     -- description-only keymap
     return self
   end
@@ -133,7 +134,8 @@ function Keymap:frecency_id()
 end
 
 function Keymap:modes()
-  if vim.tbl_islist(self.mode_mappings) then
+  local islist = vim.islist or vim.tbl_islist
+  if islist(self.mode_mappings) then
     return self.mode_mappings
   end
 
