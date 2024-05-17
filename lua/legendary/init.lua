@@ -35,7 +35,8 @@ local function build_parser_func(parser)
       return
     end
 
-    if not vim.tbl_islist(items) then
+    local islist = vim.islist or vim.tbl_islist
+    if not islist(items) then
       error(string.format('Expected list, got ', type(items)))
       return
     end
@@ -159,7 +160,8 @@ end
 ---Bind a *list of* autocmds and/or augroups
 ---@param aus table
 function M.autocmds(aus)
-  if not vim.tbl_islist(aus) then
+  local islist = vim.islist or vim.tbl_islist
+  if not islist(aus) then
     Log.error('Expected list, got %s.\n    %s', type(aus), vim.inspect(aus))
     return
   end
