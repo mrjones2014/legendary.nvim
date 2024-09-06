@@ -81,8 +81,8 @@ function M.update_item_score(item)
   M.db_wrapper:update(item)
 end
 
-function M.sql_escape(str)
-  return M.db_wrapper.sql_escape(str)
+function M.to_bytes(str)
+  return M.db_wrapper.to_bytes(str)
 end
 
 function M.get_client()
