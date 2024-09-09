@@ -164,8 +164,8 @@ function ItemList:sort_inplace(opts)
         ---@param item1 LegendaryItem
         ---@param item2 LegendaryItem
         function(item1, item2)
-          local item1_id = DbClient.sql_escape(item1:frecency_id())
-          local item2_id = DbClient.sql_escape(item2:frecency_id())
+          local item1_id = DbClient.to_bytes(item1:frecency_id())
+          local item2_id = DbClient.to_bytes(item2:frecency_id())
           local item1_score = frecency_scores[item1_id] or 0
           local item2_score = frecency_scores[item2_id] or 0
           return item1_score > item2_score

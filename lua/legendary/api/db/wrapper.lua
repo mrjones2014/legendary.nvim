@@ -155,14 +155,18 @@ local function row_id(row)
   return (not vim.tbl_isempty(row)) and row[1].id or nil
 end
 
-function M.sql_escape(str)
-  return string.format("'%s'", string.gsub(str, "'", "\\'"))
+function M.to_bytes(str)
+  local result = ''
+  for c in str:gmatch('.') do
+    result = result .. string.byte(c)
+  end
+  return result
 end
 
 ---Update the stored data for an item
 ---@param item LegendaryItem
 function M:update(item)
-  local item_id = M.sql_escape(item:frecency_id())
+  local item_id = M.to_bytes(item:frecency_id())
   Log.trace('Updating item with ID "%s"', item_id)
   local entry_id = row_id(self:transaction(self.queries.item_get_entries, { where = { item_id = item_id } }))
   if not entry_id then
