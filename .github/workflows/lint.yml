@@ -42,5 +42,10 @@ jobs:
       with:
         repository: Olivine-Labs/luassert
         path: vendor/luassert
+    - name: Checkout sqlite.lua
+      uses: actions/checkout@v3
+      with:
+        repository: kkharji/sqlite.lua
+        path: vendor/sqlite
     - name: Run Unit Tests
       run: make test
