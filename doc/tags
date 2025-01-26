@@ -1,3 +1,6 @@
+M.load_all	legendary-api.txt	/*M.load_all*
+M.load_extension	legendary-api.txt	/*M.load_extension*
+M.pre_ui_hook	legendary-api.txt	/*M.pre_ui_hook*
 legendary	legendary-api.txt	/*legendary*
 legendary-autocmd-tables-augroups-and-autocmds	legendary-autocmd-tables.txt	/*legendary-autocmd-tables-augroups-and-autocmds*
 legendary-autocmd-tables.txt	legendary-autocmd-tables.txt	/*legendary-autocmd-tables.txt*
@@ -81,12 +84,9 @@ legendary.filters.keymaps	legendary-api.txt	/*legendary.filters.keymaps*
 legendary.filters.mode	legendary-api.txt	/*legendary.filters.mode*
 legendary.find	legendary-api.txt	/*legendary.find*
 legendary.func	legendary-api.txt	/*legendary.func*
-legendary.integrations.which-key	legendary-api.txt	/*legendary.integrations.which-key*
-legendary.integrations.which-key.bind_whichkey	legendary-api.txt	/*legendary.integrations.which-key.bind_whichkey*
-legendary.integrations.which-key.parse_whichkey	legendary-api.txt	/*legendary.integrations.which-key.parse_whichkey*
-legendary.integrations.which-key.whichkey_listen	legendary-api.txt	/*legendary.integrations.which-key.whichkey_listen*
 legendary.itemgroup	legendary-api.txt	/*legendary.itemgroup*
 legendary.keymap	legendary-api.txt	/*legendary.keymap*
+legendary.repeat_previous	legendary-api.txt	/*legendary.repeat_previous*
 legendary.setup	legendary-api.txt	/*legendary.setup*
 legendary.toolbox	legendary-api.txt	/*legendary.toolbox*
 legendary.toolbox.Marks	legendary-api.txt	/*legendary.toolbox.Marks*
