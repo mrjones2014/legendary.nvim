@@ -4,6 +4,14 @@
 M.setup()                                                      *legendary.setup*
 
 
+M.repeat_previous({ignore_filters})                  *legendary.repeat_previous*
+Repeat execution of the previously selected item. By default, only executes if the previously used filters
+still return true.
+
+Parameters: ~
+{ignore_filters}  (boolean|nil)  whether to ignore the filters used when selecting the item, default false
+
+
 M.find({opts})                                                  *legendary.find*
 Find items using vim.ui.select()
 
@@ -44,14 +52,14 @@ M.autocmds({aus})                                           *legendary.autocmds*
 Bind a *list of* autocmds and/or augroups
 
 Parameters: ~
-{aus}  (Autocmd|Augroup[])
+{aus}  (table)
 
 
 M.autocmd({au})                                              *legendary.autocmd*
 Bind a *single autocmd/augroup*
 
 Parameters: ~
-{au}  (Autocmd|Augroup)
+{au}  (table)
 
 
 ==============================================================================
@@ -159,7 +167,7 @@ Return a function that creates a new horizontal
 split, then calls the given function.
 
 Parameters: ~
-{fn}  (function)  The function to call after creating a spli
+{fn}  (function)  The function to call after creating a split
 
 Returns: ~
 (function)
@@ -170,7 +178,7 @@ Return a function that creates a new vertical
 split, then calls the given function.
 
 Parameters: ~
-{fn}  (function)  The function to call after creating a spli
+{fn}  (function)  The function to call after creating a split
 
 Returns: ~
 (function)
@@ -265,11 +273,11 @@ Returns: ~
 
 
 M.set_marks({marks})                               *legendary.toolbox.set_marks*
-Set visual marks from a table in the forma
+Set visual marks from a table in the format
 {start_line, start_col, end_line, end_col}
 
 Parameters: ~
-{marks}  (Marks)  the marks to se
+{marks}  (Marks)  the marks to set
 
 
 *legendary.toolbox.table_from_vimscript*
@@ -296,7 +304,7 @@ fun(items:LegendaryItem[],mode:string):string[]
 
 
 M.default_format({item})                    *legendary.ui.format.default_format*
-Default forma
+Default format
 
 Parameters: ~
 {item}  (LegendaryItem)
@@ -329,37 +337,21 @@ Returns: ~
 (string)
 
 
-==============================================================================
-*legendary.integrations.which-key*
-
-*legendary.integrations.which-key.parse_whichkey*
-M.parse_whichkey({which_key_tbls}, {which_key_opts}, {do_binding})
-Take which-key.nvim tables
-and parse them into legendary.nvim tables
-
-Parameters: ~
-{which_key_tbls}  (table[])
-{which_key_opts}  (table)
-{do_binding}      (boolean)  whether to bind the keymaps or let which-key handle i
-
-Returns: ~
-(LegendaryItem[])
+M.load_all()                                                        *M.load_all*
+Load all extensions specified in legendary.nvim config
 
 
-*legendary.integrations.which-key.bind_whichkey*
-M.bind_whichkey({wk_tbls}, {wk_opts}, {do_binding})
-Bind a which-key.nvim table with legendary.nvim
+*M.load_extension*
+M.load_extension({extension_name}, {config})
+Load a single extension by name. If config is not provided,
+it will be looked up in the legendary.nvim config.
 
 Parameters: ~
-{wk_tbls}     (table)
-{wk_opts}     (table)
-{do_binding}  (boolean)  whether to bind the keymaps or let which-key handle i
+{extension_name}  (string)
+{config}          (any)
 
 
-*legendary.integrations.which-key.whichkey_listen*
-M.whichkey_listen()
-Enable auto-registering of which-key.nvim tables
-with legendary.nvim
+M.pre_ui_hook()                                                  *M.pre_ui_hook*
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:

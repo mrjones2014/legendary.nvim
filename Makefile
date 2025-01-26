@@ -65,6 +65,10 @@ check: check-luacheck check-stylua
 api-docs:
 	./gen-api-docs.bash
 
+.PHONY: gen-api-docs-ci
+gen-api-docs-ci:
+	./gen-api-docs.bash ci
+
 .PHONY: init
 init:
 	git config core.hooksPath .githooks

@@ -39,6 +39,8 @@ jobs:
         run: git checkout -b ${VIMDOC_BRANCH}
       - name: Generate vimdocs
         run: make gen-vimdoc
+      - name: Generate API docs
+        run: make gen-api-docs-ci
       - name: Create PR
         run: |
           if ! [[ -z $(git status -s) ]]; then

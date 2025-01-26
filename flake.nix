@@ -10,7 +10,7 @@
         devShells.default = pkgs.mkShell {
           name = "shell with stylua and luacheck";
 
-          packages = with pkgs; [ stylua luajitPackages.luacheck ];
+          packages = with pkgs; [ stylua luajitPackages.luacheck lemmy-help ];
         };
       });
 }
