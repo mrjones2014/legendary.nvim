@@ -1,4 +1,5 @@
-> [!NOTE] `legendary.nvim` is [looking for a new maintainer](https://github.com/mrjones2014/legendary.nvim/issues/505)!
+> [!NOTE]
+> `legendary.nvim` is [looking for a new maintainer](https://github.com/mrjones2014/legendary.nvim/issues/505)!
 
 <div align="center">
 
