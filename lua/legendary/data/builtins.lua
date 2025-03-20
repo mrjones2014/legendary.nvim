@@ -1,5 +1,37 @@
 local M = {}
 -- commented out ones need a way to get input after selecting
+
+-- get global user-commands
+M.get_commands = function()
+  local global_commands = vim.api.nvim_get_commands({})
+  local entries = {}
+
+  for _, v in pairs(global_commands) do
+    local description = v["definition"]
+    if not M.is_description(description) then
+      -- description cannot be the empty string or the command doesn't show
+      description = " "
+    end
+
+    table.insert(entries, {v["name"], description = description})
+  end
+
+  return entries
+end
+
+-- The commands from nvim_get_commands and nvim_buf_get_commands have a definition that is sometimes a human-friendly
+-- description, but most often just vim code. We attempt to filter the non-human-friendly descriptions here. This list
+-- was made empirically.
+M.is_description = function(description)
+  return string.len(description) > 0
+  and not string.find(description, "^exe ")
+  and not string.find(description, "^:exe ")
+  and not string.find(description, "^call ")
+  and not string.find(description, "^:call ")
+  and not string.find(description, "^echoerr ")
+  and not string.find(description, "^lua require")
+end
+
 M.builtin_keymaps = {
   { '<C-o><C-o>', description = 'Reopen last opened file' },
   { 'gx', description = 'Open with external app' },
